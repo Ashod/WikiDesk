@@ -89,38 +89,26 @@
             }
             while (!reader.IsStartElement());
 
-            // Failed to read or empty tag.
-            if (!reader.Read() || reader.Name == TAG_PAGE)
-            {
-                return null;
-            }
-
             Page page = new Page();
             Page oldPage = null;
 
-            while (true)
+            while (reader.Read() && reader.Name != TAG_PAGE)
             {
                 // Align on a start element.
                 if (!reader.IsStartElement())
                 {
-                    // Read another element, stop on closing tag.
-                    if (!reader.Read() || reader.Name == TAG_PAGE)
-                    {
-                        break;
-                    }
-
                     continue;
                 }
 
                 switch (reader.Name)
                 {
                     case "id":
-                        page.Id = reader.ReadElementContentAsLong();
+                        page.Id = long.Parse(reader.ReadString());
                         continue;
 
                     case "title":
                         page.Title = reader.ReadString();
-                        oldPage = this.QueryPage(page.Title);
+                        oldPage = QueryPage(page.Title);
                     break;
 
                     case TAG_REVISION:
@@ -149,38 +137,26 @@
         {
             Debug.Assert(reader.Name == TAG_REVISION);
 
-            // Failed to read or empty tag.
-            if (!reader.Read() || reader.Name == TAG_REVISION)
-            {
-                return null;
-            }
-
             Revision rev = new Revision();
             Revision oldRev = null;
 
-            while (true)
+            while (reader.Read() && reader.Name != TAG_REVISION)
             {
                 // Align on a start element.
                 if (!reader.IsStartElement())
                 {
-                    // Read another element, stop on closing tag.
-                    if (!reader.Read() || reader.Name == TAG_REVISION)
-                    {
-                        break;
-                    }
-
                     continue;
                 }
 
                 switch (reader.Name)
                 {
                     case "id":
-                        rev.Id = reader.ReadElementContentAsLong();
+                        rev.Id = long.Parse(reader.ReadString());
                         oldRev = QueryRevision(rev.Id);
                     continue;
 
                     case "timestamp":
-                        rev.Timestamp = reader.ReadElementContentAsDateTime();
+                        rev.Timestamp = DateTime.Parse(reader.ReadString());
                     continue;
 
                     case TAG_CONTRIBUTOR:
@@ -193,12 +169,6 @@
 
                     case "text":
                         rev.Text = reader.ReadString();
-                    break;
-                }
-
-                // Read another element, stop on closing tag.
-                if (!reader.Read() || reader.Name == TAG_REVISION)
-                {
                     break;
                 }
             }
