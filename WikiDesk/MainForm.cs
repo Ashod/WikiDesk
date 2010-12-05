@@ -23,6 +23,26 @@
             //browser.IsScriptingEnabled = false;
             Controls.Add(browser_);
             browser_.BringToFront();
+            browser_.ApplicationName = APPLICATION_NAME;
+            browser_.DocumentTitleChanged += browser__DocumentTitleChanged;
+            browser_.Navigating += browser__Navigating;
+            browser_.Navigated += browser__Navigated;
+        }
+
+        private void browser__Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        {
+            Text = string.Format("{0} - {1}", APPLICATION_NAME, browser_.DocumentTitle ?? string.Empty);
+            cboNavigate.Text = browser_.Url != null ? browser_.Url.ToString() : string.Empty;
+        }
+
+        private void browser__Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            cboNavigate.Text = browser_.Url.ToString();
+        }
+
+        private void browser__DocumentTitleChanged(object sender, EventArgs e)
+        {
+            Text = string.Format("{0} - {1}", APPLICATION_NAME, browser_.DocumentTitle);
         }
 
         private void LoadClick(object sender, EventArgs e)
@@ -69,23 +89,38 @@
         private void Titles_SelectedIndexChanged(object sender, EventArgs e)
         {
             string title = cboNavigate.Text;
+            NavigateTo(title);
+        }
+
+        private void NavigateTo(string title)
+        {
             if (!string.IsNullOrEmpty(title))
             {
-                Page page = db_.QueryPage(title);
-                if (page != null)
+                if (title.ToLowerInvariant().StartsWith("http://") ||
+                    title.ToLowerInvariant().StartsWith("https://"))
                 {
-                    Revision rev = db_.QueryRevision(page.LastRevisionId);
-                    if (rev != null)
+                    browser_.Url = new Uri(title);
+                }
+                else
+                {
+                    Page page = db_.QueryPage(title);
+                    if (page != null)
                     {
-                        browser_.DocumentText = Wiki.Wiki2Html(rev.Text);
+                        Revision rev = db_.QueryRevision(page.LastRevisionId);
+                        if (rev != null)
+                        {
+                            browser_.Url = null;
+                            browser_.DocumentText = Wiki.Wiki2Html(rev.Text);
+                            Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
+                        }
                     }
                 }
             }
         }
 
-        private void Navigation_KeyPress(object sender, KeyPressEventArgs e)
+        private void Navigation_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == (int)Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 Titles_SelectedIndexChanged(sender, e);
             }
@@ -104,5 +139,7 @@
         private Database db_;
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
         private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();
+
+        private const string APPLICATION_NAME = "WikiDesk";
     }
 }

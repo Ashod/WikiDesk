@@ -165,11 +165,8 @@
             this.cboNavigate.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.cboNavigate.Size = new System.Drawing.Size(350, 25);
             this.cboNavigate.Sorted = true;
-            this.cboNavigate.Text = "local://Art";
-            this.cboNavigate.SelectedIndexChanged += new System.EventHandler(this.Titles_SelectedIndexChanged);
+            this.cboNavigate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Navigation_KeyDown);
             this.cboNavigate.DropDownClosed += new System.EventHandler(this.Titles_SelectedIndexChanged);
-            this.cboNavigate.TextChanged += new System.EventHandler(this.Titles_SelectedIndexChanged);
-            this.cboNavigate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Navigation_KeyPress);
             //
             // btnGo
             //
@@ -177,7 +174,7 @@
             this.btnGo.Image = ((System.Drawing.Image)(resources.GetObject("btnGo.Image")));
             this.btnGo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnGo.Name = "btnGo";
-            this.btnGo.Size = new System.Drawing.Size(23, 22);
+            this.btnGo.Size = new System.Drawing.Size(23, 20);
             this.btnGo.Text = "Go";
             //
             // MainForm
