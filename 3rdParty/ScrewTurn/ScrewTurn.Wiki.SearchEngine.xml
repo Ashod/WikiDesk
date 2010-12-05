@@ -1,0 +1,1912 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ScrewTurn.Wiki.SearchEngine</name>
+    </assembly>
+    <members>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs">
+            <summary>
+            Contains arguments for the <b>IndexChanged</b> event of the <see cref="T:ScrewTurn.Wiki.SearchEngine.IInMemoryIndex"/> interface.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs.#ctor(ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.IndexChangeType,ScrewTurn.Wiki.SearchEngine.DumpedChange,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs"/> class.
+            </summary>
+            <param name="document">The affected document.</param>
+            <param name="change">The change performed.</param>
+            <param name="changeData">The dumped change data.</param>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="change"/> is not <see cref="F:ScrewTurn.Wiki.SearchEngine.IndexChangeType.IndexCleared"/> and <paramref name="document"/> or <paramref name="changeData"/> are <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs.#ctor(ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.IndexChangeType,ScrewTurn.Wiki.SearchEngine.DumpedChange,System.Object,ScrewTurn.Wiki.SearchEngine.IndexStorerResult)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs"/> class.
+            </summary>
+            <param name="document">The affected document.</param>
+            <param name="change">The change performed.</param>
+            <param name="changeData">The dumped change data.</param>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+            <param name="result">The storer result, if any.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="change"/> is not <see cref="F:ScrewTurn.Wiki.SearchEngine.IndexChangeType.IndexCleared"/> and <paramref name="document"/> or <paramref name="changeData"/> are <c>null</c>.</exception>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs.Document">
+            <summary>
+            Gets the affected document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs.Change">
+            <summary>
+            Gets the change performed.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs.ChangeData">
+            <summary>
+            Gets the dumped change data.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs.State">
+            <summary>
+            Gets the state object that is passed to the IndexStorer SaveDate/DeleteData function.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs.Result">
+            <summary>
+            Gets or sets the index storer result, if any.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.IndexChangeType">
+            <summary>
+            Lists valid index changes.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.IndexChangeType.DocumentAdded">
+            <summary>
+            A document is added.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.IndexChangeType.DocumentRemoved">
+            <summary>
+            A document is removed.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.IndexChangeType.IndexCleared">
+            <summary>
+            The index is cleared.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.WordInfoCollection">
+            <summary>
+            Contains a collection of <b>MatchInfo</b> objects, sorted by index.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.items">
+            <summary>
+            The items of the collection.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.WordInfoCollection"/> class.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.WordInfoCollection"/> class.
+            </summary>
+            <param name="capacity">The initial capacity of the collection.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="capacity"/> is less than or equal to zero.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.Add(ScrewTurn.Wiki.SearchEngine.WordInfo)">
+            <summary>
+            Adds an item to the collection.
+            </summary>
+            <param name="item">The item to add.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="item"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.Clear">
+            <summary>
+            Clears the collection.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.Contains(ScrewTurn.Wiki.SearchEngine.WordInfo)">
+            <summary>
+            Determines whether an item is in the collection.
+            </summary>
+            <param name="item">The item to check for.</param>
+            <returns><c>true</c> if the item in the collection, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.Contains(System.String)">
+            <summary>
+            Determines whether a word is in the collection.
+            </summary>
+            <param name="word">The word.</param>
+            <returns><c>true</c> if the word is in the collection, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.ContainsOccurrence(System.String,System.Int32)">
+            <summary>
+            Determines whether a word occurrence is in the collection.
+            </summary>
+            <param name="word">The word.</param>
+            <param name="firstCharIndex">The index of the first character.</param>
+            <returns><c>True</c> if the collection contains the occurrence, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.CopyTo(ScrewTurn.Wiki.SearchEngine.WordInfo[],System.Int32)">
+            <summary>
+            Copies the collection items to an array.
+            </summary>
+            <param name="array">The destination array.</param>
+            <param name="arrayIndex">The zero-based array index at which the copy begins.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="arrayIndex"/> is not within the bounds of <paramref name="array"/>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.Remove(ScrewTurn.Wiki.SearchEngine.WordInfo)">
+            <summary>
+            Removes an item from the collection.
+            </summary>
+            <param name="item">The item to remove.</param>
+            <returns><c>true</c> if <b>item</b> is removed, <c>false</c> otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="item"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the items of the collection.
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the items of the collection.
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.ToString">
+            <summary>
+            Returns a string representation of the current instance.
+            </summary>
+            <returns>The string representation.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.Count">
+            <summary>
+            Gets the number of items in the collection.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.Capacity">
+            <summary>
+            Gets the capacity of the collection.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the collection is read-only.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordInfoCollection.Item(System.Int32)">
+            <summary>
+            Gets an item of the collection.
+            </summary>
+            <param name="index">The index of the item to retrieve.</param>
+            <returns>The item.</returns>
+            <exception cref="T:System.IndexOutOfRangeException">If <paramref name="index"/> is outside the bounds of the collection.</exception>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.IndexStorerResult">
+            <summary>
+            Contains the results of an index storer operation.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerResult.#ctor(System.Nullable{System.UInt32},System.Collections.Generic.List{ScrewTurn.Wiki.SearchEngine.WordId})">
+            <summary>
+            Initializes a new instance of the <see cref="T:IndexStorerResult" /> class.
+            </summary>
+            <param name="documentId">The ID of the document just stored, if any.</param>
+            <param name="wordIds">The IDs of the words just stored, if any.</param>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexStorerResult.DocumentID">
+            <summary>
+            Gets or sets the ID of the document just stored, if any.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexStorerResult.WordIDs">
+            <summary>
+            Gets or sets the IDs of the words
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.WordId">
+            <summary>
+            Describes the ID of a word.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordId.#ctor(System.String,System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:WordId" /> class.
+            </summary>
+            <param name="text">The word text, lowercase.</param>
+            <param name="id">The word ID.</param>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordId.Text">
+            <summary>
+            Gets the word text.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordId.ID">
+            <summary>
+            Gets the word ID.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase">
+            <summary>
+            Implements a base class for the search index.
+            </summary>
+            <remarks>All instance and static members are <b>thread-safe</b>.</remarks>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.IInMemoryIndex">
+            <summary>
+            Defines an interface for an in-memory index.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.IIndex">
+            <summary>
+            Defines an interface for a search engine index.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IIndex.Clear(System.Object)">
+            <summary>
+            Completely clears the index (stop words are not affected).
+            </summary>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IIndex.StoreDocument(ScrewTurn.Wiki.SearchEngine.IDocument,System.String[],System.String,System.Object)">
+            <summary>
+            Stores a document in the index.
+            </summary>
+            <param name="document">The document.</param>
+            <param name="keywords">The document keywords, if any, an empty array or <c>null</c> otherwise.</param>
+            <param name="content">The content of the document.</param>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+            <returns>The number of indexed words (including duplicates).</returns>
+            <remarks>Indexing the content of the document is <b>O(n)</b>, 
+            where <b>n</b> is the total number of words in the document.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> or <paramref name="content"/> are <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IIndex.RemoveDocument(ScrewTurn.Wiki.SearchEngine.IDocument,System.Object)">
+            <summary>
+            Removes a document from the index.
+            </summary>
+            <param name="document">The document to remove.</param>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IIndex.Search(ScrewTurn.Wiki.SearchEngine.SearchParameters)">
+            <summary>
+            Performs a search in the index.
+            </summary>
+            <param name="parameters">The search parameters.</param>
+            <returns>The results.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="parameters"/> is <c>null</c>.</exception>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IIndex.StopWords">
+            <summary>
+            Gets or sets the stop words to be used while indexing new content.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IIndex.TotalWords">
+            <summary>
+            Gets the total count of unique words.
+            </summary>
+            <remarks>Computing the result is <n>O(1)</n>.</remarks>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IIndex.TotalDocuments">
+            <summary>
+            Gets the total count of documents.
+            </summary>
+            <remarks>Computing the result is <b>O(n*m)</b>, where <b>n</b> is the number of 
+            words in the index and <b>m</b> is the number of documents.</remarks>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IIndex.TotalOccurrences">
+            <summary>
+            Gets the total number of occurrences (count of words in each document).
+            </summary>
+            <remarks>Computing the result is <b>O(n)</b>, 
+            where <b>n</b> is the number of words in the index.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IInMemoryIndex.SetBuildDocumentDelegate(ScrewTurn.Wiki.SearchEngine.BuildDocument)">
+            <summary>
+            Sets the delegate used for converting a <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedDocument"/> to an instance of a class implementing <see cref="T:ScrewTurn.Wiki.SearchEngine.IDocument"/>, 
+            while reading index data from a permanent storage.
+            </summary>
+            <param name="buildDocument">The delegate (cannot be <c>null</c>).</param>
+            <remarks>This method must be called before invoking <see cref="M:ScrewTurn.Wiki.SearchEngine.IInMemoryIndex.InitializeData(ScrewTurn.Wiki.SearchEngine.DumpedDocument[],ScrewTurn.Wiki.SearchEngine.DumpedWord[],ScrewTurn.Wiki.SearchEngine.DumpedWordMapping[])"/>.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="buildDocument"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IInMemoryIndex.InitializeData(ScrewTurn.Wiki.SearchEngine.DumpedDocument[],ScrewTurn.Wiki.SearchEngine.DumpedWord[],ScrewTurn.Wiki.SearchEngine.DumpedWordMapping[])">
+            <summary>
+            Initializes index data by completely emptying the index catalog and storing the specified data.
+            </summary>
+            <param name="documents">The documents.</param>
+            <param name="words">The words.</param>
+            <param name="mappings">The mappings.</param>
+            <remarks>The method <b>does not</b> check the consistency of the data passed as arguments.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="documents"/>, <paramref name="words"/> or <paramref name="mappings"/> are <c>null</c>.</exception>
+            <exception cref="T:System.InvalidOperationException">If <see cref="M:SetBuildDocumentDelegate"/> was not called.</exception>
+        </member>
+        <member name="E:ScrewTurn.Wiki.SearchEngine.IInMemoryIndex.IndexChanged">
+            <summary>
+            An event fired when the index is changed.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.stopWords">
+            <summary>
+            The stop words to be used while indexing new content.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.catalog">
+            <summary>
+            Contains the index catalog.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.buildDocument">
+            <summary>
+            The <see cref="T:ScrewTurn.Wiki.SearchEngine.BuildDocument"/> delegate.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.SetBuildDocumentDelegate(ScrewTurn.Wiki.SearchEngine.BuildDocument)">
+            <summary>
+            Sets the delegate used for converting a <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedDocument"/> to an instance of a class implementing <see cref="T:ScrewTurn.Wiki.SearchEngine.IDocument"/>, 
+            while reading index data from a permanent storage.
+            </summary>
+            <param name="buildDocument">The delegate (cannot be <c>null</c>).</param>
+            <remarks>This method must be called before invoking <see cref="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.InitializeData(ScrewTurn.Wiki.SearchEngine.DumpedDocument[],ScrewTurn.Wiki.SearchEngine.DumpedWord[],ScrewTurn.Wiki.SearchEngine.DumpedWordMapping[])"/>.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="buildDocument"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.OnIndexChange(ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.IndexChangeType,ScrewTurn.Wiki.SearchEngine.DumpedChange,System.Object)">
+            <summary>
+            Takes care of firing the <see cref="E:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.IndexChanged"/> event.
+            </summary>
+            <param name="document">The affected document.</param>
+            <param name="change">The change performed.</param>
+            <param name="changeData">The dumped change data.</param>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+            <returns>The storage result or <c>null</c>.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase"/> class.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.Clear(System.Object)">
+            <summary>
+            Completely clears the index (stop words are not affected).
+            </summary>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.InitializeData(ScrewTurn.Wiki.SearchEngine.DumpedDocument[],ScrewTurn.Wiki.SearchEngine.DumpedWord[],ScrewTurn.Wiki.SearchEngine.DumpedWordMapping[])">
+            <summary>
+            Initializes index data by completely emptying the index catalog and storing the specified data.
+            </summary>
+            <param name="documents">The documents.</param>
+            <param name="words">The words.</param>
+            <param name="mappings">The mappings.</param>
+            <remarks>The method <b>does not</b> check the consistency of the data passed as arguments.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="documents"/>, <paramref name="words"/> or <paramref name="mappings"/> are <c>null</c>.</exception>
+            <exception cref="T:System.InvalidOperationException">If <see cref="M:SetBuildDocumentDelegate"/> was not called.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.StoreDocument(ScrewTurn.Wiki.SearchEngine.IDocument,System.String[],System.String,System.Object)">
+            <summary>
+            Stores a document in the index.
+            </summary>
+            <param name="document">The document.</param>
+            <param name="keywords">The document keywords, if any, an empty array or <c>null</c> otherwise.</param>
+            <param name="content">The content of the document.</param>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+            <returns>The number of indexed words (including duplicates) in the document title and content.</returns>
+            <remarks>Indexing the content of the document is <b>O(n)</b>, 
+            where <b>n</b> is the total number of words in the document.
+            If the specified document was already in the index, all the old occurrences
+            are deleted from the index.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> or <paramref name="content"/> are <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.StoreWord(System.String,ScrewTurn.Wiki.SearchEngine.IDocument,System.UInt16,System.UInt16,ScrewTurn.Wiki.SearchEngine.WordLocation,ScrewTurn.Wiki.SearchEngine.Word@,ScrewTurn.Wiki.SearchEngine.DumpedWord@)">
+            <summary>
+            Stores a word in the catalog.
+            </summary>
+            <param name="wordText">The word to store.</param>
+            <param name="document">The document the word occurs in.</param>
+            <param name="firstCharIndex">The index of the first character of the word in the document the word occurs at.</param>
+            <param name="wordIndex">The index of the word in the document.</param>
+            <param name="location">The location of the word.</param>
+            <param name="newWord">The new word, or <c>null</c>.</param>
+            <param name="dumpedWord">The dumped word data, or <c>null</c>.</param>
+            <returns>The dumped word mapping data.</returns>
+            <remarks>Storing a word in the index is <b>O(n log n)</b>, 
+            where <b>n</b> is the number of words already in the index.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.RemoveDocument(ScrewTurn.Wiki.SearchEngine.IDocument,System.Object)">
+            <summary>
+            Removes a document from the index.
+            </summary>
+            <param name="document">The document to remove.</param>
+            <param name="state">A state object that is passed to the IndexStorer SaveDate/DeleteData function.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.FindDocument(System.String)">
+            <summary>
+            Finds a document with a specified name.
+            </summary>
+            <param name="name">The name of the document.</param>
+            <returns>The document or <c>null</c>.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.RemoveDocumentInternal(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Removes a document from the index and generates the dumped change data.
+            </summary>
+            <param name="document">The document to remove.</param>
+            <returns>The dumped change data, if any, <c>null</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.Search(ScrewTurn.Wiki.SearchEngine.SearchParameters)">
+            <summary>
+            Performs a search in the index.
+            </summary>
+            <param name="parameters">The search parameters.</param>
+            <returns>The results.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="parameters"/> is <c>null</c>.</exception>
+        </member>
+        <member name="E:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.IndexChanged">
+            <summary>
+            An event fired when the index is changed.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.StopWords">
+            <summary>
+            Gets or sets the stop words to be used while indexing new content.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.TotalWords">
+            <summary>
+            Gets the total count of unique words.
+            </summary>
+            <remarks>Computing the result is <n>O(1)</n>.</remarks>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.TotalDocuments">
+            <summary>
+            Gets the total count of documents.
+            </summary>
+            <remarks>Computing the result is <b>O(n*m)</b>, where <b>n</b> is the number of 
+            words in the index and <b>m</b> is the number of documents.</remarks>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.InMemoryIndexBase.TotalOccurrences">
+            <summary>
+            Gets the total number of occurrences (count of words in each document).
+            </summary>
+            <remarks>Computing the result is <b>O(n)</b>, 
+            where <b>n</b> is the number of words in the index.</remarks>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.InMemoryIndexWordFetcher">
+            <summary>
+            Implements a word fetcher for use with the in-memory index.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.IWordFetcher">
+            <summary>
+            Defines the interface for a component that fetches words.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IWordFetcher.TryGetWord(System.String,ScrewTurn.Wiki.SearchEngine.Word@)">
+            <summary>
+            Tries to get a word.
+            </summary>
+            <param name="text">The text of the word.</param>
+            <param name="word">The found word, if any, <c>null</c> otherwise.</param>
+            <returns><c>true</c> if the word is found, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexWordFetcher.#ctor(System.Collections.Generic.Dictionary{System.String,ScrewTurn.Wiki.SearchEngine.Word})">
+            <summary>
+            Initializes a new instance of the <see cref="T:InMemoryWordFetcher" /> class.
+            </summary>
+            <param name="catalog">The index catalog.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexWordFetcher.TryGetWord(System.String,ScrewTurn.Wiki.SearchEngine.Word@)">
+            <summary>
+            Tries to get a word.
+            </summary>
+            <param name="text">The text of the word.</param>
+            <param name="word">The found word, if any, <c>null</c> otherwise.</param>
+            <returns><c>true</c> if the word is found, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.InMemoryIndexWordFetcher.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.BuildDocument">
+            <summary>
+            A delegate that is used for converting a <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedDocument"/> to an instance of a class implementing <see cref="T:ScrewTurn.Wiki.SearchEngine.IDocument"/>, 
+            while reading index data from a permanent storage.
+            </summary>
+            <param name="document">The <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedDocument"/> to convert.</param>
+            <returns>The converted document implementing <see cref="T:ScrewTurn.Wiki.SearchEngine.IDocument"/> or <c>null</c> if no document is found.</returns>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.SearchOptions">
+            <summary>
+            Lists legal search options.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.SearchOptions.AtLeastOneWord">
+            <summary>
+            Search for at least one word of the search query.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.SearchOptions.AllWords">
+            <summary>
+            Search for all the words of the search query, in any order.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.SearchOptions.ExactPhrase">
+            <summary>
+            Search for an exact phrase.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.DumpedDocument">
+            <summary>
+            Represents a document structured for easy dumped on disk or database.
+            </summary>
+            <remarks>The class is <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedDocument.id">
+            <summary>
+            The document unique ID.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedDocument.name">
+            <summary>
+            The document unique name.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedDocument.title">
+            <summary>
+            The document title.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedDocument.typeTag">
+            <summary>
+            The document type tag.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedDocument.dateTime">
+            <summary>
+            The document date/time.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.DumpedDocument.#ctor(System.UInt32,System.String,System.String,System.String,System.DateTime)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedDocument"/> class.
+            </summary>
+            <param name="id">The document unique ID.</param>
+            <param name="name">The document unique name.</param>
+            <param name="title">The document title.</param>
+            <param name="typeTag">The document type tag.</param>
+            <param name="dateTime">The document date/time.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="name"/>, <paramref name="title"/> or <paramref name="typeTag"/> are <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="name"/>, <paramref name="title"/> or <paramref name="typeTag"/> are empty.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.DumpedDocument.#ctor(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedDocument"/> class.
+            </summary>
+            <param name="document">The document do wrap for dumping.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> is <c>null</c>.</exception>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedDocument.ID">
+            <summary>
+            Gets or sets the document unique ID.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedDocument.Name">
+            <summary>
+            Gets the document unique name.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedDocument.Title">
+            <summary>
+            Gets the title of the document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedDocument.TypeTag">
+            <summary>
+            Gets the document type tag.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedDocument.DateTime">
+            <summary>
+            Gets the document date/time.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.WordInfo">
+            <summary>
+            Contains full information about a word in a document.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.BasicWordInfo">
+            <summary>
+            Contains basic information about a word in a document.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.firstCharIndex">
+            <summary>
+            The index in the original document the word starts at.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.wordIndex">
+            <summary>
+            The index of the word in the document.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.location">
+            <summary>
+            The location of the word in the document.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.#ctor(System.UInt16,System.UInt16,ScrewTurn.Wiki.SearchEngine.WordLocation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.BasicWordInfo"/> class.
+            </summary>
+            <param name="firstCharIndex">The index of the first character of the word in the document.</param>
+            <param name="wordIndex">The index of the word in the document.</param>
+            <param name="location">The location of the word in the document.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="firstCharIndex"/> or <paramref name="wordIndex"/> are less than zero.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.Equals(System.Object)">
+            <summary>
+            Determinates whether the current instance is equal to an instance of an object.
+            </summary>
+            <param name="other">The instance of the object.</param>
+            <returns><c>true</c> if the instances are value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.Equals(ScrewTurn.Wiki.SearchEngine.BasicWordInfo)">
+            <summary>
+            Determinates whether the current instance is value-equal to another.
+            </summary>
+            <param name="other">The other instance.</param>
+            <returns><c>true</c> if the instances are value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.op_Equality(ScrewTurn.Wiki.SearchEngine.BasicWordInfo,ScrewTurn.Wiki.SearchEngine.BasicWordInfo)">
+            <summary>
+            Applies the value-equality operator to two <see cref="T:BasicWordInfo" /> objects.
+            </summary>
+            <param name="x">The first object.</param>
+            <param name="y">The second object.</param>
+            <returns><c>true</c> if the objects are value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.op_Inequality(ScrewTurn.Wiki.SearchEngine.BasicWordInfo,ScrewTurn.Wiki.SearchEngine.BasicWordInfo)">
+            <summary>
+            Applies the value-inequality operator to two <see cref="T:BasicWordInfo" /> objects.
+            </summary>
+            <param name="x">The first object.</param>
+            <param name="y">The second object.</param>
+            <returns><c>true</c> if the objects are not value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.GetHashCode">
+            <summary>
+            Gets the hash code of the current instance.
+            </summary>
+            <returns>The hash code.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.CompareTo(ScrewTurn.Wiki.SearchEngine.BasicWordInfo)">
+            <summary>
+            Compares the current instance with another instance.
+            </summary>
+            <param name="other">The other instance.</param>
+            <returns>The comparison result.</returns>
+            <remarks><b>The First Char Index does not partecipate to the comparison.</b></remarks>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.FirstCharIndex">
+            <summary>
+            Gets the index of the first character of the word in the document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.WordIndex">
+            <summary>
+            Gets the index of the word in the document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.BasicWordInfo.Location">
+            <summary>
+            Gets the location of the word in the document.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.WordInfo.text">
+            <summary>
+            The word text.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfo.#ctor(System.String,System.UInt16,System.UInt16,ScrewTurn.Wiki.SearchEngine.WordLocation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.WordInfo"/> class.
+            </summary>
+            <param name="text">The text of the word.</param>
+            <param name="firstCharIndex">The index of the first character of the word in the document.</param>
+            <param name="wordIndex">The index of the word in the document.</param>
+            <param name="location">The location of the word in the document.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="text"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="text"/> is empty.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="firstCharIndex"/> or <paramref name="wordIndex"/> are less than zero.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfo.ToString">
+            <summary>
+            Gets a string representation of the current instance.
+            </summary>
+            <returns>The string representation.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfo.Equals(System.Object)">
+            <summary>
+            Determinates whether the current instance is equal to an instance of an object.
+            </summary>
+            <param name="other">The instance of the object.</param>
+            <returns><c>true</c> if the instances are value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfo.Equals(ScrewTurn.Wiki.SearchEngine.WordInfo)">
+            <summary>
+            Determinates whether the current instance is value-equal to another.
+            </summary>
+            <param name="other">The other instance.</param>
+            <returns><c>true</c> if the instances are value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfo.op_Equality(ScrewTurn.Wiki.SearchEngine.WordInfo,ScrewTurn.Wiki.SearchEngine.WordInfo)">
+            <summary>
+            Applies the value-equality operator to two <see cref="T:WordInfo" /> objects.
+            </summary>
+            <param name="x">The first object.</param>
+            <param name="y">The second object.</param>
+            <returns><c>true</c> if the objects are value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfo.op_Inequality(ScrewTurn.Wiki.SearchEngine.WordInfo,ScrewTurn.Wiki.SearchEngine.WordInfo)">
+            <summary>
+            Applies the value-equality operator to two <see cref="T:WordInfo" /> objects.
+            </summary>
+            <param name="x">The first object.</param>
+            <param name="y">The second object.</param>
+            <returns><c>true</c> if the objects are not value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfo.GetHashCode">
+            <summary>
+            Gets the hash code of the current instance.
+            </summary>
+            <returns>The hash code.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordInfo.CompareTo(ScrewTurn.Wiki.SearchEngine.WordInfo)">
+            <summary>
+            Compares the current instance with another instance.
+            </summary>
+            <param name="other">The other instance.</param>
+            <returns>The comparison result.</returns>
+            <remarks><b>The First Char Index does not partecipate to the comparison.</b></remarks>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordInfo.Text">
+            <summary>
+            Gets the text of the word.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.IDocument">
+            <summary>
+            Defines the interface a generic document.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IDocument.Tokenize(System.String)">
+            <summary>
+            Performs the tokenization of the document content.
+            </summary>
+            <param name="content">The content to tokenize.</param>
+            <returns>The extracted words and their positions.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IDocument.ID">
+            <summary>
+            Gets or sets the globally unique ID of the document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IDocument.Name">
+            <summary>
+            Gets the globally-unique name of the document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IDocument.Title">
+            <summary>
+            Gets the title of the document, if any.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IDocument.TypeTag">
+            <summary>
+            Gets the tag for the document type.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IDocument.DateTime">
+            <summary>
+            Gets the document date/time.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.IndexStorerBase">
+            <summary>
+            Implements a base class for an index storer.
+            </summary>
+            <remarks>Instance and static members are <b>thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.disposed">
+            <summary>
+            Indicates whether the object was disposed.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.index">
+            <summary>
+            The index bound to this storer.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.dataCorrupted">
+            <summary>
+            <c>true</c> if the index data seems corrupted.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.reasonForDataCorruption">
+            <summary>
+            Contains the exception occurred during index setup.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.indexChangedHandler">
+            <summary>
+            The event handler for the <see cref="E:ScrewTurn.Wiki.SearchEngine.IInMemoryIndex.IndexChanged"/> of the bound index.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.#ctor(ScrewTurn.Wiki.SearchEngine.IInMemoryIndex)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.IndexStorerBase"/> class.
+            </summary>
+            <param name="index">The index to manage.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="index"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.LoadIndexInternal(ScrewTurn.Wiki.SearchEngine.DumpedDocument[]@,ScrewTurn.Wiki.SearchEngine.DumpedWord[]@,ScrewTurn.Wiki.SearchEngine.DumpedWordMapping[]@)">
+            <summary>
+            Loads the index from the data store the first time.
+            </summary>
+            <param name="documents">The dumped documents.</param>
+            <param name="words">The dumped words.</param>
+            <param name="mappings">The dumped word mappings.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.LoadIndex">
+            <summary>
+            Loads the index from the data store the first time.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.IndexChangedHandler(System.Object,ScrewTurn.Wiki.SearchEngine.IndexChangedEventArgs)">
+            <summary>
+            Handles the <see cref="E:ScrewTurn.Wiki.SearchEngine.IInMemoryIndex.IndexChanged"/> events.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.InitDataStore(System.Object)">
+            <summary>
+            Initializes the data storage.
+            </summary>
+            <param name="state">A state object passed from the index.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.DeleteData(ScrewTurn.Wiki.SearchEngine.DumpedChange,System.Object)">
+            <summary>
+            Deletes data from the data storage.
+            </summary>
+            <param name="data">The data to delete.</param>
+            <param name="state">A state object passed from the index.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.SaveData(ScrewTurn.Wiki.SearchEngine.DumpedChange,System.Object)">
+            <summary>
+            Stores new data into the data storage.
+            </summary>
+            <param name="data">The data to store.</param>
+            <param name="state">A state object passed by the index.</param>
+            <returns>The storer result, if any.</returns>
+            <remarks>When saving a new document, the document ID in data.Mappings must be
+            replaced with the currect document ID, generated by the concrete implementation of
+            this method. data.Words should have IDs numbered from uint.MaxValue downwards. 
+            The method re-numbers the words appropriately.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.Dispose">
+            <summary>
+            Disposes the current object.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.Find(ScrewTurn.Wiki.SearchEngine.DumpedWordMapping,System.Collections.Generic.IEnumerable{ScrewTurn.Wiki.SearchEngine.DumpedWordMapping})">
+            <summary>
+            Determines whether a <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping"/> is contained in a list.
+            </summary>
+            <param name="mapping">The mapping.</param>
+            <param name="list">The list.</param>
+            <returns><c>true</c> if the mapping is contained in the list, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.Find(ScrewTurn.Wiki.SearchEngine.DumpedWord,System.Collections.Generic.IEnumerable{ScrewTurn.Wiki.SearchEngine.DumpedWord})">
+            <summary>
+            Determines whether a <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedWord"/> is contained in a list.
+            </summary>
+            <param name="word">The word.</param>
+            <param name="list">The list.</param>
+            <returns><c>true</c> if the word is contained in the list, <c>false</c> orherwise.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.Index">
+            <summary>
+            Gets the index.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.Size">
+            <summary>
+            Gets the approximate size, in bytes, of the search engine index.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.DataCorrupted">
+            <summary>
+            Gets a value indicating whether the index data seems corrupted and cannot be used.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.IndexStorerBase.ReasonForDataCorruption">
+            <summary>
+            Gets the exception that caused data corruption.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.Word">
+            <summary>
+            Represents a word in a document.
+            </summary>
+            <remarks>All instance and static members are <b>thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.Word.text">
+            <summary>
+            The word text, lowercase.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.Word.occurrences">
+            <summary>
+            The occurrences.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.Word.id">
+            <summary>
+            The word unique ID.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Word.#ctor(System.UInt32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.Word"/> class.
+            </summary>
+            <param name="id">The word ID.</param>
+            <param name="text">The text of the word (lowercase).</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="text"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="text"/> is empty.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Word.#ctor(System.UInt32,System.String,ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.Word"/> class.
+            </summary>
+            <param name="id">The word ID.</param>
+            <param name="text">The text of the word (lowercase).</param>
+            <param name="occurrences">The occurrences.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="text"/> or <paramref name="occurrences"/> are <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="text"/> is empty.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Word.AddOccurrence(ScrewTurn.Wiki.SearchEngine.IDocument,System.UInt16,System.UInt16,ScrewTurn.Wiki.SearchEngine.WordLocation)">
+            <summary>
+            Stores an occurrence.
+            </summary>
+            <param name="document">The document the occurrence is referred to.</param>
+            <param name="firstCharIndex">The index of the first character of the word in the document.</param>
+            <param name="wordIndex">The index of the word in the document.</param>
+            <param name="location">The location of the word.</param>
+            <remarks>Adding an occurrence is <b>O(n)</b>, where <b>n</b> is the number of occurrences 
+            of the word already stored for the same document. If there were no occurrences previously stored, 
+            the operation is <b>O(1)</b>.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="firstCharIndex"/> or <paramref name="wordIndex"/> are less than zero.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Word.RemoveOccurrences(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Removes all the occurrences for a document.
+            </summary>
+            <param name="document">The document to remove the occurrences of.</param>
+            <returns>The dumped word mappings for the removed word occurrences.</returns>
+            <remarks>Removing the occurrences for the document is <b>O(1)</b>.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Word.BulkAddOccurrences(ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet)">
+            <summary>
+            Adds a bulk of occurrences of the word in a document, <b>removing all the old positions</b>, if any.
+            </summary>
+            <param name="document">The document.</param>
+            <param name="positions">The positions.</param>
+            <remarks>If <b>positions</b> is empty, the effect of the invocation of the method is equal to 
+            that of <see cref="M:ScrewTurn.Wiki.SearchEngine.Word.RemoveOccurrences(ScrewTurn.Wiki.SearchEngine.IDocument)"/> with the same <b>document</b>.
+            Bulk-adding the occurrences is <b>O(1)</b>.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> or <paramref name="positions"/> are <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Word.ToString">
+            <summary>
+            Gets a string representation of the current instance.
+            </summary>
+            <returns>The string representation.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.Word.ID">
+            <summary>
+            Gets or sets the unique ID of the word.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.Word.Text">
+            <summary>
+            Gets the text of the word (lowercase).
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.Word.Occurrences">
+            <summary>
+            Gets the occurrences.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.Word.TotalOccurrences">
+            <summary>
+            Gets the total occurrences.
+            </summary>
+            <remarks>Computing the result is <b>O(n)</b>, where <b>n</b> is the number of 
+            documents the word occurs in at least one time.</remarks>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.SearchResult">
+            <summary>
+            Represents a search result.
+            </summary>
+            <remarks>Instance and static members are <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.SearchResult.document">
+            <summary>
+            The document the result refers to.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.SearchResult.matches">
+            <summary>
+            The matches in the document.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.SearchResult.relevance">
+            <summary>
+            The result relevance.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResult.#ctor(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.SearchResult"/> class.
+            </summary>
+            <param name="document">The document the result refers to.</param>
+            <remarks>The relevance is initially set to <b>0</b>.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResult.ToString">
+            <summary>
+            Gets a string representation of the current instance.
+            </summary>
+            <returns>The string representation.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchResult.Document">
+            <summary>
+            Gets the document the result refers to.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchResult.Matches">
+            <summary>
+            Gets the matches in the document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchResult.Relevance">
+            <summary>
+            Gets the relevance of the search result.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping">
+            <summary>
+            Contains a word mapping data, structured for easy dumping on disk or database.
+            </summary>
+            <remarks>The class is <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.wordId">
+            <summary>
+            The word unique ID.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.documentId">
+            <summary>
+            The document unique ID.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.firstCharIndex">
+            <summary>
+            The index of the character of the word.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.wordIndex">
+            <summary>
+            The index of the word in the original document.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.location">
+            <summary>
+            The location identifier.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.#ctor(System.UInt32,System.UInt32,System.UInt16,System.UInt16,System.Byte)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping"/> class.
+            </summary>
+            <param name="wordId">The word unique ID.</param>
+            <param name="documentId">The document unique ID.</param>
+            <param name="firstCharIndex">The index of the first character the word.</param>
+            <param name="wordIndex">The index of the word in the original index.</param>
+            <param name="location">The location identifier.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.#ctor(System.UInt32,System.UInt32,ScrewTurn.Wiki.SearchEngine.BasicWordInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping"/> class.
+            </summary>
+            <param name="wordId">The word unique ID.</param>
+            <param name="documentId">The document unique ID.</param>
+            <param name="info">The <see cref="T:ScrewTurn.Wiki.SearchEngine.BasicWordInfo"/>.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="info"/> is <c>null</c>.</exception>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.WordID">
+            <summary>
+            Gets or sets the word unique ID.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.DocumentID">
+            <summary>
+            Gets the document unique ID.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.FirstCharIndex">
+            <summary>
+            Gets the index of the first character of the word.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.WordIndex">
+            <summary>
+            Gets the index of the word in the original document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedWordMapping.Location">
+            <summary>
+            Gets the location identifier.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet">
+            <summary>
+            Implements a sorted set of integers which can be accessed by index.
+            </summary>
+            <remarks>Instance members are <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet"/> class.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet"/> class.
+            </summary>
+            <param name="capacity">The initial capacity.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="capacity"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.Add(ScrewTurn.Wiki.SearchEngine.BasicWordInfo)">
+            <summary>
+            Adds a new item to the set.
+            </summary>
+            <param name="item">The item to add.</param>
+            <returns><c>true</c> if the item is added, <c>false</c> otherwise.</returns>
+            <remarks>Adding an item is <b>O(log n)</b> if the item is already in the set,
+            <b>O(n)</b> otherwise, where <b>n</b> is the number of items in the set.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.Contains(ScrewTurn.Wiki.SearchEngine.BasicWordInfo)">
+            <summary>
+            Determines whether the set contains an item.
+            </summary>
+            <param name="item">The item to look for.</param>
+            <returns><c>true</c> if the set contains the specified item, <c>false</c> otherwise.</returns>
+            <remarks>The operation is <b>O(log n)</b>, where <b>n</b> is the number of items in the set.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.Remove(ScrewTurn.Wiki.SearchEngine.BasicWordInfo)">
+            <summary>
+            Removes an item from the set.
+            </summary>
+            <param name="item">The item to remove.</param>
+            <returns><c>true</c> if the item is removed, <c>false</c> otherwise.</returns>
+            <remarks>The operation is <b>O(n)</b>, where <b>n</b> is the number of items in the set.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.Clear">
+            <summary>
+            Clears the set.
+            </summary>
+            <remarks>The operation is <b>O(1)</b>.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.System#Collections#Generic#IEnumerable{ScrewTurn#Wiki#SearchEngine#BasicWordInfo}#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the set.
+            </summary>
+            <returns>The enumerator</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the set.
+            </summary>
+            <returns>The enumerator</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.ToString">
+            <summary>
+            Gets a string representation of the current instance.
+            </summary>
+            <returns>The string representation.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.Count">
+            <summary>
+            Gets the count if the items in the set.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.Capacity">
+            <summary>
+            Gets the capacity of the set.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet.Item(System.Int32)">
+            <summary>
+            Gets an item from the set at a specific index.
+            </summary>
+            <param name="index">The zero-based index of the element to get.</param>
+            <returns>The item at the specified index.</returns>
+            <exception cref="T:System.IndexOutOfRangeException">If <paramref name="index"/> is outside the bounds of the collection.</exception>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.DumpedWord">
+            <summary>
+            Represents a word structured for easy dumping to disk or database.
+            </summary>
+            <remarks>The class is <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedWord.id">
+            <summary>
+            The word unique ID.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedWord.text">
+            <summary>
+            The word culture-invariant lowercase text.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.DumpedWord.#ctor(System.UInt32,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedWord"/> class.
+            </summary>
+            <param name="id">The unique word ID.</param>
+            <param name="text">The word culture-invariant lowercase text.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="text"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="text"/> is empty.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.DumpedWord.#ctor(ScrewTurn.Wiki.SearchEngine.Word)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedWord"/> class.
+            </summary>
+            <param name="word">The word to extract the information from.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="word"/> is <c>null</c>.</exception>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedWord.ID">
+            <summary>
+            Gets or sets the word unique ID.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedWord.Text">
+            <summary>
+            Gets the word culture-invariant lowercase text.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.WordLocation">
+            <summary>
+            Describes the location of a word in a document.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.#ctor(System.Byte,System.String,System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.WordLocation"/> class.
+            </summary>
+            <param name="location">A number representing the location.</param>
+            <param name="label">The label of the instance.</param>
+            <param name="relativeRelevance">The relative relevance of the instance.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.ToString">
+            <summary>
+            Gets a string representation of the current instance.
+            </summary>
+            <returns>The string representation.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.GetInstance(System.Byte)">
+            <summary>
+            Gets the correct <see cref="T:ScrewTurn.Wiki.SearchEngine.WordLocation"/> instance from the location identifier.
+            </summary>
+            <param name="location">The location identifier.</param>
+            <returns>The correct instance.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="location"/> is different from 1, 2, 3.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.CompareTo(ScrewTurn.Wiki.SearchEngine.WordLocation)">
+            <summary>
+            Compares the current instance to another.
+            </summary>
+            <param name="other">The other instance.</param>
+            <returns>The comparison result.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.Equals(System.Object)">
+            <summary>
+            Determines whether the current instance equals an object.
+            </summary>
+            <param name="obj">The object.</param>
+            <returns><c>true</c> if the current instance equals the object, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.GetHashCode">
+            <summary>
+            Returns the hash code of the current instance.
+            </summary>
+            <returns>The hash code.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.Equals(ScrewTurn.Wiki.SearchEngine.WordLocation)">
+            <summary>
+            Determines whether the current instance equals another.
+            </summary>
+            <param name="other">The other instance.</param>
+            <returns><c>true</c> if the current instance equals the other, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.op_Equality(ScrewTurn.Wiki.SearchEngine.WordLocation,ScrewTurn.Wiki.SearchEngine.WordLocation)">
+            <summary>
+            Applies the value-equality operator to two <see cref="T:WordLocation" /> objects.
+            </summary>
+            <param name="x">The first object.</param>
+            <param name="y">The second object.</param>
+            <returns><c>true</c> if the objects are value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.WordLocation.op_Inequality(ScrewTurn.Wiki.SearchEngine.WordLocation,ScrewTurn.Wiki.SearchEngine.WordLocation)">
+            <summary>
+            Applies the value-inequality operator to two <see cref="T:WordLocation" /> objects.
+            </summary>
+            <param name="x">The first object.</param>
+            <param name="y">The second object.</param>
+            <returns><c>true</c> if the objects are not value-equal, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordLocation.Location">
+            <summary>
+            Gets the location identifier.
+            </summary>
+            <remarks>This property should only be used for serialization purposes.</remarks>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordLocation.RelativeRelevance">
+            <summary>
+            Gets the relative relevance of the word location.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordLocation.Title">
+            <summary>
+            Represents a word that is in the title of a document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordLocation.Keywords">
+            <summary>
+            Represents a word that is in the keywords of a document.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.WordLocation.Content">
+            <summary>
+            Represents a word that is in the content of a document.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.Relevance">
+            <summary>
+            Represents the relevance of a search result with two states: non-finalized and finalized.
+            When the state is non-finalized, the value of the relevance has an unknown meaning. When the state
+            is finalized, the value of the relevance is a percentage value representing the relevance of a search result.
+            </summary>
+            <remarks>All members are <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.Relevance.value">
+            <summary>
+            The value of the relevance.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.Relevance.isFinalized">
+            <summary>
+            A value indicating whether the relevance value is finalized.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Relevance.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.Relevance"/> class.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Relevance.#ctor(System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.Relevance"/> class.
+            </summary>
+            <param name="value">The initial relevance value, non-finalized.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="value"/> is less than zero.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Relevance.SetValue(System.Single)">
+            <summary>
+            Sets the non-finalized value of the relevance.
+            </summary>
+            <param name="value">The value.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="value"/> is less than zero.</exception>
+            <exception cref="T:System.InvalidOperationException">If <see cref="M:IsFinalized"/> is <c>true</c> (<see cref="M:Finalize"/> was called).</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Relevance.Finalize(System.Single)">
+            <summary>
+            Finalizes the value of the relevance.
+            </summary>
+            <param name="total">The global relevance value.</param>
+            <remarks>The method sets the finalized value of the relevance to <b>value / total * 100</b>.</remarks>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="total"/> is less than zero.</exception>
+            <exception cref="T:System.InvalidOperationException">If <paramref name="IsFinalized"/> is <c>true</c> (<see cref="M:Finalize"/> was called).</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Relevance.NormalizeAfterFinalization(System.Single)">
+            <summary>
+            Normalizes the relevance after finalization.
+            </summary>
+            <param name="factor">The normalization factor.</param>
+            <exception cref="T:System.InvalidOperationException">If <paramref name="IsFinalized"/> is <c>false</c> (<see cref="M:Finalize"/> was not called).</exception>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.Relevance.IsFinalized">
+            <summary>
+            Gets a value indicating whether the relevance value is finalized.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.Relevance.Value">
+            <summary>
+            Gets the value of the relevance.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.SearchParameters">
+            <summary>
+            Contains search parameters.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchParameters.#ctor(System.String,System.String[],ScrewTurn.Wiki.SearchEngine.SearchOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SearchParameters"/> class.
+            </summary>
+            <param name="query">The search query.</param>
+            <param name="documentTypeTags">The document type tags to include in the search, or <c>null</c>.</param>
+            <param name="options">The search options.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="query"/> or one of the elements of <paramref name="documentTypeTags"/> (when the array is not <c>null</c>) are <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="query"/> or one of the elements of <paramref name="documentTypeTags"/> (when the array is not <c>null</c>) are empty.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchParameters.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SearchParameters" /> class.
+            </summary>
+            <param name="query">The search query.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchParameters.#ctor(System.String,System.String[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:SearchParameters" /> class.
+            </summary>
+            <param name="query">The search query.</param>
+            <param name="documentTypeTags">The document type tags to include in the search, or <c>null</c>.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchParameters.#ctor(System.String,ScrewTurn.Wiki.SearchEngine.SearchOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SearchParameters" /> class.
+            </summary>
+            <param name="query">The search query.</param>
+            <param name="options">The search options.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchParameters.PrepareQuery(System.String)">
+            <summary>
+            Prepares a query for searching.
+            </summary>
+            <param name="query">The query.</param>
+            <returns>The prepared query.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchParameters.Query">
+            <summary>
+            Gets or sets the query.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchParameters.DocumentTypeTags">
+            <summary>
+            Gets or sets the document type tags to include in the search, or <c>null</c>.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchParameters.Options">
+            <summary>
+            Gets or sets the search options.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.SearchResultCollection">
+            <summary>
+            Contains a collection of <b>SearchResults</b>, without duplicates.
+            </summary>
+            <remarks>Instance and static members are <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.items">
+            <summary>
+            Contains the collection items.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.SearchResultCollection"/> Class.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.SearchResultCollection"/> Class.
+            </summary>
+            <param name="capacity">The initial capacity of the collection.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="capacity"/> is less than or equal to zero.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.Add(ScrewTurn.Wiki.SearchEngine.SearchResult)">
+            <summary>
+            Adds an item to the collection.
+            </summary>
+            <param name="item">The item to add.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="item"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="item"/> is laredy present in the collection.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.Clear">
+            <summary>
+            Clears the collection.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.Contains(ScrewTurn.Wiki.SearchEngine.SearchResult)">
+            <summary>
+            Determines whether or not the collection contains an item.
+            </summary>
+            <param name="item">The item to check for.</param>
+            <returns><c>true</c> if the collection contains <b>item</b>, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.GetSearchResult(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Retrieves the search result for a document (looking at document names).
+            </summary>
+            <param name="document">The document.</param>
+            <returns>The <b>SearchResult</b> object, if any, <c>null</c> otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.CopyTo(ScrewTurn.Wiki.SearchEngine.SearchResult[],System.Int32)">
+            <summary>
+            Copies the collection to an array.
+            </summary>
+            <param name="array">The destination array.</param>
+            <param name="arrayIndex">The zero-based array index at which the copy begins.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="arrayIndex"/> is outside the bounds of <paramref name="array"/>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.Remove(ScrewTurn.Wiki.SearchEngine.SearchResult)">
+            <summary>
+            Removes an item from the collection.
+            </summary>
+            <param name="item">The item to remove.</param>
+            <returns><c>true</c> if the item is removed, <c>false</c> otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="item"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the items in the collection.
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the items in the collection.
+            </summary>
+            <returns>The enumerator.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.Count">
+            <summary>
+            Gets the total number of items in the collection.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.Capacity">
+            <summary>
+            Gets the capacity of the collection.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the collection is read-only.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.SearchResultCollection.Item(System.Int32)">
+            <summary>
+            Gets an item from the collection.
+            </summary>
+            <param name="index">The index of the item.</param>
+            <returns>The item.</returns>
+            <exception cref="T:System.IndexOutOfRangeException">If <paramref name="index"/> is outside the bounds of the collection.</exception>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.DumpedChange">
+            <summary>
+            Represents a change occurred to the index, structured for easy dumping to disk or database.
+            </summary>
+            <remarks>The class is <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedChange.document">
+            <summary>
+            The dumped document data.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedChange.words">
+            <summary>
+            The list of dumped words data.
+            </summary>
+        </member>
+        <member name="F:ScrewTurn.Wiki.SearchEngine.DumpedChange.mappings">
+            <summary>
+            The list of dumped mappings data.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.DumpedChange.#ctor(ScrewTurn.Wiki.SearchEngine.DumpedDocument,System.Collections.Generic.List{ScrewTurn.Wiki.SearchEngine.DumpedWord},System.Collections.Generic.List{ScrewTurn.Wiki.SearchEngine.DumpedWordMapping})">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.DumpedChange"/> class.
+            </summary>
+            <param name="document">The dumped document data.</param>
+            <param name="words">The list of dumped words data.</param>
+            <param name="mappings">The list of dumped mappings data.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="document"/>, <paramref name="words"/> or <paramref name="mappings"/> are <c>null</c>.</exception>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedChange.Document">
+            <summary>
+            Gets the dumped document data.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedChange.Words">
+            <summary>
+            Gets the list of dumped words data.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.DumpedChange.Mappings">
+            <summary>
+            Gets the list of dumped mappings data.
+            </summary>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.Tools">
+            <summary>
+            Implements useful methods.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.SearchInternal(System.String,System.String[],System.Boolean,ScrewTurn.Wiki.SearchEngine.SearchOptions,ScrewTurn.Wiki.SearchEngine.IWordFetcher)">
+            <summary>
+            Performs a search in the index.
+            </summary>
+            <param name="query">The search query.</param>
+            <param name="documentTypeTags">The document type tags to include in the search.</param>
+            <param name="filterDocumentType"><c>true</c> to apply the filter on the document type.</param>
+            <param name="options">The search options.</param>
+            <param name="fetcher">An object that is able to fetch words.</param>
+            <returns>The results.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="query"/> or <paramref name="fetcher"/> are <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="query"/> is empty.</exception>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="filterDocumentType"/> is <c>true</c> and <paramref name="documentTypeTags"/> is <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="filterDocumentType"/> is <c>true</c> and <paramref name="documentTypeTags"/> is empty.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.PurgeResultsForAllWords(ScrewTurn.Wiki.SearchEngine.SearchResultCollection,System.String[])">
+            <summary>
+            Purges the invalid results when SearchOptions is AllWords.
+            </summary>
+            <param name="results">The results to purge.</param>
+            <param name="queryWords">The query words.</param>
+            <returns>The relevance value of the removed matches.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.PurgeResultsForExactPhrase(ScrewTurn.Wiki.SearchEngine.SearchResultCollection,System.String[])">
+            <summary>
+            Purges the invalid results when SearchOptions is ExactPhrase.
+            </summary>
+            <param name="results">The results to purge.</param>
+            <param name="queryWords">The query words.</param>
+            <returns>The relevance value of the removed matches.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.IsDocumentTypeTagIncluded(System.String,System.String[])">
+            <summary>
+            Determines whether a document tag is contained in a tag array.
+            </summary>
+            <param name="currentTag">The tag to check for.</param>
+            <param name="includedTags">The tag array.</param>
+            <returns><c>true</c> if <b>currentTag</b> is contained in <b>includedTags</b>, <c>false</c> otherwise.</returns>
+            <remarks>The comparison is case-insensitive.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.CleanupKeywords(System.String[])">
+            <summary>
+            Cleans up keyworks from invalid characters.
+            </summary>
+            <param name="keywords">The keywords to cleanup.</param>
+            <returns>The clean keywords.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.RemoveDiacriticsAndPunctuation(System.String,System.Boolean)">
+            <summary>
+            Removes "accents" and punctuation from a string, transforming it to lowercase (culture invariant).
+            </summary>
+            <param name="input">The input string.</param>
+            <param name="isSingleWord">A value indicating whether the input string is a single word.</param>
+            <returns>The normalized string (lowercase, culture invariant). <b>Can be empty.</b></returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.IsSplitChar(System.Char)">
+            <summary>
+            Determines whether a char is a split char.
+            </summary>
+            <param name="current">The current char.</param>
+            <returns><c>true</c> if the char is a split char, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.SkipSplitChars(System.UInt16,System.String)">
+            <summary>
+            Computes the index of the first non-split char given a start index.
+            </summary>
+            <param name="startIndex">The start index.</param>
+            <param name="content">The content.</param>
+            <returns>The index of the first non-split char.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="content"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.Tokenize(System.String,ScrewTurn.Wiki.SearchEngine.WordLocation)">
+            <summary>
+            Tokenizes a string.
+            </summary>
+            <param name="text">The text to tokenize.</param>
+            <param name="location">The location of the words that are extracted.</param>
+            <returns>The tokens.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="text"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.Tokenize(System.String)">
+            <summary>
+            Tokenizes a string.
+            </summary>
+            <param name="text">The text to tokenize.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.Tools.RemoveStopWords(ScrewTurn.Wiki.SearchEngine.WordInfo[],System.String[])">
+            <summary>
+            Removes stop words from a set of words (case insensitive).
+            </summary>
+            <param name="words">The input words.</param>
+            <param name="stopWords">The array of stop words.</param>
+            <returns>The input words without the stop words.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="words"/> or <paramref name="stopWords"/> are <c>null</c>.</exception>
+        </member>
+        <member name="T:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary">
+            <summary>
+            Implements a IDocument-SortedBasicWordInfo dictionary which treats IDocuments as value type.
+            </summary>
+            <remarks>All instance members are <b>not thread-safe</b>.</remarks>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary"/> class.
+            </summary>
+            <param name="capacity">The initial capacity of the dictionary.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException">If <paramref name="capacity"/> is less than or equal to zero.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary"/> class.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Add(ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet)">
+            <summary>
+            Adds the specified key and value to the dictionary.
+            </summary>
+            <param name="key">The key of the element to add.</param>
+            <param name="value">The value of the element to add.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="key"/> or <paramref name="value"/> are <c>null</c>.</exception>
+            <exception cref="T:System.ArgumentException">If <paramref name="key"/> is already present in the dictionary.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Add(System.Collections.Generic.KeyValuePair{ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet})">
+            <summary>
+            Adds the specified key-value pair to the dictionary.
+            </summary>
+            <param name="item">The key-value pair to add.</param>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.ContainsKey(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Determines whether the dictionary contains the specified key.
+            </summary>
+            <param name="key">The key to locate.</param>
+            <returns><c>true</c> if the dictionary contains the specified key, <c>false</c> otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="key"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Remove(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Removes an element from the dictionary.
+            </summary>
+            <param name="key">The key of the element to remove.</param>
+            <returns><c>true</c> if the element is removed, <c>false</c> otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="key"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Remove(System.Collections.Generic.KeyValuePair{ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet})">
+            <summary>
+            Removes an element from the dictionary.
+            </summary>
+            <param name="item">The element to remove.</param>
+            <returns><c>true</c> if the element is removed, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.RemoveExtended(ScrewTurn.Wiki.SearchEngine.IDocument,System.UInt32)">
+            <summary>
+            Removes an element from the dictionary.
+            </summary>
+            <param name="key">The key of the element to remove.</param>
+            <param name="wordId">The unique ID of the word that is being removed.</param>
+            <returns>The list of removed words mappings, in dumpable format.</returns>
+            <remarks>If <b>key</b> is not found, a <see cref="T:System.Collections.Generic.KeyNotFoundException"/> is thrown.</remarks>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="key"/> is <c>null</c>.</exception>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If <paramref name="key"/> is not present in the dictionary.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.FindKey(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Finds an actual key in the mappings dictionary.
+            </summary>
+            <param name="key">The document.</param>
+            <returns>The key, or <c>null</c>.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="key"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.TryGetValue(ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet@)">
+            <summary>
+            Tries to retrieve a value from the dictionary.
+            </summary>
+            <param name="key">The key of the value to retrieve.</param>
+            <param name="value">The resulting value, or <c>null</c>.</param>
+            <returns><c>true</c> if the value is retrieved, <c>false</c> otherwise.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="key"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Clear">
+            <summary>
+            Clears the dictionary.
+            </summary>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Contains(System.Collections.Generic.KeyValuePair{ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet})">
+            <summary>
+            Determines whether the dictionary contains an element.
+            </summary>
+            <param name="item">The key-value pair representing the element.</param>
+            <returns><c>true</c> if the dictionary contains the element, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.CopyTo(System.Collections.Generic.KeyValuePair{ScrewTurn.Wiki.SearchEngine.IDocument,ScrewTurn.Wiki.SearchEngine.SortedBasicWordInfoSet}[],System.Int32)">
+            <summary>
+            Copies the content of the dictionary to a key-value pairs array.
+            </summary>
+            <param name="array">The output array.</param>
+            <param name="arrayIndex">The index at which the copy begins.</param>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="array"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the elements in the dictionary.
+            </summary>
+            <returns>The iterator.</returns>
+        </member>
+        <member name="M:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the elements in the dictionary.
+            </summary>
+            <returns>The iterator.</returns>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Count">
+            <summary>
+            Gets the number of elements in the dictionary.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Keys">
+            <summary>
+            Gets the keys of the dictionary.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Values">
+            <summary>
+            Gets the values of the dictionary.
+            </summary>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.Item(ScrewTurn.Wiki.SearchEngine.IDocument)">
+            <summary>
+            Gets or sets a value in the dictionary.
+            </summary>
+            <param name="key">The key of the value to ger or set.</param>
+            <returns>The value.</returns>
+            <exception cref="T:System.ArgumentNullException">If <paramref name="key"/> is <c>null</c>.</exception>
+            <exception cref="T:System.IndexOutOfRangeException">If the key is not found.</exception>
+        </member>
+        <member name="P:ScrewTurn.Wiki.SearchEngine.OccurrenceDictionary.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the dictionary is read-only.
+            </summary>
+        </member>
+    </members>
+</doc>

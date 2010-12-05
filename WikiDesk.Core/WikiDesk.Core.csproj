@@ -8,9 +8,9 @@
     <ProjectGuid>{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WikiDeskLib</RootNamespace>
-    <AssemblyName>WikiDeskLib</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <RootNamespace>WikiDesk.Core</RootNamespace>
+    <AssemblyName>WikiDesk.Core</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -31,7 +31,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ScrewTurn.Wiki.AclEngine, Version=3.0.4.560, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\ScrewTurn\ScrewTurn.Wiki.AclEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="ScrewTurn.Wiki.Core, Version=3.0.4.560, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\ScrewTurn\ScrewTurn.Wiki.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ScrewTurn.Wiki.PluginFramework, Version=3.0.4.560, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\ScrewTurn\ScrewTurn.Wiki.PluginFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="ScrewTurn.Wiki.SearchEngine, Version=3.0.4.560, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\ScrewTurn\ScrewTurn.Wiki.SearchEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>

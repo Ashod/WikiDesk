@@ -1,10 +1,10 @@
 ﻿namespace WikiDesk
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Windows.Forms;
 
+    using WikiDesk.Core;
     using WikiDesk.Data;
 
     public partial class MainForm : Form
@@ -52,7 +52,7 @@
                     Revision rev = db_.QueryRevision(page.LastRevisionId);
                     if (rev != null)
                     {
-                        txtArticle.Text = rev.Text;
+                        webBrowser.DocumentText = Wiki.Wiki2Html(rev.Text);
                     }
                 }
             }

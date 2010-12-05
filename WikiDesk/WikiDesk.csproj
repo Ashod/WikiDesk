@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WikiDesk</RootNamespace>
     <AssemblyName>WikiDesk</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,6 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
@@ -67,6 +70,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WikiDesk.Core\WikiDesk.Core.csproj">
+      <Project>{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}</Project>
+      <Name>WikiDesk.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WikiDesk.Data\WikiDesk.Data.csproj">
       <Project>{BBD52323-6CD5-45F6-84F1-C2341EF4694A}</Project>
       <Name>WikiDesk.Data</Name>
