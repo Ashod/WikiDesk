@@ -1,6 +1,7 @@
 ﻿namespace WikiDesk
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Windows.Forms;
 
@@ -23,14 +24,40 @@
             }
         }
 
-        private void OpenClick(object sender, EventArgs e)
+        private void OpenDatabase()
         {
             string folder = "Z:\\"; //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string dbPath = Path.Combine(folder, "wikidesk.db");
-            using (Database db = new Database(dbPath))
+            db_ = new Database(dbPath);
+        }
+
+        private void OpenClick(object sender, EventArgs e)
+        {
+            OpenDatabase();
+
+            foreach (Page page in db_.GetPages())
             {
-                //lstTitles.Items.AddRange(db.GetTitles());
+                lstTitles.Items.Add(page.Title);
             }
         }
+
+        private void lstTitles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string title = lstTitles.SelectedItem as string;
+            if (!string.IsNullOrEmpty(title))
+            {
+                Page page = db_.QueryPage(title);
+                if (page != null)
+                {
+                    Revision rev = db_.QueryRevision(page.LastRevisionId);
+                    if (rev != null)
+                    {
+                        txtArticle.Text = rev.Text;
+                    }
+                }
+            }
+        }
+
+        private Database db_;
     }
 }

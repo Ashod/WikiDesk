@@ -18,12 +18,10 @@
             CreateTable<Revision>();
         }
 
-//         public IEnumerable<string> GetTitles()
-//         {
-//             List<string> titles = new List<string>(1024);
-//             
-//             this.Table<Page>().Where(x => x.Id != 0).
-//         }
+        public IList<Page> GetPages()
+        {
+            return (from s in Table<Page>() select s).ToList();
+        }
 
         public Page QueryPage(string title)
         {
@@ -52,16 +50,16 @@
 //                     while (reader.Read())
 //                     {
 //                         if (reader.NodeType != XmlNodeType.Element) continue;
-// 
+//
 //                         if (reader.Name != "title")
 //                         {
 //                             reader.ReadToFollowing("page");
 //                             continue;
 //                         }
-// 
+//
 //                         //reader.ReadToFollowing("title");
 //                         articleTitle = reader.ReadString();
-// 
+//
 //                         if (From == articleTitle)
 //                         {
 //                             break;
@@ -159,7 +157,7 @@
 
             Revision rev = new Revision();
             Revision oldRev = null;
-            
+
             while (true)
             {
                 // Align on a start element.
