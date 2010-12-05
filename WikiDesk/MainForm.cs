@@ -4,6 +4,8 @@
     using System.IO;
     using System.Windows.Forms;
 
+    using WebKit;
+
     using WikiDesk.Core;
     using WikiDesk.Data;
 
@@ -12,6 +14,13 @@
         public MainForm()
         {
             InitializeComponent();
+
+            browser_.Visible = true;
+            browser_.Dock = DockStyle.Fill;
+            browser_.Name = "browser";
+            //browser.IsWebBrowserContextMenuEnabled = false;
+            //browser.IsScriptingEnabled = false;
+            this.Controls.Add(browser_);
         }
 
         private void LoadClick(object sender, EventArgs e)
@@ -52,12 +61,13 @@
                     Revision rev = db_.QueryRevision(page.LastRevisionId);
                     if (rev != null)
                     {
-                        webBrowser.DocumentText = Wiki.Wiki2Html(rev.Text);
+                        browser_.DocumentText = Wiki.Wiki2Html(rev.Text);
                     }
                 }
             }
         }
 
         private Database db_;
+        private WebKitBrowser browser_ = new WebKitBrowser();
     }
 }
