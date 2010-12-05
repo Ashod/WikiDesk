@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDesk", "WikiDesk\WikiDesk.csproj", "{FE6F69C1-5CBD-4066-B909-E2968ED3669F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDesk.Core", "WikiDesk.Core\WikiDesk.Core.csproj", "{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDesk.Data", "WikiDesk.Data\WikiDesk.Data.csproj", "{BBD52323-6CD5-45F6-84F1-C2341EF4694A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +17,14 @@ Global
 		{FE6F69C1-5CBD-4066-B909-E2968ED3669F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE6F69C1-5CBD-4066-B909-E2968ED3669F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE6F69C1-5CBD-4066-B909-E2968ED3669F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBD52323-6CD5-45F6-84F1-C2341EF4694A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD52323-6CD5-45F6-84F1-C2341EF4694A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD52323-6CD5-45F6-84F1-C2341EF4694A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD52323-6CD5-45F6-84F1-C2341EF4694A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
