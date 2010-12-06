@@ -5,6 +5,7 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Xml;
 
     using SQLite;
@@ -168,7 +169,7 @@
 //                     break;
 
                     case "text":
-                        rev.Text = reader.ReadString();
+                        rev.Text = Encoding.UTF8.GetBytes(reader.ReadString());
                     break;
                 }
             }

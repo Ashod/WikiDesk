@@ -13,7 +13,7 @@
 
         public string Contributor { get; set; }
 
-        public string Text { get; set; }
+        public byte[] Text { get; set; }
     }
 
     public class Page

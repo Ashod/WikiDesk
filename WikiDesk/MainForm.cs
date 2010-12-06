@@ -3,6 +3,7 @@
     using System;
     using System.Drawing;
     using System.IO;
+    using System.Text;
     using System.Windows.Forms;
 
     using WebKit;
@@ -109,8 +110,9 @@
                         Revision rev = db_.QueryRevision(page.LastRevisionId);
                         if (rev != null)
                         {
-                            browser_.Url = null;
-                            browser_.DocumentText = Wiki.Wiki2Html(rev.Text);
+                            string text = Encoding.UTF8.GetString(rev.Text);
+                            //browser_.Url = null;
+                            browser_.DocumentText = text; // Wiki.Wiki2Html(text);
                             Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
                         }
                     }
