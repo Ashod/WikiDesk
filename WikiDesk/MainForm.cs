@@ -112,7 +112,8 @@
                         {
                             string text = Encoding.UTF8.GetString(rev.Text);
                             //browser_.Url = null;
-                            browser_.DocumentText = text; // Wiki.Wiki2Html(text);
+                            Wiki.ExtractLanguages(ref text);
+                            browser_.DocumentText = Wiki.Wiki2Html(text);
                             Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
                         }
                     }
