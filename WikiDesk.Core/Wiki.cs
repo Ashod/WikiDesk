@@ -10,9 +10,6 @@ namespace WikiDesk.Core
 
     public class Wiki
     {
-        // A language code is prepended to this base-url.
-        public string BaseUrl = ".wikipedia.org/wiki/";
-
         /// <summary>
         /// Extracts all the alternative articles in other languages.
         /// These are typically listed at the end of the wiki text.

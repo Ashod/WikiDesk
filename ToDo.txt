@@ -1,0 +1,4 @@
+* Case-insensitive title search.
+* Full-text search.
+* Update from the web.
+* Other languages.

@@ -1,6 +1,7 @@
 ﻿namespace WikiDesk
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
     using System.Text;
@@ -52,7 +53,7 @@
             string dbPath = Path.Combine(folder, "wikidesk.db");
             using (Database db = new Database(dbPath))
             {
-                db.Load("Z:\\simplewiki-20100401-pages-articles.xml");
+                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", "en", false);
             }
         }
 
@@ -112,7 +113,13 @@
                         {
                             string text = Encoding.UTF8.GetString(rev.Text);
                             //browser_.Url = null;
-                            Wiki.ExtractLanguages(ref text);
+
+                            cboLanguage.Items.Clear();
+                            foreach (KeyValuePair<string, string> pair in Wiki.ExtractLanguages(ref text))
+                            {
+                                cboLanguage.Items.Add(pair.Value);
+                            }
+
                             browser_.DocumentText = Wiki.Wiki2Html(text);
                             Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
                         }

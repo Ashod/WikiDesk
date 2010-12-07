@@ -123,10 +123,30 @@
   <metadata name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>139, 17</value>
   </metadata>
-  <metadata name="toolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="stripNavigation.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>259, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnBack.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAALJJREFUOE9jYBhZ
+        wN/fX5csH4M0+vr6rgbi/yQZ4OfnpwXUtBSkEYaJMgCoUR2oYRGyRqIMOHv2bG5He/tHbBqJMuDu3bv8
+        GzdueJaamgp3MrphBL1w5coVrfNnz6YvW7bsQ0JCAoZBBA2AKbh586b++fPnmxYtWvQzIiKCtECEGQJ0
+        DduNGzdsLl28OG3WrFl/wsLCSItGZINu3brleuHChcVEewGbwpcvX/JQZABNNAMABht4oGCKgPgAAAAA
+        SUVORK5CYII=
+</value>
+  </data>
+  <data name="btnForward.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAALFJREFUOE9jYBh+
+        wN/fX5ciX/n6+v4H4tVkGwQ1AGQICC/18/PTIslFaAbADFoENEidKINwGAA2qKO9/ePZs2dz8RqEy4DU
+        1NT/GzdueHb37l1+kgxISEj4v2zZsg/nz55Nv3LlCuHwgLkgIiLi/6JFi36eP3++6ebNm/pE+R+kKCws
+        7P+sWbP+XLp4cdqNGzdsgLayEa0ZpPDChQuLb9265UqyRpgtL1++5CHJxgFXDAD4rnigK6ICjAAAAABJ
+        RU5ErkJggg==
+</value>
+  </data>
   <data name="btnStop.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -159,5 +179,8 @@
   </data>
   <metadata name="openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>360, 17</value>
+  </metadata>
+  <metadata name="stripOptions.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 56</value>
   </metadata>
 </root>

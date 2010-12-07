@@ -38,7 +38,13 @@
                     select s).FirstOrDefault();
         }
 
-        public void Load(string xmlDumpFilePath)
+        /// <summary>
+        /// Loads articles from an XML dump file.
+        /// </summary>
+        /// <param name="xmlDumpFilePath">The file path to the XML dump.</param>
+        /// <param name="languageCode">The language code of the dump.</param>
+        /// <param name="indexOnly">If True, article text is not added, just the meta data.</param>
+        public void Load(string xmlDumpFilePath, string languageCode, bool indexOnly)
         {
             FileStream stream = new FileStream(
                 xmlDumpFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024);
@@ -70,16 +76,45 @@
 
                 while (true)
                 {
-                    Page ai = this.ParsePageTag(reader);
-                    if (ai == null)
+                    Page page = ParsePageTag(reader);
+                    if (page == null)
                     {
                         break;
+                    }
+
+                    if (!indexOnly)
+                    {
+                        Revision oldRev = QueryRevision(page.Revision.Id);
+                        if (oldRev != null)
+                        {
+                            Update(page.Revision);
+                        }
+                        else
+                        {
+                            Insert(page.Revision);
+                        }
+                    }
+                    else
+                    {
+                        page.LastRevisionId = 0;
+                    }
+
+                    page.Language = languageCode;
+
+                    Page oldPage = QueryPage(page.Title);
+                    if (oldPage != null)
+                    {
+                        Update(page);
+                    }
+                    else
+                    {
+                        Insert(page);
                     }
                 }
             }
         }
 
-        private Page ParsePageTag(XmlReader reader)
+        private static Page ParsePageTag(XmlReader reader)
         {
             do
             {
@@ -91,7 +126,6 @@
             while (!reader.IsStartElement());
 
             Page page = new Page();
-            Page oldPage = null;
 
             while (reader.Read() && reader.Name != TAG_PAGE)
             {
@@ -109,7 +143,6 @@
 
                     case "title":
                         page.Title = reader.ReadString();
-                        oldPage = QueryPage(page.Title);
                     break;
 
                     case TAG_REVISION:
@@ -117,29 +150,20 @@
                         if ((rev != null) && rev.Id != 0)
                         {
                             page.LastRevisionId = rev.Id;
+                            page.Revision = rev;
                         }
                     break;
                 }
             }
 
-            if (oldPage != null)
-            {
-                Update(page);
-            }
-            else
-            {
-                Insert(page);
-            }
-
-            return !string.IsNullOrEmpty(page.Title) ? page : null;
+            return !string.IsNullOrEmpty(page.Title) && page.Revision != null ? page : null;
         }
 
-        private Revision ParseRevisionTag(XmlReader reader)
+        private static Revision ParseRevisionTag(XmlReader reader)
         {
             Debug.Assert(reader.Name == TAG_REVISION);
 
             Revision rev = new Revision();
-            Revision oldRev = null;
 
             while (reader.Read() && reader.Name != TAG_REVISION)
             {
@@ -153,7 +177,6 @@
                 {
                     case "id":
                         rev.Id = long.Parse(reader.ReadString());
-                        oldRev = QueryRevision(rev.Id);
                     continue;
 
                     case "timestamp":
@@ -174,19 +197,10 @@
                 }
             }
 
-            if (oldRev != null)
-            {
-                Update(rev);
-            }
-            else
-            {
-                Insert(rev);
-            }
-
             return rev;
         }
 
-        private void ParseContributorTag(XmlReader reader, Revision rev)
+        private static void ParseContributorTag(XmlReader reader, Revision rev)
         {
             Debug.Assert(reader.Name == TAG_CONTRIBUTOR);
 
