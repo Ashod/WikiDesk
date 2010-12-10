@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Download.cs" />
     <Compile Include="Wiki.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

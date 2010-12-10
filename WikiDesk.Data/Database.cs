@@ -46,8 +46,14 @@
         /// <param name="indexOnly">If True, article text is not added, just the meta data.</param>
         public void Load(string xmlDumpFilePath, string languageCode, bool indexOnly)
         {
-            FileStream stream = new FileStream(
-                xmlDumpFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024);
+            using (FileStream stream = new FileStream(xmlDumpFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
+            {
+                ImportFromXml(stream, indexOnly, languageCode);
+            }
+        }
+
+        public void ImportFromXml(Stream stream, bool indexOnly, string languageCode)
+        {
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;

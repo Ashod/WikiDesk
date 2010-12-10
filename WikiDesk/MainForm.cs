@@ -96,36 +96,66 @@
 
         private void NavigateTo(string title)
         {
-            if (!string.IsNullOrEmpty(title))
+            if (string.IsNullOrEmpty(title))
             {
-                if (title.ToLowerInvariant().StartsWith("http://") ||
-                    title.ToLowerInvariant().StartsWith("https://"))
+                return;
+            }
+
+            if (title.ToLowerInvariant().StartsWith("http://") ||
+                title.ToLowerInvariant().StartsWith("https://"))
+            {
+                browser_.Url = new Uri(title);
+            }
+            else
+            {
+                Page page = db_.QueryPage(title);
+                if (page != null)
                 {
-                    browser_.Url = new Uri(title);
-                }
-                else
-                {
-                    Page page = db_.QueryPage(title);
-                    if (page != null)
+                    Revision rev = db_.QueryRevision(page.LastRevisionId);
+                    if (rev != null)
                     {
-                        Revision rev = db_.QueryRevision(page.LastRevisionId);
-                        if (rev != null)
-                        {
-                            string text = Encoding.UTF8.GetString(rev.Text);
-                            //browser_.Url = null;
+                        string text = Encoding.UTF8.GetString(rev.Text);
+                        //browser_.Url = null;
 
-                            cboLanguage.Items.Clear();
-                            foreach (KeyValuePair<string, string> pair in Wiki.ExtractLanguages(ref text))
-                            {
-                                cboLanguage.Items.Add(pair.Value);
-                            }
+                        ShowWikiPage(title, text);
+                        return;
+                    }
+                }
 
-                            browser_.DocumentText = Wiki.Wiki2Html(text);
-                            Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
-                        }
+                // Download from the web...
+                string url = string.Concat("http://", "en", ".wikipedia.org/wiki/Special:Export/", title);
+                string pageXml = Download.DownloadPage(url);
+                using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
+                {
+                    db_.ImportFromXml(ms, false, "en");
+                }
+
+                Page page2 = db_.QueryPage(title);
+                if (page2 != null)
+                {
+                    Revision rev = db_.QueryRevision(page2.LastRevisionId);
+                    if (rev != null)
+                    {
+                        string text = Encoding.UTF8.GetString(rev.Text);
+                        //browser_.Url = null;
+
+                        ShowWikiPage(title, text);
+                        return;
                     }
                 }
             }
+        }
+
+        private void ShowWikiPage(string title, string text)
+        {
+            cboLanguage.Items.Clear();
+            foreach (KeyValuePair<string, string> pair in Wiki.ExtractLanguages(ref text))
+            {
+                cboLanguage.Items.Add(pair.Value);
+            }
+
+            browser_.DocumentText = Wiki.Wiki2Html(text);
+            Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
         }
 
         private void Navigation_KeyDown(object sender, KeyEventArgs e)
