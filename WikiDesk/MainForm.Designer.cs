@@ -47,10 +47,10 @@
             this.lblNavigate = new System.Windows.Forms.ToolStripLabel();
             this.cboNavigate = new System.Windows.Forms.ToolStripComboBox();
             this.btnGo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.cboLanguage = new System.Windows.Forms.ToolStripComboBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.stripNavigation.SuspendLayout();
@@ -214,6 +214,11 @@
             this.btnGo.Size = new System.Drawing.Size(23, 22);
             this.btnGo.Text = "Go";
             //
+            // toolStripSeparator2
+            //
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            //
             // toolStripLabel1
             //
             this.toolStripLabel1.Name = "toolStripLabel1";
@@ -225,11 +230,7 @@
             this.cboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboLanguage.Name = "cboLanguage";
             this.cboLanguage.Size = new System.Drawing.Size(130, 25);
-            //
-            // toolStripSeparator2
-            //
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.cboLanguage.SelectedIndexChanged += new System.EventHandler(this.cboLanguage_SelectedIndexChanged);
             //
             // MainForm
             //

@@ -94,7 +94,16 @@
                         Revision oldRev = QueryRevision(page.Revision.Id);
                         if (oldRev != null)
                         {
-                            Update(page.Revision);
+                            if (oldRev.Id != page.LastRevisionId &&
+                                page.LastRevisionId != 0)
+                            {
+                                Delete(oldRev);
+                                Insert(page.Revision);
+                            }
+                            else
+                            {
+                                Update(page.Revision);
+                            }
                         }
                         else
                         {
@@ -111,7 +120,16 @@
                     Page oldPage = QueryPage(page.Title);
                     if (oldPage != null)
                     {
-                        Update(page);
+                        if (oldPage.Id != page.Id)
+                        {
+                            // The page was removed and re-added. ID changed.
+                            Delete(oldPage);
+                            Insert(page);
+                        }
+                        else
+                        {
+                            Update(page);
+                        }
                     }
                     else
                     {

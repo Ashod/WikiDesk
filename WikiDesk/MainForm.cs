@@ -42,17 +42,9 @@
 
             OpenDatabase(settings_.DefaultDatabaseFilename);
 
-            LanguageCodes langCodes;
-            try
-            {
-                langCodes = LanguageCodes.Deserialize(settings_.LanguageCodesFilename);
-            }
-            catch (Exception)
-            {
-                langCodes = new LanguageCodes();
-            }
+            languages_ = LanguageCodes.Deserialize(settings_.LanguageCodesFilename);
 
-            StoreLanguageCodes(langCodes);
+            StoreLanguageCodes(languages_);
         }
 
         private void StoreLanguageCodes(LanguageCodes langCodes)
@@ -145,40 +137,45 @@
             }
             else
             {
-                Page page = db_.QueryPage(title);
-                if (page != null)
-                {
-                    Revision rev = db_.QueryRevision(page.LastRevisionId);
-                    if (rev != null)
-                    {
-                        string text = Encoding.UTF8.GetString(rev.Text);
-                        //browser_.Url = null;
+                BrowseWikiArticle(settings_.CurrentLanguageCode, title);
+            }
+        }
 
-                        ShowWikiPage(title, text);
-                        return;
-                    }
+        private void BrowseWikiArticle(string languageCode, string title)
+        {
+            Page page = db_.QueryPage(title);
+            if (page != null)
+            {
+                Revision rev = db_.QueryRevision(page.LastRevisionId);
+                if (rev != null)
+                {
+                    string text = Encoding.UTF8.GetString(rev.Text);
+                    //browser_.Url = null;
+
+                    ShowWikiPage(title, text);
+                    return;
                 }
+            }
 
-                // Download from the web...
-                string url = string.Concat("http://", "en", ".wikipedia.org/wiki/Special:Export/", title);
-                string pageXml = Download.DownloadPage(url);
-                using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
+            // Download from the web...
+            string url = string.Concat("http://", languageCode, settings_.ExportUrl, title);
+            string pageXml = Download.DownloadPage(url);
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
+            {
+                db_.ImportFromXml(ms, false, languageCode);
+            }
+
+            Page page2 = db_.QueryPage(title);
+            if (page2 != null)
+            {
+                Revision rev = db_.QueryRevision(page2.LastRevisionId);
+                if (rev != null)
                 {
-                    db_.ImportFromXml(ms, false, "en");
-                }
+                    string text = Encoding.UTF8.GetString(rev.Text);
+                    //browser_.Url = null;
 
-                Page page2 = db_.QueryPage(title);
-                if (page2 != null)
-                {
-                    Revision rev = db_.QueryRevision(page2.LastRevisionId);
-                    if (rev != null)
-                    {
-                        string text = Encoding.UTF8.GetString(rev.Text);
-                        //browser_.Url = null;
-
-                        ShowWikiPage(title, text);
-                        return;
-                    }
+                    ShowWikiPage(title, text);
+                    return;
                 }
             }
         }
@@ -188,7 +185,22 @@
             cboLanguage.Items.Clear();
             foreach (KeyValuePair<string, string> pair in Wiki.ExtractLanguages(ref text))
             {
-                cboLanguage.Items.Add(pair.Value);
+                WikiArticleName name = new WikiArticleName();
+                name.Name = pair.Value;
+                name.LanguageCode = pair.Key;
+                Language language = languages_.Languages.Find(
+                    delegate(Language lang)
+                        { return name.LanguageCode == lang.Code; });
+                if (language != null)
+                {
+                    name.LanguageName = language.Name;
+                }
+                else
+                {
+                    name.LanguageName = "Unknown Language";
+                }
+
+                cboLanguage.Items.Add(name);
             }
 
             browser_.DocumentText = Wiki.Wiki2Html(text);
@@ -208,6 +220,15 @@
             cboNavigate.Size = new Size(Width - 400, cboNavigate.Height);
         }
 
+        private void cboLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboLanguage.SelectedIndex >= 0)
+            {
+                WikiArticleName name = (WikiArticleName)cboLanguage.Items[cboLanguage.SelectedIndex];
+                BrowseWikiArticle(name.LanguageCode, name.Name);
+            }
+        }
+
         private void ExitClick(object sender, EventArgs e)
         {
             Close();
@@ -216,11 +237,13 @@
         private Database db_;
 
         private readonly Settings settings_;
+
+        private readonly LanguageCodes languages_;
+
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
         private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();
 
         private const string APPLICATION_NAME = "WikiDesk";
         private const string CONFIG_FILENAME = "WikiDesk.xml";
-
     }
 }

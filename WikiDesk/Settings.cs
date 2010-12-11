@@ -20,7 +20,7 @@ namespace WikiDesk
         public void Serialize(string filename)
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
+            using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Read))
             {
                 serializer.Serialize(fs, this);
             }
