@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Languages.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

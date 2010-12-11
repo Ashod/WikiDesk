@@ -52,7 +52,7 @@ namespace WikiDesk.Core
                     {
                         string langCode = line.Substring(2, split - 2);
                         string langTitle = line.Substring(split + 1, line.Length - split - 2 - 1);
-                        languages[langCode] = langTitle;
+                        languages[langCode] = langTitle; //TODO: Check for duplicates
                     }
                 }
             }

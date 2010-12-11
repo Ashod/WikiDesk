@@ -17,6 +17,7 @@
         {
             CreateTable<Page>();
             CreateTable<Revision>();
+            CreateTable<Language>();
         }
 
         public IList<Page> GetPages()
@@ -105,7 +106,7 @@
                         page.LastRevisionId = 0;
                     }
 
-                    page.Language = languageCode;
+                    //page.Language = languageCode;
 
                     Page oldPage = QueryPage(page.Title);
                     if (oldPage != null)

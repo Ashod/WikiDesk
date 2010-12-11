@@ -10,10 +10,10 @@
             //string url = string.Concat(languageCode, Settings. ExportU)
 
             // Open a connection
-            HttpWebRequest webRequestObject = (HttpWebRequest)HttpWebRequest.Create(url);
+            HttpWebRequest webRequestObject = (HttpWebRequest)WebRequest.Create(url);
 
             // You can also specify additional header values like
-            // the user agent or the referer:
+            // the user agent or the referrer:
             webRequestObject.UserAgent	= ".NET Framework/2.0";
             webRequestObject.Referer	= "http://www.example.com/";
 

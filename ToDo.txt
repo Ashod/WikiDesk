@@ -1,4 +1,7 @@
 * Case-insensitive title search.
-* Full-text search.
 * Update from the web.
 * Other languages.
+* Linking.
+* Proper Conversion.
+* CSS.
+* Full-text search.

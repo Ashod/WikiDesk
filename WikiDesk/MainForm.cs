@@ -29,6 +29,43 @@
             browser_.DocumentTitleChanged += browser__DocumentTitleChanged;
             browser_.Navigating += browser__Navigating;
             browser_.Navigated += browser__Navigated;
+
+            try
+            {
+                settings_ = Settings.Deserialize(CONFIG_FILENAME);
+            }
+            catch (Exception)
+            {
+                settings_ = new Settings();
+                settings_.Serialize(CONFIG_FILENAME);
+            }
+
+            OpenDatabase(settings_.DefaultDatabaseFilename);
+
+            LanguageCodes langCodes;
+            try
+            {
+                langCodes = LanguageCodes.Deserialize(settings_.LanguageCodesFilename);
+            }
+            catch (Exception)
+            {
+                langCodes = new LanguageCodes();
+            }
+
+            StoreLanguageCodes(langCodes);
+        }
+
+        private void StoreLanguageCodes(LanguageCodes langCodes)
+        {
+            langCodes.Serialize(settings_.LanguageCodesFilename);
+
+            foreach (Language language in langCodes.Languages)
+            {
+                Data.Language lang = new Data.Language();
+                lang.Code = language.Code;
+                lang.Name = language.Name;
+                db_.Update(lang);
+            }
         }
 
         private void browser__Navigated(object sender, WebBrowserNavigatedEventArgs e)
@@ -53,7 +90,7 @@
             string dbPath = Path.Combine(folder, "wikidesk.db");
             using (Database db = new Database(dbPath))
             {
-                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", "en", false);
+                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", "en", true);
             }
         }
 
@@ -166,9 +203,9 @@
             }
         }
 
-        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        private void stripNavigation_Resize(object sender, EventArgs e)
         {
-            cboNavigate.Size = new Size(Width - 200, cboNavigate.Height);
+            cboNavigate.Size = new Size(Width - 400, cboNavigate.Height);
         }
 
         private void ExitClick(object sender, EventArgs e)
@@ -177,9 +214,13 @@
         }
 
         private Database db_;
+
+        private readonly Settings settings_;
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
         private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();
 
         private const string APPLICATION_NAME = "WikiDesk";
+        private const string CONFIG_FILENAME = "WikiDesk.xml";
+
     }
 }
