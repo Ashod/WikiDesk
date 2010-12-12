@@ -27,6 +27,11 @@
             browser_.BringToFront();
             browser_.ApplicationName = APPLICATION_NAME;
             browser_.DocumentTitleChanged += browser__DocumentTitleChanged;
+            browser_.DocumentCompleted += browser__DocumentCompleted;
+            browser_.Error += browser__Error;
+            browser_.DownloadBegin += browser__DownloadBegin;
+            browser_.NewWindowRequest += browser__NewWindowRequest;
+            browser_.NewWindowCreated += browser__NewWindowCreated;
             browser_.Navigating += browser__Navigating;
             browser_.Navigated += browser__Navigated;
 
@@ -60,6 +65,8 @@
             }
         }
 
+        #region Browser Events
+
         private void browser__Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
             Text = string.Format("{0} - {1}", APPLICATION_NAME, browser_.DocumentTitle ?? string.Empty);
@@ -74,6 +81,74 @@
         private void browser__DocumentTitleChanged(object sender, EventArgs e)
         {
             Text = string.Format("{0} - {1}", APPLICATION_NAME, browser_.DocumentTitle);
+        }
+
+        private void browser__NewWindowCreated(object sender, NewWindowCreatedEventArgs e)
+        {
+//            tabControl.TabPages.Add(new WebBrowserTabPage(args.WebKitBrowser, false));
+        }
+
+        private void browser__NewWindowRequest(object sender, NewWindowRequestEventArgs e)
+        {
+            //args.Cancel = (MessageBox.Show(args.Url, "Open new window?", MessageBoxButtons.YesNo) == DialogResult.No);
+        }
+
+        private void browser__DownloadBegin(object sender, FileDownloadBeginEventArgs e)
+        {
+            //DownloadForm frm = new DownloadForm(args.Download);
+        }
+
+        private void browser__Error(object sender, WebKitBrowserErrorEventArgs e)
+        {
+            browser_.DocumentText = "<html><head><title>Error</title></head><center><p>" + e.Description + "</p></center></html>";
+        }
+
+        private void browser__DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            cboNavigate.Text = browser_.Url.ToString();
+
+            btnBack.Enabled = browser_.CanGoBack;
+            btnForward.Enabled = browser_.CanGoForward;
+        }
+
+        #endregion // Browser Events
+
+        #region Browser Controls
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            browser_.GoBack();
+            ActivateBrowser();
+        }
+
+        private void btnForward_Click(object sender, EventArgs e)
+        {
+            browser_.GoForward();
+            ActivateBrowser();
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            browser_.Reload();
+            ActivateBrowser();
+            //             browser_.Stop();
+            //             ActivateBrowser();
+        }
+
+        private void btnGo_Click(object sender, EventArgs e)
+        {
+            browser_.Navigate(cboNavigate.Text);
+            ActivateBrowser();
+        }
+
+        #endregion // Browser Controls
+
+        private void ActivateBrowser()
+        {
+            if (browser_.CanFocus)
+            {
+                browser_.Focus();
+            }
         }
 
         private void LoadClick(object sender, EventArgs e)
@@ -183,14 +258,12 @@
         private void ShowWikiPage(string title, string text)
         {
             cboLanguage.Items.Clear();
-            foreach (KeyValuePair<string, string> pair in Wiki.ExtractLanguages(ref text))
+            foreach (KeyValuePair<string, string> pair in Wiki2Html.ExtractLanguages(ref text))
             {
                 WikiArticleName name = new WikiArticleName();
                 name.Name = pair.Value;
                 name.LanguageCode = pair.Key;
-                Language language = languages_.Languages.Find(
-                    delegate(Language lang)
-                        { return name.LanguageCode == lang.Code; });
+                Language language = languages_.Languages.Find(lang => name.LanguageCode == lang.Code);
                 if (language != null)
                 {
                     name.LanguageName = language.Name;
@@ -203,7 +276,9 @@
                 cboLanguage.Items.Add(name);
             }
 
-            browser_.DocumentText = Wiki.Wiki2Html(text);
+//             browser_.DocumentText = Wiki2Html.Convert(text);
+            Wiki2Html wiki2Html = new Wiki2Html();
+            browser_.DocumentText = wiki2Html.ConvertX(text);
             Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
         }
 

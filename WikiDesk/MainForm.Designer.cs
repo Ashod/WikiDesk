@@ -161,6 +161,7 @@
             this.btnBack.Size = new System.Drawing.Size(23, 22);
             this.btnBack.Text = "toolStripButton1";
             this.btnBack.ToolTipText = "Back";
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             //
             // btnForward
             //
@@ -171,6 +172,7 @@
             this.btnForward.Size = new System.Drawing.Size(23, 22);
             this.btnForward.Text = "toolStripButton1";
             this.btnForward.ToolTipText = "Forward";
+            this.btnForward.Click += new System.EventHandler(this.btnForward_Click);
             //
             // toolStripSeparator1
             //
@@ -185,6 +187,7 @@
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(23, 22);
             this.btnStop.Text = "toolStripButton1";
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             //
             // lblNavigate
             //
@@ -213,6 +216,7 @@
             this.btnGo.Name = "btnGo";
             this.btnGo.Size = new System.Drawing.Size(23, 22);
             this.btnGo.Text = "Go";
+            this.btnGo.Click += new System.EventHandler(this.btnGo_Click);
             //
             // toolStripSeparator2
             //
