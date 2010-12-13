@@ -1,6 +1,7 @@
 ﻿
 namespace WikiDesk.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
@@ -11,31 +12,12 @@ namespace WikiDesk.Core
 
     public class Wiki2Html
     {
-        public delegate string BinaryCodeHandler(Match match);
-
-        public string ConvertBinaryCode(Regex regex, BinaryCodeHandler handler, string wikicode)
-        {
-            Match match = regex.Match(wikicode);
-            while (match.Success)
-            {
-                string text = handler(match);
-
-                StringBuilder sb = new StringBuilder(wikicode.Length);
-                sb.Append(wikicode.Substring(0, match.Index));
-                sb.Append(text);
-                sb.Append(wikicode.Substring(match.Index + match.Length));
-                wikicode = sb.ToString();
-            
-                match = regex.Match(wikicode, match.Index);
-            }
-
-            return wikicode;
-        }
-
         public string ConvertX(string wikicode)
         {
-            wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
-            wikicode = ConvertBinaryCode(LinkRegex, Link, wikicode);
+            wikicode = ConvertUnaryCode(RedirectRegex, Redirect, wikicode);
+
+//             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
+//             wikicode = ConvertBinaryCode(LinkRegex, Link, wikicode);
 
             wikicode = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikicode);
             wikicode = ConvertBinaryCode(BoldRegex, Bold, wikicode);
@@ -47,6 +29,53 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(H3Regex, H3, wikicode);
             wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
             wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
+
+            return wikicode;
+        }
+
+        private string Redirect(Match match)
+        {
+            string baseUrl = "http://en.wikipedia.org/wiki/";
+            string value = match.Groups[1].Value;
+            return string.Concat("<a href=\"", baseUrl, value, "\" title=\"", value, "\">", value, "</a>");
+        }
+
+        private delegate string MatchedCodeHandler(Match match);
+
+        private static string ConvertUnaryCode(Regex regex, MatchedCodeHandler handler, string wikicode)
+        {
+            Match match = regex.Match(wikicode);
+            while (match.Success)
+            {
+                string text = handler(match);
+
+                StringBuilder sb = new StringBuilder(wikicode.Length);
+                sb.Append(wikicode.Substring(0, match.Index));
+                sb.Append(text);
+                sb.Append(wikicode.Substring(match.Index + match.Length));
+                wikicode = sb.ToString();
+
+                match = regex.Match(wikicode, match.Index);
+            }
+
+            return wikicode;
+        }
+
+        private static string ConvertBinaryCode(Regex regex, MatchedCodeHandler handler, string wikicode)
+        {
+            Match match = regex.Match(wikicode);
+            while (match.Success)
+            {
+                string text = handler(match);
+
+                StringBuilder sb = new StringBuilder(wikicode.Length);
+                sb.Append(wikicode.Substring(0, match.Index));
+                sb.Append(text);
+                sb.Append(wikicode.Substring(match.Index + match.Length));
+                wikicode = sb.ToString();
+
+                match = regex.Match(wikicode, match.Index);
+            }
 
             return wikicode;
         }
@@ -144,7 +173,7 @@ namespace WikiDesk.Core
 //             Match match;
 //             noWikiBegin.Clear();
 //             noWikiEnd.Clear();
-// 
+//
 //             match = NoWikiRegex.Match(text);
 //             while (match.Success)
 //             {
@@ -222,17 +251,23 @@ namespace WikiDesk.Core
 
         #region Regex
 
-        // These can appear only at the start of a line.
+        //
+        // Unary Operators
+        //
+        private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT \[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
 
+        //
+        // These can appear only at the start of a line.
+        //
         private static readonly Regex H1Regex = new Regex(@"^=.+?=", RegexOptions.Compiled | RegexOptions.Multiline);
         private static readonly Regex H2Regex = new Regex(@"^==.+?==", RegexOptions.Compiled | RegexOptions.Multiline);
         private static readonly Regex H3Regex = new Regex(@"^===.+?===", RegexOptions.Compiled | RegexOptions.Multiline);
         private static readonly Regex H4Regex = new Regex(@"^====.+?====", RegexOptions.Compiled | RegexOptions.Multiline);
         private static readonly Regex H5Regex = new Regex(@"^=====.+?=====", RegexOptions.Compiled | RegexOptions.Multiline);
         private static readonly Regex H6Regex = new Regex(@"^=====.+?=====", RegexOptions.Compiled | RegexOptions.Multiline);
-
+        //
         // These can appear anywhere in a line.
-
+        //
         private static readonly Regex ItalicRegex = new Regex(@"''.+?''", RegexOptions.Compiled | RegexOptions.Singleline);
         private static readonly Regex BoldRegex = new Regex(@"'''.+?'''", RegexOptions.Compiled | RegexOptions.Singleline);
         private static readonly Regex BoldItalicRegex = new Regex(@"'''''.+?'''''", RegexOptions.Compiled | RegexOptions.Singleline);

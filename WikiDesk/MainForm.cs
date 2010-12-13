@@ -35,6 +35,12 @@
             browser_.Navigating += browser__Navigating;
             browser_.Navigated += browser__Navigated;
 
+            btnBack.Enabled = false;
+            btnForward.Enabled = false;
+            btnStop.Enabled = false;
+            btnGo.Enabled = false;
+            cboLanguage.Enabled = false;
+
             try
             {
                 settings_ = Settings.Deserialize(CONFIG_FILENAME);
@@ -276,10 +282,27 @@
                 cboLanguage.Items.Add(name);
             }
 
+            cboLanguage.Enabled = (cboLanguage.Items.Count > 0);
+
 //             browser_.DocumentText = Wiki2Html.Convert(text);
             Wiki2Html wiki2Html = new Wiki2Html();
-            browser_.DocumentText = wiki2Html.ConvertX(text);
+            string html = wiki2Html.ConvertX(text);
+            browser_.DocumentText = WrapInHtmlBody(title, html);
             Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
+        }
+
+        private string WrapInHtmlBody(string title, string html)
+        {
+            string header = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
+            "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" dir=\"ltr\">" +
+            "<head><title>" + title + "</title>";
+            string body = "<body class=\"mediawiki ltr ns-0 ns-subject page-Brazil skin-vector\">" +
+                          "<div id=\"mw-page-base\" class=\"noprint\"></div>" +
+                          "<div id=\"mw-head-base\" class=\"noprint\"></div>" +
+                          "<div id=\"content\">";
+            string footer = "</body></html>";
+
+            return header + body + html + footer;
         }
 
         private void Navigation_KeyDown(object sender, KeyEventArgs e)
@@ -292,7 +315,7 @@
 
         private void stripNavigation_Resize(object sender, EventArgs e)
         {
-            cboNavigate.Size = new Size(Width - 400, cboNavigate.Height);
+            cboNavigate.Size = new Size(Width - 470, cboNavigate.Height);
         }
 
         private void cboLanguage_SelectedIndexChanged(object sender, EventArgs e)

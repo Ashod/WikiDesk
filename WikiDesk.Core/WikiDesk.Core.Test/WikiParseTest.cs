@@ -137,5 +137,16 @@
             Assert.AreEqual(EXPECTED, html);
         }
 
+        [Test]
+        public void Redirect()
+        {
+            const string WIKI_CODE = "#REDIRECT [[Brazil]]";
+            Wiki2Html converter = new Wiki2Html();
+            string html = converter.ConvertX(WIKI_CODE);
+
+            const string EXPECTED = "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a>";
+            Assert.AreEqual(EXPECTED, html);
+        }
+
     }
 }

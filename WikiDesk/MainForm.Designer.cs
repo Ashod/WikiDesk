@@ -200,10 +200,13 @@
             this.cboNavigate.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboNavigate.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.cboNavigate.AutoToolTip = true;
-            this.cboNavigate.DropDownWidth = 500;
+            this.cboNavigate.DropDownHeight = 200;
+            this.cboNavigate.DropDownWidth = 400;
+            this.cboNavigate.IntegralHeight = false;
+            this.cboNavigate.MaxDropDownItems = 16;
             this.cboNavigate.Name = "cboNavigate";
             this.cboNavigate.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.cboNavigate.Size = new System.Drawing.Size(350, 25);
+            this.cboNavigate.Size = new System.Drawing.Size(300, 25);
             this.cboNavigate.Sorted = true;
             this.cboNavigate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Navigation_KeyDown);
             this.cboNavigate.DropDownClosed += new System.EventHandler(this.Titles_SelectedIndexChanged);
@@ -231,9 +234,12 @@
             //
             // cboLanguage
             //
+            this.cboLanguage.DropDownHeight = 200;
             this.cboLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboLanguage.IntegralHeight = false;
+            this.cboLanguage.MaxDropDownItems = 16;
             this.cboLanguage.Name = "cboLanguage";
-            this.cboLanguage.Size = new System.Drawing.Size(130, 25);
+            this.cboLanguage.Size = new System.Drawing.Size(200, 25);
             this.cboLanguage.SelectedIndexChanged += new System.EventHandler(this.cboLanguage_SelectedIndexChanged);
             //
             // MainForm
