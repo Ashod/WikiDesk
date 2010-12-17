@@ -51,6 +51,8 @@ namespace WikiDesk
         /// </summary>
         public string CurrentLanguageCode = "en";
 
+        public string CssFilename = "css\\default.css";
+
         /// <summary>
         /// The default database filename. Loaded at startup.
         /// </summary>

@@ -111,7 +111,10 @@
 
         private void browser__DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            cboNavigate.Text = browser_.Url.ToString();
+            if (browser_.Url != null)
+            {
+                cboNavigate.Text = browser_.Url.ToString();
+            }
 
             btnBack.Enabled = browser_.CanGoBack;
             btnForward.Enabled = browser_.CanGoForward;
@@ -295,8 +298,15 @@
         {
             string header = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
             "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" dir=\"ltr\">" +
-            "<head><title>" + title + "</title>";
-            string body = "<body class=\"mediawiki ltr ns-0 ns-subject page-Brazil skin-vector\">" +
+            "<head><title>" + title + "</title><style type=\"text/css\">";
+
+            if (!string.IsNullOrEmpty(settings_.CssFilename))
+            {
+                header += File.ReadAllText(settings_.CssFilename);
+            }
+
+            string body = "</style></head>" +
+                          "<body class=\"mediawiki ltr ns-0 ns-subject page-Brazil skin-vector\">" +
                           "<div id=\"mw-page-base\" class=\"noprint\"></div>" +
                           "<div id=\"mw-head-base\" class=\"noprint\"></div>" +
                           "<div id=\"content\">";

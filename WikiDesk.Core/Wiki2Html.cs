@@ -6,17 +6,51 @@ namespace WikiDesk.Core
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Web;
 
     using ScrewTurn.Wiki;
     using ScrewTurn.Wiki.PluginFramework;
 
     public class Wiki2Html
     {
+        #region construction
+
+        public Wiki2Html()
+            : this("http://en.wikipedia.org/wiki/")
+        {
+        }
+
+        public Wiki2Html(string baseUrl)
+        {
+            baseUrl = baseUrl.ToLowerInvariant();
+            if (!baseUrl.StartsWith("http://") &&
+                !baseUrl.StartsWith("https://"))
+            {
+                throw new ArgumentException("Invalid base URL.");
+            }
+
+            BaseUrl = baseUrl;
+            FileUrl = BaseUrl + "File:";
+            ThumbnailWidth = 200;
+        }
+
+        #endregion // construction
+
+        #region properties
+
+        public string BaseUrl { get; set; }
+
+        public string FileUrl { get; set; }
+
+        public int ThumbnailWidth { get; set; }
+
+        #endregion // properties
+
         public string ConvertX(string wikicode)
         {
             wikicode = ConvertUnaryCode(RedirectRegex, Redirect, wikicode);
 
-//             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
+            wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
 //             wikicode = ConvertBinaryCode(LinkRegex, Link, wikicode);
 
             wikicode = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikicode);
@@ -35,9 +69,8 @@ namespace WikiDesk.Core
 
         private string Redirect(Match match)
         {
-            string baseUrl = "http://en.wikipedia.org/wiki/";
             string value = match.Groups[1].Value;
-            return string.Concat("<a href=\"", baseUrl, value, "\" title=\"", value, "\">", value, "</a>");
+            return string.Concat("<a href=\"", BaseUrl, value, "\" title=\"", value, "\">", value, "</a>");
         }
 
         private delegate string MatchedCodeHandler(Match match);
@@ -134,12 +167,27 @@ namespace WikiDesk.Core
             return string.Concat("<i><b>", value, "</b></i>");
         }
 
-        private static string Image(Match match)
+        private string Image(Match match)
         {
-            string baseUrl = "http://en.wikipedia.org/wiki/File:";
-            string value = match.Groups[1].Value;
-            string text = match.Groups[2].Value;
-            return string.Concat("<a href=\"", baseUrl, value, "\" title=\"", value, "\">", text, "</a>");
+            string imageFileName = match.Groups[2].Value;
+            string url = FileUrl + HttpUtility.UrlEncode(imageFileName);
+            string imagePage = Download.DownloadPage(url);
+            Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
+            if (!imageSourceMatch.Success ||
+                (imageSourceMatch.Groups[1].Value != imageFileName))
+            {
+                return string.Empty;
+            }
+
+            // Thumb/Frame
+            if (match.Groups[3].Success)
+            {
+
+            }
+
+            string imageUrl = imageSourceMatch.Groups[2].Value;
+
+            return string.Concat("<img alt=\"", imageFileName, "\" src=\"", imageUrl, "\"></a>");
         }
 
         private static string Link(Match match)
@@ -249,6 +297,10 @@ namespace WikiDesk.Core
             return output;
         }
 
+        #region representation
+
+        #endregion // representation
+
         #region Regex
 
         //
@@ -274,12 +326,14 @@ namespace WikiDesk.Core
 
         private static readonly Regex LinkRegex = new Regex(@"\[\[(.+?)\|(.+?)\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
         private static readonly Regex ImageRegex = new Regex(
-                                    @"\[\[Image\:(.+?)\|" +
-                                    @"(thumb|thumbnail|frame|frameless)?\|" +
-                                    @"(border)?\|" +
-                                    @"\|(right|left|center|none)?\|" +
+                                    @"\[\[(Image|File)\:(.+?)" +
+                                    @"(\|(thumb|thumbnail|frame|frameless))?" +
+                                    @"(\|border)?" +
+                                    @"(\|(right|left|center|none))?" +
                                     //@"\|alt=()?\|" +
-                                    @"(.+?)\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+                                    @"(\|.+?)?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+
+        private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
