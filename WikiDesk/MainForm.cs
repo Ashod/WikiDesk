@@ -81,7 +81,7 @@
 
         private void browser__Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            cboNavigate.Text = browser_.Url.ToString();
+            cboNavigate.Text = browser_.Url != null ? browser_.Url.ToString() : string.Empty;
         }
 
         private void browser__DocumentTitleChanged(object sender, EventArgs e)

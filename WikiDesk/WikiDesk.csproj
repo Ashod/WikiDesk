@@ -40,10 +40,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebKitBrowser, Version=0.5.0.0, Culture=neutral, PublicKeyToken=b967213f6d29a3be, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\WebKit.NET-0.5-bin-cairo\bin\WebKitBrowser.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Languages.cs" />
@@ -79,6 +75,10 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WebKitBrowser\WebKitBrowser.csproj">
+      <Project>{44AFE214-12C7-4280-898D-A7C4AABF1533}</Project>
+      <Name>WebKitBrowser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WikiDesk.Core\WikiDesk.Core.csproj">
       <Project>{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}</Project>
       <Name>WikiDesk.Core</Name>
@@ -97,6 +97,9 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Q /S /Y $(SolutionDir)3rdParty\WebKit.NET-0.5-bin-cairo\bin\* $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,26 +1,27 @@
 ﻿/*
  * Copyright (c) 2009, Peter Nelson (charn.opcode@gmail.com)
+ * Copyright (c) 2010, Ashod Nakashian ()
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- * * Redistributions of source code must retain the above copyright notice, 
+ *
+ * * Redistributions of source code must retain the above copyright notice,
  *   this list of conditions and the following disclaimer.
- * * Redistributions in binary form must reproduce the above copyright notice, 
- *   this list of conditions and the following disclaimer in the documentation 
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
  *   and/or other materials provided with the distribution.
- *   
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
 */
 
@@ -79,6 +80,7 @@ namespace WebKit
         private WebDownloadDelegate downloadDelegate;
         private WebPolicyDelegate policyDelegate;
         private WebUIDelegate uiDelegate;
+        private WebResourceLoadDelegate resourceLoadDelegate;
 
 
         #region Overridden methods
@@ -92,7 +94,7 @@ namespace WebKit
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             Keys key = (Keys)msg.WParam.ToInt32();
-            if (key == Keys.Left || key == Keys.Right || key == Keys.Up || 
+            if (key == Keys.Left || key == Keys.Right || key == Keys.Up ||
                 key == Keys.Down || key == Keys.Tab)
             {
                 NativeMethods.SendMessage(webViewHWND, (uint)msg.Msg, msg.WParam, msg.LParam);
@@ -108,7 +110,7 @@ namespace WebKit
 
         // public events, roughly the same as in WebBrowser class
         // using the null object pattern to avoid null tests
-        
+
         /// <summary>
         /// Occurs when the DocumentTitle property value changes.
         /// </summary>
@@ -177,7 +179,7 @@ namespace WebKit
                 if (loaded)
                 {
                     Uri result;
-                    return Uri.TryCreate(webView.mainFrame().dataSource().request().url(), 
+                    return Uri.TryCreate(webView.mainFrame().dataSource().request().url(),
                         UriKind.Absolute, out result) ? result : null;
                 }
                 else
@@ -325,13 +327,13 @@ namespace WebKit
         }
 
         /// <summary>
-        /// Gets or sets whether the control can navigate to another page 
+        /// Gets or sets whether the control can navigate to another page
         /// once it's initial page has loaded.
         /// </summary>
         [Browsable(true), DefaultValue(true), Category("Behavior")]
         [Description("Specifies whether the control can navigate" +
             " to another page once it's initial page has loaded.")]
-        public bool AllowNavigation 
+        public bool AllowNavigation
         {
             get
             {
@@ -548,10 +550,10 @@ namespace WebKit
             InitializeComponent();
 
             PageSettings = new PageSettings();
-            
+
             if (LicenseManager.UsageMode != LicenseUsageMode.Designtime)
             {
-                // Control Events            
+                // Control Events
                 this.Load += new EventHandler(WebKitBrowser_Load);
                 this.Resize += new EventHandler(WebKitBrowser_Resize);
 
@@ -561,7 +563,7 @@ namespace WebKit
                 if ((actCtxRefCount++) == 0)
                 {
                     FileInfo fi = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                    activationContext = new ActivationContext(Path.Combine(fi.DirectoryName, "WebKitBrowser.dll.manifest")); 
+                    activationContext = new ActivationContext(Path.Combine(fi.DirectoryName, "WebKitBrowser.dll.manifest"));
                     activationContext.Initialize();
 
                     // TODO: more error handling here
@@ -575,11 +577,11 @@ namespace WebKit
                 this.GotFocus += (s, e) =>
                 {
                     NativeMethods.SetFocus(webViewHWND);
-                };            
+                };
 
                 activationContext.Activate();
                 webView = new WebViewClass();
-                activationContext.Deactivate();            
+                activationContext.Deactivate();
             }
         }
 
@@ -599,10 +601,14 @@ namespace WebKit
             uiDelegate = new WebUIDelegate(this);
             Marshal.AddRef(Marshal.GetIUnknownForObject(uiDelegate));
 
+            resourceLoadDelegate = new WebResourceLoadDelegate();
+            Marshal.AddRef(Marshal.GetIUnknownForObject(resourceLoadDelegate));
+
             webView.setPolicyDelegate(policyDelegate);
             webView.setFrameLoadDelegate(frameLoadDelegate);
             webView.setDownloadDelegate(downloadDelegate);
             webView.setUIDelegate(uiDelegate);
+            webView.setResourceLoadDelegate(resourceLoadDelegate);
 
             webView.setHostWindow(this.Handle.ToInt32());
 
@@ -670,7 +676,7 @@ namespace WebKit
 
         #endregion
 
-        #region WebFrameLoadDelegate event handlers 
+        #region WebFrameLoadDelegate event handlers
 
         private void frameLoadDelegate_DidCommitLoadForFrame(WebView WebView, IWebFrame frame)
         {
@@ -685,7 +691,10 @@ namespace WebKit
             if (frame == webView.mainFrame())
             {
                 string url = frame.provisionalDataSource().request().url();
-                Navigating(this, new WebBrowserNavigatingEventArgs(new Uri(url), frame.name()));
+                if (!string.IsNullOrEmpty(url))
+                {
+                    Navigating(this, new WebBrowserNavigatingEventArgs(new Uri(url), frame.name()));
+                }
             }
         }
 
@@ -718,7 +727,7 @@ namespace WebKit
 
         private void frameLoadDelegate_DidFailLoadWithError(WebView WebView, IWebError error, IWebFrame frame)
         {
-            Error(this, new WebKitBrowserErrorEventArgs(error.localizedDescription())); 
+            Error(this, new WebKitBrowserErrorEventArgs(error.localizedDescription()));
         }
 
         #endregion
@@ -864,7 +873,7 @@ namespace WebKit
         }
 
         /// <summary>
-        /// Stops loading the current web page and any resources associated 
+        /// Stops loading the current web page and any resources associated
         /// with it.
         /// </summary>
         public void Stop()
