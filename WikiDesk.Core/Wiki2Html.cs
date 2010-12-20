@@ -113,7 +113,7 @@ namespace WikiDesk.Core
             while (match.Success && (lastIndex < wikicode.Length))
             {
                 // Copy the skipped part.
-                sb.Append(wikicode.Substring(lastIndex, match.Index - lastIndex - 1));
+                sb.Append(wikicode.Substring(lastIndex, match.Index - lastIndex));
 
                 // Handle the match.
                 string text = handler(match);
@@ -336,7 +336,6 @@ namespace WikiDesk.Core
                 text = pageName;
             }
 
-            text = text.Replace(' ', '_');
             string url = FullUrl + pageName.Replace(' ', '_');
             return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\">", text, "</a>");
         }
