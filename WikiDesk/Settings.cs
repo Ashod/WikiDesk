@@ -53,6 +53,10 @@ namespace WikiDesk
 
         public string CssFilename = "css\\default.css";
 
+        public int ThumbnailWidthPixels = 220;
+
+        public string FileCacheFolder = "Z:\\wikidesk_cache\\";
+
         /// <summary>
         /// The default database filename. Loaded at startup.
         /// </summary>

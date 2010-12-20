@@ -3,6 +3,7 @@ namespace WikiDesk.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
@@ -13,45 +14,44 @@ namespace WikiDesk.Core
 
     public class Wiki2Html
     {
+        private readonly Configuration config_;
+
         #region construction
 
         public Wiki2Html()
-            : this("http://en.wikipedia.org/wiki/")
+            : this(new Configuration())
         {
         }
 
-        public Wiki2Html(string baseUrl)
+        public Wiki2Html(Configuration config)
         {
-            baseUrl = baseUrl.ToLowerInvariant();
-            if (!baseUrl.StartsWith("http://") &&
-                !baseUrl.StartsWith("https://"))
-            {
-                throw new ArgumentException("Invalid base URL.");
-            }
-
-            BaseUrl = baseUrl;
-            FileUrl = BaseUrl + "File:";
-            ThumbnailWidth = 200;
+            config_ = config;
         }
 
         #endregion // construction
 
         #region properties
 
-        public string BaseUrl { get; set; }
+        private string FullUrl
+        {
+            get { return config_.FullUrl; }
+        }
 
-        public string FileUrl { get; set; }
+        private string FileUrl
+        {
+            get { return config_.FileUrl; }
+        }
 
-        public int ThumbnailWidth { get; set; }
+        private int ThumbnailWidthPixels
+        {
+            get { return config_.ThumbnailWidthPixels; }
+        }
 
         #endregion // properties
 
         public string ConvertX(string wikicode)
         {
             wikicode = ConvertUnaryCode(RedirectRegex, Redirect, wikicode);
-
-            wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
-//             wikicode = ConvertBinaryCode(LinkRegex, Link, wikicode);
 
             wikicode = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikicode);
             wikicode = ConvertBinaryCode(BoldRegex, Bold, wikicode);
@@ -64,15 +64,24 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
             wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
 
+            wikicode = ConvertBinaryCode(LinkRegex, Link, wikicode);
+            wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
+
             return wikicode;
         }
 
         private string Redirect(Match match)
         {
             string value = match.Groups[1].Value;
-            return string.Concat("<a href=\"", BaseUrl, value, "\" title=\"", value, "\">", value, "</a>");
+            return string.Concat("<a href=\"", FullUrl, value, "\" title=\"", value, "\">", value, "</a>");
         }
 
+        /// <summary>
+        /// Handles conversion of a matching regex into HTML.
+        /// May return null to skip conversion of the matching block.
+        /// </summary>
+        /// <param name="match">The regex match instance.</param>
+        /// <returns>A replacement string, or null to skip.</returns>
         private delegate string MatchedCodeHandler(Match match);
 
         private static string ConvertUnaryCode(Regex regex, MatchedCodeHandler handler, string wikicode)
@@ -88,6 +97,7 @@ namespace WikiDesk.Core
                 sb.Append(wikicode.Substring(match.Index + match.Length));
                 wikicode = sb.ToString();
 
+                //TODO: Optimize.
                 match = regex.Match(wikicode, match.Index);
             }
 
@@ -96,22 +106,39 @@ namespace WikiDesk.Core
 
         private static string ConvertBinaryCode(Regex regex, MatchedCodeHandler handler, string wikicode)
         {
+            int lastIndex = 0;
+            StringBuilder sb = new StringBuilder(wikicode.Length * 2);
+
             Match match = regex.Match(wikicode);
-            while (match.Success)
+            while (match.Success && (lastIndex < wikicode.Length))
             {
+                // Copy the skipped part.
+                sb.Append(wikicode.Substring(lastIndex, match.Index - lastIndex - 1));
+
+                // Handle the match.
                 string text = handler(match);
 
-                StringBuilder sb = new StringBuilder(wikicode.Length);
-                sb.Append(wikicode.Substring(0, match.Index));
-                sb.Append(text);
-                sb.Append(wikicode.Substring(match.Index + match.Length));
-                wikicode = sb.ToString();
+                // Either copy a replacement or the matched part as-is.
+                sb.Append(text ?? match.Value);
 
-                match = regex.Match(wikicode, match.Index);
+                lastIndex = match.Index + match.Length;
+
+                match = match.NextMatch();
             }
 
-            return wikicode;
+            // Copy the remaining bit.
+            if (lastIndex == 0)
+            {
+                // There were no matches.
+                Debug.Assert(sb.Length == 0, "Expected no matches.");
+                return wikicode;
+            }
+
+            sb.Append(wikicode.Substring(lastIndex));
+            return sb.ToString();
         }
+
+        #region Headers
 
         private static string H1(Match match)
         {
@@ -149,6 +176,10 @@ namespace WikiDesk.Core
             return string.Concat("<h6><span class=\"mw-headline\">", value, "</span></h6>");
         }
 
+        #endregion // Headers
+
+        #region Bold/Italic
+
         private static string Bold(Match match)
         {
             string value = match.Value.Substring(3, match.Length - 6);
@@ -167,10 +198,13 @@ namespace WikiDesk.Core
             return string.Concat("<i><b>", value, "</b></i>");
         }
 
+        #endregion // Bold/Italic
+
         private string Image(Match match)
         {
             string imageFileName = match.Groups[2].Value;
-            string url = FileUrl + HttpUtility.UrlEncode(imageFileName);
+            string imageUrlName = imageFileName.Replace(' ', '_');
+            string url = FileUrl + HttpUtility.UrlEncode(imageUrlName);
             string imagePage = Download.DownloadPage(url);
             Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
             if (!imageSourceMatch.Success ||
@@ -179,23 +213,132 @@ namespace WikiDesk.Core
                 return string.Empty;
             }
 
-            // Thumb/Frame
-            if (match.Groups[3].Success)
-            {
-
-            }
-
             string imageUrl = imageSourceMatch.Groups[2].Value;
 
-            return string.Concat("<img alt=\"", imageFileName, "\" src=\"", imageUrl, "\"></a>");
+            string openTags = "<p>";
+            string closeTags = "</p>";
+
+            int width = -1;
+            int height = -1;
+
+            // thumb|thumbnail|frame|frameless
+            bool haveType = match.Groups[4].Success;
+            bool framed = false;
+            string type = match.Groups[4].Value.ToLowerInvariant();
+            if (haveType)
+            {
+                switch (type)
+                {
+                    case "thumb":
+                    case "thumbnail":
+                        framed = true;
+                        break;
+                    case "frame":
+                        framed = true;
+                        break;
+                    case "frameless":
+                        framed = false;
+                        width = config_.ThumbnailWidthPixels;
+                        break;
+                }
+            }
+
+            // border
+            bool haveBorder = match.Groups[6].Success;
+
+            // right|left|center|none
+            bool haveLocation = match.Groups[8].Success;
+            if (haveLocation)
+            {
+                switch (type)
+                {
+                    case "right":
+                        break;
+                    case "left":
+                        break;
+                    case "center":
+                        break;
+                    case "none":
+                        openTags = "<div class=\"floatnone\">";
+                        closeTags = "</div>";
+                        break;
+                }
+            }
+
+            // alt text
+            bool haveAltText = match.Groups[10].Success;
+            string altText = imageFileName;
+            if (haveAltText)
+            {
+                altText = match.Groups[10].Value.Trim();
+            }
+
+            bool haveCaption = match.Groups[12].Success;
+            string caption = string.Empty;
+            if (haveCaption)
+            {
+                caption = match.Groups[12].Value;
+                // Description may contain wiki links.
+                caption = ConvertBinaryCode(LinkRegex, Link, caption);
+
+                if (!haveAltText)
+                {
+                    altText = caption;
+                }
+            }
+
+            StringBuilder sb = new StringBuilder(256);
+
+            sb.Append("<a href=\"").Append(url).Append( "\" class=\"image");
+            if (haveCaption)
+            {
+                sb.Append("\" title=\"").Append(caption);
+            }
+
+            sb.Append("\">");
+
+            sb.Append("<img alt=\"").Append(altText);
+            sb.Append("\" src=\"").Append(imageUrl);
+            if (width >= 0)
+            {
+                sb.Append("\" width=\"").Append(width);
+            }
+
+            if (height >= 0)
+            {
+                sb.Append("\" height=\"").Append(height);
+            }
+
+            if (haveBorder)
+            {
+                sb.Append("\" class=\"thumbborder");
+            }
+
+            sb.Append("\">");
+            sb.Append("</a>");
+
+            return string.Concat(openTags, sb.ToString(), closeTags);
         }
 
-        private static string Link(Match match)
+        private string Link(Match match)
         {
-            string baseUrl = "http://en.wikipedia.org/wiki/";
-            string value = match.Groups[1].Value;
-            string text = match.Groups[2].Value;
-            return string.Concat("<a href=\"", baseUrl, value, "\" title=\"", value, "\">", text, "</a>");
+            string pageName = match.Groups[1].Value;
+
+            // Embedded links need special treatment, skip them.)
+            if (pageName.StartsWith("Image:") || pageName.StartsWith("File:"))
+            {
+                return null;
+            }
+
+            string text = match.Groups[3].Value;
+            if (string.IsNullOrEmpty(text))
+            {
+                text = pageName;
+            }
+
+            text = text.Replace(' ', '_');
+            string url = FullUrl + pageName.Replace(' ', '_');
+            return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\">", text, "</a>");
         }
 
         private void SplitNoWiki(string wikicode)
@@ -324,14 +467,14 @@ namespace WikiDesk.Core
         private static readonly Regex BoldRegex = new Regex(@"'''.+?'''", RegexOptions.Compiled | RegexOptions.Singleline);
         private static readonly Regex BoldItalicRegex = new Regex(@"'''''.+?'''''", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private static readonly Regex LinkRegex = new Regex(@"\[\[(.+?)\|(.+?)\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex LinkRegex = new Regex(@"\[\[(.+?)(\|(.+?))?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
         private static readonly Regex ImageRegex = new Regex(
                                     @"\[\[(Image|File)\:(.+?)" +
                                     @"(\|(thumb|thumbnail|frame|frameless))?" +
-                                    @"(\|border)?" +
+                                    @"(\|(border))?" +
                                     @"(\|(right|left|center|none))?" +
-                                    //@"\|alt=()?\|" +
-                                    @"(\|.+?)?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+                                    @"(\|alt=(.+?))?" +
+                                    @"(\|(.+?))?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 
