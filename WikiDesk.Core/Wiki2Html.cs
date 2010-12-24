@@ -204,8 +204,8 @@ namespace WikiDesk.Core
         {
             string imageFileName = match.Groups[2].Value;
             string imageUrlName = imageFileName.Replace(' ', '_');
-            string url = FileUrl + HttpUtility.UrlEncode(imageUrlName);
-            string imagePage = Download.DownloadPage(url);
+            string imagePageUrl = FileUrl + HttpUtility.UrlEncode(imageUrlName);
+            string imagePage = Download.DownloadPage(imagePageUrl);
             Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
             if (!imageSourceMatch.Success ||
                 (imageSourceMatch.Groups[1].Value != imageFileName))
@@ -213,116 +213,118 @@ namespace WikiDesk.Core
                 return string.Empty;
             }
 
-            string imageUrl = imageSourceMatch.Groups[2].Value;
-
-            string openTags = "<p>";
-            string closeTags = "</p>";
+            string imageSrcUrl = imageSourceMatch.Groups[2].Value;
 
             int width = -1;
             int height = -1;
 
-            // thumb|thumbnail|frame|frameless
-            bool haveType = match.Groups[4].Success;
-            bool framed = false;
-            string type = match.Groups[4].Value.ToLowerInvariant();
-            if (haveType)
+            string options = match.Groups[3].Value;
+            if (string.IsNullOrEmpty(options))
             {
-                switch (type)
+                // No options - return default.
+                return WikiImage2Html.Convert(
+                                        imagePageUrl,
+                                        imageSrcUrl,
+                                        null,
+                                        false,
+                                        null,
+                                        -1,
+                                        -1,
+                                        imageFileName,
+                                        null);
+            }
+
+            // Remove the first pipe to avoid an emtpy first token.
+            options = options.TrimStart('|');
+
+            WikiImage2Html.Type? type = null;
+            WikiImage2Html.Location? location = null;
+            bool haveBorder = false;
+            string altText = null;
+            string caption = null;
+
+            foreach (string token in options.Split('|'))
+            {
+                string optionName = token.Trim().ToUpperInvariant();
+                switch (optionName)
                 {
-                    case "thumb":
-                    case "thumbnail":
-                        framed = true;
+                    // Thumbnail size. ThumbCaption. Magnify on caption.
+                    case "THUMB":
+                    case "THUMBNAIL":
+                        type = WikiImage2Html.Type.Thumbnail;
                         break;
-                    case "frame":
-                        framed = true;
+
+                    // Full size. ThumbCaption.
+                    case "FRAME":
+                    case "FRAMED":
+                        type = WikiImage2Html.Type.Framed;
                         break;
-                    case "frameless":
-                        framed = false;
+
+                    // Thumbnail size.
+                    case "FRAMELESS":
+                        type = WikiImage2Html.Type.Frameless;
                         width = config_.ThumbnailWidthPixels;
                         break;
+
+                    case "BORDER":
+                        haveBorder = true;
+                        break;
+
+                    case "RIGHT":
+                        location = WikiImage2Html.Location.Right;
+                        break;
+                    case "LEFT":
+                        location = WikiImage2Html.Location.Left;
+                        break;
+                    case "CENTER":
+                        location = WikiImage2Html.Location.Center;
+                        break;
+                    case "NONE":
+                        location = WikiImage2Html.Location.None;
+                        break;
+
+                    default:
+                        if (optionName.StartsWith("ALT="))
+                        {
+                            altText = token.Substring(4);
+                        }
+                        else
+                        {
+                            // Caption.
+                            caption = token;
+                        }
+
+                        break;
                 }
             }
 
-            // border
-            bool haveBorder = match.Groups[6].Success;
-
-            // right|left|center|none
-            bool haveLocation = match.Groups[8].Success;
-            if (haveLocation)
+            if (altText == null)
             {
-                switch (type)
-                {
-                    case "right":
-                        break;
-                    case "left":
-                        break;
-                    case "center":
-                        break;
-                    case "none":
-                        openTags = "<div class=\"floatnone\">";
-                        closeTags = "</div>";
-                        break;
-                }
-            }
-
-            // alt text
-            bool haveAltText = match.Groups[10].Success;
-            string altText = imageFileName;
-            if (haveAltText)
-            {
-                altText = match.Groups[10].Value.Trim();
-            }
-
-            bool haveCaption = match.Groups[12].Success;
-            string caption = string.Empty;
-            if (haveCaption)
-            {
-                caption = match.Groups[12].Value;
-                // Description may contain wiki links.
-                caption = ConvertBinaryCode(LinkRegex, Link, caption);
-
-                if (!haveAltText)
+                if (caption != null)
                 {
                     altText = caption;
                 }
+                else
+                {
+                    altText = imageFileName;
+                }
             }
 
-            StringBuilder sb = new StringBuilder(256);
-
-            sb.Append("<a href=\"").Append(url).Append( "\" class=\"image");
-            if (haveCaption)
-            {
-                sb.Append("\" title=\"").Append(caption);
-            }
-
-            sb.Append("\">");
-
-            sb.Append("<img alt=\"").Append(altText);
-            sb.Append("\" src=\"").Append(imageUrl);
-            if (width >= 0)
-            {
-                sb.Append("\" width=\"").Append(width);
-            }
-
-            if (height >= 0)
-            {
-                sb.Append("\" height=\"").Append(height);
-            }
-
-            if (haveBorder)
-            {
-                sb.Append("\" class=\"thumbborder");
-            }
-
-            sb.Append("\">");
-            sb.Append("</a>");
-
-            return string.Concat(openTags, sb.ToString(), closeTags);
+            return WikiImage2Html.Convert(
+                                    imagePageUrl,
+                                    imageSrcUrl,
+                                    type,
+                                    haveBorder,
+                                    location,
+                                    width,
+                                    height,
+                                    altText,
+                                    caption);
         }
 
         private string Link(Match match)
         {
-            string pageName = match.Groups[1].Value;
+            string pageName = match.Groups[2].Value;
 
             // Embedded links need special treatment, skip them.)
             if (pageName.StartsWith("Image:") || pageName.StartsWith("File:"))
@@ -330,14 +332,14 @@ namespace WikiDesk.Core
                 return null;
             }
 
-            string text = match.Groups[3].Value;
+            string text = match.Groups[4].Value;
             if (string.IsNullOrEmpty(text))
             {
                 text = pageName;
             }
 
             string url = FullUrl + pageName.Replace(' ', '_');
-            return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\">", text, "</a>");
+            return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\" class=\"mw-redirect\">", text, "</a>");
         }
 
         private void SplitNoWiki(string wikicode)
@@ -466,14 +468,17 @@ namespace WikiDesk.Core
         private static readonly Regex BoldRegex = new Regex(@"'''.+?'''", RegexOptions.Compiled | RegexOptions.Singleline);
         private static readonly Regex BoldItalicRegex = new Regex(@"'''''.+?'''''", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private static readonly Regex LinkRegex = new Regex(@"\[\[(.+?)(\|(.+?))?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+        /// <summary>
+        /// Wiki link regex: excludes images.
+        /// </summary>
+        private static readonly Regex LinkRegex = new Regex(@"\[\[((?!Image\:)(?!File\:))(.+?)(\|(.+?))?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+
+        /// <summary>
+        /// Wiki image regex: matches all options as one group.
+        /// </summary>
         private static readonly Regex ImageRegex = new Regex(
                                     @"\[\[(Image|File)\:(.+?)" +
-                                    @"(\|(thumb|thumbnail|frame|frameless))?" +
-                                    @"(\|(border))?" +
-                                    @"(\|(right|left|center|none))?" +
-                                    @"(\|alt=(.+?))?" +
-                                    @"(\|(.+?))?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+                                    @"((\|.+?)*)\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 

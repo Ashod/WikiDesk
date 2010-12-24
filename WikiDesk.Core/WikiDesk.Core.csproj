@@ -60,6 +60,7 @@
     <Compile Include="Download.cs" />
     <Compile Include="Wiki2Html.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WikiImage2Html.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

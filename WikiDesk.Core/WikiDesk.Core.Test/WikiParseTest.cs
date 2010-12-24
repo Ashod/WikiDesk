@@ -145,7 +145,7 @@
                 "[[Image:Westminstpalace.jpg|captione texte]]",
                 "<p>" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\" title=\"captione texte\">" +
-                        "<img alt=\"captione texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" class=\"thumbborder\">" +
+                        "<img alt=\"captione texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\">" +
                     "</a>" +
                 "</p>");
         }
@@ -261,6 +261,82 @@
         }
 
         [Test]
+        public void ImageFramelessRight()
+        {
+//         <div class="floatright">
+//             <a href="/wiki/File:Westminstpalace.jpg" class="image">
+//                 <img alt="Westminstpalace.jpg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Westminstpalace.jpg/220px-Westminstpalace.jpg" width="220" height="165">
+//             </a>
+//         </div>
+
+            TestConvert(
+                "[[Image:Westminstpalace.jpg|right|frameless]]",
+                "<div class=\"floatright\">" +
+                    "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
+                        "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
+                    "</a>" +
+                "</div>");
+        }
+
+        [Test]
+        public void ImageFramelessLeft()
+        {
+//         <div class="floatleft">
+//             <a href="/wiki/File:Westminstpalace.jpg" class="image">
+//                 <img alt="Westminstpalace.jpg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Westminstpalace.jpg/220px-Westminstpalace.jpg" width="220" height="165">
+//             </a>
+//         </div>
+
+            TestConvert(
+                "[[Image:Westminstpalace.jpg|left|frameless]]",
+                "<div class=\"floatleft\">" +
+                    "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
+                        "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
+                    "</a>" +
+                "</div>");
+        }
+
+        [Test]
+        public void ImageFramelessNone()
+        {
+//         <div class="floatnone">
+//             <a href="/wiki/File:Westminstpalace.jpg" class="image">
+//                 <img alt="Westminstpalace.jpg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Westminstpalace.jpg/220px-Westminstpalace.jpg" width="220" height="165">
+//             </a>
+//         </div>
+
+            TestConvert(
+                "[[Image:Westminstpalace.jpg|none|frameless]]",
+                "<div class=\"floatnone\">" +
+                    "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
+                        "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
+                    "</a>" +
+                "</div>");
+        }
+
+        [Test]
+        public void ImageFramelessCenter()
+        {
+//         <div class="center">
+//             <div class="floatnone">
+//                 <a href="/wiki/File:Westminstpalace.jpg" class="image">
+//                     <img alt="Westminstpalace.jpg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Westminstpalace.jpg/220px-Westminstpalace.jpg" width="220" height="165">
+//                 </a>
+//             </div>
+//         </div>
+
+            TestConvert(
+                "[[Image:Westminstpalace.jpg|center|frameless]]",
+                "<div class=\"center\">" +
+                    "<div class=\"floatnone\">" +
+                        "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
+                            "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
+                        "</a>" +
+                    "</div>" +
+                "</div>");
+        }
+
+        [Test]
         public void ImageFramelessAlt()
         {
 //         <p>
@@ -333,6 +409,7 @@
         }
 
         [Test]
+        [Ignore]
         public void Image()
         {
             const string WIKI_CODE = "[[Image:Westminstpalace.jpg|frame|none|alt=alt text|caption text]]";
@@ -390,7 +467,7 @@
             Wiki2Html converter = new Wiki2Html();
             string html = converter.ConvertX(WIKI_CODE);
 
-            const string EXPECTED = "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">kiko</a>";
+            const string EXPECTED = "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a>";
             Assert.AreEqual(EXPECTED, html);
         }
 
