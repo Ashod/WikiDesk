@@ -82,15 +82,27 @@ namespace WikiDesk.Core
                 }
             }
 
+            bool visibleCaption = (caption != null && type != null && type != Type.Frameless);
+
             sb.Append("<a href=\"").Append(imagePageUrl).Append("\" class=\"image");
             if (caption != null)
             {
-                sb.Append("\" title=\"").Append(caption);
+                if ((type == null) || (type == Type.Frameless))
+                {
+                    sb.Append("\" title=\"").Append(caption);
+                }
             }
 
             sb.Append("\">");
 
-            sb.Append("<img alt=\"").Append(altText);
+            sb.Append("<img alt=\"");
+
+            // Alt. text.
+            if (!visibleCaption)
+            {
+                sb.Append(altText);
+            }
+
             sb.Append("\" src=\"").Append(imageSrcUrl);
             if (width >= 0)
             {
@@ -109,6 +121,19 @@ namespace WikiDesk.Core
 
             sb.Append("\">");
             sb.Append("</a>");
+
+            if (visibleCaption)
+            {
+                sb.Append("<div class=\"thumbcaption\">");
+                sb.Append("<div class=\"magnify\">");
+                sb.Append("<a href=\"").Append(imagePageUrl).Append("\" class=\"internal\" title=\"Enlarge\">");
+                // TODO: Local.
+                sb.Append("<img src=\"http://bits.wikimedia.org/skins-1.5/common/images/magnify-clip.png\" width=\"15\" height=\"11\" alt=\"\">");
+                sb.Append("</a>");
+                sb.Append("</div>");
+                sb.Append(caption);
+                sb.Append("</div>");
+            }
 
             if ((location == null) &&
                 (type == null || type == Type.Frameless))
