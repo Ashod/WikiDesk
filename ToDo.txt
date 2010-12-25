@@ -1,7 +1,21 @@
 * Case-insensitive title search.
-* Update from the web.
 * Other languages.
-* Linking.
-* Proper Conversion.
-* CSS.
 * Full-text search.
+* Navigation History.
+* Favs.
+* Index.
+* Media Cache.
+* Editable settings.
+
+Wiki2Html:
+
+* References.
+* Templates.
+* Audio/Video.
+
+
+Done:
+
+* Linking.
+* Update from the web.
+* CSS.

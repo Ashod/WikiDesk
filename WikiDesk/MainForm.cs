@@ -34,12 +34,17 @@
             browser_.NewWindowCreated += browser__NewWindowCreated;
             browser_.Navigating += browser__Navigating;
             browser_.Navigated += browser__Navigated;
+            browser_.DecideNavigationAction += browser__DecideNavigationAction;
 
             btnBack.Enabled = false;
             btnForward.Enabled = false;
             btnStop.Enabled = false;
             btnGo.Enabled = false;
             cboLanguage.Enabled = false;
+
+            delayedNavigationTimer_.Tick += OnDelayedNavigationTimer;
+            delayedNavigationTimer_.Interval = DELAYED_NAVIGATION_INTERVAL_MS;
+            delayedNavigationTimer_.Enabled = false;
 
             try
             {
@@ -73,20 +78,55 @@
 
         #region Browser Events
 
+        private bool browser__DecideNavigationAction(string url, string mainurl)
+        {
+            if (url.StartsWith(WIKI_PROTOCOL_STRING))
+            {
+                string title = url.Substring(WIKI_PROTOCOL_STRING.Length);
+                DelayedNavigate(title);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void DelayedNavigate(string title)
+        {
+            delayedNavigationTimer_.Tag = title;
+            delayedNavigationTimer_.Start();
+        }
+
+        private void OnDelayedNavigationTimer(object sender, EventArgs e)
+        {
+            delayedNavigationTimer_.Stop();
+            object tag = delayedNavigationTimer_.Tag;
+            delayedNavigationTimer_.Tag = null;
+
+            if (tag is string)
+            {
+                string title = (string)tag;
+                BrowseWikiArticle(settings_.CurrentLanguageCode, title);
+            }
+        }
+
         private void browser__Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
-            Text = string.Format("{0} - {1}", APPLICATION_NAME, browser_.DocumentTitle ?? string.Empty);
-            cboNavigate.Text = browser_.Url != null ? browser_.Url.ToString() : string.Empty;
+            ChangePageTitle(browser_.Url, browser_.DocumentTitle ?? string.Empty);
         }
 
         private void browser__Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            cboNavigate.Text = browser_.Url != null ? browser_.Url.ToString() : string.Empty;
+            if (browser_.Url != null)
+            {
+                currentWikiPageName_ = null;
+            }
+
+            ChangePageTitle(browser_.Url, browser_.DocumentTitle ?? string.Empty);
         }
 
         private void browser__DocumentTitleChanged(object sender, EventArgs e)
         {
-            Text = string.Format("{0} - {1}", APPLICATION_NAME, browser_.DocumentTitle);
+            ChangePageTitle(browser_.Url, browser_.DocumentTitle ?? string.Empty);
         }
 
         private void browser__NewWindowCreated(object sender, NewWindowCreatedEventArgs e)
@@ -111,10 +151,7 @@
 
         private void browser__DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (browser_.Url != null)
-            {
-                cboNavigate.Text = browser_.Url.ToString();
-            }
+            ChangePageTitle(browser_.Url, browser_.DocumentTitle ?? string.Empty);
 
             btnBack.Enabled = browser_.CanGoBack;
             btnForward.Enabled = browser_.CanGoForward;
@@ -123,6 +160,32 @@
         #endregion // Browser Events
 
         #region Browser Controls
+
+        /// <summary>
+        /// Updates the Navigation list and the window title.
+        /// </summary>
+        /// <param name="uri">The URI where we are.</param>
+        /// <param name="name">The name of the page loaded.</param>
+        private void ChangePageTitle(Uri uri, string name)
+        {
+            string url = uri != null ? uri.ToString() : string.Empty;
+            if (string.IsNullOrEmpty(url) && currentWikiPageName_ != null)
+            {
+                url = currentWikiPageName_;
+            }
+
+            // TODO: Save history.
+            cboNavigate.Text = url;
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                Text = string.Format("{0} - {1}", APPLICATION_NAME, browser_.DocumentTitle);
+            }
+            else
+            {
+                Text = APPLICATION_NAME;
+            }
+        }
 
         private void btnBack_Click(object sender, EventArgs e)
         {
@@ -207,26 +270,36 @@
             NavigateTo(title);
         }
 
-        private void NavigateTo(string title)
+        private void NavigateTo(string url)
         {
-            if (string.IsNullOrEmpty(title))
+            currentWikiPageName_ = null;
+
+            if (string.IsNullOrEmpty(url))
             {
                 return;
             }
 
-            if (title.ToLowerInvariant().StartsWith("http://") ||
-                title.ToLowerInvariant().StartsWith("https://"))
+            if (url.ToLowerInvariant().StartsWith("http://") ||
+                url.ToLowerInvariant().StartsWith("https://"))
             {
-                browser_.Url = new Uri(title);
+                browser_.Navigate(url);
+                //browser_.Url = new Uri(url);
             }
             else
             {
-                BrowseWikiArticle(settings_.CurrentLanguageCode, title);
+                if (url.StartsWith(WIKI_PROTOCOL_STRING))
+                {
+                    url = url.Substring(WIKI_PROTOCOL_STRING.Length);
+                }
+
+                BrowseWikiArticle(settings_.CurrentLanguageCode, url);
             }
         }
 
         private void BrowseWikiArticle(string languageCode, string title)
         {
+            currentWikiPageName_ = title;
+
             Page page = db_.QueryPage(title);
             if (page != null)
             {
@@ -288,10 +361,16 @@
             cboLanguage.Enabled = (cboLanguage.Items.Count > 0);
 
 //             browser_.DocumentText = Wiki2Html.Convert(text);
-            Wiki2Html wiki2Html = new Wiki2Html();
+            Wiki2Html wiki2Html = new Wiki2Html(new Configuration(), OnResolveWikiLinks);
             string html = wiki2Html.ConvertX(text);
             browser_.DocumentText = WrapInHtmlBody(title, html);
             Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
+        }
+
+        private string OnResolveWikiLinks(string title, string languageCode)
+        {
+            //TODO: take the language code into consideration.
+            return WIKI_PROTOCOL_STRING + title.Replace(' ', '_');
         }
 
         private string WrapInHtmlBody(string title, string html)
@@ -346,6 +425,17 @@
 
         private readonly Settings settings_;
 
+        /// <summary>
+        /// Timer used to navigate to an internal wiki page.
+        /// </summary>
+        private readonly Timer delayedNavigationTimer_ = new Timer();
+
+        /// <summary>
+        /// The current wiki-page name/title.
+        /// Valid only if we are on an internal wiki page.
+        /// </summary>
+        private string currentWikiPageName_;
+
         private readonly LanguageCodes languages_;
 
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
@@ -353,5 +443,13 @@
 
         private const string APPLICATION_NAME = "WikiDesk";
         private const string CONFIG_FILENAME = "WikiDesk.xml";
+
+        private const string WIKI_PROTOCOL_STRING = "wiki://";
+
+        /// <summary>
+        /// How often should the delayed navigation timer fire.
+        /// We typically disable the timer after the first shot.
+        /// </summary>
+        private const int DELAYED_NAVIGATION_INTERVAL_MS = 10;
     }
 }

@@ -33,6 +33,8 @@ using WebKit.Interop;
 
 namespace WebKit
 {
+    public delegate bool DecidePolicyForNavigationAction(string url, string mainUrl);
+
     internal class WebPolicyDelegate : IWebPolicyDelegate
     {
         public bool AllowDownloads;
@@ -41,6 +43,8 @@ namespace WebKit
 
         // so that we can load and display the first page
         public bool AllowInitialNavigation;
+
+        public event DecidePolicyForNavigationAction DecideNavigationAction;
 
         public WebPolicyDelegate(bool AllowNavigation, bool AllowDownloads, bool AllowNewWindows)
         {
@@ -71,18 +75,27 @@ namespace WebKit
 
         public void decidePolicyForNavigationAction(WebView WebView, CFDictionaryPropertyBag actionInformation, IWebURLRequest request, webFrame frame, IWebPolicyDecisionListener listener)
         {
-            if (AllowNavigation || AllowInitialNavigation)
+            if (InvokeDecideNavigationAction(request.url(), request.mainDocumentURL()) &&
+                (AllowNavigation || AllowInitialNavigation))
+            {
                 listener.use();
+            }
             else
+            {
                 listener.ignore();
+            }
         }
 
         public void decidePolicyForNewWindowAction(WebView WebView, CFDictionaryPropertyBag actionInformation, IWebURLRequest request, string frameName, IWebPolicyDecisionListener listener)
         {
             if (AllowNewWindows)
+            {
                 listener.use();
+            }
             else
+            {
                 listener.ignore();
+            }
         }
 
         public void unableToImplementPolicyWithError(WebView WebView, WebError error, webFrame frame)
@@ -90,5 +103,25 @@ namespace WebKit
         }
 
         #endregion
+
+        #region implementation
+
+        /// <summary>
+        /// Invoke the DecidePolicyForNavigationAction delegate.
+        /// </summary>
+        /// <param name="url">The URL to navigate to.</param>
+        /// <param name="mainUrl">The main document URL.</param>
+        /// <returns>True to navigate, False to cancel.</returns>
+        private bool InvokeDecideNavigationAction(string url, string mainUrl)
+        {
+            DecidePolicyForNavigationAction handler = DecideNavigationAction;
+            if (handler != null)
+            {
+                return handler(url, mainUrl);
+            }
+
+            return true;
+        }
+        #endregion // implementation
     }
 }

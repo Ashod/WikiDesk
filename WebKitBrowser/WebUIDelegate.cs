@@ -32,13 +32,10 @@
 // do and whether they are actually working in WebKit.
 
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 using WebKit.Interop;
-using System.Diagnostics;
+
 using System.Drawing.Printing;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace WebKit
 {

@@ -14,18 +14,32 @@ namespace WikiDesk.Core
 
     public class Wiki2Html
     {
-        private readonly Configuration config_;
+        /// <summary>
+        /// This delegate is used to resolve wiki links.
+        /// This is typically used to decide if the link is internal or
+        /// references another wiki.
+        /// </summary>
+        /// <param name="title">The title of the page to link to.</param>
+        /// <param name="lanugageCode">The code if the target wiki language.</param>
+        /// <returns>A valid full or relative URL.</returns>
+        public delegate string ResolveWikiLink(string title, string lanugageCode);
 
         #region construction
 
         public Wiki2Html()
-            : this(new Configuration())
+            : this(new Configuration(), null)
         {
         }
 
         public Wiki2Html(Configuration config)
+            : this(config, null)
+        {
+        }
+
+        public Wiki2Html(Configuration config, ResolveWikiLink resolveWikiLinkDel)
         {
             config_ = config;
+            resolveWikiLinkDel_ = resolveWikiLinkDel;
         }
 
         #endregion // construction
@@ -338,7 +352,7 @@ namespace WikiDesk.Core
                 text = pageName;
             }
 
-            string url = FullUrl + pageName.Replace(' ', '_');
+            string url = ResolveLink(pageName, config_.CurrentLanguageCode);
             return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\" class=\"mw-redirect\">", text, "</a>");
         }
 
@@ -441,9 +455,27 @@ namespace WikiDesk.Core
             return output;
         }
 
+        #region implementation
+
+        private string ResolveLink(string title, string languageCode)
+        {
+            if (resolveWikiLinkDel_ != null)
+            {
+                return resolveWikiLinkDel_(title, languageCode);
+            }
+
+            return FullUrl + title.Replace(' ', '_');
+        }
+
+        #endregion // implementation
+
         #region representation
 
         #endregion // representation
+
+        private readonly Configuration config_;
+
+        private readonly ResolveWikiLink resolveWikiLinkDel_;
 
         #region Regex
 

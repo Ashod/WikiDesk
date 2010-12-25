@@ -32,14 +32,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using WebKit;
-using WebKit.DOM;
+
 using WebKit.Interop;
-using System.Diagnostics;
+
 using System.Reflection;
 using System.IO;
 using System.Drawing.Printing;
@@ -130,6 +127,8 @@ namespace WebKit
         /// Occurs before the WebKitBrowser control navigates to a new document.
         /// </summary>
         public event WebBrowserNavigatingEventHandler Navigating = delegate { };
+
+        public event DecidePolicyForNavigationAction DecideNavigationAction;
 
         /// <summary>
         /// Occurs when an error occurs on the current document, or when navigating to a new document.
@@ -554,15 +553,15 @@ namespace WebKit
             if (LicenseManager.UsageMode != LicenseUsageMode.Designtime)
             {
                 // Control Events
-                this.Load += new EventHandler(WebKitBrowser_Load);
-                this.Resize += new EventHandler(WebKitBrowser_Resize);
+                Load += WebKitBrowser_Load;
+                Resize += WebKitBrowser_Resize;
 
                 // If this is the first time the library has been loaded,
                 // initialize the activation context required to load the
                 // WebKit COM component registration free
                 if ((actCtxRefCount++) == 0)
                 {
-                    FileInfo fi = new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                    FileInfo fi = new FileInfo(Assembly.GetExecutingAssembly().Location);
                     activationContext = new ActivationContext(Path.Combine(fi.DirectoryName, "WebKitBrowser.dll.manifest"));
                     activationContext.Initialize();
 
@@ -597,6 +596,7 @@ namespace WebKit
 
             policyDelegate = new WebPolicyDelegate(AllowNavigation, AllowDownloads, AllowNewWindows);
             Marshal.AddRef(Marshal.GetIUnknownForObject(policyDelegate));
+            policyDelegate.DecideNavigationAction += DecideNavigationAction;
 
             uiDelegate = new WebUIDelegate(this);
             Marshal.AddRef(Marshal.GetIUnknownForObject(uiDelegate));
