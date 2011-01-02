@@ -46,6 +46,8 @@
             delayedNavigationTimer_.Interval = DELAYED_NAVIGATION_INTERVAL_MS;
             delayedNavigationTimer_.Enabled = false;
 
+            tempFilename_ = Path.GetTempFileName().Replace(".tmp", ".html");
+
             try
             {
                 settings_ = Settings.Deserialize(CONFIG_FILENAME);
@@ -286,7 +288,6 @@
                 url.ToLowerInvariant().StartsWith("file://"))
             {
                 browser_.Navigate(url);
-                //browser_.Url = new Uri(url);
             }
             else
             {
@@ -363,11 +364,18 @@
 
             cboLanguage.Enabled = (cboLanguage.Items.Count > 0);
 
-//             browser_.DocumentText = Wiki2Html.Convert(text);
             Wiki2Html wiki2Html = new Wiki2Html(new Configuration(), OnResolveWikiLinks, fileCache_);
             string html = wiki2Html.ConvertX(text);
-            browser_.DocumentText = WrapInHtmlBody(title, html);
-            Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
+            html = WrapInHtmlBody(title, html);
+
+            using (FileStream fs = new FileStream(tempFilename_, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read))
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(html);
+                fs.Write(bytes, 0, bytes.Length);
+            }
+
+            string url = "file:///" + tempFilename_.Replace('\\', '/');
+            NavigateTo(url);
         }
 
         private string OnResolveWikiLinks(string title, string languageCode)
@@ -378,9 +386,13 @@
 
         private string WrapInHtmlBody(string title, string html)
         {
-            string header = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
-            "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" dir=\"ltr\">" +
-            "<head><title>" + title + "</title><style type=\"text/css\">";
+            //TODO: lang should be generated dynamically.
+            string header =
+                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
+                "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" dir=\"ltr\">" +
+                "<head><title>" + title + "</title>" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />" +
+                "<style type=\"text/css\">";
 
             if (!string.IsNullOrEmpty(settings_.CssFilename))
             {
@@ -445,6 +457,8 @@
         private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();
 
         private readonly IFileCache fileCache_;
+
+        private readonly string tempFilename_;
 
         private const string APPLICATION_NAME = "WikiDesk";
         private const string CONFIG_FILENAME = "WikiDesk.xml";
