@@ -56,6 +56,8 @@
                 settings_.Serialize(CONFIG_FILENAME);
             }
 
+            fileCache_ = new FileCache(settings_.FileCacheFolder);
+
             OpenDatabase(settings_.DefaultDatabaseFilename);
 
             languages_ = LanguageCodes.Deserialize(settings_.LanguageCodesFilename);
@@ -280,7 +282,8 @@
             }
 
             if (url.ToLowerInvariant().StartsWith("http://") ||
-                url.ToLowerInvariant().StartsWith("https://"))
+                url.ToLowerInvariant().StartsWith("https://") ||
+                url.ToLowerInvariant().StartsWith("file://"))
             {
                 browser_.Navigate(url);
                 //browser_.Url = new Uri(url);
@@ -361,7 +364,7 @@
             cboLanguage.Enabled = (cboLanguage.Items.Count > 0);
 
 //             browser_.DocumentText = Wiki2Html.Convert(text);
-            Wiki2Html wiki2Html = new Wiki2Html(new Configuration(), OnResolveWikiLinks);
+            Wiki2Html wiki2Html = new Wiki2Html(new Configuration(), OnResolveWikiLinks, fileCache_);
             string html = wiki2Html.ConvertX(text);
             browser_.DocumentText = WrapInHtmlBody(title, html);
             Text = string.Format("{0} - {1}", APPLICATION_NAME, title);
@@ -440,6 +443,8 @@
 
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
         private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();
+
+        private readonly IFileCache fileCache_;
 
         private const string APPLICATION_NAME = "WikiDesk";
         private const string CONFIG_FILENAME = "WikiDesk.xml";

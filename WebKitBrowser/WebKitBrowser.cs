@@ -232,20 +232,22 @@ namespace WebKit
                     }
                     catch (COMException)
                     {
-                        return "";
+                        return string.Empty;
                     }
                 }
-                else
-                {
-                    return initialText;
-                }
+
+                return initialText;
             }
             set
             {
                 if (loaded)
+                {
                     webView.mainFrame().loadHTMLString(value, null);
+                }
                 else
+                {
                     initialText = value;
+                }
             }
         }
 
@@ -255,13 +257,7 @@ namespace WebKit
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string SelectedText
         {
-            get
-            {
-                if (loaded)
-                    return webView.selectedText();
-                else
-                    return "";
-            }
+            get { return loaded ? webView.selectedText() : string.Empty; }
         }
 
         /// <summary>
@@ -270,17 +266,13 @@ namespace WebKit
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string ApplicationName
         {
-            get
-            {
-                if (webView != null)
-                    return webView.applicationNameForUserAgent();
-                else
-                    return "";
-            }
+            get { return webView != null ? webView.applicationNameForUserAgent() : string.Empty; }
             set
             {
                 if (webView != null)
+                {
                     webView.setApplicationNameForUserAgent(value);
+                }
             }
         }
 
@@ -535,6 +527,12 @@ namespace WebKit
                     initialJavaScriptEnabled = value;
                 }
             }
+        }
+
+        public WebPreferences Preferences
+        {
+            get { return webView.preferences(); }
+            set { webView.setPreferences(value); }
         }
 
         #endregion

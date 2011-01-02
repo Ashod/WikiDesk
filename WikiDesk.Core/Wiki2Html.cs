@@ -27,19 +27,22 @@ namespace WikiDesk.Core
         #region construction
 
         public Wiki2Html()
-            : this(new Configuration(), null)
+            : this(new Configuration())
         {
         }
 
         public Wiki2Html(Configuration config)
-            : this(config, null)
+            : this(config, null, null)
         {
         }
 
-        public Wiki2Html(Configuration config, ResolveWikiLink resolveWikiLinkDel)
+        public Wiki2Html(Configuration config,
+                         ResolveWikiLink resolveWikiLinkDel,
+                         IFileCache fileCache)
         {
             config_ = config;
             resolveWikiLinkDel_ = resolveWikiLinkDel;
+            fileCache_ = fileCache;
         }
 
         #endregion // construction
@@ -87,7 +90,10 @@ namespace WikiDesk.Core
         private string Redirect(Match match)
         {
             string value = match.Groups[1].Value;
-            return string.Concat("<a href=\"", FullUrl, value, "\" title=\"", value, "\">", value, "</a>");
+
+            //TODO: Consider language codes.
+            string url = ResolveLink(value, config_.CurrentLanguageCode);
+            return string.Concat("<a href=\"", url, "\" title=\"", value, "\">", value, "</a>");
         }
 
         /// <summary>
@@ -217,17 +223,35 @@ namespace WikiDesk.Core
         private string Image(Match match)
         {
             string imageFileName = match.Groups[2].Value;
-            string imageUrlName = imageFileName.Replace(' ', '_');
-            string imagePageUrl = FileUrl + HttpUtility.UrlEncode(imageUrlName);
-            string imagePage = Download.DownloadPage(imagePageUrl);
-            Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
-            if (!imageSourceMatch.Success ||
-                (imageSourceMatch.Groups[1].Value != imageFileName))
+
+            string imagePageUrl = FileUrl + HttpUtility.UrlEncode(imageFileName.Replace(' ', '_'));
+            string imageSrcUrl = null;
+
+            if (fileCache_ != null)
             {
-                return string.Empty;
+                if (fileCache_.IsSourceCached(imageFileName, config_.CurrentLanguageCode))
+                {
+                    //imageSrcUrl = fileCache_.ResolveSourceUrl(imageFileName, config_.CurrentLanguageCode);
+                }
             }
 
-            string imageSrcUrl = imageSourceMatch.Groups[2].Value;
+            if (string.IsNullOrEmpty(imageSrcUrl))
+            {
+                string imagePage = Download.DownloadPage(imagePageUrl);
+                Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
+                if (!imageSourceMatch.Success ||
+                    (imageSourceMatch.Groups[1].Value != imageFileName))
+                {
+                    return string.Empty;
+                }
+
+                imageSrcUrl = imageSourceMatch.Groups[2].Value;
+
+                if (fileCache_ != null)
+                {
+                    fileCache_.CacheMedia(imageFileName, config_.CurrentLanguageCode, imageSrcUrl);
+                }
+            }
 
             int width = -1;
             int height = -1;
@@ -476,6 +500,8 @@ namespace WikiDesk.Core
         private readonly Configuration config_;
 
         private readonly ResolveWikiLink resolveWikiLinkDel_;
+
+        private readonly IFileCache fileCache_;
 
         #region Regex
 

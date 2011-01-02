@@ -140,7 +140,7 @@ namespace WebKit
 
         public int hasCustomMenuImplementation()
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public int isMenuBarVisible(WebView WebView)
