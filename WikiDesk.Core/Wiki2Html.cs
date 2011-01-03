@@ -88,6 +88,8 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
             wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
 
+            wikicode = ConvertBinaryCode(TemplateRegex, Template, wikicode);
+
             wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
             wikicode = ConvertBinaryCode(ExtLinkRegex, ExtLink, wikicode);
@@ -499,6 +501,29 @@ namespace WikiDesk.Core
             return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text, "</a>");
         }
 
+        private string Template(Match match)
+        {
+            string name = match.Groups[1].Value;
+            string nameUpper = name.ToUpperInvariant();
+            string options = match.Groups[2].Value.Trim('|');
+
+            if (nameUpper.StartsWith("LANG-"))
+            {
+                string lang = name.Substring("LANG-".Length);
+                StringBuilder sb = new StringBuilder(128);
+                sb.Append("<span lang=\"");
+                sb.Append(lang);
+                sb.Append("\" xml:lang=\"");
+                sb.Append(lang);
+                sb.Append("\">");
+                sb.Append(options);
+                sb.Append("</span>");
+                return sb.ToString();
+            }
+
+            return null;
+        }
+
         private void SplitNoWiki(string wikicode)
         {
 
@@ -666,6 +691,8 @@ namespace WikiDesk.Core
         private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+        private static readonly Regex TemplateRegex = new Regex(@"\{\{(.+?)(\|(.+?))?\}\}", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private readonly string currentFolder_;
 

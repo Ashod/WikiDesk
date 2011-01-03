@@ -519,12 +519,15 @@
         [Test]
         public void ExtLink()
         {
-            const string WIKI_CODE = "[http://www.wikipedia.org WikiPipi]";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
+            TestConvert("[http://www.wikipedia.org WikiPipi]",
+                "<a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a>");
+        }
 
-            const string EXPECTED = "<a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a>";
-            Assert.AreEqual(EXPECTED, html);
+        [Test]
+        public void LangTemplate()
+        {
+            TestConvert("{{lang-ka|kikos}}",
+                "<span lang=\"ka\" xml:lang=\"ka\">kikos</span>");
         }
 
         [Test]
