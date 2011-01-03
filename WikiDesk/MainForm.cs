@@ -47,6 +47,7 @@
             delayedNavigationTimer_.Enabled = false;
 
             tempFilename_ = Path.GetTempFileName().Replace(".tmp", ".html");
+            tempFileUrl_ = "file:///" + tempFilename_.Replace('\\', '/');
 
             try
             {
@@ -120,7 +121,7 @@
 
         private void browser__Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if (browser_.Url != null)
+            if ((browser_.Url != null) && (browser_.Url.ToString() != tempFilename_))
             {
                 currentWikiPageName_ = null;
             }
@@ -172,10 +173,10 @@
         /// <param name="name">The name of the page loaded.</param>
         private void ChangePageTitle(Uri uri, string name)
         {
-            string url = uri != null ? uri.ToString() : string.Empty;
-            if (string.IsNullOrEmpty(url) && currentWikiPageName_ != null)
+            string url = currentWikiPageName_ ?? string.Empty;
+            if (currentWikiPageName_ == null)
             {
-                url = currentWikiPageName_;
+                url = uri != null ? uri.ToString() : string.Empty;
             }
 
             // TODO: Save history.
@@ -276,17 +277,21 @@
 
         private void NavigateTo(string url)
         {
-            currentWikiPageName_ = null;
-
             if (string.IsNullOrEmpty(url))
             {
                 return;
             }
 
-            if (url.ToLowerInvariant().StartsWith("http://") ||
-                url.ToLowerInvariant().StartsWith("https://") ||
-                url.ToLowerInvariant().StartsWith("file://"))
+            string urlUpper = url.ToUpperInvariant();
+            if (urlUpper.StartsWith("HTTP://") ||
+                urlUpper.StartsWith("HTTPS://") ||
+                urlUpper.StartsWith("FILE://"))
             {
+                if (url != tempFileUrl_)
+                {
+                    currentWikiPageName_ = null;
+                }
+
                 browser_.Navigate(url);
             }
             else
@@ -311,7 +316,6 @@
                 if (rev != null)
                 {
                     string text = Encoding.UTF8.GetString(rev.Text);
-                    //browser_.Url = null;
 
                     ShowWikiPage(title, text);
                     return;
@@ -374,8 +378,7 @@
                 fs.Write(bytes, 0, bytes.Length);
             }
 
-            string url = "file:///" + tempFilename_.Replace('\\', '/');
-            NavigateTo(url);
+            NavigateTo(tempFileUrl_);
         }
 
         private string OnResolveWikiLinks(string title, string languageCode)
@@ -386,27 +389,40 @@
 
         private string WrapInHtmlBody(string title, string html)
         {
+            StringBuilder sb = new StringBuilder(html.Length * 2);
+            sb.Append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" ");
+            sb.Append("\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
             //TODO: lang should be generated dynamically.
-            string header =
-                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" +
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" dir=\"ltr\">" +
-                "<head><title>" + title + "</title>" +
-                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />" +
-                "<style type=\"text/css\">";
+            sb.Append("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" dir=\"ltr\">");
+            sb.Append("<head><title>").Append(title).Append("</title>");
+            sb.Append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+            sb.Append("<style type=\"text/css\">");
 
             if (!string.IsNullOrEmpty(settings_.CssFilename))
             {
-                header += File.ReadAllText(settings_.CssFilename);
+                sb.Append(File.ReadAllText(settings_.CssFilename));
             }
 
-            string body = "</style></head>" +
-                          "<body class=\"mediawiki ltr ns-0 ns-subject page-Brazil skin-vector\">" +
-                          "<div id=\"mw-page-base\" class=\"noprint\"></div>" +
-                          "<div id=\"mw-head-base\" class=\"noprint\"></div>" +
-                          "<div id=\"content\">";
-            string footer = "</body></html>";
+            sb.Append("</style></head>");
+            sb.Append("<body class=\"mediawiki ltr ns-0 ns-subject page-");
+            sb.Append(title.Replace(' ', '_'));
+            sb.Append(" skin-vector\">");
+            sb.Append("<div id=\"mw-page-base\" class=\"noprint\"></div>");
+            sb.Append("<div id=\"mw-head-base\" class=\"noprint\"></div>");
+            sb.Append("<div id=\"content\">");
 
-            return header + body + html + footer;
+            sb.Append("<h1 id=\"firstHeading\" class=\"firstHeading\">");
+            sb.Append(title);
+            sb.Append("</h1>");
+    		sb.Append("<div id=\"bodyContent\">");
+            sb.Append("<div id=\"siteSub\">From Wikipedia, the free encyclopedia</div>");
+
+            sb.Append(html);
+
+            sb.Append("</div></div>");
+            sb.Append("</body></html>");
+
+            return sb.ToString();
         }
 
         private void Navigation_KeyDown(object sender, KeyEventArgs e)
@@ -459,6 +475,7 @@
         private readonly IFileCache fileCache_;
 
         private readonly string tempFilename_;
+        private readonly string tempFileUrl_;
 
         private const string APPLICATION_NAME = "WikiDesk";
         private const string CONFIG_FILENAME = "WikiDesk.xml";

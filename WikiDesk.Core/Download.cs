@@ -6,13 +6,13 @@
     public class Download
     {
         public static string DownloadPage(string url)
-        {
+        { 
             // Open a connection
             HttpWebRequest webRequestObject = (HttpWebRequest)WebRequest.Create(url);
 
 //             // You can also specify additional header values like
 //             // the user agent or the referrer:
-//             webRequestObject.UserAgent	= ".NET Framework/2.0";
+             webRequestObject.UserAgent	= ".NET Framework/2.0";
 //             webRequestObject.Referer	= "http://www.example.com/";
 
             // Request response:
