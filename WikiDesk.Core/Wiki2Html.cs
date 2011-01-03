@@ -488,7 +488,7 @@ namespace WikiDesk.Core
             return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\" class=\"mw-redirect\">", text, "</a>");
         }
 
-        private string ExtLink(Match match)
+        private static string ExtLink(Match match)
         {
             string url = match.Groups[1].Value;
 
@@ -518,6 +518,20 @@ namespace WikiDesk.Core
                 sb.Append("\">");
                 sb.Append(options);
                 sb.Append("</span>");
+                return sb.ToString();
+            }
+
+            if (nameUpper == "MAIN")
+            {
+                StringBuilder sb = new StringBuilder(128);
+                sb.Append("<div class=\"rellink relarticle mainarticle\">Main article: <a href=\"");
+                string url = ResolveLink(options, config_.CurrentLanguageCode);
+                sb.Append(url);
+                sb.Append("\" title=\"");
+                sb.Append(options);
+                sb.Append("\">");
+                sb.Append(options);
+                sb.Append("</a></div>");
                 return sb.ToString();
             }
 

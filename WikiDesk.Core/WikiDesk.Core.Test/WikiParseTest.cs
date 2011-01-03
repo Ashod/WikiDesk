@@ -524,10 +524,17 @@
         }
 
         [Test]
-        public void LangTemplate()
+        public void TemplateLang()
         {
             TestConvert("{{lang-ka|kikos}}",
                 "<span lang=\"ka\" xml:lang=\"ka\">kikos</span>");
+        }
+
+        [Test]
+        public void TemplateMain()
+        {
+            TestConvert("{{Main|History of Tbilisi}}",
+                "<div class=\"rellink relarticle mainarticle\">Main article: <a href=\"http://en.wikipedia.org/wiki/History_of_Tbilisi\" title=\"History of Tbilisi\">History of Tbilisi</a></div>");
         }
 
         [Test]
