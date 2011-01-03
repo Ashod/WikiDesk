@@ -115,6 +115,18 @@
         #region Image
 
         [Test]
+        public void List()
+        {
+            TestConvert(
+                "Blah blah List\n" +
+                "* first.\n" +
+                "* second.\n" + 
+                "* last.\n" +
+                "Other text.",
+                "Blah blah List\n<ul><li>first.</li><li>second.</li><li>last.</li></ul>\nOther text.");
+        }
+
+        [Test]
         public void ImageMinimal()
         {
 //         <p>

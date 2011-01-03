@@ -1,7 +1,6 @@
 ﻿
 namespace WikiDesk.Core
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -76,6 +75,7 @@ namespace WikiDesk.Core
         public string ConvertX(string wikicode)
         {
             wikicode = ConvertUnaryCode(RedirectRegex, Redirect, wikicode);
+            wikicode = ConvertListCode(wikicode);
 
             wikicode = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikicode);
             wikicode = ConvertBinaryCode(BoldRegex, Bold, wikicode);
@@ -103,6 +103,14 @@ namespace WikiDesk.Core
             return string.Concat("<a href=\"", url, "\" title=\"", value, "\">", value, "</a>");
         }
 
+        private string List(Match match)
+        {
+            string value = match.Groups[1].Value;
+
+            string url = ResolveLink(value, config_.CurrentLanguageCode);
+            return string.Concat("<a href=\"", url, "\" title=\"", value, "\">", value, "</a>");
+        }
+
         /// <summary>
         /// Handles conversion of a matching regex into HTML.
         /// May return null to skip conversion of the matching block.
@@ -110,6 +118,38 @@ namespace WikiDesk.Core
         /// <param name="match">The regex match instance.</param>
         /// <returns>A replacement string, or null to skip.</returns>
         private delegate string MatchedCodeHandler(Match match);
+
+        private static string ConvertListCode(string wikicode)
+        {
+            Match match = ListRegex.Match(wikicode);
+            if (match.Success)
+            {
+                StringBuilder sb = new StringBuilder(wikicode.Length);
+                sb.Append(wikicode.Substring(0, match.Index));
+                sb.Append("<ul>");
+                int index;
+                int pos;
+
+                do
+                {
+                    index = match.Index;
+                    pos = index + match.Length;
+
+                    sb.Append("<li>");
+                    sb.Append(match.Groups[1].Value);
+                    sb.Append("</li>");
+
+                    match = ListRegex.Match(wikicode, pos);
+                }
+                while (match.Success);
+
+                sb.Append("</ul>");
+                sb.Append(wikicode.Substring(pos));
+                wikicode = sb.ToString();
+            }
+
+            return wikicode;
+        }
 
         private static string ConvertUnaryCode(Regex regex, MatchedCodeHandler handler, string wikicode)
         {
@@ -573,6 +613,7 @@ namespace WikiDesk.Core
         // Unary Operators
         //
         private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT \[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+        private static readonly Regex ListRegex = new Regex(@"^\* (.+?)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
 
         //
         // These can appear only at the start of a line.
