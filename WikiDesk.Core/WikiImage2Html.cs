@@ -134,7 +134,6 @@ namespace WikiDesk.Core
                 sb.Append("<div class=\"thumbcaption\">");
                 sb.Append("<div class=\"magnify\">");
                 sb.Append("<a href=\"").Append(imagePageUrl).Append("\" class=\"internal\" title=\"Enlarge\">");
-                // TODO: Local.
                 sb.Append("<img src=\"");
                 sb.Append(commonImagesUri);
                 sb.Append("magnify-clip.png\" width=\"15\" height=\"11\" alt=\"\">");

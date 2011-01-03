@@ -120,7 +120,7 @@
             TestConvert(
                 "Blah blah List\n" +
                 "* first.\n" +
-                "* second.\n" + 
+                "* second.\n" +
                 "* last.\n" +
                 "Other text.",
                 "Blah blah List\n<ul><li>first.</li><li>second.</li><li>last.</li></ul>\nOther text.");
@@ -450,6 +450,7 @@
         }
 
         [Test]
+        [Ignore]
         public void ImageSize()
         {
             TestConvert(
@@ -514,6 +515,17 @@
         }
 
         #endregion // Image
+
+        [Test]
+        public void ExtLink()
+        {
+            const string WIKI_CODE = "[http://www.wikipedia.org WikiPipi]";
+            Wiki2Html converter = new Wiki2Html();
+            string html = converter.ConvertX(WIKI_CODE);
+
+            const string EXPECTED = "<a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a>";
+            Assert.AreEqual(EXPECTED, html);
+        }
 
         [Test]
         public void Link()

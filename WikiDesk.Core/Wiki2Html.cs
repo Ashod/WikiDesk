@@ -88,8 +88,9 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
             wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
 
-            wikicode = ConvertBinaryCode(LinkRegex, Link, wikicode);
+            wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
+            wikicode = ConvertBinaryCode(ExtLinkRegex, ExtLink, wikicode);
 
             return wikicode;
         }
@@ -464,7 +465,7 @@ namespace WikiDesk.Core
                                     commonImagesPath_);
         }
 
-        private string Link(Match match)
+        private string WikiLink(Match match)
         {
             string pageName = match.Groups[2].Value;
 
@@ -482,6 +483,19 @@ namespace WikiDesk.Core
 
             string url = ResolveLink(pageName, config_.CurrentLanguageCode);
             return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\" class=\"mw-redirect\">", text, "</a>");
+        }
+
+        private string ExtLink(Match match)
+        {
+            string url = match.Groups[1].Value;
+
+            string text = match.Groups[2].Value;
+            if (string.IsNullOrEmpty(text))
+            {
+                text = url;
+            }
+
+            return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text, "</a>");
         }
 
         private void SplitNoWiki(string wikicode)
@@ -613,7 +627,7 @@ namespace WikiDesk.Core
         // Unary Operators
         //
         private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT \[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
-        private static readonly Regex ListRegex = new Regex(@"^\* (.+?)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+        private static readonly Regex ListRegex = new Regex(@"^\* (.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
         //
         // These can appear only at the start of a line.
@@ -634,7 +648,12 @@ namespace WikiDesk.Core
         /// <summary>
         /// Wiki link regex: excludes images.
         /// </summary>
-        private static readonly Regex LinkRegex = new Regex(@"\[\[((?!Image\:)(?!File\:))(.+?)(\|(.+?))?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex WikiLinkRegex = new Regex(@"\[\[((?!Image\:)(?!File\:))(.+?)(\|(.+?))?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+
+        /// <summary>
+        /// External links.
+        /// </summary>
+        private static readonly Regex ExtLinkRegex = new Regex(@"\[(.+?)\s+(.+?)\]", RegexOptions.Compiled | RegexOptions.Singleline);
 
         /// <summary>
         /// Wiki image regex: matches all options as one group.
