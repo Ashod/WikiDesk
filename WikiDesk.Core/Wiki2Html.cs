@@ -528,13 +528,26 @@ namespace WikiDesk.Core
             {
                 StringBuilder sb = new StringBuilder(128);
                 sb.Append("<div class=\"rellink relarticle mainarticle\">Main article: <a href=\"");
-                string url = ResolveLink(options, config_.CurrentLanguageCode);
-                sb.Append(url);
+                sb.Append(ResolveLink(options, config_.CurrentLanguageCode));
                 sb.Append("\" title=\"");
                 sb.Append(options);
                 sb.Append("\">");
                 sb.Append(options);
                 sb.Append("</a></div>");
+                return sb.ToString();
+            }
+
+            if (nameUpper == "OCLC")
+            {
+                StringBuilder sb = new StringBuilder(128);
+                sb.Append("<a href=\"");
+                sb.Append(ResolveLink("Online Computer Library Center", config_.CurrentLanguageCode));
+                sb.Append("\" title=\"Online Computer Library Center\">OCLC</a>");
+                sb.Append("&nbsp;<a href=\"http://www.worldcat.org/oclc/");
+                sb.Append(options);
+                sb.Append("\" class=\"external text\" rel=\"nofollow\">");
+                sb.Append(options);
+                sb.Append("</a>");
                 return sb.ToString();
             }
 
@@ -550,7 +563,12 @@ namespace WikiDesk.Core
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (line.Length == 0 || line.StartsWith("<h"))
+                    if (line.Length == 0 ||
+                        line.StartsWith("<h") ||
+                        line.StartsWith("<p") ||
+                        line.StartsWith("<d") ||
+                        line.StartsWith("<u") ||
+                        line.StartsWith("<l"))
                     {
                         if (para)
                         {

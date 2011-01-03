@@ -10,56 +10,41 @@
         [Test]
         public void Header1()
         {
-            const string WIKI_CODE = "=!=";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<h1><span class=\"mw-headline\">!</span></h1>";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "=!=",
+                    "<h1><span class=\"mw-headline\">!</span></h1>");
         }
 
         [Test]
         public void Header2()
         {
-            const string WIKI_CODE = "==!==";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<h2><span class=\"mw-headline\">!</span></h2>";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "==!==",
+                    "<h2><span class=\"mw-headline\">!</span></h2>");
         }
 
         [Test]
         public void Header2NewLine()
         {
-            const string WIKI_CODE = "==!==\n";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<h2><span class=\"mw-headline\">!</span></h2>\n";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "==!==\n",
+                    "<h2><span class=\"mw-headline\">!</span></h2>");
         }
 
         [Test]
         public void Header2Pre()
         {
-            const string WIKI_CODE = "blah blha \n==!==\n";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "blah blha \n<h2><span class=\"mw-headline\">!</span></h2>\n";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "blah blha \n==!==\n",
+                    "<p>blah blha </p><h2><span class=\"mw-headline\">!</span></h2>");
         }
 
         [Test]
         public void Header2PrePost()
         {
-            const string WIKI_CODE = "blah blha \n==!==\nThe bigest mistkae.";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "blah blha \n<h2><span class=\"mw-headline\">!</span></h2>\nThe bigest mistkae.";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "blah blha \n==!==\nThe bigest mistkae.",
+                    "<p>blah blha </p><h2><span class=\"mw-headline\">!</span></h2><p>The bigest mistkae.</p>");
         }
 
         #endregion // Header
@@ -69,45 +54,33 @@
         [Test]
         public void Italic()
         {
-            const string WIKI_CODE = "''!''";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<i>!</i>";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "''!''",
+                    "<p><i>!</i></p>");
         }
 
         [Test]
         public void BoldItalic()
         {
-            const string WIKI_CODE = "'''''!'''''";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<i><b>!</b></i>";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "'''''!'''''",
+                    "<p><i><b>!</b></i></p>");
         }
 
         [Test]
         public void Bold()
         {
-            const string WIKI_CODE = "'''!'''";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<b>!</b>";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "'''!'''",
+                    "<p><b>!</b></p>");
         }
 
         [Test]
         public void BoldHeader3()
         {
-            const string WIKI_CODE = "=='''!'''==";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<h2><span class=\"mw-headline\"><b>!</b></span></h2>";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "=='''!'''==",
+                    "<h2><span class=\"mw-headline\"><b>!</b></span></h2>");
         }
 
         #endregion // Bold/Italic
@@ -123,7 +96,7 @@
                 "* second.\n" +
                 "* last.\n" +
                 "Other text.",
-                "Blah blah List\n<ul><li>first.</li><li>second.</li><li>last.</li></ul>\nOther text.");
+                "<p>Blah blah List</p><ul><li>first.</li><li>second.</li><li>last.</li></ul><p>Other text.</p>");
         }
 
         [Test]
@@ -520,14 +493,16 @@
         public void ExtLink()
         {
             TestConvert("[http://www.wikipedia.org WikiPipi]",
-                "<a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a>");
+                "<p><a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a></p>");
         }
+
+        #region templates
 
         [Test]
         public void TemplateLang()
         {
             TestConvert("{{lang-ka|kikos}}",
-                "<span lang=\"ka\" xml:lang=\"ka\">kikos</span>");
+                "<p><span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
         }
 
         [Test]
@@ -538,22 +513,30 @@
         }
 
         [Test]
+        public void TemplateOCLC()
+        {
+            TestConvert("{{OCLC|224781861}}",
+                "<p><a href=\"http://en.wikipedia.org/wiki/Online_Computer_Library_Center\" title=\"Online Computer Library Center\">OCLC</a>" +
+                "&nbsp;<a href=\"http://www.worldcat.org/oclc/224781861\" class=\"external text\" rel=\"nofollow\">224781861</a></p>");
+        }
+
+        #endregion // templates
+
+        [Test]
         public void Link()
         {
-            const string WIKI_CODE = "[[Brazil|kiko]]";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a>";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "[[Brazil|kiko]]",
+                    "<p><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a></p>");
         }
 
         [Test]
+        [Ignore]
         public void ImageComplex()
         {
-            const string WIKI_CODE = "[[File:Independência ou Morte.jpg|thumb|left|Declaration of the [[Brazilian Declaration of Independence|Brazilian independence]] by Emperor [[Pedro I of Brazil|Pedro I]] on 7 September 1822.]]";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
+            TestConvert(
+                    "[[File:Independência ou Morte.jpg|thumb|left|Declaration of the [[Brazilian Declaration of Independence|Brazilian independence]] by Emperor [[Pedro I of Brazil|Pedro I]] on 7 September 1822.]]",
+                    "");
 
 //         <div class="thumb tleft">
 //             <div class="thumbinner" style="width:222px;">
@@ -575,12 +558,9 @@
         [Test]
         public void Redirect()
         {
-            const string WIKI_CODE = "#REDIRECT [[Brazil]]";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
-
-            const string EXPECTED = "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a>";
-            Assert.AreEqual(EXPECTED, html);
+            TestConvert(
+                    "#REDIRECT [[Brazil]]",
+                    "<p><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></p>");
         }
 
         private void TestConvert(string wikicode, string expected)
