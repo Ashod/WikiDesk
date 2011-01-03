@@ -1,6 +1,7 @@
 ﻿
 namespace WikiDesk.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -93,6 +94,8 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
             wikicode = ConvertBinaryCode(ExtLinkRegex, ExtLink, wikicode);
+
+            wikicode = ConvertParagraphs(wikicode);
 
             return wikicode;
         }
@@ -536,6 +539,46 @@ namespace WikiDesk.Core
             }
 
             return null;
+        }
+
+        private static string ConvertParagraphs(string wikicode)
+        {
+            StringBuilder sb = new StringBuilder(wikicode.Length * 2);
+            using (StringReader sr = new StringReader(wikicode))
+            {
+                bool para = false;
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (line.Length == 0 || line.StartsWith("<h"))
+                    {
+                        if (para)
+                        {
+                            sb.Append("</p>");
+                            para = false;
+                        }
+
+                        sb.Append(line);
+                    }
+                    else
+                    {
+                        if (!para)
+                        {
+                            sb.Append("<p>");
+                            para = true;
+                        }
+
+                        sb.Append(line);
+                    }
+                }
+
+                if (para)
+                {
+                    sb.Append("</p>");
+                }
+            }
+
+            return sb.ToString();
         }
 
         private void SplitNoWiki(string wikicode)
