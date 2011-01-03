@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
 namespace WikiDesk.Core
 {
@@ -31,7 +28,8 @@ namespace WikiDesk.Core
                                 int width,
                                 int height,
                                 string altText,
-                                string caption)
+                                string caption,
+                                string commonImagesUri)
         {
             StringBuilder sb = new StringBuilder(256);
 
@@ -47,9 +45,9 @@ namespace WikiDesk.Core
                     sb.Append("<div class=\"center\">");
                 }
 
-                if ((type == null) || (type == Type.Frameless))
+                if (type == null || type == Type.Frameless)
                 {
-                    if (location == Location.Right)
+                    if (location == null || location == Location.Right)
                     {
                         sb.Append("<div class=\"floatright\">");
                     }
@@ -66,7 +64,7 @@ namespace WikiDesk.Core
                 else
                 {
                     sb.Append("<div class=\"thumb");
-                    if (location == Location.Right)
+                    if (location == null || location == Location.Right)
                     {
                         sb.Append(" tright\">");
                     }
@@ -79,6 +77,10 @@ namespace WikiDesk.Core
                     {
                         sb.Append(" tnone\">");
                     }
+
+                    sb.Append("<div class=\"thumbinner\" style=\"width:");
+                    sb.Append(width + 2);
+                    sb.Append("px;\">");
                 }
             }
 
@@ -114,6 +116,11 @@ namespace WikiDesk.Core
                 sb.Append("\" height=\"").Append(height);
             }
 
+            if (type == Type.Thumbnail)
+            {
+                sb.Append("\" class=\"thumbimage");
+            }
+            else
             if (border)
             {
                 sb.Append("\" class=\"thumbborder");
@@ -128,7 +135,9 @@ namespace WikiDesk.Core
                 sb.Append("<div class=\"magnify\">");
                 sb.Append("<a href=\"").Append(imagePageUrl).Append("\" class=\"internal\" title=\"Enlarge\">");
                 // TODO: Local.
-                sb.Append("<img src=\"http://bits.wikimedia.org/skins-1.5/common/images/magnify-clip.png\" width=\"15\" height=\"11\" alt=\"\">");
+                sb.Append("<img src=\"");
+                sb.Append(commonImagesUri);
+                sb.Append("magnify-clip.png\" width=\"15\" height=\"11\" alt=\"\">");
                 sb.Append("</a>");
                 sb.Append("</div>");
                 sb.Append(caption);
@@ -148,6 +157,11 @@ namespace WikiDesk.Core
                 }
 
                 sb.Append("</div>");
+
+                if (type != null && type != Type.Frameless)
+                {
+                    sb.Append("</div>");
+                }
             }
 
             return sb.ToString();

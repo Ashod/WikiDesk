@@ -409,6 +409,49 @@
         }
 
         [Test]
+        public void ImageUpright()
+        {
+//         <div class="thumb tright">
+//             <div class="thumbinner" style="width:172px;">
+//                 <a href="/wiki/File:Westminstpalace.jpg" class="image">
+//                     <img alt="Westminstpalace.jpg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Westminstpalace.jpg/170px-Westminstpalace.jpg" width="170" height="128" class="thumbimage">
+//                 </a>
+//                 <div class="thumbcaption">
+//                     <div class="magnify">
+//                         <a href="/wiki/File:Westminstpalace.jpg" class="internal" title="Enlarge">
+//                             <img src="http://bits.wikimedia.org/skins-1.5/common/images/magnify-clip.png" width="15" height="11" alt="">
+//                         </a>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+
+            TestConvert(
+                "[[Image:Westminstpalace.jpg|upright=|thumb]]",
+                "<div class=\"thumb tright\">" +
+                "<div class=\"thumbinner\" style=\"width:172px;\">" +
+                    "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
+                        "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"170\" class=\"thumbimage\">" +
+                    "</a>" +
+                "</div>" +
+                "</div>");
+        }
+
+        [Test]
+        public void ImageSize()
+        {
+            TestConvert(
+                "[[Image:Westminstpalace.jpg|thumb|14x13px]]",
+                "<div class=\"thumb tright\">" +
+                "<div class=\"thumbinner\" style=\"width:172px;\">" +
+                    "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
+                        "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"170\" class=\"thumbimage\">" +
+                    "</a>" +
+                "</div>" +
+                "</div>");
+        }
+
+        [Test]
         [Ignore]
         public void Image()
         {

@@ -31,6 +31,11 @@
             get { return "http://" + CurrentLanguageCode + BaseUrl; }
         }
 
+        public string CommonImagesPath
+        {
+            get { return "skins\\common\\images"; }
+        }
+
         public int ThumbnailWidthPixels = 220;
 
         public string FileCacheFolder = "Z:\\wikidesk_cache\\";

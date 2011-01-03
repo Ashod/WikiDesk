@@ -5,6 +5,7 @@ namespace WikiDesk.Core
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -43,6 +44,12 @@ namespace WikiDesk.Core
             config_ = config;
             resolveWikiLinkDel_ = resolveWikiLinkDel;
             fileCache_ = fileCache;
+
+            currentFolder_ = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            commonImagesPath_ = Path.Combine(currentFolder_ ?? string.Empty, @"skins\common\images");
+            commonImagesPath_ = commonImagesPath_.Replace('\\', '/');
+            commonImagesPath_ = "file:///" + HttpUtility.HtmlEncode(commonImagesPath_);
+            commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
         }
 
         #endregion // construction
@@ -231,7 +238,7 @@ namespace WikiDesk.Core
             {
                 if (fileCache_.IsSourceCached(imageFileName, config_.CurrentLanguageCode))
                 {
-                    //imageSrcUrl = fileCache_.ResolveSourceUrl(imageFileName, config_.CurrentLanguageCode);
+                    imageSrcUrl = fileCache_.ResolveSourceUrl(imageFileName, config_.CurrentLanguageCode);
                 }
             }
 
@@ -269,7 +276,8 @@ namespace WikiDesk.Core
                                         -1,
                                         -1,
                                         imageFileName,
-                                        null);
+                                        null,
+                                        commonImagesPath_);
             }
 
             // Remove the first pipe to avoid an emtpy first token.
@@ -290,6 +298,7 @@ namespace WikiDesk.Core
                     case "THUMB":
                     case "THUMBNAIL":
                         type = WikiImage2Html.Type.Thumbnail;
+                        width = (width < 0) ? config_.ThumbnailWidthPixels : width;
                         break;
 
                     // Full size. ThumbCaption.
@@ -301,7 +310,7 @@ namespace WikiDesk.Core
                     // Thumbnail size.
                     case "FRAMELESS":
                         type = WikiImage2Html.Type.Frameless;
-                        width = config_.ThumbnailWidthPixels;
+                        width = (width < 0) ? config_.ThumbnailWidthPixels : width;
                         break;
 
                     case "BORDER":
@@ -325,6 +334,60 @@ namespace WikiDesk.Core
                         if (optionName.StartsWith("ALT="))
                         {
                             altText = token.Substring(4);
+                        }
+                        else
+                        if (optionName.StartsWith("UPRIGHT"))
+                        {
+                            string value = optionName.Substring("UPRIGHT".Length);
+                            double factor = 0.75;
+                            if (value.Length > 0)
+                            {
+                                value = value.Trim('=');
+                                if (!double.TryParse(value, out factor))
+                                {
+                                    factor = 0.75;
+                                }
+                            }
+
+                            // Round to the nearest 10 pixels.
+                            int r = (int)(config_.ThumbnailWidthPixels * factor / 10 + 0.5);
+                            width = r * 10;
+                        }
+                        else
+                        if (optionName.EndsWith("PX"))
+                        {
+                            // Remove the PX suffix.
+                            optionName = optionName.Substring(0, optionName.Length - 2);
+
+                            // Width.
+                            if (!optionName.StartsWith("X"))
+                            {
+                                string value = optionName;
+                                int indexOfX = value.IndexOf("X");
+                                if (indexOfX >= 0)
+                                {
+                                    value = value.Substring(0, indexOfX);
+                                    optionName = optionName.Substring(indexOfX);
+                                }
+
+                                int w;
+                                if (int.TryParse(value, out w))
+                                {
+                                    width = w;
+                                }
+                            }
+
+                            // Height.
+                            if (optionName.StartsWith("X"))
+                            {
+                                string value = optionName.TrimStart('X');
+
+                                int h;
+                                if (int.TryParse(value, out h))
+                                {
+                                    height = h;
+                                }
+                            }
                         }
                         else
                         {
@@ -357,7 +420,8 @@ namespace WikiDesk.Core
                                     width,
                                     height,
                                     altText,
-                                    caption);
+                                    caption,
+                                    commonImagesPath_);
         }
 
         private string Link(Match match)
@@ -541,6 +605,10 @@ namespace WikiDesk.Core
         private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+        private readonly string currentFolder_;
+
+        private readonly string commonImagesPath_;
 
         #endregion // Regex
     }
