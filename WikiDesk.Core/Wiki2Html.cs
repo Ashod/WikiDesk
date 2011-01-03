@@ -288,8 +288,9 @@ namespace WikiDesk.Core
                 string imagePage = Download.DownloadPage(imagePageUrl);
                 Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
                 if (!imageSourceMatch.Success ||
-                    (imageSourceMatch.Groups[1].Value != imageFileName))
+                    (HttpUtility.HtmlDecode(imageSourceMatch.Groups[1].Value) != imageFileName))
                 {
+                    // File not found?
                     return string.Empty;
                 }
 
