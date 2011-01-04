@@ -4,20 +4,6 @@
 
     using SQLite;
 
-    public class Language
-    {
-        [PrimaryKey]
-        [Indexed]
-        public long Id { get; set; }
-
-        [MaxLength(16)]
-        [Indexed]
-        public string Code { get; set; }
-
-        [MaxLength(64)]
-        public string Name { get; set; }
-    }
-
     public class Revision
     {
         [PrimaryKey]

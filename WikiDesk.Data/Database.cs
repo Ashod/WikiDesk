@@ -10,7 +10,7 @@
 
     using SQLite;
 
-    public class Database : SQLiteConnection
+    public partial class Database : SQLiteConnection
     {
         public Database(string path)
             : base(path)
@@ -25,11 +25,23 @@
             return (from s in Table<Page>() select s).ToList();
         }
 
-        public Page QueryPage(string title)
+        private Page QueryPage(string title, long lang)
         {
             return (from s in Table<Page>()
                     where s.Title == title
+                       && s.Language == lang
                     select s).FirstOrDefault();
+        }
+
+        public Page QueryPage(string title, string lang)
+        {
+            Language language = GetLanguage(lang);
+            if (language == null)
+            {
+                return null;
+            }
+
+            return QueryPage(title, language.Id);
         }
 
         public Revision QueryRevision(long id)
@@ -55,31 +67,15 @@
 
         public void ImportFromXml(Stream stream, bool indexOnly, string languageCode)
         {
+            Language language = GetLanguage(languageCode);
+            if (language == null)
+            {
+                return; //TODO: Throw?
+            }
+
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;
-
-//                 if (From.Length > 0)
-//                 {
-//                     while (reader.Read())
-//                     {
-//                         if (reader.NodeType != XmlNodeType.Element) continue;
-//
-//                         if (reader.Name != "title")
-//                         {
-//                             reader.ReadToFollowing("page");
-//                             continue;
-//                         }
-//
-//                         //reader.ReadToFollowing("title");
-//                         articleTitle = reader.ReadString();
-//
-//                         if (From == articleTitle)
-//                         {
-//                             break;
-//                         }
-//                     }
-//                 }
 
                 while (true)
                 {
@@ -89,6 +85,7 @@
                         break;
                     }
 
+                    page.Language = language.Id;
                     if (!indexOnly)
                     {
                         Revision oldRev = QueryRevision(page.Revision.Id);
@@ -115,9 +112,7 @@
                         page.LastRevisionId = 0;
                     }
 
-                    //page.Language = languageCode;
-
-                    Page oldPage = QueryPage(page.Title);
+                    Page oldPage = QueryPage(page.Title, language.Id);
                     if (oldPage != null)
                     {
                         if (oldPage.Id != page.Id)

@@ -131,7 +131,7 @@ namespace WikiDesk
             }
 
             LanguageCode = "??";
-            LanguageName = "Unknown Language";
+            LanguageName = "Unknown";
         }
 
         public string Name { get; set; }
@@ -142,7 +142,7 @@ namespace WikiDesk
 
         public override string ToString()
         {
-            return Name + " [" + LanguageName + ']';
+            return string.Format("{0} [{1}]", LanguageName, Name);
         }
     }
 }

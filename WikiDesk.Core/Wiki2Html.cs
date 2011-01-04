@@ -707,7 +707,8 @@ namespace WikiDesk.Core
                 return resolveWikiLinkDel_(title, languageCode);
             }
 
-            return FullUrl + title.Replace(' ', '_');
+            title = title.Replace(' ', '_');
+            return FullUrl + HttpUtility.HtmlEncode(title);
         }
 
         #endregion // implementation

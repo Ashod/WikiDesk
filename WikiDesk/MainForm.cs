@@ -5,6 +5,7 @@
     using System.Drawing;
     using System.IO;
     using System.Text;
+    using System.Web;
     using System.Windows.Forms;
 
     using WebKit;
@@ -76,8 +77,16 @@
             {
                 Data.Language lang = new Data.Language();
                 lang.Code = language.Code;
-                lang.Name = language.Name;
-                db_.Update(lang);
+                if (!string.IsNullOrEmpty(language.Name))
+                {
+                    lang.Name = language.Name;
+                }
+                else
+                {
+                    lang.Name = language.LocalName;
+                }
+
+                db_.UpdateInsertLanguage(lang);
             }
         }
 
@@ -309,38 +318,32 @@
         {
             currentWikiPageName_ = title;
 
-            Page page = db_.QueryPage(title);
+            Page page = db_.QueryPage(title, languageCode);
+            if (page == null)
+            {
+                if (!settings_.AutoRetrieveMissing)
+                {
+                    return;
+                }
+
+                // Download from the web...
+                string url = string.Concat("http://", languageCode, settings_.ExportUrl, title);
+                string pageXml = Download.DownloadPage(url);
+                using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
+                {
+                    db_.ImportFromXml(ms, false, languageCode);
+                }
+
+                page = db_.QueryPage(title, languageCode);
+            }
+
             if (page != null)
             {
                 Revision rev = db_.QueryRevision(page.LastRevisionId);
                 if (rev != null)
                 {
                     string text = Encoding.UTF8.GetString(rev.Text);
-
                     ShowWikiPage(title, text);
-                    return;
-                }
-            }
-
-            // Download from the web...
-            string url = string.Concat("http://", languageCode, settings_.ExportUrl, title);
-            string pageXml = Download.DownloadPage(url);
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
-            {
-                db_.ImportFromXml(ms, false, languageCode);
-            }
-
-            Page page2 = db_.QueryPage(title);
-            if (page2 != null)
-            {
-                Revision rev = db_.QueryRevision(page2.LastRevisionId);
-                if (rev != null)
-                {
-                    string text = Encoding.UTF8.GetString(rev.Text);
-                    //browser_.Url = null;
-
-                    ShowWikiPage(title, text);
-                    return;
                 }
             }
         }
@@ -377,10 +380,11 @@
             NavigateTo(tempFileUrl_);
         }
 
-        private string OnResolveWikiLinks(string title, string languageCode)
+        private static string OnResolveWikiLinks(string title, string languageCode)
         {
             //TODO: take the language code into consideration.
-            return WIKI_PROTOCOL_STRING + title.Replace(' ', '_');
+            title = title.Replace(' ', '_');
+            return WIKI_PROTOCOL_STRING + HttpUtility.HtmlEncode(title);
         }
 
         private string WrapInHtmlBody(string title, string html)

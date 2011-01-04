@@ -26,8 +26,8 @@ namespace WikiDesk
             }
         }
 
-        public bool AutoUpdate;
-        public bool AutoRetrieveMissing;
+        public bool AutoUpdate = true;
+        public bool AutoRetrieveMissing = true;
 
         /// <summary>
         /// The base URL for the wiki.
