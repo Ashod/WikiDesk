@@ -1,5 +1,4 @@
 * Case-insensitive title search.
-* Other languages.
 * Full-text search.
 * Navigation History.
 * Favs.
@@ -19,3 +18,4 @@ Done:
 * Linking.
 * Update from the web.
 * CSS.
+* Other languages.

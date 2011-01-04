@@ -3,9 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Drawing;
+    using System.Globalization;
     using System.IO;
     using System.Text;
-    using System.Web;
+    using System.Text.RegularExpressions;
     using System.Windows.Forms;
 
     using WebKit;
@@ -43,10 +44,6 @@
             btnGo.Enabled = false;
             cboLanguage.Enabled = false;
 
-            delayedNavigationTimer_.Tick += OnDelayedNavigationTimer;
-            delayedNavigationTimer_.Interval = DELAYED_NAVIGATION_INTERVAL_MS;
-            delayedNavigationTimer_.Enabled = false;
-
             tempFilename_ = Path.GetTempFileName().Replace(".tmp", ".html");
             tempFileUrl_ = "file:///" + tempFilename_.Replace('\\', '/');
 
@@ -75,19 +72,42 @@
 
             foreach (Language language in langCodes.Languages)
             {
-                Data.Language lang = new Data.Language();
-                lang.Code = language.Code;
-                if (!string.IsNullOrEmpty(language.Name))
-                {
-                    lang.Name = language.Name;
-                }
-                else
-                {
-                    lang.Name = language.LocalName;
-                }
+                Data.Language lang = new Data.Language
+                    {
+                        Code = language.Code,
+                        Name = !string.IsNullOrEmpty(language.Name) ? language.Name : language.LocalName
+                    };
 
                 db_.UpdateInsertLanguage(lang);
             }
+        }
+
+        static string EncodeNonAsciiCharacters(IEnumerable<char> value)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in value)
+            {
+                if (c > 127)
+                {
+                    // This character is too big for ASCII
+                    string encodedValue = "\\u" + ((int)c).ToString("x4");
+                    sb.Append(encodedValue);
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        static string DecodeEncodedNonAsciiCharacters(string value)
+        {
+            return Regex.Replace(
+                value,
+                @"\\u([a-zA-Z0-9]{4})",
+                m => ((char)int.Parse(m.Groups[1].Value, NumberStyles.HexNumber)).ToString());
         }
 
         #region Browser Events
@@ -97,30 +117,15 @@
             if (url.StartsWith(WIKI_PROTOCOL_STRING))
             {
                 string title = url.Substring(WIKI_PROTOCOL_STRING.Length);
-                DelayedNavigate(title);
+                title = title.Replace('/', '\\');
+                title = DecodeEncodedNonAsciiCharacters(title);
+                BrowseWikiArticle(settings_.CurrentLanguageCode, title);
+
+                // Handled, don't navigate.
                 return false;
             }
 
             return true;
-        }
-
-        private void DelayedNavigate(string title)
-        {
-            delayedNavigationTimer_.Tag = title;
-            delayedNavigationTimer_.Start();
-        }
-
-        private void OnDelayedNavigationTimer(object sender, EventArgs e)
-        {
-            delayedNavigationTimer_.Stop();
-            object tag = delayedNavigationTimer_.Tag;
-            delayedNavigationTimer_.Tag = null;
-
-            if (tag is string)
-            {
-                string title = (string)tag;
-                BrowseWikiArticle(settings_.CurrentLanguageCode, title);
-            }
         }
 
         private void browser__Navigated(object sender, WebBrowserNavigatedEventArgs e)
@@ -191,14 +196,7 @@
             // TODO: Save history.
             cboNavigate.Text = url;
 
-            if (!string.IsNullOrEmpty(name))
-            {
-                Text = string.Format("{0} - {1}", APPLICATION_NAME, browser_.DocumentTitle);
-            }
-            else
-            {
-                Text = APPLICATION_NAME;
-            }
+            Text = string.Format("{0} - {1}", APPLICATION_NAME, name ?? string.Empty);
         }
 
         private void btnBack_Click(object sender, EventArgs e)
@@ -237,7 +235,7 @@
             }
         }
 
-        private void LoadClick(object sender, EventArgs e)
+        private static void LoadClick(object sender, EventArgs e)
         {
             string folder = "Z:\\"; //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string dbPath = Path.Combine(folder, "wikidesk.db");
@@ -359,7 +357,8 @@
 
             foreach (KeyValuePair<string, string> pair in Wiki2Html.ExtractLanguages(ref text))
             {
-                Language language = languages_.Languages.Find(lang => pair.Key == lang.Code);
+                string langCode = pair.Key;
+                Language language = languages_.Languages.Find(lang => langCode == lang.Code);
                 WikiArticleName name = new WikiArticleName(pair.Value, language);
                 cboLanguage.Items.Add(name);
             }
@@ -371,10 +370,11 @@
             string html = wiki2Html.ConvertX(text);
             html = WrapInHtmlBody(title, html);
 
-            using (FileStream fs = new FileStream(tempFilename_, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read))
+            using (FileStream fs = new FileStream(tempFilename_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
             {
                 byte[] bytes = Encoding.UTF8.GetBytes(html);
                 fs.Write(bytes, 0, bytes.Length);
+                fs.SetLength(bytes.Length);
             }
 
             NavigateTo(tempFileUrl_);
@@ -384,7 +384,7 @@
         {
             //TODO: take the language code into consideration.
             title = title.Replace(' ', '_');
-            return WIKI_PROTOCOL_STRING + HttpUtility.HtmlEncode(title);
+            return WIKI_PROTOCOL_STRING + EncodeNonAsciiCharacters(title);
         }
 
         private string WrapInHtmlBody(string title, string html)
@@ -461,11 +461,6 @@
         private readonly Settings settings_;
 
         /// <summary>
-        /// Timer used to navigate to an internal wiki page.
-        /// </summary>
-        private readonly Timer delayedNavigationTimer_ = new Timer();
-
-        /// <summary>
         /// The current wiki-page name/title.
         /// Valid only if we are on an internal wiki page.
         /// </summary>
@@ -485,11 +480,5 @@
         private const string CONFIG_FILENAME = "WikiDesk.xml";
 
         private const string WIKI_PROTOCOL_STRING = "wiki://";
-
-        /// <summary>
-        /// How often should the delayed navigation timer fire.
-        /// We typically disable the timer after the first shot.
-        /// </summary>
-        private const int DELAYED_NAVIGATION_INTERVAL_MS = 10;
     }
 }

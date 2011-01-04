@@ -106,7 +106,7 @@
             this.loadXMLDumpToolStripMenuItem.Name = "loadXMLDumpToolStripMenuItem";
             this.loadXMLDumpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadXMLDumpToolStripMenuItem.Text = "&Load XML Dump...";
-            this.loadXMLDumpToolStripMenuItem.Click += new System.EventHandler(this.LoadClick);
+            this.loadXMLDumpToolStripMenuItem.Click += new System.EventHandler(LoadClick);
             //
             // toolStripMenuItem1
             //

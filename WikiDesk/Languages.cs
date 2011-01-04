@@ -142,7 +142,7 @@ namespace WikiDesk
 
         public override string ToString()
         {
-            return string.Format("{0} [{1}]", LanguageName, Name);
+            return string.Format("{0} - {1}", LanguageName, Name);
         }
     }
 }
