@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AutoUpdate>true</AutoUpdate>
+  <AutoRetrieveMissing>true</AutoRetrieveMissing>
+  <BaseUrl>.wikipedia.org/wiki/</BaseUrl>
+  <ExportUrl>.wikipedia.org/wiki/Special:Export/</ExportUrl>
+  <LanguageCodesFilename>LangCodes.xml</LanguageCodesFilename>
+  <CurrentLanguageCode>en</CurrentLanguageCode>
+  <DefaultDatabaseFilename>Z:\wikidesk.db</DefaultDatabaseFilename>
+</Settings>

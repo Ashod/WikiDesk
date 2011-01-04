@@ -109,8 +109,31 @@ namespace WikiDesk
         public readonly List<Language> Languages = new List<Language>(32);
     }
 
-    public struct WikiArticleName
+    public class WikiArticleName
     {
+        public WikiArticleName(string title, Language lang)
+        {
+            Name = title;
+            if (lang != null)
+            {
+                LanguageCode = lang.Code;
+                if (!string.IsNullOrEmpty(lang.Name))
+                {
+                    LanguageName = lang.Name;
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(lang.LocalName))
+                {
+                    LanguageName = lang.LocalName;
+                    return;
+                }
+            }
+
+            LanguageCode = "??";
+            LanguageName = "Unknown Language";
+        }
+
         public string Name { get; set; }
 
         public string LanguageCode { get; set; }

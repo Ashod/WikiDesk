@@ -1,0 +1,2234 @@
+<?xml version="1.0"?>
+<LanguageCodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Languages>
+    <Language>
+      <Code>aa</Code>
+      <Name />
+      <LocalName>Qafár af</LocalName>
+      <Notes>Afar</Notes>
+    </Language>
+    <Language>
+      <Code>ab</Code>
+      <Name />
+      <LocalName>Аҧсуа</LocalName>
+      <Notes>Abkhaz, should possibly add ' бысжѡа'</Notes>
+    </Language>
+    <Language>
+      <Code>ace</Code>
+      <Name />
+      <LocalName>Acèh</LocalName>
+      <Notes>Aceh</Notes>
+    </Language>
+    <Language>
+      <Code>af</Code>
+      <Name />
+      <LocalName>Afrikaans</LocalName>
+      <Notes>Afrikaans</Notes>
+    </Language>
+    <Language>
+      <Code>ak</Code>
+      <Name />
+      <LocalName>Akan</LocalName>
+      <Notes>Akan</Notes>
+    </Language>
+    <Language>
+      <Code>aln</Code>
+      <Name />
+      <LocalName>Gegë</LocalName>
+      <Notes>Gheg Albanian</Notes>
+    </Language>
+    <Language>
+      <Code>als</Code>
+      <Name />
+      <LocalName>Alemannisch</LocalName>
+      <Notes>Alemannic -- not a valid code, for compatibility. See gsw.</Notes>
+    </Language>
+    <Language>
+      <Code>am</Code>
+      <Name />
+      <LocalName>አማርኛ</LocalName>
+      <Notes>Amharic</Notes>
+    </Language>
+    <Language>
+      <Code>an</Code>
+      <Name />
+      <LocalName>Aragonés</LocalName>
+      <Notes>Aragonese</Notes>
+    </Language>
+    <Language>
+      <Code>ang</Code>
+      <Name />
+      <LocalName>Ænglisc</LocalName>
+      <Notes>Old English (Bug 23283)</Notes>
+    </Language>
+    <Language>
+      <Code>ar</Code>
+      <Name />
+      <LocalName>العربية</LocalName>
+      <Notes>Arabic</Notes>
+    </Language>
+    <Language>
+      <Code>arc</Code>
+      <Name />
+      <LocalName>ܐܪܡܝܐ</LocalName>
+      <Notes>Aramaic</Notes>
+    </Language>
+    <Language>
+      <Code>arn</Code>
+      <Name />
+      <LocalName>Mapudungun</LocalName>
+      <Notes>Mapuche, Mapudungu, Araucanian (Araucano)</Notes>
+    </Language>
+    <Language>
+      <Code>ary</Code>
+      <Name />
+      <LocalName>Maġribi</LocalName>
+      <Notes>Moroccan Spoken Arabic</Notes>
+    </Language>
+    <Language>
+      <Code>arz</Code>
+      <Name />
+      <LocalName>مصرى</LocalName>
+      <Notes>Egyptian Spoken Arabic</Notes>
+    </Language>
+    <Language>
+      <Code>as</Code>
+      <Name />
+      <LocalName>অসমীয়া</LocalName>
+      <Notes>Assamese</Notes>
+    </Language>
+    <Language>
+      <Code>ast</Code>
+      <Name />
+      <LocalName>Asturianu</LocalName>
+      <Notes>Asturian</Notes>
+    </Language>
+    <Language>
+      <Code>av</Code>
+      <Name />
+      <LocalName>Авар</LocalName>
+      <Notes>Avar</Notes>
+    </Language>
+    <Language>
+      <Code>avk</Code>
+      <Name />
+      <LocalName>Kotava</LocalName>
+      <Notes>Kotava</Notes>
+    </Language>
+    <Language>
+      <Code>ay</Code>
+      <Name />
+      <LocalName>Aymar aru</LocalName>
+      <Notes>Aymara</Notes>
+    </Language>
+    <Language>
+      <Code>az</Code>
+      <Name />
+      <LocalName>Azərbaycanca</LocalName>
+      <Notes>Azerbaijani</Notes>
+    </Language>
+    <Language>
+      <Code>ba</Code>
+      <Name />
+      <LocalName>Башҡорт</LocalName>
+      <Notes>Bashkir</Notes>
+    </Language>
+    <Language>
+      <Code>bar</Code>
+      <Name />
+      <LocalName>Boarisch</LocalName>
+      <Notes>Bavarian (Austro-Bavarian and South Tyrolean)</Notes>
+    </Language>
+    <Language>
+      <Code>bat-smg</Code>
+      <Name />
+      <LocalName>Žemaitėška</LocalName>
+      <Notes>Samogitian (deprecated code, 'sgs' in ISO 693-3 since 2010-06-30 )</Notes>
+    </Language>
+    <Language>
+      <Code>bcc</Code>
+      <Name />
+      <LocalName>بلوچی مکرانی</LocalName>
+      <Notes>Southern Balochi</Notes>
+    </Language>
+    <Language>
+      <Code>bcl</Code>
+      <Name />
+      <LocalName>Bikol Central</LocalName>
+      <Notes>Bikol: Central Bicolano language</Notes>
+    </Language>
+    <Language>
+      <Code>be</Code>
+      <Name />
+      <LocalName>Беларуская</LocalName>
+      <Notes> Belarusian normative</Notes>
+    </Language>
+    <Language>
+      <Code>be-tarask</Code>
+      <Name />
+      <LocalName>Беларуская (тарашкевіца)</LocalName>
+      <Notes>Belarusian in Taraskievica orthography</Notes>
+    </Language>
+    <Language>
+      <Code>be-x-old</Code>
+      <Name />
+      <LocalName>Беларуская (тарашкевіца)</LocalName>
+      <Notes>Belarusian in Taraskievica orthography; compat link</Notes>
+    </Language>
+    <Language>
+      <Code>bg</Code>
+      <Name />
+      <LocalName>Български</LocalName>
+      <Notes>Bulgarian</Notes>
+    </Language>
+    <Language>
+      <Code>bh</Code>
+      <Name />
+      <LocalName>भोजपुरी</LocalName>
+      <Notes>Bhojpuri</Notes>
+    </Language>
+    <Language>
+      <Code>bi</Code>
+      <Name />
+      <LocalName>Bislama</LocalName>
+      <Notes>Bislama</Notes>
+    </Language>
+    <Language>
+      <Code>bjn</Code>
+      <Name />
+      <LocalName>Bahasa Banjar</LocalName>
+      <Notes>Banjarese</Notes>
+    </Language>
+    <Language>
+      <Code>bm</Code>
+      <Name />
+      <LocalName>Bamanankan</LocalName>
+      <Notes>Bambara</Notes>
+    </Language>
+    <Language>
+      <Code>bn</Code>
+      <Name />
+      <LocalName>বাংলা</LocalName>
+      <Notes>Bengali</Notes>
+    </Language>
+    <Language>
+      <Code>bo</Code>
+      <Name />
+      <LocalName>བོད་ཡིག</LocalName>
+      <Notes>Tibetan</Notes>
+    </Language>
+    <Language>
+      <Code>bpy</Code>
+      <Name />
+      <LocalName>ইমার ঠার/বিষ্ণুপ্রিয়া মণিপুরী</LocalName>
+      <Notes>Bishnupriya Manipuri</Notes>
+    </Language>
+    <Language>
+      <Code>bqi</Code>
+      <Name />
+      <LocalName>بختياري</LocalName>
+      <Notes>Bakthiari</Notes>
+    </Language>
+    <Language>
+      <Code>br</Code>
+      <Name />
+      <LocalName>Brezhoneg</LocalName>
+      <Notes>Breton</Notes>
+    </Language>
+    <Language>
+      <Code>bs</Code>
+      <Name />
+      <LocalName>Bosanski</LocalName>
+      <Notes>Bosnian</Notes>
+    </Language>
+    <Language>
+      <Code>bug</Code>
+      <Name />
+      <LocalName>ᨅᨔ ᨕᨘᨁᨗ</LocalName>
+      <Notes>Bugis</Notes>
+    </Language>
+    <Language>
+      <Code>bxr</Code>
+      <Name />
+      <LocalName>Буряад</LocalName>
+      <Notes>Buryat (Russia)</Notes>
+    </Language>
+    <Language>
+      <Code>ca</Code>
+      <Name />
+      <LocalName>Català</LocalName>
+      <Notes>Catalan</Notes>
+    </Language>
+    <Language>
+      <Code>cbk-zam</Code>
+      <Name />
+      <LocalName>Chavacano de Zamboanga</LocalName>
+      <Notes>Zamboanga Chavacano</Notes>
+    </Language>
+    <Language>
+      <Code>cdo</Code>
+      <Name />
+      <LocalName>Mìng-dĕ̤ng-ngṳ̄</LocalName>
+      <Notes>Min Dong</Notes>
+    </Language>
+    <Language>
+      <Code>ce</Code>
+      <Name />
+      <LocalName>Нохчийн</LocalName>
+      <Notes>Chechen</Notes>
+    </Language>
+    <Language>
+      <Code>ceb</Code>
+      <Name />
+      <LocalName>Cebuano</LocalName>
+      <Notes>Cebuano</Notes>
+    </Language>
+    <Language>
+      <Code>ch</Code>
+      <Name />
+      <LocalName>Chamoru</LocalName>
+      <Notes>Chamorro</Notes>
+    </Language>
+    <Language>
+      <Code>cho</Code>
+      <Name />
+      <LocalName>Choctaw</LocalName>
+      <Notes>Choctaw</Notes>
+    </Language>
+    <Language>
+      <Code>chr</Code>
+      <Name />
+      <LocalName>ᏣᎳᎩ</LocalName>
+      <Notes>Cherokee</Notes>
+    </Language>
+    <Language>
+      <Code>chy</Code>
+      <Name />
+      <LocalName>Tsetsêhestâhese</LocalName>
+      <Notes>Cheyenne</Notes>
+    </Language>
+    <Language>
+      <Code>ckb</Code>
+      <Name />
+      <LocalName>کوردی</LocalName>
+      <Notes>Sorani</Notes>
+    </Language>
+    <Language>
+      <Code>co</Code>
+      <Name />
+      <LocalName>Corsu</LocalName>
+      <Notes>Corsican</Notes>
+    </Language>
+    <Language>
+      <Code>cps</Code>
+      <Name />
+      <LocalName>Capiceño</LocalName>
+      <Notes>Capiznon</Notes>
+    </Language>
+    <Language>
+      <Code>cr</Code>
+      <Name />
+      <LocalName>Nēhiyawēwin / ᓀᐦᐃᔭᐍᐏᐣ</LocalName>
+      <Notes>Cree</Notes>
+    </Language>
+    <Language>
+      <Code>crh</Code>
+      <Name />
+      <LocalName>Qırımtatarca</LocalName>
+      <Notes>Crimean Tatar (multiple scripts - defaults to Latin)</Notes>
+    </Language>
+    <Language>
+      <Code>crh-latn</Code>
+      <LocalName>\xE2\x80\xAAQırımtatarca (Latin)\xE2\x80\xAC</LocalName>
+      <Notes>Crimean Tatar (Latin)</Notes>
+    </Language>
+    <Language>
+      <Code>crh-cyrl</Code>
+      <LocalName>\xE2\x80\xAAКъырымтатарджа (Кирилл)\xE2\x80\xAC</LocalName>
+      <Notes>Crimean Tatar (Cyrillic)</Notes>
+    </Language>
+    <Language>
+      <Code>cs</Code>
+      <Name />
+      <LocalName>Česky</LocalName>
+      <Notes>Czech</Notes>
+    </Language>
+    <Language>
+      <Code>csb</Code>
+      <Name />
+      <LocalName>Kaszëbsczi</LocalName>
+      <Notes>Cassubian</Notes>
+    </Language>
+    <Language>
+      <Code>cu</Code>
+      <Name />
+      <LocalName>Словѣ́ньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ</LocalName>
+      <Notes>Old Church Slavonic (ancient language)</Notes>
+    </Language>
+    <Language>
+      <Code>cv</Code>
+      <Name />
+      <LocalName>Чӑвашла</LocalName>
+      <Notes>Chuvash</Notes>
+    </Language>
+    <Language>
+      <Code>cy</Code>
+      <Name />
+      <LocalName>Cymraeg</LocalName>
+      <Notes>Welsh</Notes>
+    </Language>
+    <Language>
+      <Code>da</Code>
+      <Name />
+      <LocalName>Dansk</LocalName>
+      <Notes>Danish</Notes>
+    </Language>
+    <Language>
+      <Code>de</Code>
+      <Name />
+      <LocalName>Deutsch</LocalName>
+      <Notes>German ("Du")</Notes>
+    </Language>
+    <Language>
+      <Code>de-at</Code>
+      <Name />
+      <LocalName>Österreichisches Deutsch</LocalName>
+      <Notes>Austrian German</Notes>
+    </Language>
+    <Language>
+      <Code>de-ch</Code>
+      <Name />
+      <LocalName>Schweizer Hochdeutsch</LocalName>
+      <Notes>Swiss Standard German</Notes>
+    </Language>
+    <Language>
+      <Code>de-formal</Code>
+      <Name />
+      <LocalName>Deutsch (Sie-Form)</LocalName>
+      <Notes>German - formal address ("Sie")</Notes>
+    </Language>
+    <Language>
+      <Code>diq</Code>
+      <Name />
+      <LocalName>Zazaki</LocalName>
+      <Notes>Zazaki</Notes>
+    </Language>
+    <Language>
+      <Code>dsb</Code>
+      <Name />
+      <LocalName>Dolnoserbski</LocalName>
+      <Notes>Lower Sorbian</Notes>
+    </Language>
+    <Language>
+      <Code>dv</Code>
+      <Name />
+      <LocalName>ދިވެހިބަސް</LocalName>
+      <Notes>Dhivehi</Notes>
+    </Language>
+    <Language>
+      <Code>dz</Code>
+      <Name />
+      <LocalName>ཇོང་ཁ</LocalName>
+      <Notes>Bhutani</Notes>
+    </Language>
+    <Language>
+      <Code>ee</Code>
+      <Name />
+      <LocalName>Eʋegbe</LocalName>
+      <Notes>Éwé</Notes>
+    </Language>
+    <Language>
+      <Code>el</Code>
+      <Name />
+      <LocalName>Ελληνικά</LocalName>
+      <Notes>Greek</Notes>
+    </Language>
+    <Language>
+      <Code>eml</Code>
+      <Name />
+      <LocalName>Emiliàn e rumagnòl</LocalName>
+      <Notes>Emiliano-Romagnolo / Sammarinese</Notes>
+    </Language>
+    <Language>
+      <Code>en</Code>
+      <Name />
+      <LocalName>English</LocalName>
+      <Notes>English</Notes>
+    </Language>
+    <Language>
+      <Code>en-gb</Code>
+      <Name />
+      <LocalName>British English</LocalName>
+      <Notes>British English</Notes>
+    </Language>
+    <Language>
+      <Code>eo</Code>
+      <Name />
+      <LocalName>Esperanto</LocalName>
+      <Notes>Esperanto</Notes>
+    </Language>
+    <Language>
+      <Code>es</Code>
+      <Name />
+      <LocalName>Español</LocalName>
+      <Notes>Spanish</Notes>
+    </Language>
+    <Language>
+      <Code>et</Code>
+      <Name />
+      <LocalName>Eesti</LocalName>
+      <Notes>Estonian</Notes>
+    </Language>
+    <Language>
+      <Code>eu</Code>
+      <Name />
+      <LocalName>Euskara</LocalName>
+      <Notes>Basque</Notes>
+    </Language>
+    <Language>
+      <Code>ext</Code>
+      <Name />
+      <LocalName>Estremeñu</LocalName>
+      <Notes>Extremaduran</Notes>
+    </Language>
+    <Language>
+      <Code>fa</Code>
+      <Name />
+      <LocalName>فارسی</LocalName>
+      <Notes>Persian</Notes>
+    </Language>
+    <Language>
+      <Code>ff</Code>
+      <Name />
+      <LocalName>Fulfulde</LocalName>
+      <Notes>Fulfulde, Maasina</Notes>
+    </Language>
+    <Language>
+      <Code>fi</Code>
+      <Name />
+      <LocalName>Suomi</LocalName>
+      <Notes>Finnish</Notes>
+    </Language>
+    <Language>
+      <Code>fiu-vro</Code>
+      <Name />
+      <LocalName>Võro</LocalName>
+      <Notes>Võro (deprecated code, 'vro' in ISO 639-3 since 2009-01-16)</Notes>
+    </Language>
+    <Language>
+      <Code>fj</Code>
+      <Name />
+      <LocalName>Na Vosa Vakaviti</LocalName>
+      <Notes>Fijian</Notes>
+    </Language>
+    <Language>
+      <Code>fo</Code>
+      <Name />
+      <LocalName>Føroyskt</LocalName>
+      <Notes>Faroese</Notes>
+    </Language>
+    <Language>
+      <Code>fr</Code>
+      <Name />
+      <LocalName>Français</LocalName>
+      <Notes>French</Notes>
+    </Language>
+    <Language>
+      <Code>frc</Code>
+      <Name />
+      <LocalName>Français cadien</LocalName>
+      <Notes>Cajun French</Notes>
+    </Language>
+    <Language>
+      <Code>frp</Code>
+      <Name />
+      <LocalName>Arpetan</LocalName>
+      <Notes>Franco-Provençal/Arpitan</Notes>
+    </Language>
+    <Language>
+      <Code>frr</Code>
+      <Name />
+      <LocalName>Nordfriisk</LocalName>
+      <Notes>North Frisian</Notes>
+    </Language>
+    <Language>
+      <Code>fur</Code>
+      <Name />
+      <LocalName>Furlan</LocalName>
+      <Notes>Friulian</Notes>
+    </Language>
+    <Language>
+      <Code>fy</Code>
+      <Name />
+      <LocalName>Frysk</LocalName>
+      <Notes>Frisian</Notes>
+    </Language>
+    <Language>
+      <Code>ga</Code>
+      <Name />
+      <LocalName>Gaeilge</LocalName>
+      <Notes>Irish</Notes>
+    </Language>
+    <Language>
+      <Code>gag</Code>
+      <Name />
+      <LocalName>Gagauz</LocalName>
+      <Notes>Gagauz</Notes>
+    </Language>
+    <Language>
+      <Code>gan</Code>
+      <Name />
+      <LocalName>贛語</LocalName>
+      <Notes>Gan (multiple scripts - defaults to Traditional)</Notes>
+    </Language>
+    <Language>
+      <Code>gan-hans</Code>
+      <Name />
+      <LocalName>赣语(简体)</LocalName>
+      <Notes>Gan (Simplified Han)</Notes>
+    </Language>
+    <Language>
+      <Code>gan-hant</Code>
+      <Name />
+      <LocalName>贛語(繁體)</LocalName>
+      <Notes>Gan (Traditional Han)</Notes>
+    </Language>
+    <Language>
+      <Code>gd</Code>
+      <Name />
+      <LocalName>Gàidhlig</LocalName>
+      <Notes>Scots Gaelic</Notes>
+    </Language>
+    <Language>
+      <Code>gl</Code>
+      <Name />
+      <LocalName>Galego</LocalName>
+      <Notes>Galician</Notes>
+    </Language>
+    <Language>
+      <Code>glk</Code>
+      <Name />
+      <LocalName>گیلکی</LocalName>
+      <Notes>Gilaki</Notes>
+    </Language>
+    <Language>
+      <Code>gn</Code>
+      <Name />
+      <LocalName>Avañe\'ẽ</LocalName>
+      <Notes>Guaraní, Paraguayan</Notes>
+    </Language>
+    <Language>
+      <Code>got</Code>
+      <Name />
+      <LocalName>𐌲𐌿𐍄𐌹𐍃𐌺</LocalName>
+      <Notes>Gothic</Notes>
+    </Language>
+    <Language>
+      <Code>grc</Code>
+      <Name />
+      <LocalName>Ἀρχαία ἑλληνικὴ</LocalName>
+      <Notes>Ancient Greek</Notes>
+    </Language>
+    <Language>
+      <Code>gsw</Code>
+      <Name />
+      <LocalName>Alemannisch</LocalName>
+      <Notes>Alemannic</Notes>
+    </Language>
+    <Language>
+      <Code>gu</Code>
+      <Name />
+      <LocalName>ગુજરાતી</LocalName>
+      <Notes>Gujarati</Notes>
+    </Language>
+    <Language>
+      <Code>gv</Code>
+      <Name />
+      <LocalName>Gaelg</LocalName>
+      <Notes>Manx</Notes>
+    </Language>
+    <Language>
+      <Code>ha</Code>
+      <Name />
+      <LocalName>هَوُسَ</LocalName>
+      <Notes>Hausa</Notes>
+    </Language>
+    <Language>
+      <Code>hak</Code>
+      <Name />
+      <LocalName>Hak-kâ-fa</LocalName>
+      <Notes>Hakka</Notes>
+    </Language>
+    <Language>
+      <Code>haw</Code>
+      <Name />
+      <LocalName>Hawai`i</LocalName>
+      <Notes>Hawaiian</Notes>
+    </Language>
+    <Language>
+      <Code>he</Code>
+      <Name />
+      <LocalName>עברית</LocalName>
+      <Notes>Hebrew</Notes>
+    </Language>
+    <Language>
+      <Code>hi</Code>
+      <Name />
+      <LocalName>हिन्दी</LocalName>
+      <Notes>Hindi</Notes>
+    </Language>
+    <Language>
+      <Code>hif</Code>
+      <Name />
+      <LocalName>Fiji Hindi</LocalName>
+      <Notes>Fijian Hindi (multiple scripts - defaults to Latin)</Notes>
+    </Language>
+    <Language>
+      <Code>hif-latn</Code>
+      <Name />
+      <LocalName>Fiji Hindi</LocalName>
+      <Notes>Fiji Hindi (latin)</Notes>
+    </Language>
+    <Language>
+      <Code>hil</Code>
+      <Name />
+      <LocalName>Ilonggo</LocalName>
+      <Notes>Hiligaynon</Notes>
+    </Language>
+    <Language>
+      <Code>ho</Code>
+      <Name />
+      <LocalName>Hiri Motu</LocalName>
+      <Notes>Hiri Motu</Notes>
+    </Language>
+    <Language>
+      <Code>hr</Code>
+      <Name />
+      <LocalName>Hrvatski</LocalName>
+      <Notes>Croatian</Notes>
+    </Language>
+    <Language>
+      <Code>hsb</Code>
+      <Name />
+      <LocalName>Hornjoserbsce</LocalName>
+      <Notes>Upper Sorbian</Notes>
+    </Language>
+    <Language>
+      <Code>ht</Code>
+      <Name />
+      <LocalName>Kreyòl ayisyen</LocalName>
+      <Notes>Haitian Creole French</Notes>
+    </Language>
+    <Language>
+      <Code>hu</Code>
+      <Name />
+      <LocalName>Magyar</LocalName>
+      <Notes>Hungarian</Notes>
+    </Language>
+    <Language>
+      <Code>hy</Code>
+      <Name />
+      <LocalName>Հայերեն</LocalName>
+      <Notes>Armenian</Notes>
+    </Language>
+    <Language>
+      <Code>hz</Code>
+      <Name />
+      <LocalName>Otsiherero</LocalName>
+      <Notes>Herero</Notes>
+    </Language>
+    <Language>
+      <Code>ia</Code>
+      <Name />
+      <LocalName>Interlingua</LocalName>
+      <Notes>Interlingua (IALA)</Notes>
+    </Language>
+    <Language>
+      <Code>id</Code>
+      <Name />
+      <LocalName>Bahasa Indonesia</LocalName>
+      <Notes>Indonesian</Notes>
+    </Language>
+    <Language>
+      <Code>ie</Code>
+      <Name />
+      <LocalName>Interlingue</LocalName>
+      <Notes>Interlingue (Occidental)</Notes>
+    </Language>
+    <Language>
+      <Code>ig</Code>
+      <Name />
+      <LocalName>Igbo</LocalName>
+      <Notes>Igbo</Notes>
+    </Language>
+    <Language>
+      <Code>ii</Code>
+      <Name />
+      <LocalName>ꆇꉙ</LocalName>
+      <Notes>Sichuan Yi</Notes>
+    </Language>
+    <Language>
+      <Code>ik</Code>
+      <Name />
+      <LocalName>Iñupiak</LocalName>
+      <Notes>Inupiak (Inupiatun, Northwest Alaska / Inupiatun, North Alaskan)</Notes>
+    </Language>
+    <Language>
+      <Code>ike-cans</Code>
+      <Name />
+      <LocalName>ᐃᓄᒃᑎᑐᑦ</LocalName>
+      <Notes>Inuktitut, Eastern Canadian/Eastern Canadian "Eskimo"/"Eastern Arctic Eskimo"/Inuit (Unified Canadian Aboriginal Syllabics)</Notes>
+    </Language>
+    <Language>
+      <Code>ike-latn</Code>
+      <Name />
+      <LocalName>inuktitut</LocalName>
+      <Notes>Inuktitut, Eastern Canadian (Latin script)</Notes>
+    </Language>
+    <Language>
+      <Code>ilo</Code>
+      <Name />
+      <LocalName>Ilokano</LocalName>
+      <Notes>Ilokano</Notes>
+    </Language>
+    <Language>
+      <Code>inh</Code>
+      <Name />
+      <LocalName>ГІалгІай Ğalğaj</LocalName>
+      <Notes>Ingush</Notes>
+    </Language>
+    <Language>
+      <Code>io</Code>
+      <Name />
+      <LocalName>Ido</LocalName>
+      <Notes>Ido</Notes>
+    </Language>
+    <Language>
+      <Code>is</Code>
+      <Name />
+      <LocalName>Íslenska</LocalName>
+      <Notes>Icelandic</Notes>
+    </Language>
+    <Language>
+      <Code>it</Code>
+      <Name />
+      <LocalName>Italiano</LocalName>
+      <Notes>Italian</Notes>
+    </Language>
+    <Language>
+      <Code>iu</Code>
+      <Name />
+      <LocalName>ᐃᓄᒃᑎᑐᑦ/inuktitut</LocalName>
+      <Notes>Inuktitut (macro language - do no localise, see ike/ikt - falls back to ike-cans)</Notes>
+    </Language>
+    <Language>
+      <Code>ja</Code>
+      <Name />
+      <LocalName>日本語</LocalName>
+      <Notes>Japanese</Notes>
+    </Language>
+    <Language>
+      <Code>jbo</Code>
+      <Name />
+      <LocalName>Lojban</LocalName>
+      <Notes>Lojban</Notes>
+    </Language>
+    <Language>
+      <Code>jut</Code>
+      <Name />
+      <LocalName>Jysk</LocalName>
+      <Notes>Jutish / Jutlandic</Notes>
+    </Language>
+    <Language>
+      <Code>jv</Code>
+      <Name />
+      <LocalName>Basa Jawa</LocalName>
+      <Notes>Javanese</Notes>
+    </Language>
+    <Language>
+      <Code>ka</Code>
+      <Name />
+      <LocalName>ქართული</LocalName>
+      <Notes>Georgian</Notes>
+    </Language>
+    <Language>
+      <Code>kaa</Code>
+      <Name />
+      <LocalName>Qaraqalpaqsha</LocalName>
+      <Notes>Karakalpak</Notes>
+    </Language>
+    <Language>
+      <Code>kab</Code>
+      <Name />
+      <LocalName>Taqbaylit</LocalName>
+      <Notes>Kabyle</Notes>
+    </Language>
+    <Language>
+      <Code>kbd</Code>
+      <Name />
+      <LocalName>къэбэрдеибзэ/qabardjajəbza</LocalName>
+      <Notes>Kabardian (multiple scripts - defaults to Cyrillic)</Notes>
+    </Language>
+    <Language>
+      <Code>kbd-cyrl</Code>
+      <Name />
+      <LocalName>къэбэрдеибзэ</LocalName>
+      <Notes>Kabardian (Cyrillic)</Notes>
+    </Language>
+    <Language>
+      <Code>kg</Code>
+      <Name />
+      <LocalName>Kongo</LocalName>
+      <Notes>Kongo, (FIXME!) should probaly be KiKongo or KiKoongo</Notes>
+    </Language>
+    <Language>
+      <Code>ki</Code>
+      <Name />
+      <LocalName>Gĩkũyũ</LocalName>
+      <Notes>Gikuyu</Notes>
+    </Language>
+    <Language>
+      <Code>kiu</Code>
+      <Name />
+      <LocalName>Kırmancki</LocalName>
+      <Notes>Kirmanjki</Notes>
+    </Language>
+    <Language>
+      <Code>kj</Code>
+      <Name />
+      <LocalName>Kwanyama</LocalName>
+      <Notes>Kwanyama</Notes>
+    </Language>
+    <Language>
+      <Code>kk</Code>
+      <Name />
+      <LocalName>Қазақша</LocalName>
+      <Notes>Kazakh (multiple scripts - defaults to Cyrillic)</Notes>
+    </Language>
+    <Language>
+      <Code>kk-arab</Code>
+      <Name />
+      <LocalName>\xE2\x80\xABقازاقشا (تٴوتە)\xE2\x80\xAC</LocalName>
+      <Notes>Kazakh Arabic</Notes>
+    </Language>
+    <Language>
+      <Code>kk-cyrl</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAAҚазақша (кирил)\xE2\x80\xAC</LocalName>
+      <Notes>Kazakh Cyrillic</Notes>
+    </Language>
+    <Language>
+      <Code>kk-latn</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAAQazaqşa (latın)\xE2\x80\xAC</LocalName>
+      <Notes>Kazakh Latin</Notes>
+    </Language>
+    <Language>
+      <Code>kk-cn</Code>
+      <Name />
+      <LocalName>\xE2\x80\xABقازاقشا (جۇنگو)\xE2\x80\xAC</LocalName>
+      <Notes>Kazakh (China)</Notes>
+    </Language>
+    <Language>
+      <Code>kk-kz</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAAҚазақша (Қазақстан)\xE2\x80\xAC</LocalName>
+      <Notes>Kazakh (Kazakhstan)</Notes>
+    </Language>
+    <Language>
+      <Code>kk-tr</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAAQazaqşa (Türkïya)\xE2\x80\xAC</LocalName>
+      <Notes>Kazakh (Turkey)</Notes>
+    </Language>
+    <Language>
+      <Code>kl</Code>
+      <Name />
+      <LocalName>Kalaallisut</LocalName>
+      <Notes>Inuktitut, Greenlandic/Greenlandic/Kalaallisut (kal)</Notes>
+    </Language>
+    <Language>
+      <Code>km</Code>
+      <Name />
+      <LocalName>ភាសាខ្មែរ</LocalName>
+      <Notes>Khmer, Central</Notes>
+    </Language>
+    <Language>
+      <Code>kn</Code>
+      <Name />
+      <LocalName>ಕನ್ನಡ</LocalName>
+      <Notes>Kannada</Notes>
+    </Language>
+    <Language>
+      <Code>ko</Code>
+      <Name />
+      <LocalName>한국어</LocalName>
+      <Notes>Korean</Notes>
+    </Language>
+    <Language>
+      <Code>ko-kp</Code>
+      <Name />
+      <LocalName>한국어 (조선)</LocalName>
+      <Notes>Korean (DPRK)</Notes>
+    </Language>
+    <Language>
+      <Code>koi</Code>
+      <Name />
+      <LocalName>Перем Коми</LocalName>
+      <Notes>Komi-Permyak</Notes>
+    </Language>
+    <Language>
+      <Code>kr</Code>
+      <Name />
+      <LocalName>Kanuri</LocalName>
+      <Notes>Kanuri, Central</Notes>
+    </Language>
+    <Language>
+      <Code>krc</Code>
+      <Name />
+      <LocalName>Къарачай-Малкъар</LocalName>
+      <Notes>Karachay-Balkar</Notes>
+    </Language>
+    <Language>
+      <Code>kri</Code>
+      <Name />
+      <LocalName>Krio</LocalName>
+      <Notes>Krio</Notes>
+    </Language>
+    <Language>
+      <Code>krj</Code>
+      <Name />
+      <LocalName>Kinaray-a</LocalName>
+      <Notes>Kinaray-a</Notes>
+    </Language>
+    <Language>
+      <Code>ks</Code>
+      <Name />
+      <LocalName>कश्मीरी - (كشميري)</LocalName>
+      <Notes>Kashmiri</Notes>
+    </Language>
+    <Language>
+      <Code>ksh</Code>
+      <Name />
+      <LocalName>Ripoarisch</LocalName>
+      <Notes>Ripuarian</Notes>
+    </Language>
+    <Language>
+      <Code>ku</Code>
+      <LocalName>Kurdî</LocalName>
+      <Notes>Kurdish (multiple scripts - defaults to Latin)</Notes>
+    </Language>
+    <Language>
+      <Code>ku-latn</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAAKurdî (latînî)\xE2\x80\xAC</LocalName>
+      <Notes>Northern Kurdish (Latin script)</Notes>
+    </Language>
+    <Language>
+      <Code>ku-arab</Code>
+      <Name />
+      <LocalName>\xE2\x80\xABكوردي (عەرەبی)\xE2\x80\xAC</LocalName>
+      <Notes>Northern Kurdish (Arabic script) (falls back to ckb)</Notes>
+    </Language>
+    <Language>
+      <Code>kv</Code>
+      <Name />
+      <LocalName>Коми</LocalName>
+      <Notes>Komi-Zyrian (Cyrillic is common script but also written in Latin script)</Notes>
+    </Language>
+    <Language>
+      <Code>kw</Code>
+      <Name />
+      <LocalName>Kernowek</LocalName>
+      <Notes>Cornish</Notes>
+    </Language>
+    <Language>
+      <Code>ky</Code>
+      <Name />
+      <LocalName>Кыргызча</LocalName>
+      <Notes>Kirghiz</Notes>
+    </Language>
+    <Language>
+      <Code>la</Code>
+      <Name />
+      <LocalName>Latina</LocalName>
+      <Notes>Latin</Notes>
+    </Language>
+    <Language>
+      <Code>lad</Code>
+      <Name />
+      <LocalName>Ladino</LocalName>
+      <Notes>Ladino</Notes>
+    </Language>
+    <Language>
+      <Code>lb</Code>
+      <Name />
+      <LocalName>Lëtzebuergesch</LocalName>
+      <Notes>Luxemburguish</Notes>
+    </Language>
+    <Language>
+      <Code>lbe</Code>
+      <Name />
+      <LocalName>Лакку</LocalName>
+      <Notes>Lak</Notes>
+    </Language>
+    <Language>
+      <Code>lez</Code>
+      <Name />
+      <LocalName>Лезги</LocalName>
+      <Notes>Lezgi</Notes>
+    </Language>
+    <Language>
+      <Code>lfn</Code>
+      <Name />
+      <LocalName>Lingua Franca Nova</LocalName>
+      <Notes>Lingua Franca Nova</Notes>
+    </Language>
+    <Language>
+      <Code>lg</Code>
+      <Name />
+      <LocalName>Luganda</LocalName>
+      <Notes>Ganda</Notes>
+    </Language>
+    <Language>
+      <Code>li</Code>
+      <Name />
+      <LocalName>Limburgs</LocalName>
+      <Notes>Limburgian</Notes>
+    </Language>
+    <Language>
+      <Code>lij</Code>
+      <Name />
+      <LocalName>Líguru</LocalName>
+      <Notes>Ligurian</Notes>
+    </Language>
+    <Language>
+      <Code>lmo</Code>
+      <Name />
+      <LocalName>Lumbaart</LocalName>
+      <Notes>Lombard</Notes>
+    </Language>
+    <Language>
+      <Code>ln</Code>
+      <Name />
+      <LocalName>Lingála</LocalName>
+      <Notes>Lingala</Notes>
+    </Language>
+    <Language>
+      <Code>lo</Code>
+      <Name />
+      <LocalName>ລາວ</LocalName>
+      <Notes>Laotian</Notes>
+    </Language>
+    <Language>
+      <Code>loz</Code>
+      <Name />
+      <LocalName>Silozi</LocalName>
+      <Notes>Lozi</Notes>
+    </Language>
+    <Language>
+      <Code>lt</Code>
+      <Name />
+      <LocalName>Lietuvių</LocalName>
+      <Notes>Lithuanian</Notes>
+    </Language>
+    <Language>
+      <Code>ltg</Code>
+      <Name />
+      <LocalName>Latgaļu</LocalName>
+      <Notes>Latgalian</Notes>
+    </Language>
+    <Language>
+      <Code>lv</Code>
+      <Name />
+      <LocalName>Latviešu</LocalName>
+      <Notes>Latvian</Notes>
+    </Language>
+    <Language>
+      <Code>lzh</Code>
+      <Name />
+      <LocalName>文言</LocalName>
+      <Notes>Literary Chinese -- (bug 8217) lzh instead of zh-classical</Notes>
+    </Language>
+    <Language>
+      <Code>lzz</Code>
+      <Name />
+      <LocalName>Lazuri</LocalName>
+      <Notes>Laz</Notes>
+    </Language>
+    <Language>
+      <Code>mai</Code>
+      <Name />
+      <LocalName>मैथिली</LocalName>
+      <Notes>Maithili</Notes>
+    </Language>
+    <Language>
+      <Code>map-bms</Code>
+      <Name />
+      <LocalName>Basa Banyumasan</LocalName>
+      <Notes>Banyumasan</Notes>
+    </Language>
+    <Language>
+      <Code>mdf</Code>
+      <Name />
+      <LocalName>Мокшень</LocalName>
+      <Notes>Moksha</Notes>
+    </Language>
+    <Language>
+      <Code>mg</Code>
+      <Name />
+      <LocalName>Malagasy</LocalName>
+      <Notes>Malagasy</Notes>
+    </Language>
+    <Language>
+      <Code>mh</Code>
+      <Name />
+      <LocalName>Ebon</LocalName>
+      <Notes>Marshallese</Notes>
+    </Language>
+    <Language>
+      <Code>mhr</Code>
+      <Name />
+      <LocalName>Олык Марий</LocalName>
+      <Notes>Eastern Mari</Notes>
+    </Language>
+    <Language>
+      <Code>mi</Code>
+      <Name />
+      <LocalName>Māori</LocalName>
+      <Notes>Maori</Notes>
+    </Language>
+    <Language>
+      <Code>min</Code>
+      <Name />
+      <LocalName>Baso Minangkabau</LocalName>
+      <Notes>Minangkabau</Notes>
+    </Language>
+    <Language>
+      <Code>mk</Code>
+      <Name />
+      <LocalName>Македонски</LocalName>
+      <Notes>Macedonian</Notes>
+    </Language>
+    <Language>
+      <Code>ml</Code>
+      <Name />
+      <LocalName>മലയാളം</LocalName>
+      <Notes>Malayalam</Notes>
+    </Language>
+    <Language>
+      <Code>mn</Code>
+      <Name />
+      <LocalName>Монгол</LocalName>
+      <Notes>Halh Mongolian (Cyrillic) (ISO 639-3: khk)</Notes>
+    </Language>
+    <Language>
+      <Code>mo</Code>
+      <Name />
+      <LocalName>Молдовеняскэ</LocalName>
+      <Notes>Moldovan</Notes>
+    </Language>
+    <Language>
+      <Code>mr</Code>
+      <Name />
+      <LocalName>मराठी</LocalName>
+      <Notes>Marathi</Notes>
+    </Language>
+    <Language>
+      <Code>mrj</Code>
+      <Name />
+      <LocalName>Кырык мары</LocalName>
+      <Notes>Hill Mari</Notes>
+    </Language>
+    <Language>
+      <Code>ms</Code>
+      <Name />
+      <LocalName>Bahasa Melayu</LocalName>
+      <Notes>Malay</Notes>
+    </Language>
+    <Language>
+      <Code>mt</Code>
+      <Name />
+      <LocalName>Malti</LocalName>
+      <Notes>Maltese</Notes>
+    </Language>
+    <Language>
+      <Code>mus</Code>
+      <Name />
+      <LocalName>Mvskoke</LocalName>
+      <Notes>Muskogee/Creek</Notes>
+    </Language>
+    <Language>
+      <Code>mwl</Code>
+      <Name />
+      <LocalName>Mirandés</LocalName>
+      <Notes>Mirandese</Notes>
+    </Language>
+    <Language>
+      <Code>my</Code>
+      <Name />
+      <LocalName>မြန်မာဘာသာ</LocalName>
+      <Notes>Burmese</Notes>
+    </Language>
+    <Language>
+      <Code>myv</Code>
+      <Name />
+      <LocalName>Эрзянь</LocalName>
+      <Notes>Erzya</Notes>
+    </Language>
+    <Language>
+      <Code>mzn</Code>
+      <Name />
+      <LocalName>مازِرونی</LocalName>
+      <Notes>Mazanderani</Notes>
+    </Language>
+    <Language>
+      <Code>na</Code>
+      <Name />
+      <LocalName>Dorerin Naoero</LocalName>
+      <Notes>Nauruan</Notes>
+    </Language>
+    <Language>
+      <Code>nah</Code>
+      <Name />
+      <LocalName>Nāhuatl</LocalName>
+      <Notes>Nahuatl, en:Wikipedia writes Nahuatlahtolli, while another form is Náhuatl</Notes>
+    </Language>
+    <Language>
+      <Code>nan</Code>
+      <Name />
+      <LocalName>Bân-lâm-gú</LocalName>
+      <Notes>Min-nan -- (bug 8217) nan instead of zh-min-nan</Notes>
+    </Language>
+    <Language>
+      <Code>nap</Code>
+      <Name />
+      <LocalName>Nnapulitano</LocalName>
+      <Notes>Neapolitan</Notes>
+    </Language>
+    <Language>
+      <Code>nb</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAANorsk (bokmål)\xE2\x80\xAC</LocalName>
+      <Notes>Norwegian (Bokmal)</Notes>
+    </Language>
+    <Language>
+      <Code>nds</Code>
+      <Name />
+      <LocalName>Plattdüütsch</LocalName>
+      <Notes>Low German ''or'' Low Saxon</Notes>
+    </Language>
+    <Language>
+      <Code>nds-nl</Code>
+      <Name />
+      <LocalName>Nedersaksisch</LocalName>
+      <Notes>Dutch Low Saxon</Notes>
+    </Language>
+    <Language>
+      <Code>ne</Code>
+      <Name />
+      <LocalName>नेपाली</LocalName>
+      <Notes>Nepali</Notes>
+    </Language>
+    <Language>
+      <Code>new</Code>
+      <Name />
+      <LocalName>नेपाल भाषा</LocalName>
+      <Notes>Newar / Nepal Bhasa</Notes>
+    </Language>
+    <Language>
+      <Code>ng</Code>
+      <Name />
+      <LocalName>Oshiwambo</LocalName>
+      <Notes>Ndonga</Notes>
+    </Language>
+    <Language>
+      <Code>niu</Code>
+      <Name />
+      <LocalName>Niuē</LocalName>
+      <Notes>Niuean</Notes>
+    </Language>
+    <Language>
+      <Code>nl</Code>
+      <Name />
+      <LocalName>Nederlands</LocalName>
+      <Notes>Dutch</Notes>
+    </Language>
+    <Language>
+      <Code>nl-informal</Code>
+      <Name />
+      <LocalName>Nederlands (informeel)</LocalName>
+      <Notes>Dutch (informal address ("je"))</Notes>
+    </Language>
+    <Language>
+      <Code>nn</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAANorsk (nynorsk)\xE2\x80\xAC</LocalName>
+      <Notes>Norwegian (Nynorsk)</Notes>
+    </Language>
+    <Language>
+      <Code>no</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAANorsk (bokmål)\xE2\x80\xAC</LocalName>
+      <Notes>Norwegian</Notes>
+    </Language>
+    <Language>
+      <Code>nov</Code>
+      <Name />
+      <LocalName>Novial</LocalName>
+      <Notes>Novial</Notes>
+    </Language>
+    <Language>
+      <Code>nrm</Code>
+      <Name />
+      <LocalName>Nouormand</LocalName>
+      <Notes>Norman</Notes>
+    </Language>
+    <Language>
+      <Code>nso</Code>
+      <Name />
+      <LocalName>Sesotho sa Leboa</LocalName>
+      <Notes>Northern Sotho</Notes>
+    </Language>
+    <Language>
+      <Code>nv</Code>
+      <Name />
+      <LocalName>Diné bizaad</LocalName>
+      <Notes>Navajo</Notes>
+    </Language>
+    <Language>
+      <Code>ny</Code>
+      <Name />
+      <LocalName>Chi-Chewa</LocalName>
+      <Notes>Chichewa</Notes>
+    </Language>
+    <Language>
+      <Code>oc</Code>
+      <Name />
+      <LocalName>Occitan</LocalName>
+      <Notes>Occitan</Notes>
+    </Language>
+    <Language>
+      <Code>om</Code>
+      <Name />
+      <LocalName>Oromoo</LocalName>
+      <Notes>Oromo</Notes>
+    </Language>
+    <Language>
+      <Code>or</Code>
+      <Name />
+      <LocalName>ଓଡ଼ିଆ</LocalName>
+      <Notes>Oriya</Notes>
+    </Language>
+    <Language>
+      <Code>os</Code>
+      <Name />
+      <LocalName>Иронау</LocalName>
+      <Notes>Ossetic</Notes>
+    </Language>
+    <Language>
+      <Code>pa</Code>
+      <Name />
+      <LocalName>ਪੰਜਾਬੀ</LocalName>
+      <Notes>Eastern Punjabi (Gurmukhi script) (pan)</Notes>
+    </Language>
+    <Language>
+      <Code>pag</Code>
+      <Name />
+      <LocalName>Pangasinan</LocalName>
+      <Notes>Pangasinan</Notes>
+    </Language>
+    <Language>
+      <Code>pam</Code>
+      <Name />
+      <LocalName>Kapampangan</LocalName>
+      <Notes>Pampanga</Notes>
+    </Language>
+    <Language>
+      <Code>pap</Code>
+      <Name />
+      <LocalName>Papiamentu</LocalName>
+      <Notes>Papiamentu</Notes>
+    </Language>
+    <Language>
+      <Code>pcd</Code>
+      <Name />
+      <LocalName>Picard</LocalName>
+      <Notes>Picard</Notes>
+    </Language>
+    <Language>
+      <Code>pdc</Code>
+      <Name />
+      <LocalName>Deitsch</LocalName>
+      <Notes>Pennsylvania German</Notes>
+    </Language>
+    <Language>
+      <Code>pdt</Code>
+      <Name />
+      <LocalName>Plautdietsch</LocalName>
+      <Notes>Plautdietsch/Mennonite Low German</Notes>
+    </Language>
+    <Language>
+      <Code>pfl</Code>
+      <Name />
+      <LocalName>Pälzisch</LocalName>
+      <Notes>Palatinate German</Notes>
+    </Language>
+    <Language>
+      <Code>pi</Code>
+      <Name />
+      <LocalName>पािऴ</LocalName>
+      <Notes>Pali</Notes>
+    </Language>
+    <Language>
+      <Code>pih</Code>
+      <Name />
+      <LocalName>Norfuk / Pitkern</LocalName>
+      <Notes>Norfuk/Pitcairn/Norfolk</Notes>
+    </Language>
+    <Language>
+      <Code>pl</Code>
+      <Name />
+      <LocalName>Polski</LocalName>
+      <Notes>Polish</Notes>
+    </Language>
+    <Language>
+      <Code>pms</Code>
+      <Name />
+      <LocalName>Piemontèis</LocalName>
+      <Notes>Piedmontese</Notes>
+    </Language>
+    <Language>
+      <Code>pnb</Code>
+      <Name />
+      <LocalName>پنجابی</LocalName>
+      <Notes>Western Punjabi</Notes>
+    </Language>
+    <Language>
+      <Code>pnt</Code>
+      <Name />
+      <LocalName>Ποντιακά</LocalName>
+      <Notes>Pontic/Pontic Greek</Notes>
+    </Language>
+    <Language>
+      <Code>prg</Code>
+      <Name />
+      <LocalName>Prūsiskan</LocalName>
+      <Notes>Prussian</Notes>
+    </Language>
+    <Language>
+      <Code>ps</Code>
+      <Name />
+      <LocalName>پښتو</LocalName>
+      <Notes>Pashto, Northern/Paktu/Pakhtu/Pakhtoo/Afghan/Pakhto/Pashtu/Pushto/Yusufzai Pashto</Notes>
+    </Language>
+    <Language>
+      <Code>pt</Code>
+      <Name />
+      <LocalName>Português</LocalName>
+      <Notes>Portuguese</Notes>
+    </Language>
+    <Language>
+      <Code>pt-br</Code>
+      <Name />
+      <LocalName>Português do Brasil</LocalName>
+      <Notes>Brazilian Portuguese</Notes>
+    </Language>
+    <Language>
+      <Code>qu</Code>
+      <Name />
+      <LocalName>Runa Simi</LocalName>
+      <Notes>Quechua</Notes>
+    </Language>
+    <Language>
+      <Code>rgn</Code>
+      <Name />
+      <LocalName>Rumagnôl</LocalName>
+      <Notes>Romagnol</Notes>
+    </Language>
+    <Language>
+      <Code>rif</Code>
+      <Name />
+      <LocalName>Tarifit</LocalName>
+      <Notes>Tarifit</Notes>
+    </Language>
+    <Language>
+      <Code>rm</Code>
+      <Name />
+      <LocalName>Rumantsch</LocalName>
+      <Notes>Raeto-Romance</Notes>
+    </Language>
+    <Language>
+      <Code>rmy</Code>
+      <Name />
+      <LocalName>Romani</LocalName>
+      <Notes>Vlax Romany</Notes>
+    </Language>
+    <Language>
+      <Code>rn</Code>
+      <Name />
+      <LocalName>Kirundi</LocalName>
+      <Notes>Rundi/Kirundi/Urundi</Notes>
+    </Language>
+    <Language>
+      <Code>ro</Code>
+      <Name />
+      <LocalName>Română</LocalName>
+      <Notes>Romanian</Notes>
+    </Language>
+    <Language>
+      <Code>roa-rup</Code>
+      <Name />
+      <LocalName>Armãneashce</LocalName>
+      <Notes>Aromanian</Notes>
+    </Language>
+    <Language>
+      <Code>roa-tara</Code>
+      <Name />
+      <LocalName>Tarandíne</LocalName>
+      <Notes>Tarantino</Notes>
+    </Language>
+    <Language>
+      <Code>ru</Code>
+      <Name />
+      <LocalName>Русский</LocalName>
+      <Notes>Russian</Notes>
+    </Language>
+    <Language>
+      <Code>rue</Code>
+      <Name />
+      <LocalName>Русиньскый</LocalName>
+      <Notes>Rusyn</Notes>
+    </Language>
+    <Language>
+      <Code>ruq</Code>
+      <Name />
+      <LocalName>Vlăheşte</LocalName>
+      <Notes>Megleno-Romanian (multiple scripts - defaults to Latin)</Notes>
+    </Language>
+    <Language>
+      <Code>ruq-cyrl</Code>
+      <Name />
+      <LocalName>Влахесте</LocalName>
+      <Notes>Megleno-Romanian (Cyrillic script)</Notes>
+    </Language>
+    <Language>
+      <Code>ruq-grek</Code>
+      <Name />
+      <LocalName>Βλαεστε</LocalName>
+      <Notes>Megleno-Romanian (Greek script)</Notes>
+    </Language>
+    <Language>
+      <Code>ruq-latn</Code>
+      <Name />
+      <LocalName>Vlăheşte</LocalName>
+      <Notes>Megleno-Romanian (Latin script)</Notes>
+    </Language>
+    <Language>
+      <Code>rw</Code>
+      <Name />
+      <LocalName>Kinyarwanda</LocalName>
+      <Notes>Kinyarwanda, should possibly be Kinyarwandi</Notes>
+    </Language>
+    <Language>
+      <Code>sa</Code>
+      <Name />
+      <LocalName>संस्कृत</LocalName>
+      <Notes>Sanskrit</Notes>
+    </Language>
+    <Language>
+      <Code>sah</Code>
+      <Name />
+      <LocalName>Саха тыла</LocalName>
+      <Notes>Sakha</Notes>
+    </Language>
+    <Language>
+      <Code>sc</Code>
+      <Name />
+      <LocalName>Sardu</LocalName>
+      <Notes>Sardinian</Notes>
+    </Language>
+    <Language>
+      <Code>scn</Code>
+      <Name />
+      <LocalName>Sicilianu</LocalName>
+      <Notes>Sicilian</Notes>
+    </Language>
+    <Language>
+      <Code>sco</Code>
+      <Name />
+      <LocalName>Scots</LocalName>
+      <Notes>Scots</Notes>
+    </Language>
+    <Language>
+      <Code>sd</Code>
+      <Name />
+      <LocalName>سنڌي</LocalName>
+      <Notes>Sindhi</Notes>
+    </Language>
+    <Language>
+      <Code>sdc</Code>
+      <Name />
+      <LocalName>Sassaresu</LocalName>
+      <Notes>Sassarese</Notes>
+    </Language>
+    <Language>
+      <Code>se</Code>
+      <Name />
+      <LocalName>Sámegiella</LocalName>
+      <Notes>Northern Sami</Notes>
+    </Language>
+    <Language>
+      <Code>sei</Code>
+      <Name />
+      <LocalName>Cmique Itom</LocalName>
+      <Notes>Seri</Notes>
+    </Language>
+    <Language>
+      <Code>sg</Code>
+      <Name />
+      <LocalName>Sängö</LocalName>
+      <Notes>Sango/Sangho</Notes>
+    </Language>
+    <Language>
+      <Code>sgs</Code>
+      <Name />
+      <LocalName>Žemaitėška</LocalName>
+      <Notes>Samogitian</Notes>
+    </Language>
+    <Language>
+      <Code>sh</Code>
+      <Name />
+      <LocalName>Srpskohrvatski / Српскохрватски</LocalName>
+      <Notes>Serbocroatian</Notes>
+    </Language>
+    <Language>
+      <Code>shi</Code>
+      <Name />
+      <LocalName>Tašlḥiyt</LocalName>
+      <Notes>Tachelhit</Notes>
+    </Language>
+    <Language>
+      <Code>si</Code>
+      <Name />
+      <LocalName>සිංහල</LocalName>
+      <Notes>Sinhalese</Notes>
+    </Language>
+    <Language>
+      <Code>simple</Code>
+      <Name />
+      <LocalName>Simple English</LocalName>
+      <Notes>Simple English</Notes>
+    </Language>
+    <Language>
+      <Code>sk</Code>
+      <Name />
+      <LocalName>Slovenčina</LocalName>
+      <Notes>Slovak</Notes>
+    </Language>
+    <Language>
+      <Code>sl</Code>
+      <Name />
+      <LocalName>Slovenščina</LocalName>
+      <Notes>Slovenian</Notes>
+    </Language>
+    <Language>
+      <Code>sli</Code>
+      <Name />
+      <LocalName>Schläsch</LocalName>
+      <Notes>Lower Selisian</Notes>
+    </Language>
+    <Language>
+      <Code>sm</Code>
+      <Name />
+      <LocalName>Gagana Samoa</LocalName>
+      <Notes>Samoan</Notes>
+    </Language>
+    <Language>
+      <Code>sma</Code>
+      <Name />
+      <LocalName>Åarjelsaemien</LocalName>
+      <Notes>Southern Sami</Notes>
+    </Language>
+    <Language>
+      <Code>sn</Code>
+      <Name />
+      <LocalName>chiShona</LocalName>
+      <Notes>Shona</Notes>
+    </Language>
+    <Language>
+      <Code>so</Code>
+      <Name />
+      <LocalName>Soomaaliga</LocalName>
+      <Notes>Somali</Notes>
+    </Language>
+    <Language>
+      <Code>sq</Code>
+      <Name />
+      <LocalName>Shqip</LocalName>
+      <Notes>Albanian</Notes>
+    </Language>
+    <Language>
+      <Code>sr</Code>
+      <Name />
+      <LocalName>Српски / Srpski</LocalName>
+      <Notes>Serbian (multiple scripts - defaults to Cyrillic)</Notes>
+    </Language>
+    <Language>
+      <Code>sr-ec</Code>
+      <Name />
+      <LocalName>Српски (ћирилица)</LocalName>
+      <Notes>Serbian Cyrillic ekavian</Notes>
+    </Language>
+    <Language>
+      <Code>sr-el</Code>
+      <Name />
+      <LocalName>Srpski (latinica)</LocalName>
+      <Notes>Serbian Latin ekavian</Notes>
+    </Language>
+    <Language>
+      <Code>srn</Code>
+      <Name />
+      <LocalName>Sranantongo</LocalName>
+      <Notes>Sranan Tongo</Notes>
+    </Language>
+    <Language>
+      <Code>ss</Code>
+      <Name />
+      <LocalName>SiSwati</LocalName>
+      <Notes>Swati</Notes>
+    </Language>
+    <Language>
+      <Code>st</Code>
+      <Name />
+      <LocalName>Sesotho</LocalName>
+      <Notes>Southern Sotho</Notes>
+    </Language>
+    <Language>
+      <Code>stq</Code>
+      <Name />
+      <LocalName>Seeltersk</LocalName>
+      <Notes>Saterland Frisian</Notes>
+    </Language>
+    <Language>
+      <Code>su</Code>
+      <Name />
+      <LocalName>Basa Sunda</LocalName>
+      <Notes>Sundanese</Notes>
+    </Language>
+    <Language>
+      <Code>sv</Code>
+      <Name />
+      <LocalName>Svenska</LocalName>
+      <Notes>Swedish</Notes>
+    </Language>
+    <Language>
+      <Code>sw</Code>
+      <Name />
+      <LocalName>Kiswahili</LocalName>
+      <Notes>Swahili</Notes>
+    </Language>
+    <Language>
+      <Code>szl</Code>
+      <Name />
+      <LocalName>Ślůnski</LocalName>
+      <Notes>Silesian</Notes>
+    </Language>
+    <Language>
+      <Code>ta</Code>
+      <Name />
+      <LocalName>தமிழ்</LocalName>
+      <Notes>Tamil</Notes>
+    </Language>
+    <Language>
+      <Code>tcy</Code>
+      <Name />
+      <LocalName>ತುಳು</LocalName>
+      <Notes>Tulu</Notes>
+    </Language>
+    <Language>
+      <Code>te</Code>
+      <Name />
+      <LocalName>తెలుగు</LocalName>
+      <Notes>Telugu</Notes>
+    </Language>
+    <Language>
+      <Code>tet</Code>
+      <Name />
+      <LocalName>Tetun</LocalName>
+      <Notes>Tetun</Notes>
+    </Language>
+    <Language>
+      <Code>tg</Code>
+      <Name />
+      <LocalName>Тоҷикӣ</LocalName>
+      <Notes>Tajiki (falls back to tg-cyrl)</Notes>
+    </Language>
+    <Language>
+      <Code>tg-cyrl</Code>
+      <Name />
+      <LocalName>Тоҷикӣ</LocalName>
+      <Notes>Tajiki (Cyrllic script) (default)</Notes>
+    </Language>
+    <Language>
+      <Code>tg-latn</Code>
+      <Name />
+      <LocalName>tojikī</LocalName>
+      <Notes>Tajiki (Latin script)</Notes>
+    </Language>
+    <Language>
+      <Code>th</Code>
+      <Name />
+      <LocalName>ไทย</LocalName>
+      <Notes>Thai</Notes>
+    </Language>
+    <Language>
+      <Code>ti</Code>
+      <Name />
+      <LocalName>ትግርኛ</LocalName>
+      <Notes>Tigrinya</Notes>
+    </Language>
+    <Language>
+      <Code>tk</Code>
+      <Name />
+      <LocalName>Türkmençe</LocalName>
+      <Notes>Turkmen</Notes>
+    </Language>
+    <Language>
+      <Code>tl</Code>
+      <Name />
+      <LocalName>Tagalog</LocalName>
+      <Notes>Tagalog</Notes>
+    </Language>
+    <Language>
+      <Code>tn</Code>
+      <Name />
+      <LocalName>Setswana</LocalName>
+      <Notes>Setswana</Notes>
+    </Language>
+    <Language>
+      <Code>to</Code>
+      <Name />
+      <LocalName>lea faka-Tonga</LocalName>
+      <Notes>Tonga (Tonga Islands)</Notes>
+    </Language>
+    <Language>
+      <Code>tokipona</Code>
+      <Name />
+      <LocalName>Toki Pona</LocalName>
+      <Notes>Toki Pona</Notes>
+    </Language>
+    <Language>
+      <Code>tp</Code>
+      <Name />
+      <LocalName>Toki Pona (deprecated:tokipona)</LocalName>
+      <Notes>Toki Pona - non-standard language code</Notes>
+    </Language>
+    <Language>
+      <Code>tpi</Code>
+      <Name />
+      <LocalName>Tok Pisin</LocalName>
+      <Notes>Tok Pisin</Notes>
+    </Language>
+    <Language>
+      <Code>tr</Code>
+      <Name />
+      <LocalName>Türkçe</LocalName>
+      <Notes>Turkish</Notes>
+    </Language>
+    <Language>
+      <Code>ts</Code>
+      <Name />
+      <LocalName>Xitsonga</LocalName>
+      <Notes>Tsonga</Notes>
+    </Language>
+    <Language>
+      <Code>tt</Code>
+      <Name />
+      <LocalName>Татарча/Tatarça</LocalName>
+      <Notes>Tatar (multiple scripts - defaults to Cyrillic)</Notes>
+    </Language>
+    <Language>
+      <Code>tt-cyrl</Code>
+      <Name />
+      <LocalName>Татарча</LocalName>
+      <Notes>Tatar (Cyrillic script) (default)</Notes>
+    </Language>
+    <Language>
+      <Code>tt-latn</Code>
+      <Name />
+      <LocalName>Tatarça</LocalName>
+      <Notes>Tatar (Latin script)</Notes>
+    </Language>
+    <Language>
+      <Code>tum</Code>
+      <Name />
+      <LocalName>chiTumbuka</LocalName>
+      <Notes>Tumbuka</Notes>
+    </Language>
+    <Language>
+      <Code>tw</Code>
+      <Name />
+      <LocalName>Twi</LocalName>
+      <Notes>Twi, (FIXME!)</Notes>
+    </Language>
+    <Language>
+      <Code>ty</Code>
+      <Name />
+      <LocalName>Reo Mā`ohi</LocalName>
+      <Notes>Tahitian</Notes>
+    </Language>
+    <Language>
+      <Code>tyv</Code>
+      <Name />
+      <LocalName>Тыва дыл</LocalName>
+      <Notes>Tyvan</Notes>
+    </Language>
+    <Language>
+      <Code>udm</Code>
+      <Name />
+      <LocalName>Удмурт</LocalName>
+      <Notes>Udmurt</Notes>
+    </Language>
+    <Language>
+      <Code>ug</Code>
+      <Name />
+      <LocalName>ئۇيغۇرچە / Uyghurche‎</LocalName>
+      <Notes>Uyghur (multiple scripts - defaults to Arabic)</Notes>
+    </Language>
+    <Language>
+      <Code>ug-arab</Code>
+      <Name />
+      <LocalName>ئۇيغۇرچە</LocalName>
+      <Notes>Uyghur (Arabic script) (default)</Notes>
+    </Language>
+    <Language>
+      <Code>ug-latn</Code>
+      <Name />
+      <LocalName>Uyghurche‎</LocalName>
+      <Notes>Uyghur (Latin script)</Notes>
+    </Language>
+    <Language>
+      <Code>uk</Code>
+      <Name />
+      <LocalName>Українська</LocalName>
+      <Notes>Ukrainian</Notes>
+    </Language>
+    <Language>
+      <Code>ur</Code>
+      <Name />
+      <LocalName>اردو</LocalName>
+      <Notes>Urdu</Notes>
+    </Language>
+    <Language>
+      <Code>uz</Code>
+      <Name />
+      <LocalName>O\'zbek</LocalName>
+      <Notes>Uzbek</Notes>
+    </Language>
+    <Language>
+      <Code>ve</Code>
+      <Name />
+      <LocalName>Tshivenda</LocalName>
+      <Notes>Venda</Notes>
+    </Language>
+    <Language>
+      <Code>vec</Code>
+      <Name />
+      <LocalName>Vèneto</LocalName>
+      <Notes>Venetian</Notes>
+    </Language>
+    <Language>
+      <Code>vep</Code>
+      <Name />
+      <LocalName>Vepsan kel\'</LocalName>
+      <Notes>Veps</Notes>
+    </Language>
+    <Language>
+      <Code>vi</Code>
+      <Name />
+      <LocalName>Tiếng Việt</LocalName>
+      <Notes>Vietnamese</Notes>
+    </Language>
+    <Language>
+      <Code>vls</Code>
+      <Name />
+      <LocalName>West-Vlams</LocalName>
+      <Notes>West Flemish</Notes>
+    </Language>
+    <Language>
+      <Code>vmf</Code>
+      <Name />
+      <LocalName>Mainfränkisch</LocalName>
+      <Notes>Upper Franconian, Main-Franconian</Notes>
+    </Language>
+    <Language>
+      <Code>vo</Code>
+      <Name />
+      <LocalName>Volapük</LocalName>
+      <Notes>Volapük</Notes>
+    </Language>
+    <Language>
+      <Code>vot</Code>
+      <Name />
+      <LocalName>Vaďďa</LocalName>
+      <Notes>Vod/Votian</Notes>
+    </Language>
+    <Language>
+      <Code>vro</Code>
+      <Name />
+      <LocalName>Võro</LocalName>
+      <Notes>Võro</Notes>
+    </Language>
+    <Language>
+      <Code>wa</Code>
+      <Name />
+      <LocalName>Walon</LocalName>
+      <Notes>Walloon</Notes>
+    </Language>
+    <Language>
+      <Code>war</Code>
+      <Name />
+      <LocalName>Winaray</LocalName>
+      <Notes>Waray-Waray</Notes>
+    </Language>
+    <Language>
+      <Code>wo</Code>
+      <Name />
+      <LocalName>Wolof</LocalName>
+      <Notes>Wolof</Notes>
+    </Language>
+    <Language>
+      <Code>wuu</Code>
+      <Name />
+      <LocalName>吴语</LocalName>
+      <Notes>Wu Chinese</Notes>
+    </Language>
+    <Language>
+      <Code>xal</Code>
+      <Name />
+      <LocalName>Хальмг</LocalName>
+      <Notes>Kalmyk-Oirat (Kalmuk, Kalmuck, Kalmack, Qalmaq, Kalmytskii Jazyk, Khal:mag, Oirat, Volga Oirat, European Oirat, Western Mongolian)</Notes>
+    </Language>
+    <Language>
+      <Code>xh</Code>
+      <Name />
+      <LocalName>isiXhosa</LocalName>
+      <Notes>Xhosan</Notes>
+    </Language>
+    <Language>
+      <Code>xmf</Code>
+      <Name />
+      <LocalName>მარგალური</LocalName>
+      <Notes>Mingrelian</Notes>
+    </Language>
+    <Language>
+      <Code>yi</Code>
+      <Name />
+      <LocalName>ייִדיש</LocalName>
+      <Notes>Yiddish</Notes>
+    </Language>
+    <Language>
+      <Code>yo</Code>
+      <Name />
+      <LocalName>Yorùbá</LocalName>
+      <Notes>Yoruba</Notes>
+    </Language>
+    <Language>
+      <Code>yue</Code>
+      <Name />
+      <LocalName>粵語</LocalName>
+      <Notes>Cantonese -- (bug 8217) yue instead of zh-yue</Notes>
+    </Language>
+    <Language>
+      <Code>za</Code>
+      <Name />
+      <LocalName>Vahcuengh</LocalName>
+      <Notes>Zhuang</Notes>
+    </Language>
+    <Language>
+      <Code>zea</Code>
+      <Name />
+      <LocalName>Zeêuws</LocalName>
+      <Notes>Zeeuws/Zeaws</Notes>
+    </Language>
+    <Language>
+      <Code>zh</Code>
+      <Name />
+      <LocalName>中文</LocalName>
+      <Notes>(Zhōng Wén) - Chinese</Notes>
+    </Language>
+    <Language>
+      <Code>zh-classical</Code>
+      <Name />
+      <LocalName>文言</LocalName>
+      <Notes>Classical Chinese/Literary Chinese -- (see bug 8217)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-cn</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAA中文(中国大陆)\xE2\x80\xAC</LocalName>
+      <Notes>Chinese (PRC)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-hans</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAA中文(简体)\xE2\x80\xAC</LocalName>
+      <Notes>Mandarin Chinese (Simplified Chinese script) (cmn-hans)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-hant</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAA中文(繁體)\xE2\x80\xAC</LocalName>
+      <Notes>Mandarin Chinese (Traditional Chinese script) (cmn-hant)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-hk</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAA中文(香港)\xE2\x80\xAC</LocalName>
+      <Notes>Chinese (Hong Kong)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-min-nan</Code>
+      <Name />
+      <LocalName>Bân-lâm-gú</LocalName>
+      <Notes>Min-nan -- (see bug 8217)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-mo</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAA中文(澳門)\xE2\x80\xAC</LocalName>
+      <Notes>Chinese (Macau)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-my</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAA中文(马来西亚)\xE2\x80\xAC</LocalName>
+      <Notes>Chinese (Malaysia)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-sg</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAA中文(新加坡)\xE2\x80\xAC</LocalName>
+      <Notes>Chinese (Singapore)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-tw</Code>
+      <Name />
+      <LocalName>\xE2\x80\xAA中文(台灣)\xE2\x80\xAC</LocalName>
+      <Notes>Chinese (Taiwan)</Notes>
+    </Language>
+    <Language>
+      <Code>zh-yue</Code>
+      <Name />
+      <LocalName>粵語</LocalName>
+      <Notes>Cantonese -- (see bug 8217)</Notes>
+    </Language>
+    <Language>
+      <Code>zu</Code>
+      <Name />
+      <LocalName>isiZulu</LocalName>
+      <Notes>Zulu</Notes>
+    </Language>
+  </Languages>
+</LanguageCodes>

@@ -121,7 +121,7 @@
 
         private void browser__Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if ((browser_.Url != null) && (browser_.Url.ToString() != tempFilename_))
+            if ((browser_.Url != null) && (browser_.Url.ToString() != tempFileUrl_))
             {
                 currentWikiPageName_ = null;
             }
@@ -348,24 +348,20 @@
         private void ShowWikiPage(string title, string text)
         {
             cboLanguage.Items.Clear();
+
+            // Add the current language first.
+            Language curLanguage = languages_.Languages.Find(lang => settings_.CurrentLanguageCode == lang.Code);
+            WikiArticleName curName = new WikiArticleName(title, curLanguage);
+            cboLanguage.Items.Add(curName);
+
             foreach (KeyValuePair<string, string> pair in Wiki2Html.ExtractLanguages(ref text))
             {
-                WikiArticleName name = new WikiArticleName();
-                name.Name = pair.Value;
-                name.LanguageCode = pair.Key;
-                Language language = languages_.Languages.Find(lang => name.LanguageCode == lang.Code);
-                if (language != null)
-                {
-                    name.LanguageName = language.Name;
-                }
-                else
-                {
-                    name.LanguageName = "Unknown Language";
-                }
-
+                Language language = languages_.Languages.Find(lang => pair.Key == lang.Code);
+                WikiArticleName name = new WikiArticleName(pair.Value, language);
                 cboLanguage.Items.Add(name);
             }
 
+            cboLanguage.SelectedIndex = 0;
             cboLanguage.Enabled = (cboLanguage.Items.Count > 0);
 
             Wiki2Html wiki2Html = new Wiki2Html(new Configuration(), OnResolveWikiLinks, fileCache_);
@@ -443,7 +439,11 @@
             if (cboLanguage.SelectedIndex >= 0)
             {
                 WikiArticleName name = (WikiArticleName)cboLanguage.Items[cboLanguage.SelectedIndex];
-                BrowseWikiArticle(name.LanguageCode, name.Name);
+                if (name.LanguageCode != settings_.CurrentLanguageCode)
+                {
+                    settings_.CurrentLanguageCode = name.LanguageCode;
+                    BrowseWikiArticle(name.LanguageCode, name.Name);
+                }
             }
         }
 
