@@ -11,6 +11,8 @@
 
     using WebKit;
 
+    using WeifenLuo.WinFormsUI.Docking;
+
     using WikiDesk.Core;
     using WikiDesk.Data;
 
@@ -25,7 +27,6 @@
             browser_.Name = "browser";
             //browser.IsWebBrowserContextMenuEnabled = false;
             //browser.IsScriptingEnabled = false;
-            Controls.Add(browser_);
             browser_.BringToFront();
             browser_.ApplicationName = APPLICATION_NAME;
             browser_.DocumentTitleChanged += browser__DocumentTitleChanged;
@@ -37,6 +38,9 @@
             browser_.Navigating += browser__Navigating;
             browser_.Navigated += browser__Navigated;
             browser_.DecideNavigationAction += browser__DecideNavigationAction;
+            dockPanel_.Controls.Add(browser_);
+
+            indexControl_.Show(dockPanel_, DockState.DockLeft);
 
             btnBack.Enabled = false;
             btnForward.Enabled = false;
@@ -235,7 +239,7 @@
             }
         }
 
-        private static void LoadClick(object sender, EventArgs e)
+        private void LoadClick(object sender, EventArgs e)
         {
             string folder = "Z:\\"; //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string dbPath = Path.Combine(folder, "wikidesk.db");
@@ -470,6 +474,8 @@
 
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
         private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();
+
+        private readonly indexControl_ indexControl_ = new indexControl_();
 
         private readonly IFileCache fileCache_;
 

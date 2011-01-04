@@ -41,9 +41,19 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.5.0.32097, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\Docking\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileCache.cs" />
+    <Compile Include="IndexControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IndexControl.Designer.cs">
+      <DependentUpon>IndexControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Languages.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -53,6 +63,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="IndexControl.resx">
+      <DependentUpon>IndexControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

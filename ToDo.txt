@@ -1,3 +1,4 @@
+* Skins.
 * Case-insensitive title search.
 * Full-text search.
 * Navigation History.
@@ -5,9 +6,12 @@
 * Index.
 * Media Cache.
 * Editable settings.
+* Compressed Database.
+* Load from web backups.
 
 Wiki2Html:
 
+* Tables.
 * References.
 * Templates.
 * Audio/Video.
