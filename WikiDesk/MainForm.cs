@@ -40,6 +40,9 @@
             browser_.DecideNavigationAction += browser__DecideNavigationAction;
             dockPanel_.Controls.Add(browser_);
 
+            titlesMap_ = new PrefixMatchContainer<string>();
+
+            indexControl_ = new IndexControl(titlesMap_);
             indexControl_.Show(dockPanel_, DockState.DockLeft);
 
             btnBack.Enabled = false;
@@ -257,6 +260,7 @@
             foreach (Page page in db_.GetPages())
             {
                 titles_.Add(page.Title);
+                titlesMap_.Add(page.Title, page.Title);
             }
 
             cboNavigate.AutoCompleteCustomSource = titles_;
@@ -344,8 +348,7 @@
                 Revision rev = db_.QueryRevision(page.LastRevisionId);
                 if (rev != null)
                 {
-                    string text = Encoding.UTF8.GetString(rev.Text);
-                    ShowWikiPage(title, text);
+                    ShowWikiPage(title, rev.Text);
                 }
             }
         }
@@ -475,7 +478,9 @@
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
         private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();
 
-        private readonly indexControl_ indexControl_ = new indexControl_();
+        private readonly IndexControl indexControl_;
+
+        private readonly PrefixMatchContainer<string> titlesMap_;
 
         private readonly IFileCache fileCache_;
 

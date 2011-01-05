@@ -5,7 +5,6 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Xml;
 
     using SQLite;
@@ -28,8 +27,8 @@
         private Page QueryPage(string title, long lang)
         {
             return (from s in Table<Page>()
-                    where s.Title == title
-                       && s.Language == lang
+                    where s.Title == title &&
+                          s.Language == lang
                     select s).FirstOrDefault();
         }
 
@@ -212,7 +211,7 @@
 //                     break;
 
                     case "text":
-                        rev.Text = Encoding.UTF8.GetBytes(reader.ReadString());
+                        rev.Text = reader.ReadString();
                     break;
                 }
             }
