@@ -21,7 +21,7 @@
 
         public void UpdateListItems()
         {
-            
+
         }
 
         #region events
@@ -39,7 +39,7 @@
         private void txtTitle__TextChanged(object sender, EventArgs e)
         {
             ListViewItem lvi = lstTitles_.FindItemWithText(txtTitle_.Text);
-            
+
             // Select the item found and scroll it into view.
             if (lvi != null)
             {
@@ -61,6 +61,11 @@
         private void lstTitles__DoubleClick(object sender, System.EventArgs e)
         {
             //TODO: Browse topic.
+        }
+
+        private void lstTitles__Resize(object sender, EventArgs e)
+        {
+            lstTitles_.Columns[0].Width = lstTitles_.ClientSize.Width - 5;
         }
 
         #endregion // events
