@@ -75,6 +75,69 @@
                     settings_.CurrentDomainName = settings_.DefaultDomainName;
                 }
             }
+
+            ShowAllLanguages();
+        }
+
+        private void ShowAllLanguages()
+        {
+            cboLanguage.BeginUpdate();
+            int currentLanguageIndex = -1;
+            try
+            {
+                cboLanguage.Items.Clear();
+                foreach (WikiLanguage wikiLanguage in languages_.Languages)
+                {
+                    WikiArticleName name = new WikiArticleName(string.Empty, wikiLanguage);
+                    cboLanguage.Items.Add(name);
+                    if (settings_.CurrentLanguageCode == name.LanguageCode)
+                    {
+                        currentLanguageIndex = cboLanguage.Items.Count - 1;
+                    }
+                }
+            }
+            finally
+            {
+                cboLanguage.SelectedIndex = currentLanguageIndex;
+                cboLanguage.Enabled = cboLanguage.Items.Count > 0;
+                cboLanguage.EndUpdate();
+            }
+        }
+
+        private void ShowArticleLanguages(string title, Dictionary<string, string> articleLanguageNames)
+        {
+            cboLanguage.BeginUpdate();
+            try
+            {
+                cboLanguage.Items.Clear();
+
+                // Add the current language first.
+                WikiLanguage curWikiLanguage = languages_.Languages.Find(lang => settings_.CurrentLanguageCode == lang.Code);
+                if (curWikiLanguage != null)
+                {
+                    WikiArticleName curName = new WikiArticleName(title, curWikiLanguage);
+                    cboLanguage.Items.Add(curName);
+                }
+
+
+                foreach (KeyValuePair<string, string> pair in articleLanguageNames)
+                {
+                    string langCode = pair.Key;
+                    WikiLanguage wikiLanguage = languages_.Languages.Find(lang => langCode == lang.Code);
+                    if (wikiLanguage != null)
+                    {
+                        WikiArticleName name = new WikiArticleName(pair.Value, wikiLanguage);
+                        cboLanguage.Items.Add(name);
+                    }
+                }
+
+                cboLanguage.SelectedIndex = 0;
+            }
+            finally
+            {
+                cboLanguage.Enabled = cboLanguage.Items.Count > 0;
+                cboLanguage.EndUpdate();
+            }
         }
 
         private void StoreWikiDomains(WikiDomains domains)
@@ -357,6 +420,11 @@
                 }
 
                 page = db_.QueryPage(title, languageCode);
+                if (page != null)
+                {
+                    titles_.Add(page.Title);
+                    titlesMap_.Add(page.Title, page.Title);
+                }
             }
 
             if (page != null)
@@ -371,23 +439,7 @@
 
         private void ShowWikiPage(string title, string text)
         {
-            cboLanguage.Items.Clear();
-
-            // Add the current language first.
-            WikiLanguage curWikiLanguage = languages_.Languages.Find(lang => settings_.CurrentLanguageCode == lang.Code);
-            WikiArticleName curName = new WikiArticleName(title, curWikiLanguage);
-            cboLanguage.Items.Add(curName);
-
-            foreach (KeyValuePair<string, string> pair in Wiki2Html.ExtractLanguages(ref text))
-            {
-                string langCode = pair.Key;
-                WikiLanguage wikiLanguage = languages_.Languages.Find(lang => langCode == lang.Code);
-                WikiArticleName name = new WikiArticleName(pair.Value, wikiLanguage);
-                cboLanguage.Items.Add(name);
-            }
-
-            cboLanguage.SelectedIndex = 0;
-            cboLanguage.Enabled = (cboLanguage.Items.Count > 0);
+            ShowArticleLanguages(title, Wiki2Html.ExtractLanguages(ref text));
 
             Wiki2Html wiki2Html = new Wiki2Html(new Configuration(), OnResolveWikiLinks, fileCache_);
             string html = wiki2Html.ConvertX(text);
@@ -466,11 +518,15 @@
             if (cboLanguage.SelectedIndex >= 0)
             {
                 WikiArticleName name = (WikiArticleName)cboLanguage.Items[cboLanguage.SelectedIndex];
-                if (name.LanguageCode != settings_.CurrentLanguageCode)
+                if (!string.IsNullOrEmpty(name.Name) &&
+                    name.LanguageCode != settings_.CurrentLanguageCode)
                 {
                     settings_.CurrentLanguageCode = name.LanguageCode;
                     BrowseWikiArticle(currentDomain_, name.LanguageCode, name.Name);
                 }
+
+                // Always change the current language anyway.
+                settings_.CurrentLanguageCode = name.LanguageCode;
             }
         }
 
