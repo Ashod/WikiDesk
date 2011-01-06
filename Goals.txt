@@ -1,0 +1,19 @@
+
+Unlike other offline readers, this isn't an offline reader. It's an online reader with offline backup and caching. It could serve as an offline reader if the DB is stocked with data and online access disabled. However, the main purpose of the project is to give the user an up-to-date access to wiki entries, with rich multimedia experience, while reducing the load on the wiki servers, improving user experience with fast browsing and providing an offline browsable backup.
+
+
+Primary:
+
+* A stand-alone, portable Wiki markup parser.
+* Offline reader with on-demand update and customized database.
+* Support for all wiki domains and languages.
+
+Secondary:
+
+* Promote language-learning.
+* Encourage the creation and enhancement of entries in multiple languages.
+* Promote more participation.
+
+
+Tertiary:
+
