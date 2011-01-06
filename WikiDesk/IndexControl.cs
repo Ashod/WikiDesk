@@ -31,11 +31,6 @@
             lstTitles_.VirtualListSize = titlesMap_.Count;
         }
 
-        private void cboLanguages__SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //TODO: Change the current search language.
-        }
-
         private void txtTitle__TextChanged(object sender, EventArgs e)
         {
             ListViewItem lvi = lstTitles_.FindItemWithText(txtTitle_.Text);
@@ -58,9 +53,33 @@
             e.Index = titlesMap_.Find(e.Text, true, false);
         }
 
-        private void lstTitles__DoubleClick(object sender, System.EventArgs e)
+        private void lstTitles__DoubleClick(object sender, EventArgs e)
         {
             //TODO: Browse topic.
+        }
+
+        private void cboDomains__SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //TODO: Change the current search domain.
+        }
+
+        private void cboLanguages__SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //TODO: Change the current search language.
+        }
+
+        private void lstTitles__ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.IsSelected)
+            {
+                if (e.ItemIndex >= 0)
+                {
+                    txtTitle_.Text = titlesMap_[e.ItemIndex];
+                    return;
+                }
+            }
+
+            txtTitle_.Text = string.Empty;
         }
 
         private void lstTitles__Resize(object sender, EventArgs e)

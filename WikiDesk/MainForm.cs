@@ -44,6 +44,7 @@
 
             indexControl_ = new IndexControl(titlesMap_);
             indexControl_.Show(dockPanel_, DockState.DockLeft);
+            indexControl_.IsHidden = true;
 
             btnBack.Enabled = false;
             btnForward.Enabled = false;
@@ -528,6 +529,11 @@
                 // Always change the current language anyway.
                 settings_.CurrentLanguageCode = name.LanguageCode;
             }
+        }
+
+        private void indexMenuItem__Click(object sender, EventArgs e)
+        {
+            indexControl_.IsHidden = !indexMenuItem_.Checked;
         }
 
         private void ExitClick(object sender, EventArgs e)
