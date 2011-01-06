@@ -47,6 +47,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WikiDomains.cs" />
     <Compile Include="FileCache.cs" />
     <Compile Include="IndexControl.cs">
       <SubType>Form</SubType>
@@ -54,7 +55,7 @@
     <Compile Include="IndexControl.Designer.cs">
       <DependentUpon>IndexControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Languages.cs" />
+    <Compile Include="WikiLanguages.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,10 +106,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LangCodes.xml">
+    <Content Include="WikiDesk.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="WikiDesk.xml">
+    <Content Include="WikiLanguages.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

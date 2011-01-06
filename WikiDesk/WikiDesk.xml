@@ -2,9 +2,14 @@
 <Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <AutoUpdate>true</AutoUpdate>
   <AutoRetrieveMissing>true</AutoRetrieveMissing>
-  <BaseUrl>.wikipedia.org/wiki/</BaseUrl>
-  <ExportUrl>.wikipedia.org/wiki/Special:Export/</ExportUrl>
-  <LanguageCodesFilename>LangCodes.xml</LanguageCodesFilename>
+  <DomainsFilename>WikiDomains.xml</DomainsFilename>
+  <CurrentDomainName>wikipedia</CurrentDomainName>
+  <DefaultDomainName>wikipedia</DefaultDomainName>
+  <LanguagesFilename>WikiLanguages.xml</LanguagesFilename>
   <CurrentLanguageCode>en</CurrentLanguageCode>
+  <DefaultLanguageCode>en</DefaultLanguageCode>
+  <CssFilename>css\default.css</CssFilename>
+  <ThumbnailWidthPixels>220</ThumbnailWidthPixels>
+  <FileCacheFolder>Z:\wikidesk_cache\</FileCacheFolder>
   <DefaultDatabaseFilename>Z:\wikidesk.db</DefaultDatabaseFilename>
 </Settings>

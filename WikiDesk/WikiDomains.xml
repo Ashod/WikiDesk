@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<WikiDomains xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Domains>
+    <WikiDomain>
+      <Name>wikipedia</Name>
+      <BaseUrl>.wikipedia.org/wiki/</BaseUrl>
+      <ExportUrl>.wikipedia.org/wiki/Special:Export/</ExportUrl>
+    </WikiDomain>
+    <WikiDomain>
+      <Name>wiktionary</Name>
+      <BaseUrl>.wiktionary.org/wiki/</BaseUrl>
+      <ExportUrl>.wiktionary.org/wiki/Special:Export/</ExportUrl>
+    </WikiDomain>
+  </Domains>
+</WikiDomains>

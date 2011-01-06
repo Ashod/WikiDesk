@@ -54,30 +54,46 @@
             tempFilename_ = Path.GetTempFileName().Replace(".tmp", ".html");
             tempFileUrl_ = "file:///" + tempFilename_.Replace('\\', '/');
 
-            try
-            {
-                settings_ = Settings.Deserialize(CONFIG_FILENAME);
-            }
-            catch (Exception)
-            {
-                settings_ = new Settings();
-                settings_.Serialize(CONFIG_FILENAME);
-            }
+            settings_ = Settings.Deserialize(CONFIG_FILENAME);
 
             fileCache_ = new FileCache(settings_.FileCacheFolder);
 
             OpenDatabase(settings_.DefaultDatabaseFilename);
 
-            languages_ = LanguageCodes.Deserialize(settings_.LanguageCodesFilename);
+            languages_ = LanguageCodes.Deserialize(settings_.LanguagesFilename);
+            StoreWikiLanguages(languages_);
 
-            StoreLanguageCodes(languages_);
+            domains_ = WikiDomains.Deserialize(settings_.DomainsFilename);
+            StoreWikiDomains(domains_);
+
+            currentDomain_ = domains_.FindByName(settings_.CurrentDomainName);
+            if (currentDomain_ == null)
+            {
+                currentDomain_ = domains_.FindByName(settings_.DefaultDomainName);
+                if (currentDomain_ != null)
+                {
+                    settings_.CurrentDomainName = settings_.DefaultDomainName;
+                }
+            }
         }
 
-        private void StoreLanguageCodes(LanguageCodes langCodes)
+        private void StoreWikiDomains(WikiDomains domains)
         {
-            langCodes.Serialize(settings_.LanguageCodesFilename);
+            domains.Serialize(settings_.DomainsFilename);
 
-            foreach (Language language in langCodes.Languages)
+            foreach (WikiDomain wikiDomain in domains.Domains)
+            {
+                Data.Domain domain = new Domain() { Name = wikiDomain.Name };
+
+                db_.UpdateInsertDomain(domain);
+            }
+        }
+
+        private void StoreWikiLanguages(LanguageCodes langCodes)
+        {
+            langCodes.Serialize(settings_.LanguagesFilename);
+
+            foreach (WikiLanguage language in langCodes.Languages)
             {
                 Data.Language lang = new Data.Language
                     {
@@ -126,7 +142,7 @@
                 string title = url.Substring(WIKI_PROTOCOL_STRING.Length);
                 title = title.Replace('/', '\\');
                 title = DecodeEncodedNonAsciiCharacters(title);
-                BrowseWikiArticle(settings_.CurrentLanguageCode, title);
+                BrowseWikiArticle(currentDomain_, settings_.CurrentLanguageCode, title);
 
                 // Handled, don't navigate.
                 return false;
@@ -316,11 +332,11 @@
                     url = url.Substring(WIKI_PROTOCOL_STRING.Length);
                 }
 
-                BrowseWikiArticle(settings_.CurrentLanguageCode, url);
+                BrowseWikiArticle(currentDomain_, settings_.CurrentLanguageCode, url);
             }
         }
 
-        private void BrowseWikiArticle(string languageCode, string title)
+        private void BrowseWikiArticle(WikiDomain domain, string languageCode, string title)
         {
             currentWikiPageName_ = title;
 
@@ -333,7 +349,7 @@
                 }
 
                 // Download from the web...
-                string url = string.Concat("http://", languageCode, settings_.ExportUrl, title);
+                string url = string.Concat("http://", languageCode, domain.ExportUrl, title);
                 string pageXml = Download.DownloadPage(url);
                 using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
                 {
@@ -358,15 +374,15 @@
             cboLanguage.Items.Clear();
 
             // Add the current language first.
-            Language curLanguage = languages_.Languages.Find(lang => settings_.CurrentLanguageCode == lang.Code);
-            WikiArticleName curName = new WikiArticleName(title, curLanguage);
+            WikiLanguage curWikiLanguage = languages_.Languages.Find(lang => settings_.CurrentLanguageCode == lang.Code);
+            WikiArticleName curName = new WikiArticleName(title, curWikiLanguage);
             cboLanguage.Items.Add(curName);
 
             foreach (KeyValuePair<string, string> pair in Wiki2Html.ExtractLanguages(ref text))
             {
                 string langCode = pair.Key;
-                Language language = languages_.Languages.Find(lang => langCode == lang.Code);
-                WikiArticleName name = new WikiArticleName(pair.Value, language);
+                WikiLanguage wikiLanguage = languages_.Languages.Find(lang => langCode == lang.Code);
+                WikiArticleName name = new WikiArticleName(pair.Value, wikiLanguage);
                 cboLanguage.Items.Add(name);
             }
 
@@ -453,7 +469,7 @@
                 if (name.LanguageCode != settings_.CurrentLanguageCode)
                 {
                     settings_.CurrentLanguageCode = name.LanguageCode;
-                    BrowseWikiArticle(name.LanguageCode, name.Name);
+                    BrowseWikiArticle(currentDomain_, name.LanguageCode, name.Name);
                 }
             }
         }
@@ -461,6 +477,11 @@
         private void ExitClick(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            settings_.Serialize(CONFIG_FILENAME);
         }
 
         private Database db_;
@@ -474,6 +495,8 @@
         private string currentWikiPageName_;
 
         private readonly LanguageCodes languages_;
+        private readonly WikiDomains domains_;
+        private WikiDomain currentDomain_;
 
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
         private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();

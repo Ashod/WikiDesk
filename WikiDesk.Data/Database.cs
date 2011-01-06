@@ -17,6 +17,7 @@
             CreateTable<Page>();
             CreateTable<Revision>();
             CreateTable<Language>();
+            CreateTable<Domain>();
         }
 
         public IList<Page> GetPages()

@@ -10,11 +10,27 @@ namespace WikiDesk
     {
         public static Settings Deserialize(string filename)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-            using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+            Settings settings;
+            try
             {
-                return (Settings)serializer.Deserialize(fs);
+                XmlSerializer serializer = new XmlSerializer(typeof(Settings));
+                using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    settings = (Settings)serializer.Deserialize(fs);
+                }
+
+                if (settings != null)
+                {
+                    return settings;
+                }
             }
+            catch (Exception)
+            {
+            }
+
+            settings = new Settings();
+            settings.Serialize(filename);
+            return settings;
         }
 
         public void Serialize(string filename)
@@ -29,27 +45,43 @@ namespace WikiDesk
         public bool AutoUpdate = true;
         public bool AutoRetrieveMissing = true;
 
-        /// <summary>
-        /// The base URL for the wiki.
-        /// A language code is prepended to this base-url.
-        /// </summary>
-        public string BaseUrl = ".wikipedia.org/wiki/";
+        #region domain
 
         /// <summary>
-        /// The export-page URL for the wiki.
-        /// A language code is prepended to this url.
+        /// The wiki domains configuration filename.
         /// </summary>
-        public string ExportUrl = ".wikipedia.org/wiki/Special:Export/";
+        public string DomainsFilename = "WikiDomains.xml";
 
         /// <summary>
-        /// The language codes configuration filename.
+        /// The current domain name.
         /// </summary>
-        public string LanguageCodesFilename = "LangCodes.xml";
+        public string CurrentDomainName = "wikipedia";
+
+        /// <summary>
+        /// The default domain name. When no domain is specified.
+        /// </summary>
+        public string DefaultDomainName = "wikipedia";
+
+        #endregion // domain
+
+        #region language
+
+        /// <summary>
+        /// The wiki languages configuration filename.
+        /// </summary>
+        public string LanguagesFilename = "WikiLanguages.xml";
 
         /// <summary>
         /// The current language code.
         /// </summary>
         public string CurrentLanguageCode = "en";
+
+        /// <summary>
+        /// The default language code. When no language is specified.
+        /// </summary>
+        public string DefaultLanguageCode = "en";
+
+        #endregion // language
 
         public string CssFilename = "css\\default.css";
 
