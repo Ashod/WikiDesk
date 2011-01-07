@@ -25,23 +25,39 @@
             return (from s in Table<Page>() select s).ToList();
         }
 
-        private Page QueryPage(string title, long lang)
+        public IList<Page> GetPages(long domainId)
+        {
+            return (from s in Table<Page>()
+                    where s.Domain == domainId
+                    select s).ToList();
+        }
+
+        public IList<Page> GetPages(long domainId, long languageId)
+        {
+            return (from s in Table<Page>()
+                    where s.Domain == domainId &&
+                          s.Language == languageId
+                    select s).ToList();
+        }
+
+        public Page QueryPage(string title, long domainId, long languageId)
         {
             return (from s in Table<Page>()
                     where s.Title == title &&
-                          s.Language == lang
+                          s.Domain == domainId &&
+                          s.Language == languageId
                     select s).FirstOrDefault();
         }
 
-        public Page QueryPage(string title, string lang)
+        public Page QueryPage(string title, long domainId, string languageCode)
         {
-            Language language = GetLanguage(lang);
+            Language language = GetLanguageByCode(languageCode);
             if (language == null)
             {
                 return null;
             }
 
-            return QueryPage(title, language.Id);
+            return QueryPage(title, domainId, language.Id);
         }
 
         public Revision QueryRevision(long id)
@@ -55,19 +71,20 @@
         /// Loads articles from an XML dump file.
         /// </summary>
         /// <param name="xmlDumpFilePath">The file path to the XML dump.</param>
+        /// <param name="domainId">The domain ID.</param>
         /// <param name="languageCode">The language code of the dump.</param>
         /// <param name="indexOnly">If True, article text is not added, just the meta data.</param>
-        public void Load(string xmlDumpFilePath, string languageCode, bool indexOnly)
+        public void Load(string xmlDumpFilePath, long domainId, string languageCode, bool indexOnly)
         {
             using (FileStream stream = new FileStream(xmlDumpFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
             {
-                ImportFromXml(stream, indexOnly, languageCode);
+                ImportFromXml(stream, indexOnly, domainId, languageCode);
             }
         }
 
-        public void ImportFromXml(Stream stream, bool indexOnly, string languageCode)
+        public void ImportFromXml(Stream stream, bool indexOnly, long domainId, string languageCode)
         {
-            Language language = GetLanguage(languageCode);
+            Language language = GetLanguageByCode(languageCode);
             if (language == null)
             {
                 return; //TODO: Throw?
@@ -85,6 +102,7 @@
                         break;
                     }
 
+                    page.Domain = domainId;
                     page.Language = language.Id;
                     if (!indexOnly)
                     {
@@ -112,7 +130,7 @@
                         page.LastRevisionId = 0;
                     }
 
-                    Page oldPage = QueryPage(page.Title, language.Id);
+                    Page oldPage = QueryPage(page.Title, domainId, language.Id);
                     if (oldPage != null)
                     {
                         if (oldPage.Id != page.Id)

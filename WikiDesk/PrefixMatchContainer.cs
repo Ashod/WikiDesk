@@ -24,6 +24,11 @@ namespace WikiDesk
             get { return strings_.Count; }
         }
 
+        public AutoCompleteStringCollection AutoCompleteStringCollection
+        {
+            get { return strings_; }
+        }
+
         public string this[int index]
         {
             get { return strings_[index]; }

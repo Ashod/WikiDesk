@@ -75,7 +75,7 @@
         /// <returns>True if a new record was created.</returns>
         public bool UpdateInsertLanguage(Language lang)
         {
-            Language language = GetLanguage(lang.Code);
+            Language language = GetLanguageByCode(lang.Code);
             if (language != null)
             {
                 if (language != lang)
@@ -91,14 +91,23 @@
         }
 
         /// <summary>
+        /// Selects all available languages from the DB.
+        /// </summary>
+        /// <returns>A list of all languages.</returns>
+        public IList<Language> GetLanguages()
+        {
+            return (from l in Table<Language>() select l).ToList();
+        }
+
+        /// <summary>
         /// Given a language code, selects the relevant record from the DB.
         /// </summary>
-        /// <param name="langCode">The language code to select.</param>
+        /// <param name="languageCode">The language code to select.</param>
         /// <returns>A language record if one is found, otherwise null.</returns>
-        private Language GetLanguage(string langCode)
+        public Language GetLanguageByCode(string languageCode)
         {
             return (from l in Table<Language>()
-                    where l.Code == langCode
+                    where l.Code == languageCode
                     select l).FirstOrDefault();
         }
     }

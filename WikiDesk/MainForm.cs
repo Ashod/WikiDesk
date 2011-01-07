@@ -40,11 +40,7 @@
             browser_.DecideNavigationAction += browser__DecideNavigationAction;
             dockPanel_.Controls.Add(browser_);
 
-            titlesMap_ = new PrefixMatchContainer<string>();
-
-            indexControl_ = new IndexControl(titlesMap_);
-            indexControl_.Show(dockPanel_, DockState.DockLeft);
-            indexControl_.IsHidden = true;
+            entriesMap_ = new Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>>();
 
             btnBack.Enabled = false;
             btnForward.Enabled = false;
@@ -78,6 +74,10 @@
             }
 
             ShowAllLanguages();
+
+            indexControl_ = new IndexControl(entriesMap_);
+            indexControl_.Show(dockPanel_, DockState.DockLeft);
+            indexControl_.IsHidden = true;
         }
 
         private void ShowAllLanguages()
@@ -120,7 +120,6 @@
                     cboLanguage.Items.Add(curName);
                 }
 
-
                 foreach (KeyValuePair<string, string> pair in articleLanguageNames)
                 {
                     string langCode = pair.Key;
@@ -147,7 +146,7 @@
 
             foreach (WikiDomain wikiDomain in domains.Domains)
             {
-                Data.Domain domain = new Domain() { Name = wikiDomain.Name };
+                Domain domain = new Domain { Name = wikiDomain.Name };
 
                 db_.UpdateInsertDomain(domain);
             }
@@ -159,7 +158,7 @@
 
             foreach (WikiLanguage language in langCodes.Languages)
             {
-                Data.Language lang = new Data.Language
+                Language lang = new Language
                     {
                         Code = language.Code,
                         Name = !string.IsNullOrEmpty(language.Name) ? language.Name : language.LocalName
@@ -328,7 +327,8 @@
             string dbPath = Path.Combine(folder, "wikidesk.db");
             using (Database db = new Database(dbPath))
             {
-                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", "en", true);
+                Domain domain = db.GetDomain("wikipedia");
+                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", domain.Id, "en", true);
             }
         }
 
@@ -336,14 +336,32 @@
         {
             db_ = new Database(dbPath);
 
-            titles_.Clear();
-            foreach (Page page in db_.GetPages())
+            entriesMap_.Clear();
+            foreach (Domain domain in db_.GetDomains())
             {
-                titles_.Add(page.Title);
-                titlesMap_.Add(page.Title, page.Title);
+                Dictionary<string, PrefixMatchContainer<string>> langTitlesMap = new Dictionary<string, PrefixMatchContainer<string>>(8);
+
+                foreach (Language language in db_.GetLanguages())
+                {
+                    IList<Page> pages = db_.GetPages(domain.Id, language.Id);
+                    if (pages != null && pages.Count > 0)
+                    {
+                        PrefixMatchContainer<string> titles = new PrefixMatchContainer<string>();
+
+                        foreach (Page page in pages)
+                        {
+                            titles.Add(page.Title, page.Title);
+                        }
+
+                        langTitlesMap.Add(language.Name, titles);
+                    }
+                }
+
+                entriesMap_.Add(domain.Name, langTitlesMap);
             }
 
-            cboNavigate.AutoCompleteCustomSource = titles_;
+            //TODO: How should auto-complete work? Should we add a domain selector?
+//            cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
         }
 
         private void OpenClick(object sender, EventArgs e)
@@ -404,7 +422,8 @@
         {
             currentWikiPageName_ = title;
 
-            Page page = db_.QueryPage(title, languageCode);
+            long domainId = db_.GetDomain(domain.Name).Id;
+            Page page = db_.QueryPage(title, domainId, languageCode);
             if (page == null)
             {
                 if (!settings_.AutoRetrieveMissing)
@@ -412,20 +431,8 @@
                     return;
                 }
 
-                // Download from the web...
-                string url = string.Concat("http://", languageCode, domain.ExportUrl, title);
-                string pageXml = Download.DownloadPage(url);
-                using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
-                {
-                    db_.ImportFromXml(ms, false, languageCode);
-                }
-
-                page = db_.QueryPage(title, languageCode);
-                if (page != null)
-                {
-                    titles_.Add(page.Title);
-                    titlesMap_.Add(page.Title, page.Title);
-                }
+                // Download and import from the web...
+                page = ImportLivePage(title, domain, domainId, languageCode);
             }
 
             if (page != null)
@@ -436,6 +443,38 @@
                     ShowWikiPage(title, rev.Text);
                 }
             }
+        }
+
+        private Page ImportLivePage(string title, WikiDomain domain, long domainId, string languageCode)
+        {
+            Page page;
+            string url = string.Concat("http://", languageCode, domain.ExportUrl, title);
+            string pageXml = Download.DownloadPage(url);
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
+            {
+                db_.ImportFromXml(ms, false, domainId, languageCode);
+            }
+
+            Language language = db_.GetLanguageByCode(languageCode);
+            page = db_.QueryPage(title, domainId, language.Id);
+            if (page != null)
+            {
+                Dictionary<string, PrefixMatchContainer<string>> langEntries;
+                if (!entriesMap_.TryGetValue(domain.Name, out langEntries))
+                {
+                    langEntries = new Dictionary<string, PrefixMatchContainer<string>>();
+                }
+
+                PrefixMatchContainer<string> titles;
+                if (!langEntries.TryGetValue(language.Name, out titles))
+                {
+                    titles = new PrefixMatchContainer<string>();
+                }
+
+                titles.Add(page.Title, page.Title);
+                indexControl_.UpdateListItems();
+            }
+            return page;
         }
 
         private void ShowWikiPage(string title, string text)
@@ -519,14 +558,16 @@
             if (cboLanguage.SelectedIndex >= 0)
             {
                 WikiArticleName name = (WikiArticleName)cboLanguage.Items[cboLanguage.SelectedIndex];
-                if (!string.IsNullOrEmpty(name.Name) &&
-                    name.LanguageCode != settings_.CurrentLanguageCode)
+                if (!string.IsNullOrEmpty(name.Name))
                 {
-                    settings_.CurrentLanguageCode = name.LanguageCode;
-                    BrowseWikiArticle(currentDomain_, name.LanguageCode, name.Name);
+                    if (name.LanguageCode != settings_.CurrentLanguageCode)
+                    {
+                        settings_.CurrentLanguageCode = name.LanguageCode;
+                        BrowseWikiArticle(currentDomain_, name.LanguageCode, name.Name);
+                    }
                 }
 
-                // Always change the current language anyway.
+                // Always change anyway.
                 settings_.CurrentLanguageCode = name.LanguageCode;
             }
         }
@@ -561,11 +602,13 @@
         private WikiDomain currentDomain_;
 
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
-        private readonly AutoCompleteStringCollection titles_ = new AutoCompleteStringCollection();
 
         private readonly IndexControl indexControl_;
 
-        private readonly PrefixMatchContainer<string> titlesMap_;
+        /// <summary>
+        /// All entries mapped as: Domain : Language : Title.
+        /// </summary>
+        private readonly Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap_;
 
         private readonly IFileCache fileCache_;
 

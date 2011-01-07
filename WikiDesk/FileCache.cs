@@ -141,7 +141,7 @@ namespace WikiDesk
         {
             // Open a connection
             HttpWebRequest webRequestObject = (HttpWebRequest)WebRequest.Create(url);
-             
+
 //             // You can also specify additional header values like
 //             // the user agent or the referrer:
              webRequestObject.UserAgent = ".NET Framework/2.0";
@@ -164,8 +164,8 @@ namespace WikiDesk
                         int read = webStream.Read(buffer, 0, buffer.Length);
                         while (read > 0)
                         {
-                            read = webStream.Read(buffer, 0, buffer.Length);
                             fs.Write(buffer, 0, read);
+                            read = webStream.Read(buffer, 0, buffer.Length);
                         }
                     }
                 }

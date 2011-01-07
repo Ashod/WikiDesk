@@ -81,11 +81,20 @@
         }
 
         /// <summary>
+        /// Selects all available domains from the DB.
+        /// </summary>
+        /// <returns>A list of all domains.</returns>
+        public IList<Domain> GetDomains()
+        {
+            return (from d in Table<Domain>() select d).ToList();
+        }
+
+        /// <summary>
         /// Given a domain name, selects the relevant record from the DB.
         /// </summary>
         /// <param name="domainName">The domain name to select.</param>
         /// <returns>A domain record if one is found, otherwise null.</returns>
-        private Domain GetDomain(string domainName)
+        public Domain GetDomain(string domainName)
         {
             return (from d in Table<Domain>()
                     where d.Name == domainName
