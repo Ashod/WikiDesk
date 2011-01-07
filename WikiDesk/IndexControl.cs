@@ -9,25 +9,38 @@
 
     public partial class IndexControl : DockContent
     {
+        public delegate void OnTitleNavigate(string domainName, string languageName, string title);
+
         public IndexControl(Dictionary<string,
-                                Dictionary<string, PrefixMatchContainer<string>>> entriesMap)
+                                Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
+                            OnTitleNavigate onTitleNavigate)
         {
             InitializeComponent();
 
             lstTitles_.VirtualMode = true;
+
             entriesMap_ = entriesMap;
+            onTitleNavigate_ = onTitleNavigate;
 
             UpdateListItems();
         }
 
         public void UpdateListItems()
         {
+            cboDomains_.Items.Clear();
             foreach (KeyValuePair<string, Dictionary<string, PrefixMatchContainer<string>>> domainLangPair in entriesMap_)
             {
                 cboDomains_.Items.Add(domainLangPair.Key);
             }
 
-            cboDomains_.SelectedIndex = (cboDomains_.Items.Count > 0) ? 0 : -1;
+            if (cboDomains_.SelectedIndex >= 0)
+            {
+                cboDomains_.SelectedIndex = cboDomains_.SelectedIndex;
+            }
+            else
+            {
+                cboDomains_.SelectedIndex = (cboDomains_.Items.Count > 0) ? 0 : -1;
+            }
         }
 
         #region events
@@ -123,7 +136,15 @@
 
         private void lstTitles__DoubleClick(object sender, EventArgs e)
         {
-            //TODO: Browse topic.
+            if (onTitleNavigate_ != null)
+            {
+                string title = lstTitles_.FocusedItem != null ? lstTitles_.FocusedItem.Text : null;
+                if (!string.IsNullOrEmpty(title))
+                {
+                    txtTitle_.Text = title;
+                    onTitleNavigate_(cboDomains_.Text, cboLanguages_.Text, title);
+                }
+            }
         }
 
         private void lstTitles__ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -153,6 +174,8 @@
         /// All entries mapped as: Domain : Language : Title.
         /// </summary>
         private readonly Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap_;
+
+        private readonly OnTitleNavigate onTitleNavigate_;
 
         /// <summary>
         /// The titles under the currently selected domain and language, if any.

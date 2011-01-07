@@ -75,7 +75,7 @@
 
             ShowAllLanguages();
 
-            indexControl_ = new IndexControl(entriesMap_);
+            indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
             indexControl_.Show(dockPanel_, DockState.DockLeft);
             indexControl_.IsHidden = true;
         }
@@ -418,6 +418,23 @@
             }
         }
 
+        /// <summary>
+        /// Browse to a title given the domain name, language name and title.
+        /// Typically called from a shortcut control, such as IndexControl or FavoritsControl.
+        /// </summary>
+        /// <param name="domainName">The domain name.</param>
+        /// <param name="languageName">The language name.</param>
+        /// <param name="title">The title of the entry.</param>
+        private void BrowseWikiArticle(string domainName, string languageName, string title)
+        {
+            WikiDomain domain = domains_.FindByName(domainName);
+            Language language = db_.GetLanguageByName(languageName);
+            if (domain != null && language != null)
+            {
+                BrowseWikiArticle(domain, language.Code, title);
+            }
+        }
+
         private void BrowseWikiArticle(WikiDomain domain, string languageCode, string title)
         {
             currentWikiPageName_ = title;
@@ -463,17 +480,20 @@
                 if (!entriesMap_.TryGetValue(domain.Name, out langEntries))
                 {
                     langEntries = new Dictionary<string, PrefixMatchContainer<string>>();
+                    entriesMap_.Add(domain.Name, langEntries);
                 }
 
                 PrefixMatchContainer<string> titles;
                 if (!langEntries.TryGetValue(language.Name, out titles))
                 {
                     titles = new PrefixMatchContainer<string>();
+                    langEntries.Add(language.Name, titles);
                 }
 
                 titles.Add(page.Title, page.Title);
                 indexControl_.UpdateListItems();
             }
+
             return page;
         }
 

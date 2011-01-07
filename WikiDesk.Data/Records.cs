@@ -32,11 +32,13 @@
         /// <summary>
         /// Reference into Domain table.
         /// </summary>
+        [Indexed]
         public long Domain { get; set; }
 
         /// <summary>
         /// Reference into Language table.
         /// </summary>
+        [Indexed]
         public long Language { get; set; }
 
         /// <summary>

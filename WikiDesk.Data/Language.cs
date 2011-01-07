@@ -110,5 +110,12 @@
                     where l.Code == languageCode
                     select l).FirstOrDefault();
         }
+
+        public Language GetLanguageByName(string languageName)
+        {
+            return (from l in Table<Language>()
+                    where l.Name == languageName
+                    select l).FirstOrDefault();
+        }
     }
 }

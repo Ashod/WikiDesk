@@ -3,8 +3,8 @@
   <AutoUpdate>true</AutoUpdate>
   <AutoRetrieveMissing>true</AutoRetrieveMissing>
   <DomainsFilename>WikiDomains.xml</DomainsFilename>
-  <CurrentDomainName>wikipedia</CurrentDomainName>
-  <DefaultDomainName>wikipedia</DefaultDomainName>
+  <CurrentDomainName>Wikipedia</CurrentDomainName>
+  <DefaultDomainName>Wikipedia</DefaultDomainName>
   <LanguagesFilename>WikiLanguages.xml</LanguagesFilename>
   <CurrentLanguageCode>en</CurrentLanguageCode>
   <DefaultLanguageCode>en</DefaultLanguageCode>
