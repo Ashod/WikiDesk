@@ -92,6 +92,9 @@
                     {
                         if (titles_ != null)
                         {
+                            txtTitle_.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                            txtTitle_.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                            txtTitle_.AutoCompleteCustomSource = titles_.AutoCompleteStringCollection;
                             lstTitles_.VirtualListSize = titles_.Count;
                             lstTitles_.Invalidate();
                             return;
@@ -113,7 +116,8 @@
             // Select the item found and scroll it into view.
             if (lvi != null)
             {
-                lstTitles_.SelectedIndices.Add(lvi.Index);
+                //lstTitles_.SelectedIndices.Add(lvi.Index);
+                lstTitles_.FocusedItem = lvi;
                 lstTitles_.EnsureVisible(lvi.Index);
             }
         }

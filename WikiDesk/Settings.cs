@@ -29,7 +29,6 @@ namespace WikiDesk
             }
 
             settings = new Settings();
-            settings.Serialize(filename);
             return settings;
         }
 

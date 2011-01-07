@@ -1,7 +1,6 @@
 ﻿namespace WikiDesk.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
@@ -18,46 +17,6 @@
             CreateTable<Revision>();
             CreateTable<Language>();
             CreateTable<Domain>();
-        }
-
-        public IList<Page> GetPages()
-        {
-            return (from s in Table<Page>() select s).ToList();
-        }
-
-        public IList<Page> GetPages(long domainId)
-        {
-            return (from s in Table<Page>()
-                    where s.Domain == domainId
-                    select s).ToList();
-        }
-
-        public IList<Page> GetPages(long domainId, long languageId)
-        {
-            return (from s in Table<Page>()
-                    where s.Domain == domainId &&
-                          s.Language == languageId
-                    select s).ToList();
-        }
-
-        public Page QueryPage(string title, long domainId, long languageId)
-        {
-            return (from s in Table<Page>()
-                    where s.Title == title &&
-                          s.Domain == domainId &&
-                          s.Language == languageId
-                    select s).FirstOrDefault();
-        }
-
-        public Page QueryPage(string title, long domainId, string languageCode)
-        {
-            Language language = GetLanguageByCode(languageCode);
-            if (language == null)
-            {
-                return null;
-            }
-
-            return QueryPage(title, domainId, language.Id);
         }
 
         public Revision QueryRevision(long id)
@@ -130,24 +89,7 @@
                         page.LastRevisionId = 0;
                     }
 
-                    Page oldPage = QueryPage(page.Title, domainId, language.Id);
-                    if (oldPage != null)
-                    {
-                        if (oldPage.Id != page.Id)
-                        {
-                            // The page was removed and re-added. ID changed.
-                            Delete(oldPage);
-                            Insert(page);
-                        }
-                        else
-                        {
-                            Update(page);
-                        }
-                    }
-                    else
-                    {
-                        Insert(page);
-                    }
+                    UpdateReplacePage(page);
                 }
             }
         }

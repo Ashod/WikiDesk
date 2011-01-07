@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Page.cs" />
     <Compile Include="Domain.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Records.cs" />

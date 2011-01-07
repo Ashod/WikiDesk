@@ -327,8 +327,8 @@
             string dbPath = Path.Combine(folder, "wikidesk.db");
             using (Database db = new Database(dbPath))
             {
-                Domain domain = db.GetDomain("wikipedia");
-                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", domain.Id, "en", true);
+                Domain domain = db.GetDomain("Wikipedia");
+                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", domain.Id, "en", false);
             }
         }
 
@@ -592,6 +592,16 @@
             }
         }
 
+        private void importToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (frmImport_ == null)
+            {
+                frmImport_ = new ImportForm(db_, entriesMap_);
+            }
+
+            frmImport_.Show(this);
+        }
+
         private void indexMenuItem__Click(object sender, EventArgs e)
         {
             indexControl_.IsHidden = !indexMenuItem_.Checked;
@@ -607,9 +617,13 @@
             settings_.Serialize(CONFIG_FILENAME);
         }
 
+        #region representation
+
         private Database db_;
 
         private readonly Settings settings_;
+
+        private ImportForm frmImport_;
 
         /// <summary>
         /// The current wiki-page name/title.
@@ -635,9 +649,15 @@
         private readonly string tempFilename_;
         private readonly string tempFileUrl_;
 
+        #endregion // representation
+
+        #region constants
+
         private const string APPLICATION_NAME = "WikiDesk";
         private const string CONFIG_FILENAME = "WikiDesk.xml";
 
         private const string WIKI_PROTOCOL_STRING = "wiki://";
+
+        #endregion // constants
     }
 }

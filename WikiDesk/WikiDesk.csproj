@@ -47,6 +47,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImportForm.Designer.cs">
+      <DependentUpon>ImportForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="WikiDomains.cs" />
     <Compile Include="FileCache.cs" />
     <Compile Include="IndexControl.cs">
@@ -65,6 +71,9 @@
     <Compile Include="PrefixMatchContainer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ImportForm.resx">
+      <DependentUpon>ImportForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="IndexControl.resx">
       <DependentUpon>IndexControl.cs</DependentUpon>
     </EmbeddedResource>
