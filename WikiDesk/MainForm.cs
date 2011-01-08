@@ -472,6 +472,7 @@
         private Page ImportLivePage(string title, WikiDomain domain, long domainId, string languageCode)
         {
             Page page;
+            title = title.Replace(' ', '_');
             string url = string.Concat("http://", languageCode, domain.ExportUrl, title);
             string pageXml = Download.DownloadPage(url);
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))

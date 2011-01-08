@@ -735,7 +735,7 @@ namespace WikiDesk.Core
         // Unary Operators
         //
         private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT \[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
-        private static readonly Regex ListRegex = new Regex(@"^\* (.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex ListRegex = new Regex(@"^\*(.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
         //
         // These can appear only at the start of a line.
