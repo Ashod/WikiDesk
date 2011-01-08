@@ -339,12 +339,12 @@
     </WikiLanguage>
     <WikiLanguage>
       <Code>crh-latn</Code>
-      <LocalName>\xE2\x80\xAAQırımtatarca (Latin)\xE2\x80\xAC</LocalName>
+      <LocalName>Qırımtatarca (Latin)</LocalName>
       <Notes>Crimean Tatar (Latin)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>crh-cyrl</Code>
-      <LocalName>\xE2\x80\xAAКъырымтатарджа (Кирилл)\xE2\x80\xAC</LocalName>
+      <LocalName>Къырымтатарджа (Кирилл)</LocalName>
       <Notes>Crimean Tatar (Cyrillic)</Notes>
     </WikiLanguage>
     <WikiLanguage>
@@ -908,37 +908,37 @@
     <WikiLanguage>
       <Code>kk-arab</Code>
       <Name />
-      <LocalName>\xE2\x80\xABقازاقشا (تٴوتە)\xE2\x80\xAC</LocalName>
+      <LocalName>قازاقشا (تٴوتە)</LocalName>
       <Notes>Kazakh Arabic</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-cyrl</Code>
       <Name />
-      <LocalName>\xE2\x80\xAAҚазақша (кирил)\xE2\x80\xAC</LocalName>
+      <LocalName>Қазақша (кирил)</LocalName>
       <Notes>Kazakh Cyrillic</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-latn</Code>
       <Name />
-      <LocalName>\xE2\x80\xAAQazaqşa (latın)\xE2\x80\xAC</LocalName>
+      <LocalName>Qazaqşa (latın)</LocalName>
       <Notes>Kazakh Latin</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-cn</Code>
       <Name />
-      <LocalName>\xE2\x80\xABقازاقشا (جۇنگو)\xE2\x80\xAC</LocalName>
+      <LocalName>قازاقشا (جۇنگو)</LocalName>
       <Notes>Kazakh (China)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-kz</Code>
       <Name />
-      <LocalName>\xE2\x80\xAAҚазақша (Қазақстан)\xE2\x80\xAC</LocalName>
+      <LocalName>Қазақша (Қазақстан)</LocalName>
       <Notes>Kazakh (Kazakhstan)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-tr</Code>
       <Name />
-      <LocalName>\xE2\x80\xAAQazaqşa (Türkïya)\xE2\x80\xAC</LocalName>
+      <LocalName>Qazaqşa (Türkïya)</LocalName>
       <Notes>Kazakh (Turkey)</Notes>
     </WikiLanguage>
     <WikiLanguage>
@@ -1021,13 +1021,13 @@
     <WikiLanguage>
       <Code>ku-latn</Code>
       <Name />
-      <LocalName>\xE2\x80\xAAKurdî (latînî)\xE2\x80\xAC</LocalName>
+      <LocalName>Kurdî (latînî)</LocalName>
       <Notes>Northern Kurdish (Latin script)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ku-arab</Code>
       <Name />
-      <LocalName>\xE2\x80\xABكوردي (عەرەبی)\xE2\x80\xAC</LocalName>
+      <LocalName>كوردي (عەرەبی)</LocalName>
       <Notes>Northern Kurdish (Arabic script) (falls back to ckb)</Notes>
     </WikiLanguage>
     <WikiLanguage>
@@ -1309,7 +1309,7 @@
     <WikiLanguage>
       <Code>nb</Code>
       <Name />
-      <LocalName>\xE2\x80\xAANorsk (bokmål)\xE2\x80\xAC</LocalName>
+      <LocalName>Norsk (bokmål)</LocalName>
       <Notes>Norwegian (Bokmal)</Notes>
     </WikiLanguage>
     <WikiLanguage>
@@ -1363,13 +1363,13 @@
     <WikiLanguage>
       <Code>nn</Code>
       <Name />
-      <LocalName>\xE2\x80\xAANorsk (nynorsk)\xE2\x80\xAC</LocalName>
+      <LocalName>Norsk (nynorsk)</LocalName>
       <Notes>Norwegian (Nynorsk)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>no</Code>
       <Name />
-      <LocalName>\xE2\x80\xAANorsk (bokmål)\xE2\x80\xAC</LocalName>
+      <LocalName>Norsk (bokmål)</LocalName>
       <Notes>Norwegian</Notes>
     </WikiLanguage>
     <WikiLanguage>
@@ -2167,25 +2167,25 @@
     <WikiLanguage>
       <Code>zh-cn</Code>
       <Name />
-      <LocalName>\xE2\x80\xAA中文(中国大陆)\xE2\x80\xAC</LocalName>
+      <LocalName>中文(中国大陆)</LocalName>
       <Notes>Chinese (PRC)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hans</Code>
       <Name />
-      <LocalName>\xE2\x80\xAA中文(简体)\xE2\x80\xAC</LocalName>
+      <LocalName>中文(简体)</LocalName>
       <Notes>Mandarin Chinese (Simplified Chinese script) (cmn-hans)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hant</Code>
       <Name />
-      <LocalName>\xE2\x80\xAA中文(繁體)\xE2\x80\xAC</LocalName>
+      <LocalName>中文(繁體)</LocalName>
       <Notes>Mandarin Chinese (Traditional Chinese script) (cmn-hant)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hk</Code>
       <Name />
-      <LocalName>\xE2\x80\xAA中文(香港)\xE2\x80\xAC</LocalName>
+      <LocalName>中文(香港)</LocalName>
       <Notes>Chinese (Hong Kong)</Notes>
     </WikiLanguage>
     <WikiLanguage>
@@ -2197,25 +2197,25 @@
     <WikiLanguage>
       <Code>zh-mo</Code>
       <Name />
-      <LocalName>\xE2\x80\xAA中文(澳門)\xE2\x80\xAC</LocalName>
+      <LocalName>中文(澳門)</LocalName>
       <Notes>Chinese (Macau)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-my</Code>
       <Name />
-      <LocalName>\xE2\x80\xAA中文(马来西亚)\xE2\x80\xAC</LocalName>
+      <LocalName>中文(马来西亚)</LocalName>
       <Notes>Chinese (Malaysia)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-sg</Code>
       <Name />
-      <LocalName>\xE2\x80\xAA中文(新加坡)\xE2\x80\xAC</LocalName>
+      <LocalName>中文(新加坡)</LocalName>
       <Notes>Chinese (Singapore)</Notes>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-tw</Code>
       <Name />
-      <LocalName>\xE2\x80\xAA中文(台灣)\xE2\x80\xAC</LocalName>
+      <LocalName>中文(台灣)</LocalName>
       <Notes>Chinese (Taiwan)</Notes>
     </WikiLanguage>
     <WikiLanguage>
