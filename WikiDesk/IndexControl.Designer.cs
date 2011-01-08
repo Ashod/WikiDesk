@@ -58,6 +58,7 @@
             this.txtTitle_.Size = new System.Drawing.Size(324, 20);
             this.txtTitle_.TabIndex = 2;
             this.txtTitle_.TextChanged += new System.EventHandler(this.txtTitle__TextChanged);
+            this.txtTitle_.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtTitle__KeyDown);
             //
             // lstTitles_
             //

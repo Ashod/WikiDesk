@@ -113,10 +113,9 @@
         {
             ListViewItem lvi = lstTitles_.FindItemWithText(txtTitle_.Text);
 
-            // Select the item found and scroll it into view.
+            // Focus on the item found and scroll it into view.
             if (lvi != null)
             {
-                //lstTitles_.SelectedIndices.Add(lvi.Index);
                 lstTitles_.FocusedItem = lvi;
                 lstTitles_.EnsureVisible(lvi.Index);
             }
@@ -140,12 +139,30 @@
 
         private void lstTitles__DoubleClick(object sender, EventArgs e)
         {
-            if (onTitleNavigate_ != null)
+            string title = lstTitles_.FocusedItem != null ? lstTitles_.FocusedItem.Text : null;
+            NavigateTo(title);
+        }
+
+        private void txtTitle__KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
             {
-                string title = lstTitles_.FocusedItem != null ? lstTitles_.FocusedItem.Text : null;
-                if (!string.IsNullOrEmpty(title))
+                ListViewItem lvi = lstTitles_.FindItemWithText(txtTitle_.Text);
+                if (lvi != null)
                 {
-                    txtTitle_.Text = title;
+                    lstTitles_.SelectedIndices.Add(lvi.Index);
+                    NavigateTo(lvi.Text);
+                }
+            }
+        }
+
+        private void NavigateTo(string title)
+        {
+            if (!string.IsNullOrEmpty(title))
+            {
+                txtTitle_.Text = title;
+                if (onTitleNavigate_ != null)
+                {
                     onTitleNavigate_(cboDomains_.Text, cboLanguages_.Text, title);
                 }
             }

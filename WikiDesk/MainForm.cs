@@ -205,6 +205,9 @@
                 string title = url.Substring(WIKI_PROTOCOL_STRING.Length);
                 title = title.Replace('/', '\\');
                 title = DecodeEncodedNonAsciiCharacters(title);
+
+                //TODO: What about pages with underscore?
+                title = title.Replace('_', ' ');
                 BrowseWikiArticle(currentDomain_, settings_.CurrentLanguageCode, title);
 
                 // Handled, don't navigate.
@@ -441,23 +444,27 @@
 
             long domainId = db_.GetDomain(domain.Name).Id;
             Page page = db_.QueryPage(title, domainId, languageCode);
-            if (page == null)
-            {
-                if (!settings_.AutoRetrieveMissing)
-                {
-                    return;
-                }
-
-                // Download and import from the web...
-                page = ImportLivePage(title, domain, domainId, languageCode);
-            }
-
             if (page != null)
             {
                 Revision rev = db_.QueryRevision(page.LastRevisionId);
                 if (rev != null)
                 {
                     ShowWikiPage(title, rev.Text);
+                    return;
+                }
+            }
+
+            if (settings_.AutoRetrieveMissing)
+            {
+                // Download and import from the web...
+                page = ImportLivePage(title, domain, domainId, languageCode);
+                if (page != null)
+                {
+                    Revision rev = db_.QueryRevision(page.LastRevisionId);
+                    if (rev != null)
+                    {
+                        ShowWikiPage(title, rev.Text);
+                    }
                 }
             }
         }

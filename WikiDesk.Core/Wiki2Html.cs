@@ -640,7 +640,7 @@ namespace WikiDesk.Core
         /// <returns>A dictionary of language-code and the title of the article.</returns>
         public static Dictionary<string, string> ExtractLanguages(ref string wikiText)
         {
-            List<string> lines = new List<string>(10240);
+            List<string> lines = new List<string>(1024);
             using (StringReader sr = new StringReader(wikiText))
             {
                 while (true)
@@ -677,6 +677,12 @@ namespace WikiDesk.Core
                         languages[langCode] = langTitle; //TODO: Check for duplicates
                     }
                 }
+            }
+
+            if (lastLineIndx == 0)
+            {
+                // We found nothing. Probably it's a redirect page.
+                return languages;
             }
 
             StringBuilder sb = new StringBuilder(wikiText.Length);
