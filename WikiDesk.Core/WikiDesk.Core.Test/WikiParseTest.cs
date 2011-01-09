@@ -88,7 +88,7 @@
         #region Image
 
         [Test]
-        public void List()
+        public void ListSimple()
         {
             TestConvert(
                 "Blah blah List\n" +
@@ -97,6 +97,35 @@
                 "* last.\n" +
                 "Other text.",
                 "<p>Blah blah List</p><ul><li>first.</li><li>second.</li><li>last.</li></ul><p>Other text.</p>");
+        }
+
+        [Test]
+        public void ListMultiple()
+        {
+            TestConvert(
+                "Blah blah List\n" +
+                "* first.\n" +
+                "** one.\n" +
+                "**two.\n" +
+                "* second.\n" +
+                "** 1.\n" +
+                "***2.\n" +
+                "* last.\n" +
+                "Other text.",
+                "<p>Blah blah List</p><ul><li>first.</li><ul><li>one.</li><li>two.</li></ul><li>second.</li><ul><li>1.</li><ul><li>2.</li></ul></ul><li>last.</li></ul><p>Other text.</p>");
+        }
+
+        [Test]
+        public void ListSkewed()
+        {
+            TestConvert(
+                "Blah blah List\n" +
+                "* first.\n" +
+                "** second.\n" +
+                "*** third.\n" +
+                "**** fourth.\n" +
+                "***** fifth.",
+                "<p>Blah blah List</p><ul><li>first.</li><ul><li>second.</li><ul><li>third.</li><ul><li>fourth.</li><ul><li>fifth.</li></ul></ul></ul></ul></ul>");
         }
 
         [Test]

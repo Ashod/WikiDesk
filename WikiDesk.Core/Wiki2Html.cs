@@ -109,14 +109,6 @@ namespace WikiDesk.Core
             return string.Concat("<a href=\"", url, "\" title=\"", value, "\">", value, "</a>");
         }
 
-        private string List(Match match)
-        {
-            string value = match.Groups[1].Value;
-
-            string url = ResolveLink(value, config_.CurrentLanguageCode);
-            return string.Concat("<a href=\"", url, "\" title=\"", value, "\">", value, "</a>");
-        }
-
         /// <summary>
         /// Handles conversion of a matching regex into HTML.
         /// May return null to skip conversion of the matching block.
@@ -133,23 +125,49 @@ namespace WikiDesk.Core
                 StringBuilder sb = new StringBuilder(wikicode.Length);
                 sb.Append(wikicode.Substring(0, match.Index));
                 sb.Append("<ul>");
-                int index;
-                int pos;
+
+                int pos = 0;
+                string curDepth = match.Groups[1].Value;
 
                 do
                 {
-                    index = match.Index;
-                    pos = index + match.Length;
+                    string newDepth = match.Groups[1].Value;
+                    if (newDepth.Length == 0)
+                    {
+                        break;
+                    }
+
+                    if (newDepth.Length > curDepth.Length)
+                    {
+                        sb.Append("<ul>");
+                    }
+                    else
+                    if (newDepth.Length < curDepth.Length)
+                    {
+                        int close = curDepth.Length - newDepth.Length;
+                        while (close-- > 0)
+                        {
+                            sb.Append("</ul>");
+                        }
+                    }
+
+                    curDepth = newDepth;
 
                     sb.Append("<li>");
-                    sb.Append(match.Groups[1].Value);
+                    sb.Append(match.Groups[2].Value);
                     sb.Append("</li>");
 
+                    pos = match.Index + match.Length;
                     match = ListRegex.Match(wikicode, pos);
                 }
                 while (match.Success);
 
-                sb.Append("</ul>");
+                int depth = curDepth.Length;
+                while (depth-- > 0)
+                {
+                    sb.Append("</ul>");
+                }
+
                 sb.Append(wikicode.Substring(pos));
                 wikicode = sb.ToString();
             }
@@ -735,7 +753,7 @@ namespace WikiDesk.Core
         // Unary Operators
         //
         private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT \[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
-        private static readonly Regex ListRegex = new Regex(@"^\*(.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex ListRegex = new Regex(@"^(\*+)\s*(.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
         //
         // These can appear only at the start of a line.
