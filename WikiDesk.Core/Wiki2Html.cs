@@ -102,11 +102,21 @@ namespace WikiDesk.Core
 
         private string Redirect(Match match)
         {
-            string value = match.Groups[1].Value;
+            string value = match.Groups[2].Value;
 
             //TODO: Consider language codes.
             string url = ResolveLink(value, config_.CurrentLanguageCode);
-            return string.Concat("<a href=\"", url, "\" title=\"", value, "\">", value, "</a>");
+
+            StringBuilder sb = new StringBuilder(128);
+            sb.Append("<span class=\"redirectText\"><a href=\"");
+            sb.Append(url);
+            sb.Append("\" title=\"");
+            sb.Append(value);
+            sb.Append("\">");
+            sb.Append(value);
+            sb.Append("</a></span>");
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -752,7 +762,7 @@ namespace WikiDesk.Core
         //
         // Unary Operators
         //
-        private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT \[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+        private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT(\:?)\s+\[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
         private static readonly Regex ListRegex = new Regex(@"^(\*+)\s*(.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
         //

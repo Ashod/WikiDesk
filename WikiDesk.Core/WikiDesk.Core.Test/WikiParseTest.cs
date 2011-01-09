@@ -589,7 +589,15 @@
         {
             TestConvert(
                     "#REDIRECT [[Brazil]]",
-                    "<p><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></p>");
+                    "<p><span class=\"redirectText\"><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></span></p>");
+        }
+
+        [Test]
+        public void RedirectColon()
+        {
+            TestConvert(
+                    "#REDIRECT: [[Brazil]]",
+                    "<p><span class=\"redirectText\"><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></span></p>");
         }
 
         private void TestConvert(string wikicode, string expected)
