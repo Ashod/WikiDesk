@@ -613,6 +613,14 @@
             frmImport_.Show(this);
         }
 
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OptionsForm frmOptions = new OptionsForm())
+            {
+                frmOptions.ShowDialog(this);
+            }
+        }
+
         private void indexMenuItem__Click(object sender, EventArgs e)
         {
             indexControl_.IsHidden = !indexMenuItem_.Checked;
