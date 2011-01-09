@@ -441,6 +441,9 @@
         private void BrowseWikiArticle(WikiDomain domain, string languageCode, string title)
         {
             currentWikiPageName_ = title;
+            currentDomain_ = domain;
+            settings_.CurrentDomainName = domain.Name;
+            settings_.CurrentLanguageCode = languageCode;
 
             long domainId = db_.GetDomain(domain.Name).Id;
             Page page = db_.QueryPage(title, domainId, languageCode);
