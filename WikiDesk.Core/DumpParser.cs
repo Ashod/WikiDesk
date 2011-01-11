@@ -14,17 +14,18 @@
         /// </summary>
         /// <param name="stream">The stream which contains the XML dump.</param>
         /// <param name="domainId">The domain ID.</param>
-        /// <param name="languageCode">The language code of the dump.</param>
+        /// <param name="languageId">The ID of the language of the dump.</param>
         /// <param name="db">The database into which to import the dump.</param>
+        /// <param name="dumpDate">The date when the dump was created.</param>
         /// <param name="indexOnly">If True, article text is not added, just the meta data.</param>
-        public static void ImportFromXml(Stream stream, Database db, bool indexOnly, long domainId, string languageCode)
+        public static void ImportFromXml(
+                                Stream stream,
+                                Database db,
+                                DateTime dumpDate,
+                                bool indexOnly,
+                                int domainId,
+                                int languageId)
         {
-            Language language = db.GetLanguageByCode(languageCode);
-            if (language == null)
-            {
-                return; //TODO: Throw?
-            }
-
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;
@@ -38,31 +39,11 @@
                     }
 
                     page.Domain = domainId;
-                    page.Language = language.Id;
-                    if (!indexOnly)
+                    page.Language = languageId;
+                    page.LastUpdateDateUtc = dumpDate;
+                    if (indexOnly)
                     {
-                        Revision oldRev = db.QueryRevision(page.Revision.Id);
-                        if (oldRev != null)
-                        {
-                            if (oldRev.Id != page.LastRevisionId &&
-                                page.LastRevisionId != 0)
-                            {
-                                db.Delete(oldRev);
-                                db.Insert(page.Revision);
-                            }
-                            else
-                            {
-                                db.Update(page.Revision);
-                            }
-                        }
-                        else
-                        {
-                            db.Insert(page.Revision);
-                        }
-                    }
-                    else
-                    {
-                        page.LastRevisionId = 0;
+                        page.Text = null;
                     }
 
                     db.UpdateReplacePage(page);
@@ -102,25 +83,19 @@
                         break;
 
                     case TAG_REVISION:
-                        Revision rev = ParseRevisionTag(reader);
-                        if ((rev != null) && rev.Id != 0)
-                        {
-                            page.LastRevisionId = rev.Id;
-                            page.Revision = rev;
-                        }
+                        page.Text = ParseRevisionTag(reader);
                         break;
                 }
             }
 
-            return !string.IsNullOrEmpty(page.Title) && page.Revision != null ? page : null;
+            return !string.IsNullOrEmpty(page.Title) && page.Text != null ? page : null;
         }
 
-        private static Revision ParseRevisionTag(XmlReader reader)
+        private static string ParseRevisionTag(XmlReader reader)
         {
             Debug.Assert(reader.Name == TAG_REVISION);
 
-            Revision rev = new Revision();
-
+            string text = string.Empty;
             while (reader.Read() && reader.Name != TAG_REVISION)
             {
                 // Align on a start element.
@@ -132,54 +107,31 @@
                 switch (reader.Name)
                 {
                     case "id":
-                        rev.Id = long.Parse(reader.ReadString());
+                        //rev.Id = long.Parse(reader.ReadString());
                         continue;
 
                     case "timestamp":
-                        rev.Timestamp = DateTime.Parse(reader.ReadString());
+                        //rev.Timestamp = DateTime.Parse(reader.ReadString());
                         continue;
 
                     case TAG_CONTRIBUTOR:
-                        ParseContributorTag(reader, rev);
-                        break;
-
-                    case "text":
-                        rev.Text = reader.ReadString();
-                        break;
-                }
-            }
-
-            return rev;
-        }
-
-        private static void ParseContributorTag(XmlReader reader, Revision rev)
-        {
-            Debug.Assert(reader.Name == TAG_CONTRIBUTOR);
-
-            while (reader.Read() && reader.Name != TAG_CONTRIBUTOR)
-            {
-                if (!reader.IsStartElement())
-                {
-                    continue;
-                }
-
-                switch (reader.Name)
-                {
-                    case "ip":
-                        if (string.IsNullOrEmpty(rev.Contributor))
+                        // Skip contributor info.
+                        while (reader.Read() && reader.Name != TAG_CONTRIBUTOR)
                         {
-                            rev.Contributor = reader.ReadString();
+                            if (!reader.IsStartElement())
+                            {
+                                continue;
+                            }
                         }
                         break;
 
-                    case "username":
-                        rev.Contributor = reader.ReadString();
-                        break;
-
-                    case "id":
+                    case "text":
+                        text = reader.ReadString();
                         break;
                 }
             }
+
+            return text;
         }
 
         #region constants

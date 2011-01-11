@@ -16,29 +16,24 @@
         /// <summary>
         /// Reference into Domain table.
         /// </summary>
-        public long Domain { get; set; }
+        public int Domain { get; set; }
 
         /// <summary>
         /// Reference into Language table.
         /// </summary>
-        public long Language { get; set; }
+        public int Language { get; set; }
 
         [MaxLength(256)]
         public string Title { get; set; }
 
         /// <summary>
-        /// Reference into Revision table.
-        /// </summary>
-        public long LastRevisionId { get; set; }
-
-        /// <summary>
-        /// The date/time when the page was last updated from the web.
+        /// The date/time when the text was last updated from the web.
         /// If imported from a dump, this is the dump date/time.
         /// </summary>
         public DateTime LastUpdateDateUtc { get; set; }
 
-        [Ignore]
-        public Revision Revision { get; set; }
+        [MaxLength(0)]
+        public string Text { get; set; }
 
         #region Implementation of IComparer<Page>
 
@@ -91,13 +86,7 @@
                 return val;
             }
 
-            val = LastRevisionId.CompareTo(other.LastRevisionId);
-            if (val != 0)
-            {
-                return val;
-            }
-
-            return val;
+            return Text.CompareTo(other.Text);
         }
 
         #endregion // Implementation of IComparable<Page>
@@ -113,7 +102,7 @@
         public bool UpdateReplacePage(Page page)
         {
             // Try to find this page.
-            Page dbPage = QueryPage(page.Domain, page.Language, page.Title);
+            Page dbPage = SelectPage(page.Domain, page.Language, page.Title);
             if (dbPage == null)
             {
                 // New page.
@@ -122,7 +111,7 @@
             }
 
             // Old page. See if there are any changes and avoid updating if none.
-            if (dbPage != page)
+            if (dbPage.CompareTo(page) != 0)
             {
                 Update(page);
             }
@@ -130,32 +119,21 @@
             return false;
         }
 
-        public IList<Page> GetPages(long domainId, long languageId)
+        public IList<string> SelectPageTitles(long domainId, long languageId)
         {
             return (from s in Table<Page>()
                     where s.Domain == domainId &&
                           s.Language == languageId
-                    select s).ToList();
+                    select s.Title).ToList();
         }
 
-        public Page QueryPage(long domainId, long languageId, string title)
+        public Page SelectPage(long domainId, long languageId, string title)
         {
             return (from s in Table<Page>()
                     where s.Domain == domainId &&
                           s.Language == languageId &&
                           s.Title == title
                     select s).FirstOrDefault();
-        }
-
-        public Page QueryPage(long domainId, string languageCode, string title)
-        {
-            Language language = GetLanguageByCode(languageCode);
-            if (language == null)
-            {
-                return null;
-            }
-
-            return QueryPage(domainId, language.Id, title);
         }
     }
 }

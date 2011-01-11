@@ -10,7 +10,6 @@
     {
         [PrimaryKey]
         [AutoIncrement]
-        [Indexed]
         public int Id { get; set; }
 
         [MaxLength(16)]

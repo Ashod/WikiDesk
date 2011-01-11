@@ -313,14 +313,14 @@
 
                 foreach (Language language in db_.GetLanguages())
                 {
-                    IList<Page> pages = db_.GetPages(domain.Id, language.Id);
-                    if (pages != null && pages.Count > 0)
+                    IList<string> pageTitles = db_.SelectPageTitles(domain.Id, language.Id);
+                    if (pageTitles != null && pageTitles.Count > 0)
                     {
                         PrefixMatchContainer<string> titles = new PrefixMatchContainer<string>();
 
-                        foreach (Page page in pages)
+                        foreach (string pageTitle in pageTitles)
                         {
-                            string title = Title.Denormalize(page.Title);
+                            string title = Title.Denormalize(pageTitle);
                             titles.Add(title, title);
                         }
 
@@ -415,45 +415,36 @@
             settings_.CurrentDomainName = domain.Name;
             settings_.CurrentLanguageCode = languageCode;
 
-            long domainId = db_.GetDomain(domain.Name).Id;
-            Page page = db_.QueryPage(domainId, languageCode, title);
-            if (page != null)
-            {
-                Revision rev = db_.QueryRevision(page.LastRevisionId);
-                if (rev != null)
-                {
-                    ShowWikiPage(title, rev.Text);
-                    return;
-                }
-            }
+            int domainId = db_.GetDomain(domain.Name).Id;
+            Language language = db_.GetLanguageByCode(languageCode);
 
-            if (settings_.AutoRetrieveMissing)
+            Page page = db_.SelectPage(domainId, language.Id, title);
+
+            if (page != null && !string.IsNullOrEmpty(page.Text) &&
+                settings_.AutoRetrieveMissing)
             {
                 // Download and import from the web...
-                page = ImportLivePage(title, domain, domainId, languageCode);
-                if (page != null)
-                {
-                    Revision rev = db_.QueryRevision(page.LastRevisionId);
-                    if (rev != null)
-                    {
-                        ShowWikiPage(title, rev.Text);
-                    }
-                }
+                page = ImportLivePage(title, domain, domainId, language);
+            }
+
+            if (page != null && !string.IsNullOrEmpty(page.Text))
+            {
+                ShowWikiPage(title, page.Text);
+                return;
             }
         }
 
-        private Page ImportLivePage(string title, WikiDomain domain, long domainId, string languageCode)
+        private Page ImportLivePage(string title, WikiDomain domain, int domainId, Language language)
         {
             title = Title.Normalize(title);
-            string url = string.Concat("http://", languageCode, domain.ExportUrl, title);
+            string url = string.Concat("http://", language.Code, domain.ExportUrl, title);
             string pageXml = Download.DownloadPage(url);
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
             {
-                DumpParser.ImportFromXml(ms, db_, false, domainId, languageCode);
+                DumpParser.ImportFromXml(ms, db_, DateTime.UtcNow, false, domainId, language.Id);
             }
 
-            Language language = db_.GetLanguageByCode(languageCode);
-            Page page = db_.QueryPage(domainId, language.Id, title);
+            Page page = db_.SelectPage(domainId, language.Id, title);
             if (page != null)
             {
                 Dictionary<string, PrefixMatchContainer<string>> langEntries;
@@ -645,7 +636,7 @@
 
                 using (FileStream stream = new FileStream(frmImport_.DumpFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
                 {
-                    DumpParser.ImportFromXml(stream, db_, frmImport_.IndexOnly, domain.Id, language.Code);
+                    DumpParser.ImportFromXml(stream, db_, frmImport_.Date, frmImport_.IndexOnly, domain.Id, language.Id);
                 }
             }
         }
