@@ -78,9 +78,10 @@
 
             ShowAllLanguages();
 
+            //TODO: Persist the location and settings.
             indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
-            indexControl_.Show(dockPanel_, DockState.DockLeft);
-            indexControl_.IsHidden = true;
+            indexControl_.HideOnClose = true;
+            indexControl_.Show(dockPanel_, DockState.DockRightAutoHide);
         }
 
         private void ShowAllLanguages()
@@ -657,6 +658,14 @@
             {
                 frmOptions.ShowDialog(this);
             }
+        }
+
+        private void viewToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            indexMenuItem_.Checked = indexControl_ != null &&
+                                     indexControl_.VisibleState != DockState.Unknown &&
+                                     indexControl_.VisibleState != DockState.Hidden &&
+                                     !indexControl_.IsHidden;
         }
 
         private void indexMenuItem__Click(object sender, EventArgs e)

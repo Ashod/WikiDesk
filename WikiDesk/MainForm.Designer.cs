@@ -61,6 +61,9 @@
             this.indexMenuItem_ = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stripNavigation = new System.Windows.Forms.ToolStrip();
             this.btnBack = new System.Windows.Forms.ToolStripButton();
             this.btnForward = new System.Windows.Forms.ToolStripButton();
@@ -75,9 +78,6 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.dockPanel_ = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.dockContent_ = new WeifenLuo.WinFormsUI.Docking.DockContent();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.statusStrip1.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.stripNavigation.SuspendLayout();
@@ -169,13 +169,14 @@
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.viewToolStripMenuItem.Text = "&View";
+            this.viewToolStripMenuItem.DropDownOpening += new System.EventHandler(this.viewToolStripMenuItem_DropDownOpening);
             //
             // indexMenuItem_
             //
             this.indexMenuItem_.CheckOnClick = true;
             this.indexMenuItem_.Name = "indexMenuItem_";
             this.indexMenuItem_.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.indexMenuItem_.Size = new System.Drawing.Size(147, 22);
+            this.indexMenuItem_.Size = new System.Drawing.Size(152, 22);
             this.indexMenuItem_.Text = "&Index";
             this.indexMenuItem_.Click += new System.EventHandler(this.indexMenuItem__Click);
             //
@@ -195,6 +196,23 @@
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.helpToolStripMenuItem.Text = "&Help";
+            //
+            // donateToolStripMenuItem
+            //
+            this.donateToolStripMenuItem.Name = "donateToolStripMenuItem";
+            this.donateToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.donateToolStripMenuItem.Text = "&Donate";
+            //
+            // toolStripMenuItem2
+            //
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(113, 6);
+            //
+            // aboutToolStripMenuItem
+            //
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.aboutToolStripMenuItem.Text = "&About";
             //
             // stripNavigation
             //
@@ -382,23 +400,6 @@
             this.dockContent_.PanelPane = null;
             this.dockContent_.Visible = false;
             this.dockContent_.VisibleState = WeifenLuo.WinFormsUI.Docking.DockState.Unknown;
-            //
-            // aboutToolStripMenuItem
-            //
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aboutToolStripMenuItem.Text = "&About";
-            //
-            // donateToolStripMenuItem
-            //
-            this.donateToolStripMenuItem.Name = "donateToolStripMenuItem";
-            this.donateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.donateToolStripMenuItem.Text = "&Donate";
-            //
-            // toolStripMenuItem2
-            //
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
             //
             // MainForm
             //
