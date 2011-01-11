@@ -244,8 +244,12 @@
         /// <param name="name">The name of the page loaded.</param>
         private void ChangePageTitle(Uri uri, string name)
         {
-            string url = currentWikiPageName_ ?? string.Empty;
-            if (currentWikiPageName_ == null)
+            string url;
+            if (currentWikiPageName_ != null)
+            {
+                url = Title.Denormalize(currentWikiPageName_);
+            }
+            else
             {
                 url = uri != null ? uri.ToString() : string.Empty;
             }
@@ -471,7 +475,8 @@
                     langEntries.Add(language.Name, titles);
                 }
 
-                titles.Add(page.Title, page.Title);
+                string titleDenorm = Title.Denormalize(page.Title);
+                titles.Add(titleDenorm, titleDenorm);
                 indexControl_.UpdateListItems();
             }
 
@@ -480,6 +485,7 @@
 
         private void ShowWikiPage(string title, string text)
         {
+            title = Title.Denormalize(title);
             ShowArticleLanguages(title, Wiki2Html.ExtractLanguages(ref text));
 
             Wiki2Html wiki2Html = new Wiki2Html(new Configuration(), OnResolveWikiLinks, fileCache_);

@@ -99,15 +99,18 @@ namespace WikiDesk.Core
 
         /// <summary>
         /// Decodes titles with non-ascii characters encoded to valid URL.
+        /// Denormalizes decoded title.
         /// </summary>
         /// <param name="title">The title to decode.</param>
         /// <returns>Original title.</returns>
         public static string DecodeEncodedNonAsciiCharacters(string title)
         {
-            return Regex.Replace(
+            string decoded = Regex.Replace(
                 title,
                 @"\\u([a-zA-Z0-9]{4})",
                 m => ((char)int.Parse(m.Groups[1].Value, NumberStyles.HexNumber)).ToString());
+
+            return Denormalize(decoded);
         }
 
     }
