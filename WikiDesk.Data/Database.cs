@@ -8,6 +8,8 @@
 
     using SQLite;
 
+    using WikiDesk.Core;
+
     public partial class Database : SQLiteConnection
     {
         public Database(string path)
@@ -122,7 +124,7 @@
                         continue;
 
                     case "title":
-                        page.Title = reader.ReadString();
+                        page.Title = Title.Normalize(reader.ReadString());
                     break;
 
                     case TAG_REVISION:

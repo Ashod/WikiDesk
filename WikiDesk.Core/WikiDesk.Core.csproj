@@ -59,6 +59,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="IFileCache.cs" />
+    <Compile Include="Title.cs" />
     <Compile Include="Wiki2Html.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WikiImage2Html.cs" />

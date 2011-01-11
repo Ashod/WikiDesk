@@ -168,34 +168,6 @@
             }
         }
 
-        static string EncodeNonAsciiCharacters(IEnumerable<char> value)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (char c in value)
-            {
-                if (c > 127)
-                {
-                    // This character is too big for ASCII
-                    string encodedValue = "\\u" + ((int)c).ToString("x4");
-                    sb.Append(encodedValue);
-                }
-                else
-                {
-                    sb.Append(c);
-                }
-            }
-
-            return sb.ToString();
-        }
-
-        static string DecodeEncodedNonAsciiCharacters(string value)
-        {
-            return Regex.Replace(
-                value,
-                @"\\u([a-zA-Z0-9]{4})",
-                m => ((char)int.Parse(m.Groups[1].Value, NumberStyles.HexNumber)).ToString());
-        }
-
         #region Browser Events
 
         private bool browser__DecideNavigationAction(string url, string mainurl)
@@ -204,10 +176,8 @@
             {
                 string title = url.Substring(WIKI_PROTOCOL_STRING.Length);
                 title = title.Replace('/', '\\');
-                title = DecodeEncodedNonAsciiCharacters(title);
+                title = Title.DecodeEncodedNonAsciiCharacters(title);
 
-                //TODO: What about pages with underscore?
-                title = title.Replace('_', ' ');
                 BrowseWikiArticle(currentDomain_, settings_.CurrentLanguageCode, title);
 
                 // Handled, don't navigate.
@@ -353,7 +323,8 @@
 
                         foreach (Page page in pages)
                         {
-                            titles.Add(page.Title, page.Title);
+                            string title = Title.Denormalize(page.Title);
+                            titles.Add(title, title);
                         }
 
                         langTitlesMap.Add(language.Name, titles);
@@ -440,6 +411,8 @@
 
         private void BrowseWikiArticle(WikiDomain domain, string languageCode, string title)
         {
+            title = Title.Normalize(title);
+
             currentWikiPageName_ = title;
             currentDomain_ = domain;
             settings_.CurrentDomainName = domain.Name;
@@ -474,8 +447,7 @@
 
         private Page ImportLivePage(string title, WikiDomain domain, long domainId, string languageCode)
         {
-            Page page;
-            title = title.Replace(' ', '_');
+            title = Title.Normalize(title);
             string url = string.Concat("http://", languageCode, domain.ExportUrl, title);
             string pageXml = Download.DownloadPage(url);
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
@@ -484,7 +456,7 @@
             }
 
             Language language = db_.GetLanguageByCode(languageCode);
-            page = db_.QueryPage(title, domainId, language.Id);
+            Page page = db_.QueryPage(title, domainId, language.Id);
             if (page != null)
             {
                 Dictionary<string, PrefixMatchContainer<string>> langEntries;
@@ -529,8 +501,7 @@
         private static string OnResolveWikiLinks(string title, string languageCode)
         {
             //TODO: take the language code into consideration.
-            title = title.Replace(' ', '_');
-            return WIKI_PROTOCOL_STRING + EncodeNonAsciiCharacters(title);
+            return WIKI_PROTOCOL_STRING + Title.EncodeNonAsciiCharacters(title);
         }
 
         private string WrapInHtmlBody(string title, string html)

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     using SQLite;
@@ -33,6 +32,12 @@
         /// Reference into Revision table.
         /// </summary>
         public long LastRevisionId { get; set; }
+
+        /// <summary>
+        /// The date/time when the page was last updated from the web.
+        /// If imported from a dump, this is the dump date/time.
+        /// </summary>
+        public DateTime LastUpdateDateUtc { get; set; }
 
         [Ignore]
         public Revision Revision { get; set; }
@@ -109,24 +114,8 @@
         /// <returns>True if a new record was created.</returns>
         public bool UpdateReplacePage(Page page)
         {
-            // Try to find this page by its ID.
-            Page dbPage = GetPage(page.Id);
-            if (dbPage != null)
-            {
-                // If we found a page with the same ID, it *must* be the same page!
-                Debug.Assert(dbPage.Title == page.Title);
-
-                // See if there are any changes and avoid updating if none.
-                if (dbPage != page)
-                {
-                    Update(page);
-                }
-
-                return false;
-            }
-
-            // Either it's a new page or the ID has changed.
-            dbPage = QueryPage(page.Title, page.Domain, page.Language);
+            // Try to find this page.
+            Page dbPage = QueryPage(page.Title, page.Domain, page.Language);
             if (dbPage == null)
             {
                 // New page.
@@ -181,6 +170,15 @@
                     where s.Domain == domainId &&
                           s.Language == languageId
                     select s).ToList();
+        }
+
+        public Page QueryPage(long id, long domainId, long languageId)
+        {
+            return (from s in Table<Page>()
+                    where s.Id == id &&
+                          s.Domain == domainId &&
+                          s.Language == languageId
+                    select s).FirstOrDefault();
         }
 
         public Page QueryPage(string title, long domainId, long languageId)
