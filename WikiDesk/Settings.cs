@@ -82,7 +82,7 @@ namespace WikiDesk
 
         #endregion // language
 
-        public string CssFilename = "css\\default.css";
+        public string SkinName = "simple";
 
         public int ThumbnailWidthPixels = 220;
 

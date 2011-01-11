@@ -31,9 +31,14 @@
             get { return "http://" + CurrentLanguageCode + BaseUrl; }
         }
 
+        public string SkinsPath;
+
+        /// <summary>
+        /// The common-images path within the skins folder.
+        /// </summary>
         public string CommonImagesPath
         {
-            get { return "skins\\common\\images"; }
+            get { return "common\\images"; }
         }
 
         public int ThumbnailWidthPixels = 220;

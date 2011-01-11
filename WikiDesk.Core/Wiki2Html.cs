@@ -1,7 +1,6 @@
 ﻿
 namespace WikiDesk.Core
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -45,8 +44,7 @@ namespace WikiDesk.Core
             resolveWikiLinkDel_ = resolveWikiLinkDel;
             fileCache_ = fileCache;
 
-            currentFolder_ = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            commonImagesPath_ = Path.Combine(currentFolder_ ?? string.Empty, @"skins\common\images");
+            commonImagesPath_ = Path.Combine(config.SkinsPath, config.CommonImagesPath);
             commonImagesPath_ = commonImagesPath_.Replace('\\', '/');
             commonImagesPath_ = "file:///" + HttpUtility.HtmlEncode(commonImagesPath_);
             commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
@@ -741,6 +739,7 @@ namespace WikiDesk.Core
                 return resolveWikiLinkDel_(title, languageCode);
             }
 
+            // Wikis replace spaces with underscores.
             title = title.Replace(' ', '_');
             return FullUrl + HttpUtility.HtmlEncode(title);
         }
@@ -803,8 +802,6 @@ namespace WikiDesk.Core
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         private static readonly Regex TemplateRegex = new Regex(@"\{\{(.+?)(\|(.+?))?\}\}", RegexOptions.Compiled | RegexOptions.Singleline);
-
-        private readonly string currentFolder_;
 
         private readonly string commonImagesPath_;
 

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.IO;
+    using System.Reflection;
     using System.Text;
     using System.Windows.Forms;
 
@@ -19,6 +20,10 @@
         public MainForm()
         {
             InitializeComponent();
+
+            // For now the user's data are kept next to the executable.
+            //TODO: Move to user-specific data folder.
+            userDataFolderPath_ = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             browser_.Visible = true;
             browser_.Dock = DockStyle.Fill;
@@ -488,7 +493,10 @@
             title = Title.Denormalize(title);
             ShowArticleLanguages(title, Wiki2Html.ExtractLanguages(ref text));
 
-            Wiki2Html wiki2Html = new Wiki2Html(new Configuration(), OnResolveWikiLinks, fileCache_);
+            Configuration config = new Configuration();
+            config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
+
+            Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, fileCache_);
             string html = wiki2Html.ConvertX(text);
             html = WrapInHtmlBody(title, html);
 
@@ -510,15 +518,12 @@
 
         private string WrapInHtmlBody(string title, string html)
         {
-            string direction = "ltr";
+            bool right2Left = false;
             string language = string.Empty;
             WikiLanguage curWikiLanguage = languages_.Languages.Find(lang => settings_.CurrentLanguageCode == lang.Code);
             if (curWikiLanguage != null)
             {
-                if (curWikiLanguage.RightToLeft)
-                {
-                    direction = "rtl";
-                }
+                right2Left = curWikiLanguage.RightToLeft;
 
                 if (!string.IsNullOrEmpty(curWikiLanguage.MimeCode))
                 {
@@ -532,7 +537,7 @@
 
             StringBuilder sb = new StringBuilder(html.Length * 2);
             sb.Append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" ");
-            sb.Append("\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+            sb.AppendLine("\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
             sb.Append("<html xmlns=\"http://www.w3.org/1999/xhtml\" ");
             if (!string.IsNullOrEmpty(language))
             {
@@ -541,21 +546,50 @@
                 sb.Append("\" ");
             }
 
+            string directionCode = right2Left ? "rtl" : "ltr";
             sb.Append("dir=\"");
-            sb.Append(direction);
-            sb.Append("\">");
-            sb.Append("<head><title>").Append(title).Append("</title>");
-            sb.Append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
-            sb.Append("<style type=\"text/css\">");
+            sb.Append(directionCode);
+            sb.AppendLine("\">");
+            sb.AppendLine("<head><title>").Append(title).Append("</title>");
+            sb.AppendLine("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
+            sb.AppendLine("<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />");
+            //TODO: Add program version.
+            sb.AppendLine("<meta name=\"generator\" content=\"WikiDesk\" />");
+            sb.AppendLine("<link rel=\"copyright\" href=\"http://creativecommons.org/licenses/by-sa/3.0/\" />");
 
-            if (!string.IsNullOrEmpty(settings_.CssFilename))
+            string skinsFolderpath = Path.Combine(userDataFolderPath_, "skins");
+
+            // Main.
+            sb.Append("<link rel=\"stylesheet\" href=\"file:///");
+            sb.Append(Path.Combine(skinsFolderpath, string.Format("vector/main-{0}.css", directionCode)));
+            sb.AppendLine("\" type=\"text/css\" media=\"screen\" />");
+
+            // Common Shared.
+            sb.Append("<link rel=\"stylesheet\" href=\"file:///");
+            sb.Append(Path.Combine(skinsFolderpath, "common/shared.css"));
+            sb.AppendLine("\" type=\"text/css\" media=\"screen\" />");
+
+            // Common Print.
+            sb.Append("<link rel=\"stylesheet\" href=\"file:///");
+            sb.Append(Path.Combine(skinsFolderpath, "common/commonPrint.css"));
+            sb.AppendLine("\" type=\"text/css\" media=\"print\" />");
+
+            // User.
+            string skinPath = Path.Combine(skinsFolderpath, settings_.SkinName);
+            sb.Append("<link rel=\"stylesheet\" href=\"file:///");
+            sb.Append(Path.Combine(skinPath, "main.css"));
+            sb.AppendLine("\" type=\"text/css\" media=\"screen\" />");
+
+            if (right2Left)
             {
-                sb.Append(File.ReadAllText(settings_.CssFilename));
+                sb.Append("<link rel=\"stylesheet\" href=\"file:///");
+                sb.Append(Path.Combine(skinPath, "rtl.css"));
+                sb.AppendLine("\" type=\"text/css\" media=\"screen\" />");
             }
 
-            sb.Append("</style></head>");
+            sb.Append("</head>");
             sb.Append("<body class=\"mediawiki ltr ns-0 ns-subject page-");
-            sb.Append(title.Replace(' ', '_'));
+            sb.Append(Title.Normalize(title));
             sb.Append(" skin-vector\">");
             sb.Append("<div id=\"mw-page-base\" class=\"noprint\"></div>");
             sb.Append("<div id=\"mw-head-base\" class=\"noprint\"></div>");
@@ -645,6 +679,8 @@
         private Database db_;
 
         private readonly Settings settings_;
+
+        private readonly string userDataFolderPath_;
 
         private ImportForm frmImport_;
 

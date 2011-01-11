@@ -1,13 +1,11 @@
-* Skins.
-* Case-insensitive title search.
+* Skins. (Partially done.)
 * Full-text search.
 * Navigation History.
 * Favs.
-* Index.
-* Media Cache.
+* Media Cache. (Partially done.)
 * Editable settings.
 * Compressed Database.
-* Load from web backups.
+* Load from web backups. (Partially done.)
 
 Wiki2Html:
 
@@ -16,10 +14,11 @@ Wiki2Html:
 * Templates.
 * Audio/Video.
 
-
 Done:
 
 * Linking.
 * Update from the web.
 * CSS.
+* Index.
 * Other languages.
+* Case-insensitive title search. (Standard Wiki normalization only.)
