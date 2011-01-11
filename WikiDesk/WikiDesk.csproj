@@ -41,10 +41,6 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.5.0.32097, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\Docking\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImportForm.cs">
@@ -110,6 +106,10 @@
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DockPanel\WinFormsUI\DockPanel.csproj">
+      <Project>{C75532C4-765B-418E-B09B-46D36B2ABDB1}</Project>
+      <Name>DockPanel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebKitBrowser\WebKitBrowser.csproj">
       <Project>{44AFE214-12C7-4280-898D-A7C4AABF1533}</Project>
       <Name>WebKitBrowser</Name>
