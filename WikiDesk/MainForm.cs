@@ -302,17 +302,6 @@
             }
         }
 
-        private void LoadClick(object sender, EventArgs e)
-        {
-            string folder = "Z:\\"; //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string dbPath = Path.Combine(folder, "wikidesk.db");
-            using (Database db = new Database(dbPath))
-            {
-                Domain domain = db.GetDomain("Wikipedia");
-                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", domain.Id, "simple", false);
-            }
-        }
-
         private void OpenDatabase(string dbPath)
         {
             db_ = new Database(dbPath);
@@ -460,7 +449,7 @@
             string pageXml = Download.DownloadPage(url);
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
             {
-                db_.ImportFromXml(ms, false, domainId, languageCode);
+                //DumpParser.ImportFromXml(ms, db_, false, domainId, languageCode);
             }
 
             Language language = db_.GetLanguageByCode(languageCode);
@@ -646,10 +635,19 @@
         {
             if (frmImport_ == null)
             {
-                frmImport_ = new ImportForm(db_, entriesMap_);
+                frmImport_ = new ImportForm(domains_, languages_);
             }
 
-            frmImport_.Show(this);
+            if (frmImport_.ShowDialog(this) == DialogResult.OK)
+            {
+                Domain domain = db_.GetDomain(frmImport_.DomainName);
+                Language language = db_.GetLanguageByName(frmImport_.LanguageName);
+
+                using (FileStream stream = new FileStream(frmImport_.DumpFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
+                {
+                    //DumpParser.ImportFromXml(stream, db_, frmImport_.IndexOnly, domain.Id, language.Code);
+                }
+            }
         }
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)

@@ -1,52 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-
-namespace WikiDesk
+﻿namespace WikiDesk
 {
+    using System;
+    using System.Globalization;
     using System.IO;
-
-    using WikiDesk.Data;
+    using System.Text.RegularExpressions;
+    using System.Windows.Forms;
 
     public partial class ImportForm : Form
     {
-        public ImportForm(Database db, Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap)
+        public ImportForm(WikiDomains domains, LanguageCodes languages)
         {
             InitializeComponent();
 
-            db_ = db;
-            entriesMap_ = entriesMap;
+            domains_ = domains;
+            languages_ = languages;
 
-            foreach (KeyValuePair<string, Dictionary<string, PrefixMatchContainer<string>>> domainLangPair in entriesMap_)
+            foreach (WikiDomain wikiDomain in domains.Domains)
             {
-                cboDomains_.Items.Add(domainLangPair.Key);
+                cboDomains_.Items.Add(wikiDomain.Name);
             }
 
-            cboDomains_.SelectedIndex = (cboDomains_.Items.Count > 0) ? 0 : -1;
+            cboDomains_.SelectedIndex = -1;
+
+            foreach (WikiLanguage wikiLanguage in languages_.Languages)
+            {
+                cboLanguages_.Items.Add(wikiLanguage.LocalName);
+            }
+
+            //TODO: Automatically select the default or current language.
+            cboLanguages_.SelectedIndex = (cboLanguages_.Items.Count > 0) ? 0 : -1;
+
+            btnImport_.Enabled = false;
         }
 
-        private void cboDomains__SelectedIndexChanged(object sender, EventArgs e)
+        #region properties
+
+        public string DumpFilename
         {
-            cboLanguages_.SelectedIndex = -1;
-
-            if (cboDomains_.SelectedIndex >= 0)
-            {
-                Dictionary<string, PrefixMatchContainer<string>> langEntries;
-                if (entriesMap_.TryGetValue(cboDomains_.Text, out langEntries))
-                {
-                    cboLanguages_.Items.Clear();
-
-                    foreach (KeyValuePair<string, PrefixMatchContainer<string>> langTitlesPair in langEntries)
-                    {
-                        cboLanguages_.Items.Add(langTitlesPair.Key);
-                    }
-
-                    //TODO: Automatically select the default or current language.
-                    cboLanguages_.SelectedIndex = (cboLanguages_.Items.Count > 0) ? 0 : -1;
-                    return;
-                }
-            }
+            get { return txtFilepath_.Text; }
         }
+
+        public string DomainName
+        {
+            get { return cboDomains_.Text; }
+        }
+
+        public string LanguageName
+        {
+            get { return cboLanguages_.Text; }
+        }
+
+        public DateTime Date
+        {
+            get { return dateTimePicker_.Value; }
+        }
+
+        public bool IndexOnly
+        {
+            get { return chkIndexOnly_.Checked; }
+        }
+
+        #endregion // properties
 
         private void btnBrowse__Click(object sender, EventArgs e)
         {
@@ -55,8 +69,64 @@ namespace WikiDesk
             openFileDialog_.Filter = "Compressed XML files (*.xml.bz2)|*.xml.bz2|XML files (*.xml)|*.xml|All files (*.*)|*.*";
             if (openFileDialog_.ShowDialog(this) == DialogResult.OK)
             {
+                string domainName;
+                string languageCode;
+                DateTime date;
+                ParseDumpFileName(Path.GetFileName(openFileDialog_.FileName), out domainName, out languageCode, out date);
+
+                // In dumps, Wikipedia is shortened to Wiki.
+                if (string.Compare(domainName, "wiki", true) == 0)
+                {
+                    domainName = "Wikipedia";
+                }
+
+                cboLanguages_.SelectedIndex = languages_.Languages.FindIndex(lang => lang.Code == languageCode);
+                cboDomains_.SelectedIndex = domains_.Domains.FindIndex(domain => string.Compare(domain.Name, domainName, true) == 0);
+                dateTimePicker_.Value = date;
+
                 txtFilepath_.Text = openFileDialog_.FileName;
             }
+
+            UpdateImportButton();
+        }
+
+        private void cboDomains__SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateImportButton();
+        }
+
+        private void cboLanguages__SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateImportButton();
+        }
+
+        private void dateTimePicker__ValueChanged(object sender, EventArgs e)
+        {
+            UpdateImportButton();
+        }
+
+        private void UpdateImportButton()
+        {
+            btnImport_.Enabled = File.Exists(txtFilepath_.Text) &&
+                                 cboDomains_.SelectedIndex >= 0 &&
+                                 cboLanguages_.SelectedIndex >= 0 &&
+                                 dateTimePicker_.Value != DateTime.MinValue;
+        }
+
+        private void ParseDumpFileName(string filename, out string domain, out string lang, out DateTime date)
+        {
+            Match match = rexWikiDumpFilename_.Match(filename);
+            if (match.Success)
+            {
+                lang = match.Groups[1].Value;
+                domain = match.Groups[2].Value;
+                date = DateTime.ParseExact(match.Groups[3].Value, "yyyyMMdd", CultureInfo.InvariantCulture);
+                return;
+            }
+
+            domain = string.Empty;
+            lang = string.Empty;
+            date = DateTime.MinValue;
         }
 
         private void btnImport__Click(object sender, EventArgs e)
@@ -103,9 +173,11 @@ namespace WikiDesk
 
         #region representation
 
-        private readonly Database db_;
+        private readonly WikiDomains domains_;
 
-        private readonly Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap_;
+        private readonly LanguageCodes languages_;
+
+        private readonly Regex rexWikiDumpFilename_ = new Regex(@"^(.+?)(WIK.+?)\-(\d{8})\-(.+?)", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         #endregion // representation
     }

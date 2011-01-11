@@ -53,7 +53,6 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadXMLDumpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -121,7 +120,6 @@
             //
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openDatabaseToolStripMenuItem,
-            this.loadXMLDumpToolStripMenuItem,
             this.importToolStripMenuItem,
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
@@ -132,33 +130,26 @@
             // openDatabaseToolStripMenuItem
             //
             this.openDatabaseToolStripMenuItem.Name = "openDatabaseToolStripMenuItem";
-            this.openDatabaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openDatabaseToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.openDatabaseToolStripMenuItem.Text = "&Open Database...";
             this.openDatabaseToolStripMenuItem.Click += new System.EventHandler(this.OpenClick);
-            //
-            // loadXMLDumpToolStripMenuItem
-            //
-            this.loadXMLDumpToolStripMenuItem.Name = "loadXMLDumpToolStripMenuItem";
-            this.loadXMLDumpToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.loadXMLDumpToolStripMenuItem.Text = "&Load XML Dump...";
-            this.loadXMLDumpToolStripMenuItem.Click += new System.EventHandler(this.LoadClick);
             //
             // importToolStripMenuItem
             //
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.importToolStripMenuItem.Text = "&Import...";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             //
             // toolStripMenuItem1
             //
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(172, 6);
             //
             // exitToolStripMenuItem
             //
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitClick);
             //
@@ -176,7 +167,7 @@
             this.indexMenuItem_.CheckOnClick = true;
             this.indexMenuItem_.Name = "indexMenuItem_";
             this.indexMenuItem_.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
-            this.indexMenuItem_.Size = new System.Drawing.Size(152, 22);
+            this.indexMenuItem_.Size = new System.Drawing.Size(147, 22);
             this.indexMenuItem_.Text = "&Index";
             this.indexMenuItem_.Click += new System.EventHandler(this.indexMenuItem__Click);
             //
@@ -431,7 +422,6 @@
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openDatabaseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadXMLDumpToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
