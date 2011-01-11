@@ -16,16 +16,13 @@
         /// <summary>
         /// Reference into Domain table.
         /// </summary>
-        [Indexed]
         public long Domain { get; set; }
 
         /// <summary>
         /// Reference into Language table.
         /// </summary>
-        [Indexed]
         public long Language { get; set; }
 
-        [Indexed]
         [MaxLength(256)]
         public string Title { get; set; }
 
@@ -116,7 +113,7 @@
         public bool UpdateReplacePage(Page page)
         {
             // Try to find this page.
-            Page dbPage = QueryPage(page.Title, page.Domain, page.Language);
+            Page dbPage = QueryPage(page.Domain, page.Language, page.Title);
             if (dbPage == null)
             {
                 // New page.
@@ -133,18 +130,6 @@
             return false;
         }
 
-        public IList<Page> GetPages()
-        {
-            return (from s in Table<Page>() select s).ToList();
-        }
-
-        public IList<Page> GetPages(long domainId)
-        {
-            return (from s in Table<Page>()
-                    where s.Domain == domainId
-                    select s).ToList();
-        }
-
         public IList<Page> GetPages(long domainId, long languageId)
         {
             return (from s in Table<Page>()
@@ -153,16 +138,16 @@
                     select s).ToList();
         }
 
-        public Page QueryPage(string title, long domainId, long languageId)
+        public Page QueryPage(long domainId, long languageId, string title)
         {
             return (from s in Table<Page>()
-                    where s.Title == title &&
-                          s.Domain == domainId &&
-                          s.Language == languageId
+                    where s.Domain == domainId &&
+                          s.Language == languageId &&
+                          s.Title == title
                     select s).FirstOrDefault();
         }
 
-        public Page QueryPage(string title, long domainId, string languageCode)
+        public Page QueryPage(long domainId, string languageCode, string title)
         {
             Language language = GetLanguageByCode(languageCode);
             if (language == null)
@@ -170,7 +155,7 @@
                 return null;
             }
 
-            return QueryPage(title, domainId, language.Id);
+            return QueryPage(domainId, language.Id, title);
         }
     }
 }

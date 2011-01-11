@@ -426,7 +426,7 @@
             settings_.CurrentLanguageCode = languageCode;
 
             long domainId = db_.GetDomain(domain.Name).Id;
-            Page page = db_.QueryPage(title, domainId, languageCode);
+            Page page = db_.QueryPage(domainId, languageCode, title);
             if (page != null)
             {
                 Revision rev = db_.QueryRevision(page.LastRevisionId);
@@ -463,7 +463,7 @@
             }
 
             Language language = db_.GetLanguageByCode(languageCode);
-            Page page = db_.QueryPage(title, domainId, language.Id);
+            Page page = db_.QueryPage(domainId, language.Id, title);
             if (page != null)
             {
                 Dictionary<string, PrefixMatchContainer<string>> langEntries;
