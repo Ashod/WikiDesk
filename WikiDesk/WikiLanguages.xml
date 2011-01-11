@@ -101,6 +101,7 @@
     </WikiLanguage>
     <WikiLanguage>
       <Code>arz</Code>
+      <MimeCode>ar</MimeCode>
       <Name />
       <LocalName>مصرى</LocalName>
       <Notes>Egyptian Spoken Arabic</Notes>
@@ -2002,6 +2003,7 @@
     </WikiLanguage>
     <WikiLanguage>
       <Code>simple</Code>
+      <MimeCode>en</MimeCode>
       <Name />
       <LocalName>Simple English</LocalName>
       <Notes>Simple English</Notes>

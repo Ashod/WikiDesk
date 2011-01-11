@@ -11,6 +11,12 @@ namespace WikiDesk
     {
         public string Code { get; set; }
 
+        /// <summary>
+        /// The language family ISO 639-1 code and sub-tag.
+        /// Used when Code is not a language code (such as Simple).
+        /// </summary>
+        public string MimeCode { get; set; }
+
         public string Name { get; set; }
 
         public string LocalName { get; set; }

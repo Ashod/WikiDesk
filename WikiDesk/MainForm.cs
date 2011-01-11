@@ -510,11 +510,40 @@
 
         private string WrapInHtmlBody(string title, string html)
         {
+            string direction = "ltr";
+            string language = string.Empty;
+            WikiLanguage curWikiLanguage = languages_.Languages.Find(lang => settings_.CurrentLanguageCode == lang.Code);
+            if (curWikiLanguage != null)
+            {
+                if (curWikiLanguage.RightToLeft)
+                {
+                    direction = "rtl";
+                }
+
+                if (!string.IsNullOrEmpty(curWikiLanguage.MimeCode))
+                {
+                    language = curWikiLanguage.MimeCode;
+                }
+                else
+                {
+                    language = curWikiLanguage.Code;
+                }
+            }
+
             StringBuilder sb = new StringBuilder(html.Length * 2);
             sb.Append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" ");
             sb.Append("\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-            //TODO: lang should be generated dynamically.
-            sb.Append("<html xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"en\" dir=\"ltr\">");
+            sb.Append("<html xmlns=\"http://www.w3.org/1999/xhtml\" ");
+            if (!string.IsNullOrEmpty(language))
+            {
+                sb.Append("lang=\"");
+                sb.Append(language);
+                sb.Append("\" ");
+            }
+
+            sb.Append("dir=\"");
+            sb.Append(direction);
+            sb.Append("\">");
             sb.Append("<head><title>").Append(title).Append("</title>");
             sb.Append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />");
             sb.Append("<style type=\"text/css\">");

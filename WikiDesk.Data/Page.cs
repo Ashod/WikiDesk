@@ -76,19 +76,19 @@
         /// </returns>
         public int CompareTo(Page other)
         {
-            int val = Title.CompareTo(other.Title);
-            if (val != 0)
-            {
-                return val;
-            }
-
-            val = Domain.CompareTo(other.Domain);
+            int val = Domain.CompareTo(other.Domain);
             if (val != 0)
             {
                 return val;
             }
 
             val = Language.CompareTo(other.Language);
+            if (val != 0)
+            {
+                return val;
+            }
+
+            val = Title.CompareTo(other.Title);
             if (val != 0)
             {
                 return val;
