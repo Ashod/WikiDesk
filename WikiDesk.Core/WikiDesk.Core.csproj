@@ -31,22 +31,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="Download.cs" />
+    <Compile Include="DumpParser.cs" />
     <Compile Include="IFileCache.cs" />
     <Compile Include="Title.cs" />
     <Compile Include="Wiki2Html.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WikiImage2Html.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WikiDesk.Data\WikiDesk.Data.csproj">
+      <Project>{BBD52323-6CD5-45F6-84F1-C2341EF4694A}</Project>
+      <Name>WikiDesk.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

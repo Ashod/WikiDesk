@@ -449,7 +449,7 @@
             string pageXml = Download.DownloadPage(url);
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
             {
-                //DumpParser.ImportFromXml(ms, db_, false, domainId, languageCode);
+                DumpParser.ImportFromXml(ms, db_, false, domainId, languageCode);
             }
 
             Language language = db_.GetLanguageByCode(languageCode);
@@ -645,7 +645,7 @@
 
                 using (FileStream stream = new FileStream(frmImport_.DumpFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
                 {
-                    //DumpParser.ImportFromXml(stream, db_, frmImport_.IndexOnly, domain.Id, language.Code);
+                    DumpParser.ImportFromXml(stream, db_, frmImport_.IndexOnly, domain.Id, language.Code);
                 }
             }
         }

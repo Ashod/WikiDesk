@@ -42,7 +42,7 @@ namespace WikiDesk.Core
 
             commonImagesPath_ = Path.Combine(config.SkinsPath, config.CommonImagesPath);
             commonImagesPath_ = commonImagesPath_.Replace('\\', '/');
-            commonImagesPath_ = "file:///" + HttpUtility.HtmlEncode(commonImagesPath_);
+            commonImagesPath_ = "file:///" + commonImagesPath_;
             commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
         }
 
@@ -299,7 +299,7 @@ namespace WikiDesk.Core
         {
             string imageFileName = match.Groups[2].Value;
 
-            string imagePageUrl = FileUrl + HttpUtility.UrlEncode(imageFileName.Replace(' ', '_'));
+            string imagePageUrl = FileUrl + imageFileName.Replace(' ', '_');
             string imageSrcUrl = null;
 
             if (fileCache_ != null)
@@ -315,7 +315,7 @@ namespace WikiDesk.Core
                 string imagePage = Download.DownloadPage(imagePageUrl);
                 Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
                 if (!imageSourceMatch.Success ||
-                    (HttpUtility.HtmlDecode(imageSourceMatch.Groups[1].Value) != imageFileName))
+                    (imageSourceMatch.Groups[1].Value != imageFileName))
                 {
                     // File not found?
                     return string.Empty;
@@ -721,7 +721,7 @@ namespace WikiDesk.Core
 
             // Wikis replace spaces with underscores.
             title = title.Replace(' ', '_');
-            return FullUrl + HttpUtility.HtmlEncode(title);
+            return FullUrl + title;
         }
 
         #endregion // implementation
