@@ -122,7 +122,7 @@ namespace SQLite
 		/// The mapping represents the schema of the columns of the database and contains
 		/// methods to set and get properties of objects.
 		/// </returns>
-		public TableMapping GetMapping (Type type)
+		public TableMapping GetMapping(Type type)
 		{
 			if (_mappings == null) {
 				_mappings = new Dictionary<string, TableMapping> ();
@@ -144,36 +144,50 @@ namespace SQLite
 		/// <returns>
 		/// The number of entries added to the database schema.
 		/// </returns>
-		public int CreateTable<T> ()
+		public int CreateTable<T>()
 		{
 			var ty = typeof(T);
 
 			if (_tables == null) {
 				_tables = new Dictionary<string, TableMapping> ();
 			}
+
 			TableMapping map;
 			if (!_tables.TryGetValue (ty.FullName, out map)) {
 				map = GetMapping (ty);
-				_tables.Add (ty.FullName, map);
+				_tables.Add(ty.FullName, map);
 			}
 			var query = "create table if not exists \"" + map.TableName + "\"(\n";
 
-			var decls = map.Columns.Select (p => Orm.SqlDecl (p));
-			var decl = string.Join (",\n", decls.ToArray ());
+			var decls = map.Columns.Select (p => Orm.SqlDecl(p));
+			var decl = string.Join(",\n", decls.ToArray());
 			query += decl;
+
+		    var uniq = ty.GetCustomAttributes(typeof(UniqueAttribute), false);
+		    string[] uniqColNames = (uniq.Length > 0) ? ((UniqueAttribute)uniq[0]).Fields : null;
+            if (uniqColNames != null)
+            {
+                query += string.Format(
+                            ",\nCONSTRAINT uc{0}_{1} UNIQUE ({2})\n",
+                            map.TableName,
+                            string.Join("_", uniqColNames),
+                            string.Join(", ", uniqColNames));
+            }
+
 			query += ")";
 
-			var count = Execute (query);
+			var count = Execute(query);
 
 			if (count == 0) { //Possible bug: This always seems to return 0?
 				// Table already exists, migrate it
-				MigrateTable (map);
+				MigrateTable(map);
 			}
 
-			foreach (var p in map.Columns.Where (x => x.IsIndexed)) {
+			foreach (var p in map.Columns.Where(x => x.IsIndexed))
+            {
 				var indexName = map.TableName + "_" + p.Name;
-				var q = string.Format ("create index if not exists \"{0}\" on \"{1}\"(\"{2}\")", indexName, map.TableName, p.Name);
-				count += Execute (q);
+				var q = string.Format("create index if not exists \"{0}\" on \"{1}\"(\"{2}\")", indexName, map.TableName, p.Name);
+				count += Execute(q);
 			}
 
 			return count;
@@ -608,6 +622,16 @@ namespace SQLite
 	{
 	}
 
+    public class UniqueAttribute : Attribute
+    {
+        public UniqueAttribute(params string[] fields)
+        {
+            Fields = fields;
+        }
+
+        public string[] Fields { get; private set; }
+    }
+
 	public class IgnoreAttribute : Attribute
 	{
 	}
@@ -616,7 +640,7 @@ namespace SQLite
 	{
 		public int Value { get; private set; }
 
-		public MaxLengthAttribute (int length)
+		public MaxLengthAttribute(int length)
 		{
 			Value = length;
 		}
@@ -650,10 +674,10 @@ namespace SQLite
 		{
 			MappedType = type;
 			TableName = MappedType.Name;
-			var props = MappedType.GetProperties (BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
+			var props = MappedType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
 			var cols = new List<Column> ();
 			foreach (var p in props) {
-				var ignore = p.GetCustomAttributes (typeof(IgnoreAttribute), true).Length > 0;
+				var ignore = p.GetCustomAttributes(typeof(IgnoreAttribute), true).Length > 0;
 				if (p.CanWrite && !ignore) {
 					cols.Add (new PropColumn (p));
 				}
@@ -776,7 +800,7 @@ namespace SQLite
 	{
 		public const int DefaultMaxStringLength = 140;
 
-		public static string SqlDecl (TableMapping.Column p)
+		public static string SqlDecl(TableMapping.Column p)
 		{
 			string decl = "\"" + p.Name + "\" " + SqlType (p) + " ";
 
@@ -796,7 +820,7 @@ namespace SQLite
 			return decl;
 		}
 
-		public static string SqlType (TableMapping.Column p)
+		public static string SqlType(TableMapping.Column p)
 		{
 			var clrType = p.ColumnType;
 			if (clrType == typeof(Boolean) || clrType == typeof(Byte) || clrType == typeof(UInt16) || clrType == typeof(SByte) || clrType == typeof(Int16) || clrType == typeof(Int32)) {
@@ -826,42 +850,34 @@ namespace SQLite
 			}
 		}
 
-		public static bool IsPK (MemberInfo p)
+		public static bool IsPK(MemberInfo p)
 		{
-			var attrs = p.GetCustomAttributes (typeof(PrimaryKeyAttribute), true);
+			var attrs = p.GetCustomAttributes(typeof(PrimaryKeyAttribute), true);
 			return attrs.Length > 0;
 		}
 
-		public static string Collation (MemberInfo p)
+		public static string Collation(MemberInfo p)
 		{
-			var attrs = p.GetCustomAttributes (typeof(CollationAttribute), true);
-			if (attrs.Length > 0) {
-				return ((CollationAttribute)attrs [0]).Value;
-			} else {
-				return string.Empty;
-			}
+		    var attrs = p.GetCustomAttributes(typeof(CollationAttribute), true);
+		    return attrs.Length > 0 ? ((CollationAttribute)attrs [0]).Value : string.Empty;
 		}
 
-		public static bool IsAutoInc (MemberInfo p)
+	    public static bool IsAutoInc(MemberInfo p)
 		{
-			var attrs = p.GetCustomAttributes (typeof(AutoIncrementAttribute), true);
+			var attrs = p.GetCustomAttributes(typeof(AutoIncrementAttribute), true);
 			return attrs.Length > 0;
 		}
 
-		public static bool IsIndexed (MemberInfo p)
+		public static bool IsIndexed(MemberInfo p)
 		{
-			var attrs = p.GetCustomAttributes (typeof(IndexedAttribute), true);
+			var attrs = p.GetCustomAttributes(typeof(IndexedAttribute), true);
 			return attrs.Length > 0;
 		}
 
-		public static int MaxStringLength (PropertyInfo p)
+		public static int MaxStringLength(PropertyInfo p)
 		{
-			var attrs = p.GetCustomAttributes (typeof(MaxLengthAttribute), true);
-			if (attrs.Length > 0) {
-				return ((MaxLengthAttribute)attrs [0]).Value;
-			} else {
-				return DefaultMaxStringLength;
-			}
+		    var attrs = p.GetCustomAttributes(typeof(MaxLengthAttribute), true);
+		    return attrs.Length > 0 ? ((MaxLengthAttribute)attrs[0]).Value : DefaultMaxStringLength;
 		}
 	}
 

@@ -3,10 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Drawing;
-    using System.Globalization;
     using System.IO;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Windows.Forms;
 
     using WebKit;
@@ -301,7 +299,7 @@
             using (Database db = new Database(dbPath))
             {
                 Domain domain = db.GetDomain("Wikipedia");
-                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", domain.Id, "en", false);
+                db.Load("Z:\\simplewiki-20100401-pages-articles.xml", domain.Id, "simple", false);
             }
         }
 

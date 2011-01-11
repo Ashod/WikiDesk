@@ -6,16 +6,13 @@
 
     using SQLite;
 
+    /// <summary>
+    /// A page in the database.
+    /// Wikimedia doesn't mix domains/languages, but we do.
+    /// </summary>
+    [Unique("Domain", "Language", "Title")]
     public class Page : IComparer<Page>, IComparable<Page>
     {
-        [PrimaryKey]
-        [Indexed]
-        public long Id { get; set; }
-
-        [Indexed]
-        [MaxLength(256)]
-        public string Title { get; set; }
-
         /// <summary>
         /// Reference into Domain table.
         /// </summary>
@@ -27,6 +24,10 @@
         /// </summary>
         [Indexed]
         public long Language { get; set; }
+
+        [Indexed]
+        [MaxLength(256)]
+        public string Title { get; set; }
 
         /// <summary>
         /// Reference into Revision table.
@@ -124,20 +125,7 @@
             }
 
             // Old page. See if there are any changes and avoid updating if none.
-            if (dbPage == page)
-            {
-                return false;
-            }
-
-            // Something has changed.
-            if (dbPage.Id != page.Id)
-            {
-                // ID change require re-insertion.
-                // This happens when a page is deleted then added again.
-                Delete(dbPage);
-                Insert(page);
-            }
-            else
+            if (dbPage != page)
             {
                 Update(page);
             }
@@ -148,13 +136,6 @@
         public IList<Page> GetPages()
         {
             return (from s in Table<Page>() select s).ToList();
-        }
-
-        public Page GetPage(long id)
-        {
-            return (from s in Table<Page>()
-                    where s.Id == id
-                    select s).FirstOrDefault();
         }
 
         public IList<Page> GetPages(long domainId)
@@ -170,15 +151,6 @@
                     where s.Domain == domainId &&
                           s.Language == languageId
                     select s).ToList();
-        }
-
-        public Page QueryPage(long id, long domainId, long languageId)
-        {
-            return (from s in Table<Page>()
-                    where s.Id == id &&
-                          s.Domain == domainId &&
-                          s.Language == languageId
-                    select s).FirstOrDefault();
         }
 
         public Page QueryPage(string title, long domainId, long languageId)

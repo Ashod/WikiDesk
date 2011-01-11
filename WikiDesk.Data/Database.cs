@@ -120,7 +120,7 @@
                 switch (reader.Name)
                 {
                     case "id":
-                        page.Id = long.Parse(reader.ReadString());
+                        //page.Id = long.Parse(reader.ReadString());
                         continue;
 
                     case "title":
