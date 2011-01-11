@@ -498,7 +498,7 @@
             config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
 
             Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, fileCache_);
-            string html = wiki2Html.ConvertX(text);
+            string html = wiki2Html.Convert(text);
             html = WrapInHtmlBody(title, html);
 
             using (FileStream fs = new FileStream(tempFilename_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))

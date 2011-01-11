@@ -31,22 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScrewTurn.Wiki.AclEngine, Version=3.0.4.560, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\ScrewTurn\ScrewTurn.Wiki.AclEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="ScrewTurn.Wiki.Core, Version=3.0.4.560, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\ScrewTurn\ScrewTurn.Wiki.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ScrewTurn.Wiki.PluginFramework, Version=3.0.4.560, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\ScrewTurn\ScrewTurn.Wiki.PluginFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="ScrewTurn.Wiki.SearchEngine, Version=3.0.4.560, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\3rdParty\ScrewTurn\ScrewTurn.Wiki.SearchEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>

@@ -472,7 +472,7 @@
         {
             const string WIKI_CODE = "[[Image:Westminstpalace.jpg|frame|none|alt=alt text|caption text]]";
             Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(WIKI_CODE);
+            string html = converter.Convert(WIKI_CODE);
 
 //             [[Image:Westminstpalace.jpg|frame|none|alt=alt text|caption text]]
 //             <div class="thumb tnone">
@@ -603,7 +603,7 @@
         private void TestConvert(string wikicode, string expected)
         {
             Wiki2Html converter = new Wiki2Html();
-            string html = converter.ConvertX(wikicode);
+            string html = converter.Convert(wikicode);
             Assert.AreEqual(expected, html);
         }
     }

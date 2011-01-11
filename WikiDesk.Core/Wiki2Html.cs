@@ -4,13 +4,9 @@ namespace WikiDesk.Core
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
-    using System.Reflection;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
-
-    using ScrewTurn.Wiki;
-    using ScrewTurn.Wiki.PluginFramework;
 
     public class Wiki2Html
     {
@@ -71,7 +67,7 @@ namespace WikiDesk.Core
 
         #endregion // properties
 
-        public string ConvertX(string wikicode)
+        public string Convert(string wikicode)
         {
             wikicode = ConvertUnaryCode(RedirectRegex, Redirect, wikicode);
             wikicode = ConvertListCode(wikicode);
@@ -371,7 +367,7 @@ namespace WikiDesk.Core
                     case "THUMB":
                     case "THUMBNAIL":
                         type = WikiImage2Html.Type.Thumbnail;
-                        width = (width < 0) ? config_.ThumbnailWidthPixels : width;
+                        width = (width < 0) ? ThumbnailWidthPixels : width;
                         break;
 
                     // Full size. ThumbCaption.
@@ -383,7 +379,7 @@ namespace WikiDesk.Core
                     // Thumbnail size.
                     case "FRAMELESS":
                         type = WikiImage2Html.Type.Frameless;
-                        width = (width < 0) ? config_.ThumbnailWidthPixels : width;
+                        width = (width < 0) ? ThumbnailWidthPixels : width;
                         break;
 
                     case "BORDER":
@@ -423,7 +419,7 @@ namespace WikiDesk.Core
                             }
 
                             // Round to the nearest 10 pixels.
-                            int r = (int)(config_.ThumbnailWidthPixels * factor / 10 + 0.5);
+                            int r = (int)(ThumbnailWidthPixels * factor / 10 + 0.5);
                             width = r * 10;
                         }
                         else
@@ -474,14 +470,7 @@ namespace WikiDesk.Core
 
             if (altText == null)
             {
-                if (caption != null)
-                {
-                    altText = caption;
-                }
-                else
-                {
-                    altText = imageFileName;
-                }
+                altText = caption ?? imageFileName;
             }
 
             return WikiImage2Html.Convert(
@@ -700,7 +689,7 @@ namespace WikiDesk.Core
                     {
                         string langCode = line.Substring(2, split - 2);
                         string langTitle = line.Substring(split + 1, line.Length - split - 2 - 1);
-                        languages[langCode] = langTitle; //TODO: Check for duplicates
+                        languages[langCode] = langTitle;
                     }
                 }
             }
@@ -719,15 +708,6 @@ namespace WikiDesk.Core
 
             wikiText = sb.ToString();
             return languages;
-        }
-
-        public static string Convert(string wikiText)
-        {
-            FormattingContext context = FormattingContext.PageContent;
-            PageInfo currentPage = null;
-            string[] linkedPages = null;
-            string output = Formatter.Format(wikiText, false, context, currentPage, out linkedPages, false);
-            return output;
         }
 
         #region implementation
