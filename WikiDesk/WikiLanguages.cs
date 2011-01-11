@@ -17,6 +17,8 @@ namespace WikiDesk
 
         public string Notes { get; set; }
 
+        public bool RightToLeft { get; set; }
+
         #region Implementation of IComparer<WikiLanguage>
 
         /// <summary>

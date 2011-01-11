@@ -6,2229 +6,2601 @@
       <Name />
       <LocalName>Qafár af</LocalName>
       <Notes>Afar</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ab</Code>
       <Name />
       <LocalName>Аҧсуа</LocalName>
       <Notes>Abkhaz, should possibly add ' бысжѡа'</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ace</Code>
       <Name />
       <LocalName>Acèh</LocalName>
       <Notes>Aceh</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>af</Code>
       <Name />
       <LocalName>Afrikaans</LocalName>
       <Notes>Afrikaans</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ak</Code>
       <Name />
       <LocalName>Akan</LocalName>
       <Notes>Akan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>aln</Code>
       <Name />
       <LocalName>Gegë</LocalName>
       <Notes>Gheg Albanian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>als</Code>
       <Name />
       <LocalName>Alemannisch</LocalName>
       <Notes>Alemannic -- not a valid code, for compatibility. See gsw.</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>am</Code>
       <Name />
       <LocalName>አማርኛ</LocalName>
       <Notes>Amharic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>an</Code>
       <Name />
       <LocalName>Aragonés</LocalName>
       <Notes>Aragonese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ang</Code>
       <Name />
       <LocalName>Ænglisc</LocalName>
       <Notes>Old English (Bug 23283)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ar</Code>
       <Name />
       <LocalName>العربية</LocalName>
       <Notes>Arabic</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>arc</Code>
       <Name />
       <LocalName>ܐܪܡܝܐ</LocalName>
       <Notes>Aramaic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>arn</Code>
       <Name />
       <LocalName>Mapudungun</LocalName>
       <Notes>Mapuche, Mapudungu, Araucanian (Araucano)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ary</Code>
       <Name />
       <LocalName>Maġribi</LocalName>
       <Notes>Moroccan Spoken Arabic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>arz</Code>
       <Name />
       <LocalName>مصرى</LocalName>
       <Notes>Egyptian Spoken Arabic</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>as</Code>
       <Name />
       <LocalName>অসমীয়া</LocalName>
       <Notes>Assamese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ast</Code>
       <Name />
       <LocalName>Asturianu</LocalName>
       <Notes>Asturian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>av</Code>
       <Name />
       <LocalName>Авар</LocalName>
       <Notes>Avar</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>avk</Code>
       <Name />
       <LocalName>Kotava</LocalName>
       <Notes>Kotava</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ay</Code>
       <Name />
       <LocalName>Aymar aru</LocalName>
       <Notes>Aymara</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>az</Code>
       <Name />
       <LocalName>Azərbaycanca</LocalName>
       <Notes>Azerbaijani</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ba</Code>
       <Name />
       <LocalName>Башҡорт</LocalName>
       <Notes>Bashkir</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bar</Code>
       <Name />
       <LocalName>Boarisch</LocalName>
       <Notes>Bavarian (Austro-Bavarian and South Tyrolean)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bat-smg</Code>
       <Name />
       <LocalName>Žemaitėška</LocalName>
       <Notes>Samogitian (deprecated code, 'sgs' in ISO 693-3 since 2010-06-30 )</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bcc</Code>
       <Name />
       <LocalName>بلوچی مکرانی</LocalName>
       <Notes>Southern Balochi</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bcl</Code>
       <Name />
       <LocalName>Bikol Central</LocalName>
       <Notes>Bikol: Central Bicolano language</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>be</Code>
       <Name />
       <LocalName>Беларуская</LocalName>
       <Notes> Belarusian normative</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>be-tarask</Code>
       <Name />
       <LocalName>Беларуская (тарашкевіца)</LocalName>
       <Notes>Belarusian in Taraskievica orthography</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>be-x-old</Code>
       <Name />
       <LocalName>Беларуская (тарашкевіца)</LocalName>
       <Notes>Belarusian in Taraskievica orthography; compat link</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bg</Code>
       <Name />
       <LocalName>Български</LocalName>
       <Notes>Bulgarian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bh</Code>
       <Name />
       <LocalName>भोजपुरी</LocalName>
       <Notes>Bhojpuri</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bi</Code>
       <Name />
       <LocalName>Bislama</LocalName>
       <Notes>Bislama</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bjn</Code>
       <Name />
       <LocalName>Bahasa Banjar</LocalName>
       <Notes>Banjarese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bm</Code>
       <Name />
       <LocalName>Bamanankan</LocalName>
       <Notes>Bambara</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bn</Code>
       <Name />
       <LocalName>বাংলা</LocalName>
       <Notes>Bengali</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bo</Code>
       <Name />
       <LocalName>བོད་ཡིག</LocalName>
       <Notes>Tibetan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bpy</Code>
       <Name />
       <LocalName>ইমার ঠার/বিষ্ণুপ্রিয়া মণিপুরী</LocalName>
       <Notes>Bishnupriya Manipuri</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bqi</Code>
       <Name />
       <LocalName>بختياري</LocalName>
       <Notes>Bakthiari</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>br</Code>
       <Name />
       <LocalName>Brezhoneg</LocalName>
       <Notes>Breton</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bs</Code>
       <Name />
       <LocalName>Bosanski</LocalName>
       <Notes>Bosnian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bug</Code>
       <Name />
       <LocalName>ᨅᨔ ᨕᨘᨁᨗ</LocalName>
       <Notes>Bugis</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bxr</Code>
       <Name />
       <LocalName>Буряад</LocalName>
       <Notes>Buryat (Russia)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ca</Code>
       <Name />
       <LocalName>Català</LocalName>
       <Notes>Catalan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cbk-zam</Code>
       <Name />
       <LocalName>Chavacano de Zamboanga</LocalName>
       <Notes>Zamboanga Chavacano</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cdo</Code>
       <Name />
       <LocalName>Mìng-dĕ̤ng-ngṳ̄</LocalName>
       <Notes>Min Dong</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ce</Code>
       <Name />
       <LocalName>Нохчийн</LocalName>
       <Notes>Chechen</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ceb</Code>
       <Name />
       <LocalName>Cebuano</LocalName>
       <Notes>Cebuano</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ch</Code>
       <Name />
       <LocalName>Chamoru</LocalName>
       <Notes>Chamorro</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cho</Code>
       <Name />
       <LocalName>Choctaw</LocalName>
       <Notes>Choctaw</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>chr</Code>
       <Name />
       <LocalName>ᏣᎳᎩ</LocalName>
       <Notes>Cherokee</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>chy</Code>
       <Name />
       <LocalName>Tsetsêhestâhese</LocalName>
       <Notes>Cheyenne</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ckb</Code>
       <Name />
       <LocalName>کوردی</LocalName>
       <Notes>Sorani</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>co</Code>
       <Name />
       <LocalName>Corsu</LocalName>
       <Notes>Corsican</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cps</Code>
       <Name />
       <LocalName>Capiceño</LocalName>
       <Notes>Capiznon</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cr</Code>
       <Name />
       <LocalName>Nēhiyawēwin / ᓀᐦᐃᔭᐍᐏᐣ</LocalName>
       <Notes>Cree</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>crh</Code>
       <Name />
       <LocalName>Qırımtatarca</LocalName>
       <Notes>Crimean Tatar (multiple scripts - defaults to Latin)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>crh-latn</Code>
       <LocalName>Qırımtatarca (Latin)</LocalName>
       <Notes>Crimean Tatar (Latin)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>crh-cyrl</Code>
       <LocalName>Къырымтатарджа (Кирилл)</LocalName>
       <Notes>Crimean Tatar (Cyrillic)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cs</Code>
       <Name />
       <LocalName>Česky</LocalName>
       <Notes>Czech</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>csb</Code>
       <Name />
       <LocalName>Kaszëbsczi</LocalName>
       <Notes>Cassubian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cu</Code>
       <Name />
       <LocalName>Словѣ́ньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ</LocalName>
       <Notes>Old Church Slavonic (ancient language)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cv</Code>
       <Name />
       <LocalName>Чӑвашла</LocalName>
       <Notes>Chuvash</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cy</Code>
       <Name />
       <LocalName>Cymraeg</LocalName>
       <Notes>Welsh</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>da</Code>
       <Name />
       <LocalName>Dansk</LocalName>
       <Notes>Danish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>de</Code>
       <Name />
       <LocalName>Deutsch</LocalName>
       <Notes>German ("Du")</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>de-at</Code>
       <Name />
       <LocalName>Österreichisches Deutsch</LocalName>
       <Notes>Austrian German</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>de-ch</Code>
       <Name />
       <LocalName>Schweizer Hochdeutsch</LocalName>
       <Notes>Swiss Standard German</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>de-formal</Code>
       <Name />
       <LocalName>Deutsch (Sie-Form)</LocalName>
       <Notes>German - formal address ("Sie")</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>diq</Code>
       <Name />
       <LocalName>Zazaki</LocalName>
       <Notes>Zazaki</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>dsb</Code>
       <Name />
       <LocalName>Dolnoserbski</LocalName>
       <Notes>Lower Sorbian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>dv</Code>
       <Name />
       <LocalName>ދިވެހިބަސް</LocalName>
       <Notes>Dhivehi</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>dz</Code>
       <Name />
       <LocalName>ཇོང་ཁ</LocalName>
       <Notes>Bhutani</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ee</Code>
       <Name />
       <LocalName>Eʋegbe</LocalName>
       <Notes>Éwé</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>el</Code>
       <Name />
       <LocalName>Ελληνικά</LocalName>
       <Notes>Greek</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>eml</Code>
       <Name />
       <LocalName>Emiliàn e rumagnòl</LocalName>
       <Notes>Emiliano-Romagnolo / Sammarinese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>en</Code>
       <Name />
       <LocalName>English</LocalName>
       <Notes>English</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>en-gb</Code>
       <Name />
       <LocalName>British English</LocalName>
       <Notes>British English</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>eo</Code>
       <Name />
       <LocalName>Esperanto</LocalName>
       <Notes>Esperanto</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>es</Code>
       <Name />
       <LocalName>Español</LocalName>
       <Notes>Spanish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>et</Code>
       <Name />
       <LocalName>Eesti</LocalName>
       <Notes>Estonian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>eu</Code>
       <Name />
       <LocalName>Euskara</LocalName>
       <Notes>Basque</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ext</Code>
       <Name />
       <LocalName>Estremeñu</LocalName>
       <Notes>Extremaduran</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fa</Code>
       <Name />
       <LocalName>فارسی</LocalName>
       <Notes>Persian</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ff</Code>
       <Name />
       <LocalName>Fulfulde</LocalName>
       <Notes>Fulfulde, Maasina</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fi</Code>
       <Name />
       <LocalName>Suomi</LocalName>
       <Notes>Finnish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fiu-vro</Code>
       <Name />
       <LocalName>Võro</LocalName>
       <Notes>Võro (deprecated code, 'vro' in ISO 639-3 since 2009-01-16)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fj</Code>
       <Name />
       <LocalName>Na Vosa Vakaviti</LocalName>
       <Notes>Fijian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fo</Code>
       <Name />
       <LocalName>Føroyskt</LocalName>
       <Notes>Faroese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fr</Code>
       <Name />
       <LocalName>Français</LocalName>
       <Notes>French</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>frc</Code>
       <Name />
       <LocalName>Français cadien</LocalName>
       <Notes>Cajun French</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>frp</Code>
       <Name />
       <LocalName>Arpetan</LocalName>
       <Notes>Franco-Provençal/Arpitan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>frr</Code>
       <Name />
       <LocalName>Nordfriisk</LocalName>
       <Notes>North Frisian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fur</Code>
       <Name />
       <LocalName>Furlan</LocalName>
       <Notes>Friulian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fy</Code>
       <Name />
       <LocalName>Frysk</LocalName>
       <Notes>Frisian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ga</Code>
       <Name />
       <LocalName>Gaeilge</LocalName>
       <Notes>Irish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gag</Code>
       <Name />
       <LocalName>Gagauz</LocalName>
       <Notes>Gagauz</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gan</Code>
       <Name />
       <LocalName>贛語</LocalName>
       <Notes>Gan (multiple scripts - defaults to Traditional)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gan-hans</Code>
       <Name />
       <LocalName>赣语(简体)</LocalName>
       <Notes>Gan (Simplified Han)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gan-hant</Code>
       <Name />
       <LocalName>贛語(繁體)</LocalName>
       <Notes>Gan (Traditional Han)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gd</Code>
       <Name />
       <LocalName>Gàidhlig</LocalName>
       <Notes>Scots Gaelic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gl</Code>
       <Name />
       <LocalName>Galego</LocalName>
       <Notes>Galician</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>glk</Code>
       <Name />
       <LocalName>گیلکی</LocalName>
       <Notes>Gilaki</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gn</Code>
       <Name />
       <LocalName>Avañe'ẽ</LocalName>
       <Notes>Guaraní, Paraguayan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>got</Code>
       <Name />
       <LocalName>𐌲𐌿𐍄𐌹𐍃𐌺</LocalName>
       <Notes>Gothic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>grc</Code>
       <Name />
       <LocalName>Ἀρχαία ἑλληνικὴ</LocalName>
       <Notes>Ancient Greek</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gsw</Code>
       <Name />
       <LocalName>Alemannisch</LocalName>
       <Notes>Alemannic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gu</Code>
       <Name />
       <LocalName>ગુજરાતી</LocalName>
       <Notes>Gujarati</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gv</Code>
       <Name />
       <LocalName>Gaelg</LocalName>
       <Notes>Manx</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ha</Code>
       <Name />
       <LocalName>هَوُسَ</LocalName>
       <Notes>Hausa</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hak</Code>
       <Name />
       <LocalName>Hak-kâ-fa</LocalName>
       <Notes>Hakka</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>haw</Code>
       <Name />
       <LocalName>Hawai`i</LocalName>
       <Notes>Hawaiian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>he</Code>
       <Name />
       <LocalName>עברית</LocalName>
       <Notes>Hebrew</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hi</Code>
       <Name />
       <LocalName>हिन्दी</LocalName>
       <Notes>Hindi</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hif</Code>
       <Name />
       <LocalName>Fiji Hindi</LocalName>
       <Notes>Fijian Hindi (multiple scripts - defaults to Latin)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hif-latn</Code>
       <Name />
       <LocalName>Fiji Hindi</LocalName>
       <Notes>Fiji Hindi (latin)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hil</Code>
       <Name />
       <LocalName>Ilonggo</LocalName>
       <Notes>Hiligaynon</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ho</Code>
       <Name />
       <LocalName>Hiri Motu</LocalName>
       <Notes>Hiri Motu</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hr</Code>
       <Name />
       <LocalName>Hrvatski</LocalName>
       <Notes>Croatian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hsb</Code>
       <Name />
       <LocalName>Hornjoserbsce</LocalName>
       <Notes>Upper Sorbian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ht</Code>
       <Name />
       <LocalName>Kreyòl ayisyen</LocalName>
       <Notes>Haitian Creole French</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hu</Code>
       <Name />
       <LocalName>Magyar</LocalName>
       <Notes>Hungarian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hy</Code>
       <Name />
       <LocalName>Հայերեն</LocalName>
       <Notes>Armenian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hz</Code>
       <Name />
       <LocalName>Otsiherero</LocalName>
       <Notes>Herero</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ia</Code>
       <Name />
       <LocalName>Interlingua</LocalName>
       <Notes>Interlingua (IALA)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>id</Code>
       <Name />
       <LocalName>Bahasa Indonesia</LocalName>
       <Notes>Indonesian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ie</Code>
       <Name />
       <LocalName>Interlingue</LocalName>
       <Notes>Interlingue (Occidental)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ig</Code>
       <Name />
       <LocalName>Igbo</LocalName>
       <Notes>Igbo</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ii</Code>
       <Name />
       <LocalName>ꆇꉙ</LocalName>
       <Notes>Sichuan Yi</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ik</Code>
       <Name />
       <LocalName>Iñupiak</LocalName>
       <Notes>Inupiak (Inupiatun, Northwest Alaska / Inupiatun, North Alaskan)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ike-cans</Code>
       <Name />
       <LocalName>ᐃᓄᒃᑎᑐᑦ</LocalName>
       <Notes>Inuktitut, Eastern Canadian/Eastern Canadian "Eskimo"/"Eastern Arctic Eskimo"/Inuit (Unified Canadian Aboriginal Syllabics)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ike-latn</Code>
       <Name />
       <LocalName>inuktitut</LocalName>
       <Notes>Inuktitut, Eastern Canadian (Latin script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ilo</Code>
       <Name />
       <LocalName>Ilokano</LocalName>
       <Notes>Ilokano</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>inh</Code>
       <Name />
       <LocalName>ГІалгІай Ğalğaj</LocalName>
       <Notes>Ingush</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>io</Code>
       <Name />
       <LocalName>Ido</LocalName>
       <Notes>Ido</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>is</Code>
       <Name />
       <LocalName>Íslenska</LocalName>
       <Notes>Icelandic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>it</Code>
       <Name />
       <LocalName>Italiano</LocalName>
       <Notes>Italian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>iu</Code>
       <Name />
       <LocalName>ᐃᓄᒃᑎᑐᑦ/inuktitut</LocalName>
       <Notes>Inuktitut (macro language - do no localise, see ike/ikt - falls back to ike-cans)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ja</Code>
       <Name />
       <LocalName>日本語</LocalName>
       <Notes>Japanese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>jbo</Code>
       <Name />
       <LocalName>Lojban</LocalName>
       <Notes>Lojban</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>jut</Code>
       <Name />
       <LocalName>Jysk</LocalName>
       <Notes>Jutish / Jutlandic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>jv</Code>
       <Name />
       <LocalName>Basa Jawa</LocalName>
       <Notes>Javanese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ka</Code>
       <Name />
       <LocalName>ქართული</LocalName>
       <Notes>Georgian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kaa</Code>
       <Name />
       <LocalName>Qaraqalpaqsha</LocalName>
       <Notes>Karakalpak</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kab</Code>
       <Name />
       <LocalName>Taqbaylit</LocalName>
       <Notes>Kabyle</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kbd</Code>
       <Name />
       <LocalName>къэбэрдеибзэ/qabardjajəbza</LocalName>
       <Notes>Kabardian (multiple scripts - defaults to Cyrillic)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kbd-cyrl</Code>
       <Name />
       <LocalName>къэбэрдеибзэ</LocalName>
       <Notes>Kabardian (Cyrillic)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kg</Code>
       <Name />
       <LocalName>Kongo</LocalName>
       <Notes>Kongo, (FIXME!) should probaly be KiKongo or KiKoongo</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ki</Code>
       <Name />
       <LocalName>Gĩkũyũ</LocalName>
       <Notes>Gikuyu</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kiu</Code>
       <Name />
       <LocalName>Kırmancki</LocalName>
       <Notes>Kirmanjki</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kj</Code>
       <Name />
       <LocalName>Kwanyama</LocalName>
       <Notes>Kwanyama</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk</Code>
       <Name />
       <LocalName>Қазақша</LocalName>
       <Notes>Kazakh (multiple scripts - defaults to Cyrillic)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-arab</Code>
       <Name />
       <LocalName>قازاقشا (تٴوتە)</LocalName>
       <Notes>Kazakh Arabic</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-cyrl</Code>
       <Name />
       <LocalName>Қазақша (кирил)</LocalName>
       <Notes>Kazakh Cyrillic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-latn</Code>
       <Name />
       <LocalName>Qazaqşa (latın)</LocalName>
       <Notes>Kazakh Latin</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-cn</Code>
       <Name />
       <LocalName>قازاقشا (جۇنگو)</LocalName>
       <Notes>Kazakh (China)</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-kz</Code>
       <Name />
       <LocalName>Қазақша (Қазақстан)</LocalName>
       <Notes>Kazakh (Kazakhstan)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-tr</Code>
       <Name />
       <LocalName>Qazaqşa (Türkïya)</LocalName>
       <Notes>Kazakh (Turkey)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kl</Code>
       <Name />
       <LocalName>Kalaallisut</LocalName>
       <Notes>Inuktitut, Greenlandic/Greenlandic/Kalaallisut (kal)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>km</Code>
       <Name />
       <LocalName>ភាសាខ្មែរ</LocalName>
       <Notes>Khmer, Central</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kn</Code>
       <Name />
       <LocalName>ಕನ್ನಡ</LocalName>
       <Notes>Kannada</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ko</Code>
       <Name />
       <LocalName>한국어</LocalName>
       <Notes>Korean</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ko-kp</Code>
       <Name />
       <LocalName>한국어 (조선)</LocalName>
       <Notes>Korean (DPRK)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>koi</Code>
       <Name />
       <LocalName>Перем Коми</LocalName>
       <Notes>Komi-Permyak</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kr</Code>
       <Name />
       <LocalName>Kanuri</LocalName>
       <Notes>Kanuri, Central</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>krc</Code>
       <Name />
       <LocalName>Къарачай-Малкъар</LocalName>
       <Notes>Karachay-Balkar</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kri</Code>
       <Name />
       <LocalName>Krio</LocalName>
       <Notes>Krio</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>krj</Code>
       <Name />
       <LocalName>Kinaray-a</LocalName>
       <Notes>Kinaray-a</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ks</Code>
       <Name />
       <LocalName>कश्मीरी - (كشميري)</LocalName>
       <Notes>Kashmiri</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ksh</Code>
       <Name />
       <LocalName>Ripoarisch</LocalName>
       <Notes>Ripuarian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ku</Code>
       <LocalName>Kurdî</LocalName>
       <Notes>Kurdish (multiple scripts - defaults to Latin)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ku-latn</Code>
       <Name />
       <LocalName>Kurdî (latînî)</LocalName>
       <Notes>Northern Kurdish (Latin script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ku-arab</Code>
       <Name />
       <LocalName>كوردي (عەرەبی)</LocalName>
       <Notes>Northern Kurdish (Arabic script) (falls back to ckb)</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kv</Code>
       <Name />
       <LocalName>Коми</LocalName>
       <Notes>Komi-Zyrian (Cyrillic is common script but also written in Latin script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kw</Code>
       <Name />
       <LocalName>Kernowek</LocalName>
       <Notes>Cornish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ky</Code>
       <Name />
       <LocalName>Кыргызча</LocalName>
       <Notes>Kirghiz</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>la</Code>
       <Name />
       <LocalName>Latina</LocalName>
       <Notes>Latin</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lad</Code>
       <Name />
       <LocalName>Ladino</LocalName>
       <Notes>Ladino</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lb</Code>
       <Name />
       <LocalName>Lëtzebuergesch</LocalName>
       <Notes>Luxemburguish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lbe</Code>
       <Name />
       <LocalName>Лакку</LocalName>
       <Notes>Lak</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lez</Code>
       <Name />
       <LocalName>Лезги</LocalName>
       <Notes>Lezgi</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lfn</Code>
       <Name />
       <LocalName>Lingua Franca Nova</LocalName>
       <Notes>Lingua Franca Nova</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lg</Code>
       <Name />
       <LocalName>Luganda</LocalName>
       <Notes>Ganda</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>li</Code>
       <Name />
       <LocalName>Limburgs</LocalName>
       <Notes>Limburgian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lij</Code>
       <Name />
       <LocalName>Líguru</LocalName>
       <Notes>Ligurian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lmo</Code>
       <Name />
       <LocalName>Lumbaart</LocalName>
       <Notes>Lombard</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ln</Code>
       <Name />
       <LocalName>Lingála</LocalName>
       <Notes>Lingala</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lo</Code>
       <Name />
       <LocalName>ລາວ</LocalName>
       <Notes>Laotian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>loz</Code>
       <Name />
       <LocalName>Silozi</LocalName>
       <Notes>Lozi</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lt</Code>
       <Name />
       <LocalName>Lietuvių</LocalName>
       <Notes>Lithuanian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ltg</Code>
       <Name />
       <LocalName>Latgaļu</LocalName>
       <Notes>Latgalian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lv</Code>
       <Name />
       <LocalName>Latviešu</LocalName>
       <Notes>Latvian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lzh</Code>
       <Name />
       <LocalName>文言</LocalName>
       <Notes>Literary Chinese -- (bug 8217) lzh instead of zh-classical</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lzz</Code>
       <Name />
       <LocalName>Lazuri</LocalName>
       <Notes>Laz</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mai</Code>
       <Name />
       <LocalName>मैथिली</LocalName>
       <Notes>Maithili</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>map-bms</Code>
       <Name />
       <LocalName>Basa Banyumasan</LocalName>
       <Notes>Banyumasan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mdf</Code>
       <Name />
       <LocalName>Мокшень</LocalName>
       <Notes>Moksha</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mg</Code>
       <Name />
       <LocalName>Malagasy</LocalName>
       <Notes>Malagasy</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mh</Code>
       <Name />
       <LocalName>Ebon</LocalName>
       <Notes>Marshallese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mhr</Code>
       <Name />
       <LocalName>Олык Марий</LocalName>
       <Notes>Eastern Mari</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mi</Code>
       <Name />
       <LocalName>Māori</LocalName>
       <Notes>Maori</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>min</Code>
       <Name />
       <LocalName>Baso Minangkabau</LocalName>
       <Notes>Minangkabau</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mk</Code>
       <Name />
       <LocalName>Македонски</LocalName>
       <Notes>Macedonian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ml</Code>
       <Name />
       <LocalName>മലയാളം</LocalName>
       <Notes>Malayalam</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mn</Code>
       <Name />
       <LocalName>Монгол</LocalName>
       <Notes>Halh Mongolian (Cyrillic) (ISO 639-3: khk)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mo</Code>
       <Name />
       <LocalName>Молдовеняскэ</LocalName>
       <Notes>Moldovan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mr</Code>
       <Name />
       <LocalName>मराठी</LocalName>
       <Notes>Marathi</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mrj</Code>
       <Name />
       <LocalName>Кырык мары</LocalName>
       <Notes>Hill Mari</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ms</Code>
       <Name />
       <LocalName>Bahasa Melayu</LocalName>
       <Notes>Malay</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mt</Code>
       <Name />
       <LocalName>Malti</LocalName>
       <Notes>Maltese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mus</Code>
       <Name />
       <LocalName>Mvskoke</LocalName>
       <Notes>Muskogee/Creek</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mwl</Code>
       <Name />
       <LocalName>Mirandés</LocalName>
       <Notes>Mirandese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>my</Code>
       <Name />
       <LocalName>မြန်မာဘာသာ</LocalName>
       <Notes>Burmese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>myv</Code>
       <Name />
       <LocalName>Эрзянь</LocalName>
       <Notes>Erzya</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mzn</Code>
       <Name />
       <LocalName>مازِرونی</LocalName>
       <Notes>Mazanderani</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>na</Code>
       <Name />
       <LocalName>Dorerin Naoero</LocalName>
       <Notes>Nauruan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nah</Code>
       <Name />
       <LocalName>Nāhuatl</LocalName>
       <Notes>Nahuatl, en:Wikipedia writes Nahuatlahtolli, while another form is Náhuatl</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nan</Code>
       <Name />
       <LocalName>Bân-lâm-gú</LocalName>
       <Notes>Min-nan -- (bug 8217) nan instead of zh-min-nan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nap</Code>
       <Name />
       <LocalName>Nnapulitano</LocalName>
       <Notes>Neapolitan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nb</Code>
       <Name />
       <LocalName>Norsk (bokmål)</LocalName>
       <Notes>Norwegian (Bokmal)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nds</Code>
       <Name />
       <LocalName>Plattdüütsch</LocalName>
       <Notes>Low German ''or'' Low Saxon</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nds-nl</Code>
       <Name />
       <LocalName>Nedersaksisch</LocalName>
       <Notes>Dutch Low Saxon</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ne</Code>
       <Name />
       <LocalName>नेपाली</LocalName>
       <Notes>Nepali</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>new</Code>
       <Name />
       <LocalName>नेपाल भाषा</LocalName>
       <Notes>Newar / Nepal Bhasa</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ng</Code>
       <Name />
       <LocalName>Oshiwambo</LocalName>
       <Notes>Ndonga</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>niu</Code>
       <Name />
       <LocalName>Niuē</LocalName>
       <Notes>Niuean</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nl</Code>
       <Name />
       <LocalName>Nederlands</LocalName>
       <Notes>Dutch</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nl-informal</Code>
       <Name />
       <LocalName>Nederlands (informeel)</LocalName>
       <Notes>Dutch (informal address ("je"))</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nn</Code>
       <Name />
       <LocalName>Norsk (nynorsk)</LocalName>
       <Notes>Norwegian (Nynorsk)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>no</Code>
       <Name />
       <LocalName>Norsk (bokmål)</LocalName>
       <Notes>Norwegian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nov</Code>
       <Name />
       <LocalName>Novial</LocalName>
       <Notes>Novial</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nrm</Code>
       <Name />
       <LocalName>Nouormand</LocalName>
       <Notes>Norman</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nso</Code>
       <Name />
       <LocalName>Sesotho sa Leboa</LocalName>
       <Notes>Northern Sotho</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nv</Code>
       <Name />
       <LocalName>Diné bizaad</LocalName>
       <Notes>Navajo</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ny</Code>
       <Name />
       <LocalName>Chi-Chewa</LocalName>
       <Notes>Chichewa</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>oc</Code>
       <Name />
       <LocalName>Occitan</LocalName>
       <Notes>Occitan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>om</Code>
       <Name />
       <LocalName>Oromoo</LocalName>
       <Notes>Oromo</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>or</Code>
       <Name />
       <LocalName>ଓଡ଼ିଆ</LocalName>
       <Notes>Oriya</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>os</Code>
       <Name />
       <LocalName>Иронау</LocalName>
       <Notes>Ossetic</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pa</Code>
       <Name />
       <LocalName>ਪੰਜਾਬੀ</LocalName>
       <Notes>Eastern Punjabi (Gurmukhi script) (pan)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pag</Code>
       <Name />
       <LocalName>Pangasinan</LocalName>
       <Notes>Pangasinan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pam</Code>
       <Name />
       <LocalName>Kapampangan</LocalName>
       <Notes>Pampanga</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pap</Code>
       <Name />
       <LocalName>Papiamentu</LocalName>
       <Notes>Papiamentu</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pcd</Code>
       <Name />
       <LocalName>Picard</LocalName>
       <Notes>Picard</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pdc</Code>
       <Name />
       <LocalName>Deitsch</LocalName>
       <Notes>Pennsylvania German</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pdt</Code>
       <Name />
       <LocalName>Plautdietsch</LocalName>
       <Notes>Plautdietsch/Mennonite Low German</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pfl</Code>
       <Name />
       <LocalName>Pälzisch</LocalName>
       <Notes>Palatinate German</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pi</Code>
       <Name />
       <LocalName>पािऴ</LocalName>
       <Notes>Pali</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pih</Code>
       <Name />
       <LocalName>Norfuk / Pitkern</LocalName>
       <Notes>Norfuk/Pitcairn/Norfolk</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pl</Code>
       <Name />
       <LocalName>Polski</LocalName>
       <Notes>Polish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pms</Code>
       <Name />
       <LocalName>Piemontèis</LocalName>
       <Notes>Piedmontese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pnb</Code>
       <Name />
       <LocalName>پنجابی</LocalName>
       <Notes>Western Punjabi</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pnt</Code>
       <Name />
       <LocalName>Ποντιακά</LocalName>
       <Notes>Pontic/Pontic Greek</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>prg</Code>
       <Name />
       <LocalName>Prūsiskan</LocalName>
       <Notes>Prussian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ps</Code>
       <Name />
       <LocalName>پښتو</LocalName>
       <Notes>Pashto, Northern/Paktu/Pakhtu/Pakhtoo/Afghan/Pakhto/Pashtu/Pushto/Yusufzai Pashto</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pt</Code>
       <Name />
       <LocalName>Português</LocalName>
       <Notes>Portuguese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pt-br</Code>
       <Name />
       <LocalName>Português do Brasil</LocalName>
       <Notes>Brazilian Portuguese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>qu</Code>
       <Name />
       <LocalName>Runa Simi</LocalName>
       <Notes>Quechua</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rgn</Code>
       <Name />
       <LocalName>Rumagnôl</LocalName>
       <Notes>Romagnol</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rif</Code>
       <Name />
       <LocalName>Tarifit</LocalName>
       <Notes>Tarifit</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rm</Code>
       <Name />
       <LocalName>Rumantsch</LocalName>
       <Notes>Raeto-Romance</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rmy</Code>
       <Name />
       <LocalName>Romani</LocalName>
       <Notes>Vlax Romany</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rn</Code>
       <Name />
       <LocalName>Kirundi</LocalName>
       <Notes>Rundi/Kirundi/Urundi</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ro</Code>
       <Name />
       <LocalName>Română</LocalName>
       <Notes>Romanian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>roa-rup</Code>
       <Name />
       <LocalName>Armãneashce</LocalName>
       <Notes>Aromanian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>roa-tara</Code>
       <Name />
       <LocalName>Tarandíne</LocalName>
       <Notes>Tarantino</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ru</Code>
       <Name />
       <LocalName>Русский</LocalName>
       <Notes>Russian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rue</Code>
       <Name />
       <LocalName>Русиньскый</LocalName>
       <Notes>Rusyn</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ruq</Code>
       <Name />
       <LocalName>Vlăheşte</LocalName>
       <Notes>Megleno-Romanian (multiple scripts - defaults to Latin)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ruq-cyrl</Code>
       <Name />
       <LocalName>Влахесте</LocalName>
       <Notes>Megleno-Romanian (Cyrillic script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ruq-grek</Code>
       <Name />
       <LocalName>Βλαεστε</LocalName>
       <Notes>Megleno-Romanian (Greek script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ruq-latn</Code>
       <Name />
       <LocalName>Vlăheşte</LocalName>
       <Notes>Megleno-Romanian (Latin script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rw</Code>
       <Name />
       <LocalName>Kinyarwanda</LocalName>
       <Notes>Kinyarwanda, should possibly be Kinyarwandi</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sa</Code>
       <Name />
       <LocalName>संस्कृत</LocalName>
       <Notes>Sanskrit</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sah</Code>
       <Name />
       <LocalName>Саха тыла</LocalName>
       <Notes>Sakha</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sc</Code>
       <Name />
       <LocalName>Sardu</LocalName>
       <Notes>Sardinian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>scn</Code>
       <Name />
       <LocalName>Sicilianu</LocalName>
       <Notes>Sicilian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sco</Code>
       <Name />
       <LocalName>Scots</LocalName>
       <Notes>Scots</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sd</Code>
       <Name />
       <LocalName>سنڌي</LocalName>
       <Notes>Sindhi</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sdc</Code>
       <Name />
       <LocalName>Sassaresu</LocalName>
       <Notes>Sassarese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>se</Code>
       <Name />
       <LocalName>Sámegiella</LocalName>
       <Notes>Northern Sami</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sei</Code>
       <Name />
       <LocalName>Cmique Itom</LocalName>
       <Notes>Seri</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sg</Code>
       <Name />
       <LocalName>Sängö</LocalName>
       <Notes>Sango/Sangho</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sgs</Code>
       <Name />
       <LocalName>Žemaitėška</LocalName>
       <Notes>Samogitian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sh</Code>
       <Name />
       <LocalName>Srpskohrvatski / Српскохрватски</LocalName>
       <Notes>Serbocroatian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>shi</Code>
       <Name />
       <LocalName>Tašlḥiyt</LocalName>
       <Notes>Tachelhit</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>si</Code>
       <Name />
       <LocalName>සිංහල</LocalName>
       <Notes>Sinhalese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>simple</Code>
       <Name />
       <LocalName>Simple English</LocalName>
       <Notes>Simple English</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sk</Code>
       <Name />
       <LocalName>Slovenčina</LocalName>
       <Notes>Slovak</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sl</Code>
       <Name />
       <LocalName>Slovenščina</LocalName>
       <Notes>Slovenian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sli</Code>
       <Name />
       <LocalName>Schläsch</LocalName>
       <Notes>Lower Selisian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sm</Code>
       <Name />
       <LocalName>Gagana Samoa</LocalName>
       <Notes>Samoan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sma</Code>
       <Name />
       <LocalName>Åarjelsaemien</LocalName>
       <Notes>Southern Sami</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sn</Code>
       <Name />
       <LocalName>chiShona</LocalName>
       <Notes>Shona</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>so</Code>
       <Name />
       <LocalName>Soomaaliga</LocalName>
       <Notes>Somali</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sq</Code>
       <Name />
       <LocalName>Shqip</LocalName>
       <Notes>Albanian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sr</Code>
       <Name />
       <LocalName>Српски / Srpski</LocalName>
       <Notes>Serbian (multiple scripts - defaults to Cyrillic)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sr-ec</Code>
       <Name />
       <LocalName>Српски (ћирилица)</LocalName>
       <Notes>Serbian Cyrillic ekavian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sr-el</Code>
       <Name />
       <LocalName>Srpski (latinica)</LocalName>
       <Notes>Serbian Latin ekavian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>srn</Code>
       <Name />
       <LocalName>Sranantongo</LocalName>
       <Notes>Sranan Tongo</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ss</Code>
       <Name />
       <LocalName>SiSwati</LocalName>
       <Notes>Swati</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>st</Code>
       <Name />
       <LocalName>Sesotho</LocalName>
       <Notes>Southern Sotho</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>stq</Code>
       <Name />
       <LocalName>Seeltersk</LocalName>
       <Notes>Saterland Frisian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>su</Code>
       <Name />
       <LocalName>Basa Sunda</LocalName>
       <Notes>Sundanese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sv</Code>
       <Name />
       <LocalName>Svenska</LocalName>
       <Notes>Swedish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sw</Code>
       <Name />
       <LocalName>Kiswahili</LocalName>
       <Notes>Swahili</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>szl</Code>
       <Name />
       <LocalName>Ślůnski</LocalName>
       <Notes>Silesian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ta</Code>
       <Name />
       <LocalName>தமிழ்</LocalName>
       <Notes>Tamil</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tcy</Code>
       <Name />
       <LocalName>ತುಳು</LocalName>
       <Notes>Tulu</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>te</Code>
       <Name />
       <LocalName>తెలుగు</LocalName>
       <Notes>Telugu</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tet</Code>
       <Name />
       <LocalName>Tetun</LocalName>
       <Notes>Tetun</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tg</Code>
       <Name />
       <LocalName>Тоҷикӣ</LocalName>
       <Notes>Tajiki (falls back to tg-cyrl)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tg-cyrl</Code>
       <Name />
       <LocalName>Тоҷикӣ</LocalName>
       <Notes>Tajiki (Cyrllic script) (default)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tg-latn</Code>
       <Name />
       <LocalName>tojikī</LocalName>
       <Notes>Tajiki (Latin script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>th</Code>
       <Name />
       <LocalName>ไทย</LocalName>
       <Notes>Thai</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ti</Code>
       <Name />
       <LocalName>ትግርኛ</LocalName>
       <Notes>Tigrinya</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tk</Code>
       <Name />
       <LocalName>Türkmençe</LocalName>
       <Notes>Turkmen</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tl</Code>
       <Name />
       <LocalName>Tagalog</LocalName>
       <Notes>Tagalog</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tn</Code>
       <Name />
       <LocalName>Setswana</LocalName>
       <Notes>Setswana</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>to</Code>
       <Name />
       <LocalName>lea faka-Tonga</LocalName>
       <Notes>Tonga (Tonga Islands)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tokipona</Code>
       <Name />
       <LocalName>Toki Pona</LocalName>
       <Notes>Toki Pona</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tp</Code>
       <Name />
       <LocalName>Toki Pona (deprecated:tokipona)</LocalName>
       <Notes>Toki Pona - non-standard language code</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tpi</Code>
       <Name />
       <LocalName>Tok Pisin</LocalName>
       <Notes>Tok Pisin</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tr</Code>
       <Name />
       <LocalName>Türkçe</LocalName>
       <Notes>Turkish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ts</Code>
       <Name />
       <LocalName>Xitsonga</LocalName>
       <Notes>Tsonga</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tt</Code>
       <Name />
       <LocalName>Татарча/Tatarça</LocalName>
       <Notes>Tatar (multiple scripts - defaults to Cyrillic)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tt-cyrl</Code>
       <Name />
       <LocalName>Татарча</LocalName>
       <Notes>Tatar (Cyrillic script) (default)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tt-latn</Code>
       <Name />
       <LocalName>Tatarça</LocalName>
       <Notes>Tatar (Latin script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tum</Code>
       <Name />
       <LocalName>chiTumbuka</LocalName>
       <Notes>Tumbuka</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tw</Code>
       <Name />
       <LocalName>Twi</LocalName>
       <Notes>Twi, (FIXME!)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ty</Code>
       <Name />
       <LocalName>Reo Mā`ohi</LocalName>
       <Notes>Tahitian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tyv</Code>
       <Name />
       <LocalName>Тыва дыл</LocalName>
       <Notes>Tyvan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>udm</Code>
       <Name />
       <LocalName>Удмурт</LocalName>
       <Notes>Udmurt</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ug</Code>
       <Name />
       <LocalName>ئۇيغۇرچە / Uyghurche‎</LocalName>
       <Notes>Uyghur (multiple scripts - defaults to Arabic)</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ug-arab</Code>
       <Name />
       <LocalName>ئۇيغۇرچە</LocalName>
       <Notes>Uyghur (Arabic script) (default)</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ug-latn</Code>
       <Name />
       <LocalName>Uyghurche‎</LocalName>
       <Notes>Uyghur (Latin script)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>uk</Code>
       <Name />
       <LocalName>Українська</LocalName>
       <Notes>Ukrainian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ur</Code>
       <Name />
       <LocalName>اردو</LocalName>
       <Notes>Urdu</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>uz</Code>
       <Name />
       <LocalName>O'zbek</LocalName>
       <Notes>Uzbek</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ve</Code>
       <Name />
       <LocalName>Tshivenda</LocalName>
       <Notes>Venda</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vec</Code>
       <Name />
       <LocalName>Vèneto</LocalName>
       <Notes>Venetian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vep</Code>
       <Name />
       <LocalName>Vepsan kel'</LocalName>
       <Notes>Veps</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vi</Code>
       <Name />
       <LocalName>Tiếng Việt</LocalName>
       <Notes>Vietnamese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vls</Code>
       <Name />
       <LocalName>West-Vlams</LocalName>
       <Notes>West Flemish</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vmf</Code>
       <Name />
       <LocalName>Mainfränkisch</LocalName>
       <Notes>Upper Franconian, Main-Franconian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vo</Code>
       <Name />
       <LocalName>Volapük</LocalName>
       <Notes>Volapük</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vot</Code>
       <Name />
       <LocalName>Vaďďa</LocalName>
       <Notes>Vod/Votian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vro</Code>
       <Name />
       <LocalName>Võro</LocalName>
       <Notes>Võro</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>wa</Code>
       <Name />
       <LocalName>Walon</LocalName>
       <Notes>Walloon</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>war</Code>
       <Name />
       <LocalName>Winaray</LocalName>
       <Notes>Waray-Waray</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>wo</Code>
       <Name />
       <LocalName>Wolof</LocalName>
       <Notes>Wolof</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>wuu</Code>
       <Name />
       <LocalName>吴语</LocalName>
       <Notes>Wu Chinese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>xal</Code>
       <Name />
       <LocalName>Хальмг</LocalName>
       <Notes>Kalmyk-Oirat (Kalmuk, Kalmuck, Kalmack, Qalmaq, Kalmytskii Jazyk, Khal:mag, Oirat, Volga Oirat, European Oirat, Western Mongolian)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>xh</Code>
       <Name />
       <LocalName>isiXhosa</LocalName>
       <Notes>Xhosan</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>xmf</Code>
       <Name />
       <LocalName>მარგალური</LocalName>
       <Notes>Mingrelian</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>yi</Code>
       <Name />
       <LocalName>ייִדיש</LocalName>
       <Notes>Yiddish</Notes>
+      <RightToLeft>true</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>yo</Code>
       <Name />
       <LocalName>Yorùbá</LocalName>
       <Notes>Yoruba</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>yue</Code>
       <Name />
       <LocalName>粵語</LocalName>
       <Notes>Cantonese -- (bug 8217) yue instead of zh-yue</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>za</Code>
       <Name />
       <LocalName>Vahcuengh</LocalName>
       <Notes>Zhuang</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zea</Code>
       <Name />
       <LocalName>Zeêuws</LocalName>
       <Notes>Zeeuws/Zeaws</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh</Code>
       <Name />
       <LocalName>中文</LocalName>
       <Notes>(Zhōng Wén) - Chinese</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-classical</Code>
       <Name />
       <LocalName>文言</LocalName>
       <Notes>Classical Chinese/Literary Chinese -- (see bug 8217)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-cn</Code>
       <Name />
       <LocalName>中文(中国大陆)</LocalName>
       <Notes>Chinese (PRC)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hans</Code>
       <Name />
       <LocalName>中文(简体)</LocalName>
       <Notes>Mandarin Chinese (Simplified Chinese script) (cmn-hans)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hant</Code>
       <Name />
       <LocalName>中文(繁體)</LocalName>
       <Notes>Mandarin Chinese (Traditional Chinese script) (cmn-hant)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hk</Code>
       <Name />
       <LocalName>中文(香港)</LocalName>
       <Notes>Chinese (Hong Kong)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-min-nan</Code>
       <Name />
       <LocalName>Bân-lâm-gú</LocalName>
       <Notes>Min-nan -- (see bug 8217)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-mo</Code>
       <Name />
       <LocalName>中文(澳門)</LocalName>
       <Notes>Chinese (Macau)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-my</Code>
       <Name />
       <LocalName>中文(马来西亚)</LocalName>
       <Notes>Chinese (Malaysia)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-sg</Code>
       <Name />
       <LocalName>中文(新加坡)</LocalName>
       <Notes>Chinese (Singapore)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-tw</Code>
       <Name />
       <LocalName>中文(台灣)</LocalName>
       <Notes>Chinese (Taiwan)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-yue</Code>
       <Name />
       <LocalName>粵語</LocalName>
       <Notes>Cantonese -- (see bug 8217)</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zu</Code>
       <Name />
       <LocalName>isiZulu</LocalName>
       <Notes>Zulu</Notes>
+      <RightToLeft>false</RightToLeft>
     </WikiLanguage>
   </Languages>
 </LanguageCodes>
