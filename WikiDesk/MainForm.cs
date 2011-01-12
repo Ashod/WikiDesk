@@ -420,7 +420,7 @@
 
             Page page = db_.SelectPage(domainId, language.Id, title);
 
-            if (page != null && !string.IsNullOrEmpty(page.Text) &&
+            if ((page == null || string.IsNullOrEmpty(page.Text)) &&
                 settings_.AutoRetrieveMissing)
             {
                 // Download and import from the web...

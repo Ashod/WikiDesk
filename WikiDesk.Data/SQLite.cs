@@ -163,17 +163,35 @@ namespace SQLite
 			var decl = string.Join(",\n", decls.ToArray());
 			query += decl;
 
-		    var uniq = ty.GetCustomAttributes(typeof(UniqueAttribute), false);
-		    string[] uniqColNames = (uniq.Length > 0) ? ((UniqueAttribute)uniq[0]).Fields : null;
-            if (uniqColNames != null)
-            {
-                query += string.Format(
-                            ",\nCONSTRAINT uc{0}_{1} UNIQUE ({2})\n",
-                            map.TableName,
-                            string.Join("_", uniqColNames),
-                            string.Join(", ", uniqColNames));
+		    var uniqueAttributes = ty.GetCustomAttributes(typeof(UniqueAttribute), false);
+		    foreach (UniqueAttribute uniqueAttribute in uniqueAttributes)
+		    {
+                string[] uniqColNames = uniqueAttribute.Fields;
+                if (uniqColNames != null)
+                {
+                    query += string.Format(
+                                ",\nCONSTRAINT uc{0}_{1} UNIQUE ({2})\n",
+                                map.TableName,
+                                string.Join("_", uniqColNames),
+                                string.Join(", ", uniqColNames));
+                }
             }
 
+            var primarkeyAttributes = ty.GetCustomAttributes(typeof(PrimaryKeyAttribute), false);
+            if (primarkeyAttributes.Length > 1)
+            {
+                throw new InvalidOperationException("Only one primary");
+            }
+
+            string[] pkColNames = (primarkeyAttributes.Length > 0) ? ((PrimaryKeyAttribute)primarkeyAttributes[0]).Fields : null;
+            if (pkColNames != null)
+            {
+                query += string.Format(
+                            ",\nCONSTRAINT pk{0}_{1} PRIMARY KEY({2})\n",
+                            map.TableName,
+                            string.Join("_", pkColNames),
+                            string.Join(", ", pkColNames));
+            }
 			query += ")";
 
 			var count = Execute(query);
@@ -612,6 +630,12 @@ namespace SQLite
 
 	public class PrimaryKeyAttribute : Attribute
 	{
+        public PrimaryKeyAttribute(params string[] fields)
+        {
+            Fields = fields;
+        }
+
+        public string[] Fields { get; private set; }
 	}
 
 	public class AutoIncrementAttribute : Attribute

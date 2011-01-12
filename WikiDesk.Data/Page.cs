@@ -10,7 +10,7 @@
     /// A page in the database.
     /// Wikimedia doesn't mix domains/languages, but we do.
     /// </summary>
-    [Unique("Domain", "Language", "Title")]
+    [PrimaryKey("Domain", "Language", "Title")]
     public class Page : IComparer<Page>, IComparable<Page>
     {
         /// <summary>
