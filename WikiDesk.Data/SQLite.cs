@@ -135,6 +135,11 @@ namespace SQLite
 			return map;
 		}
 
+		public int CreateTable<T>()
+		{
+		    return CreateTable<T>(false);
+		}
+
 		/// <summary>
 		/// Executes a "create table if not exists" on the database. It also
 		/// creates any specified indexes on the columns of the table. It uses
@@ -144,7 +149,7 @@ namespace SQLite
 		/// <returns>
 		/// The number of entries added to the database schema.
 		/// </returns>
-		public int CreateTable<T>()
+		public int CreateTable<T>(bool fts)
 		{
 			var ty = typeof(T);
 
@@ -157,7 +162,17 @@ namespace SQLite
 				map = GetMapping (ty);
 				_tables.Add(ty.FullName, map);
 			}
-			var query = "create table if not exists \"" + map.TableName + "\"(\n";
+
+			string query;
+
+            if (!fts)
+            {
+                query = "create table if not exists \"" + map.TableName + "\"(\n";
+            }
+            else
+            {
+                query = "create virtual table \"" + map.TableName + "\" using fts4(\n";
+            }
 
 			var decls = map.Columns.Select (p => Orm.SqlDecl(p));
 			var decl = string.Join(",\n", decls.ToArray());
@@ -260,7 +275,7 @@ namespace SQLite
 		/// The fully escaped SQL.
 		/// </param>
 		/// <param name="args">
-		/// Arguments to substitute for the occurences of '?' in the command text.
+		/// Arguments to substitute for the occurrences of '?' in the command text.
 		/// </param>
 		/// <returns>
 		/// A <see cref="SQLiteCommand"/>

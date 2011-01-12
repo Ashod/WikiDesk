@@ -10,9 +10,17 @@
     /// A page in the database.
     /// Wikimedia doesn't mix domains/languages, but we do.
     /// </summary>
-    [PrimaryKey("Domain", "Language", "Title")]
+    [Unique("Domain", "Language", "Title")]
     public class Page : IComparer<Page>, IComparable<Page>
     {
+        /// <summary>
+        /// Used for updates as the SQLite.net library doesn't support
+        /// multi-column PK for updates.
+        /// </summary>
+        [PrimaryKey]
+        [AutoIncrement]
+        public int Id { get; set; }
+
         /// <summary>
         /// Reference into Domain table.
         /// </summary>
@@ -80,13 +88,13 @@
                 return val;
             }
 
-            val = Title.CompareTo(other.Title);
+            val = string.Compare(Title, other.Title);
             if (val != 0)
             {
                 return val;
             }
 
-            return Text.CompareTo(other.Text);
+            return string.Compare(Text, other.Text);
         }
 
         #endregion // Implementation of IComparable<Page>
@@ -109,6 +117,8 @@
                 Insert(page);
                 return true;
             }
+
+            page.Id = dbPage.Id;
 
             // Old page. See if there are any changes and avoid updating if none.
             if (dbPage.CompareTo(page) != 0)

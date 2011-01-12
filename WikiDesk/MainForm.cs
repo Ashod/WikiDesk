@@ -462,8 +462,11 @@
                 }
 
                 string titleDenorm = Title.Denormalize(page.Title);
-                titles.Add(titleDenorm, titleDenorm);
-                indexControl_.UpdateListItems();
+                if (titles.Find(titleDenorm, false, true) < 0)
+                {
+                    titles.Add(titleDenorm, titleDenorm);
+                    indexControl_.UpdateListItems();
+                }
             }
 
             return page;
