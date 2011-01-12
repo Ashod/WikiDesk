@@ -82,6 +82,10 @@
             indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
             indexControl_.HideOnClose = true;
             indexControl_.Show(dockPanel_, DockState.DockRightAutoHide);
+
+            searchControl_ = new SearchControl(db_);
+            searchControl_.HideOnClose = true;
+            searchControl_.Show(dockPanel_, DockState.DockRightAutoHide);
         }
 
         private void ShowAllLanguages()
@@ -698,6 +702,7 @@
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
 
         private readonly IndexControl indexControl_;
+        private readonly SearchControl searchControl_;
 
         /// <summary>
         /// All entries mapped as: Domain : Language : Title.

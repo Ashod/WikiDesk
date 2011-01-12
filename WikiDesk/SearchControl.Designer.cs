@@ -1,6 +1,6 @@
 ﻿namespace WikiDesk
 {
-    partial class IndexControl
+    partial class SearchControl
     {
         /// <summary>
         /// Required designer variable.
@@ -34,6 +34,7 @@
             this.lstTitles_ = new System.Windows.Forms.ListView();
             this.columnHeader = new System.Windows.Forms.ColumnHeader();
             this.cboLanguages_ = new System.Windows.Forms.ComboBox();
+            this.btnSearch_ = new System.Windows.Forms.Button();
             this.SuspendLayout();
             //
             // cboDomains_
@@ -47,7 +48,6 @@
             this.cboDomains_.Name = "cboDomains_";
             this.cboDomains_.Size = new System.Drawing.Size(324, 21);
             this.cboDomains_.TabIndex = 1;
-            this.cboDomains_.SelectedIndexChanged += new System.EventHandler(this.cboDomains__SelectedIndexChanged);
             //
             // txtTitle_
             //
@@ -55,10 +55,8 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTitle_.Location = new System.Drawing.Point(3, 57);
             this.txtTitle_.Name = "txtTitle_";
-            this.txtTitle_.Size = new System.Drawing.Size(324, 20);
+            this.txtTitle_.Size = new System.Drawing.Size(285, 20);
             this.txtTitle_.TabIndex = 2;
-            this.txtTitle_.TextChanged += new System.EventHandler(this.txtTitle__TextChanged);
-            this.txtTitle_.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtTitle__KeyDown);
             //
             // lstTitles_
             //
@@ -78,12 +76,6 @@
             this.lstTitles_.TabIndex = 3;
             this.lstTitles_.UseCompatibleStateImageBehavior = false;
             this.lstTitles_.View = System.Windows.Forms.View.Details;
-            this.lstTitles_.VirtualMode = true;
-            this.lstTitles_.Resize += new System.EventHandler(this.lstTitles__Resize);
-            this.lstTitles_.SearchForVirtualItem += new System.Windows.Forms.SearchForVirtualItemEventHandler(this.lstTitles__SearchForVirtualItem);
-            this.lstTitles_.DoubleClick += new System.EventHandler(this.lstTitles__DoubleClick);
-            this.lstTitles_.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lstTitles__RetrieveVirtualItem);
-            this.lstTitles_.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lstTitles__ItemSelectionChanged);
             //
             // columnHeader
             //
@@ -99,22 +91,34 @@
             this.cboLanguages_.Name = "cboLanguages_";
             this.cboLanguages_.Size = new System.Drawing.Size(324, 21);
             this.cboLanguages_.TabIndex = 4;
-            this.cboLanguages_.SelectedIndexChanged += new System.EventHandler(this.cboLanguages__SelectedIndexChanged);
             //
-            // IndexControl
+            // btnSearch_
+            //
+            this.btnSearch_.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSearch_.Location = new System.Drawing.Point(294, 55);
+            this.btnSearch_.Name = "btnSearch_";
+            this.btnSearch_.Size = new System.Drawing.Size(33, 23);
+            this.btnSearch_.TabIndex = 5;
+            this.btnSearch_.Text = "Go";
+            this.btnSearch_.UseVisualStyleBackColor = true;
+            this.btnSearch_.Click += new System.EventHandler(this.btnSearch__Click);
+            //
+            // SearchControl
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(329, 397);
+            this.Controls.Add(this.btnSearch_);
             this.Controls.Add(this.cboLanguages_);
             this.Controls.Add(this.lstTitles_);
             this.Controls.Add(this.txtTitle_);
             this.Controls.Add(this.cboDomains_);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "IndexControl";
-            this.Text = "Index";
+            this.Name = "SearchControl";
+            this.Text = "Search";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -124,5 +128,6 @@
         private System.Windows.Forms.ListView lstTitles_;
         private System.Windows.Forms.ColumnHeader columnHeader;
         private System.Windows.Forms.ComboBox cboLanguages_;
+        private System.Windows.Forms.Button btnSearch_;
     }
 }

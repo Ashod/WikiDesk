@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Linq.SqlClient;
     using System.Linq;
 
     using SQLite;
@@ -144,6 +145,13 @@
                           s.Language == languageId &&
                           s.Title == title
                     select s).FirstOrDefault();
+        }
+
+        public IList<string> SearchPages(string text)
+        {
+            return (from s in Table<Page>()
+                    where SqlMethods.Like(s.Text, text)
+                    select s.Title).ToList();
         }
     }
 }
