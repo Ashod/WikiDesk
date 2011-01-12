@@ -112,10 +112,13 @@ namespace WikiDesk
         public bool IsSourceCached(string mediaName, string languageCode)
         {
             mediaName = mediaName.ToUpperInvariant();
+            bool hasFile;
             lock (guard_)
             {
-                return cache_.ContainsKey(mediaName);
+                hasFile = cache_.ContainsKey(mediaName);
             }
+
+            return hasFile && File.Exists(Path.Combine(cacheFolder_, mediaName));
         }
 
         /// <summary>

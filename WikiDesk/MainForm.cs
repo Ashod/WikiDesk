@@ -83,13 +83,13 @@
             ShowAllLanguages();
 
             //TODO: Persist the location and settings.
-            indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
-            indexControl_.HideOnClose = true;
-            indexControl_.Show(dockPanel_, DockState.DockRightAutoHide);
-
             searchControl_ = new SearchControl(db_, entriesMap_, BrowseWikiArticle);
             searchControl_.HideOnClose = true;
             searchControl_.Show(dockPanel_, DockState.DockRightAutoHide);
+
+            indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
+            indexControl_.HideOnClose = true;
+            indexControl_.Show(dockPanel_, DockState.DockRightAutoHide);
         }
 
         private void ShowAllLanguages()
