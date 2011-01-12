@@ -24,6 +24,10 @@
             // For now the user's data are kept next to the executable.
             //TODO: Move to user-specific data folder.
             userDataFolderPath_ = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (string.IsNullOrEmpty(userDataFolderPath_))
+            {
+                throw new ApplicationException("Invalid or missing user-data folder.");
+            }
 
             browser_.Visible = true;
             browser_.Dock = DockStyle.Fill;
@@ -54,16 +58,16 @@
             tempFilename_ = Path.GetTempFileName().Replace(".tmp", ".html");
             tempFileUrl_ = "file:///" + tempFilename_.Replace('\\', '/');
 
-            settings_ = Settings.Deserialize(CONFIG_FILENAME);
+            settings_ = Settings.Deserialize(Path.Combine(userDataFolderPath_, CONFIG_FILENAME));
 
             fileCache_ = new FileCache(settings_.FileCacheFolder);
 
             OpenDatabase(settings_.DefaultDatabaseFilename);
 
-            languages_ = LanguageCodes.Deserialize(settings_.LanguagesFilename);
+            languages_ = LanguageCodes.Deserialize(Path.Combine(userDataFolderPath_, settings_.LanguagesFilename));
             StoreWikiLanguages(languages_);
 
-            domains_ = WikiDomains.Deserialize(settings_.DomainsFilename);
+            domains_ = WikiDomains.Deserialize(Path.Combine(userDataFolderPath_, settings_.DomainsFilename));
             StoreWikiDomains(domains_);
 
             currentDomain_ = domains_.FindByName(settings_.CurrentDomainName);
@@ -150,7 +154,7 @@
 
         private void StoreWikiDomains(WikiDomains domains)
         {
-            domains.Serialize(settings_.DomainsFilename);
+            domains.Serialize(Path.Combine(userDataFolderPath_, settings_.DomainsFilename));
 
             foreach (WikiDomain wikiDomain in domains.Domains)
             {
@@ -162,7 +166,7 @@
 
         private void StoreWikiLanguages(LanguageCodes langCodes)
         {
-            langCodes.Serialize(settings_.LanguagesFilename);
+            langCodes.Serialize(Path.Combine(userDataFolderPath_, settings_.LanguagesFilename));
 
             foreach (WikiLanguage language in langCodes.Languages)
             {
@@ -687,7 +691,7 @@
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            settings_.Serialize(CONFIG_FILENAME);
+            settings_.Serialize(Path.Combine(userDataFolderPath_, CONFIG_FILENAME));
         }
 
         #region representation
