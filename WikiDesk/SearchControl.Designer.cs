@@ -48,6 +48,7 @@
             this.cboDomains_.Name = "cboDomains_";
             this.cboDomains_.Size = new System.Drawing.Size(324, 21);
             this.cboDomains_.TabIndex = 1;
+            this.cboDomains_.SelectedIndexChanged += new System.EventHandler(this.cboDomains__SelectedIndexChanged);
             //
             // txtTitle_
             //
@@ -57,6 +58,7 @@
             this.txtTitle_.Name = "txtTitle_";
             this.txtTitle_.Size = new System.Drawing.Size(285, 20);
             this.txtTitle_.TabIndex = 2;
+            this.txtTitle_.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtTitle__KeyDown);
             //
             // lstTitles_
             //
@@ -76,6 +78,8 @@
             this.lstTitles_.TabIndex = 3;
             this.lstTitles_.UseCompatibleStateImageBehavior = false;
             this.lstTitles_.View = System.Windows.Forms.View.Details;
+            this.lstTitles_.Resize += new System.EventHandler(this.lstTitles__Resize);
+            this.lstTitles_.DoubleClick += new System.EventHandler(this.lstTitles__DoubleClick);
             //
             // columnHeader
             //

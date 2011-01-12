@@ -83,7 +83,7 @@
             indexControl_.HideOnClose = true;
             indexControl_.Show(dockPanel_, DockState.DockRightAutoHide);
 
-            searchControl_ = new SearchControl(db_);
+            searchControl_ = new SearchControl(db_, entriesMap_, BrowseWikiArticle);
             searchControl_.HideOnClose = true;
             searchControl_.Show(dockPanel_, DockState.DockRightAutoHide);
         }
@@ -638,12 +638,23 @@
 
             if (frmImport_.ShowDialog(this) == DialogResult.OK)
             {
-                Domain domain = db_.GetDomain(frmImport_.DomainName);
-                Language language = db_.GetLanguageByName(frmImport_.LanguageName);
-
-                using (FileStream stream = new FileStream(frmImport_.DumpFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
+                try
                 {
-                    DumpParser.ImportFromXml(stream, db_, frmImport_.Date, frmImport_.IndexOnly, domain.Id, language.Id);
+                    Domain domain = db_.GetDomain(frmImport_.DomainName);
+                    Language language = db_.GetLanguageByName(frmImport_.LanguageName);
+
+                    using (FileStream stream = new FileStream(frmImport_.DumpFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
+                    {
+                        DumpParser.ImportFromXml(stream, db_, frmImport_.Date, frmImport_.IndexOnly, domain.Id, language.Id);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        string.Format("Unexpected error while importing dump file:{0}{0}{1}", Environment.NewLine, ex.Message),
+                        "Import Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
                 }
             }
         }

@@ -147,10 +147,12 @@
                     select s).FirstOrDefault();
         }
 
-        public IList<string> SearchPages(string text)
+        public IList<string> SearchPages(long domainId, long languageId, string text)
         {
             return (from s in Table<Page>()
-                    where SqlMethods.Like(s.Text, text)
+                    where s.Domain == domainId &&
+                          s.Language == languageId &&
+                          SqlMethods.Like(s.Text, text)
                     select s.Title).ToList();
         }
     }
