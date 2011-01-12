@@ -85,6 +85,11 @@ namespace WikiDesk
         /// </summary>
         public void Refresh()
         {
+            lock (guard_)
+            {
+                cache_.Clear();
+            }
+
             string[] fullnames = Directory.GetFiles(cacheFolder_);
             foreach (string fullname in fullnames)
             {
@@ -104,7 +109,7 @@ namespace WikiDesk
         }
 
         /// <summary>
-        /// Checks whether or not a file is cached or not.
+        /// Checks whether a file is cached or not.
         /// </summary>
         /// <param name="mediaName">The media file name.</param>
         /// <param name="languageCode">The wiki language code.</param>
@@ -118,7 +123,20 @@ namespace WikiDesk
                 hasFile = cache_.ContainsKey(mediaName);
             }
 
-            return hasFile && File.Exists(Path.Combine(cacheFolder_, mediaName));
+            if (hasFile)
+            {
+                if (File.Exists(Path.Combine(cacheFolder_, mediaName)))
+                {
+                    return true;
+                }
+
+                lock (guard_)
+                {
+                    cache_.Remove(mediaName);
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
