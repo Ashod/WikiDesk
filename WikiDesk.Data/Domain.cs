@@ -6,7 +6,7 @@
 
     using SQLite;
 
-    public class Domain : IComparer<Domain>, IComparable<Domain>
+    public class Domain : IRecord, IComparer<Domain>, IComparable<Domain>, IEquatable<Domain>
     {
         [PrimaryKey]
         [AutoIncrement]
@@ -53,32 +53,79 @@
         }
 
         #endregion // Implementation of IComparable<Domain>
+
+        #region Equality
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != typeof(Domain))
+            {
+                return false;
+            }
+
+            return Equals((Domain)obj);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.
+        ///                 </param>
+        public bool Equals(Domain other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return Equals(other.Name, Name);
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override int GetHashCode()
+        {
+            return (Name != null ? Name.GetHashCode() : 0);
+        }
+
+        public static bool operator ==(Domain left, Domain right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Domain left, Domain right)
+        {
+            return !Equals(left, right);
+        }
+
+        #endregion // Equality
     }
 
     public partial class Database
     {
-        /// <summary>
-        /// Updates an existing Domain record or inserts a new one if missing.
-        /// </summary>
-        /// <param name="domain">The domain record in question.</param>
-        /// <returns>True if a new record was created.</returns>
-        public bool UpdateInsertDomain(Domain domain)
-        {
-            Domain dbDomain = GetDomain(domain.Name);
-            if (dbDomain != null)
-            {
-                if (dbDomain != domain)
-                {
-                    Update(domain);
-                }
-
-                return false;
-            }
-
-            Insert(domain);
-            return true;
-        }
-
         /// <summary>
         /// Selects all available domains from the DB.
         /// </summary>

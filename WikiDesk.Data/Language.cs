@@ -6,7 +6,7 @@
 
     using SQLite;
 
-    public class Language : IComparer<Language>, IComparable<Language>
+    public class Language : IRecord, IComparer<Language>, IComparable<Language>, IEquatable<Language>
     {
         [PrimaryKey]
         [AutoIncrement]
@@ -63,32 +63,86 @@
         }
 
         #endregion // Implementation of IComparable<Language>
+
+        #region Equality
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != typeof(Language))
+            {
+                return false;
+            }
+
+            return Equals((Language)obj);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.
+        ///                 </param>
+        public bool Equals(Language other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return Equals(other.Code, Code) &&
+                   Equals(other.Name, Name);
+        }
+
+        /// <summary>
+        /// Serves as a hash function for a particular type.
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = Id;
+                result = (result * 397) ^ (Code != null ? Code.GetHashCode() : 0);
+                result = (result * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                return result;
+            }
+        }
+
+        public static bool operator ==(Language left, Language right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Language left, Language right)
+        {
+            return !Equals(left, right);
+        }
+
+        #endregion // Equality
     }
 
     public partial class Database
     {
-        /// <summary>
-        /// Updates an existing Language record or inserts a new one if missing.
-        /// </summary>
-        /// <param name="lang">The language record in question.</param>
-        /// <returns>True if a new record was created.</returns>
-        public bool UpdateInsertLanguage(Language lang)
-        {
-            Language language = GetLanguageByCode(lang.Code);
-            if (language != null)
-            {
-                if (language != lang)
-                {
-                    Update(lang);
-                }
-
-                return false;
-            }
-
-            Insert(lang);
-            return true;
-        }
-
         /// <summary>
         /// Selects all available languages from the DB.
         /// </summary>

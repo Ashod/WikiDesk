@@ -46,7 +46,7 @@
                         page.Text = null;
                     }
 
-                    db.UpdateReplacePage(page);
+                    db.UpdateInsert(page, db.SelectPage(page.Domain, page.Language, page.Title));
                 }
             }
         }

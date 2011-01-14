@@ -160,7 +160,7 @@
             {
                 Domain domain = new Domain { Name = wikiDomain.Name };
 
-                db_.UpdateInsertDomain(domain);
+                db_.UpdateInsert(domain, db_.GetDomain(domain.Name));
             }
         }
 
@@ -176,7 +176,7 @@
                         Name = !string.IsNullOrEmpty(language.Name) ? language.Name : language.LocalName
                     };
 
-                db_.UpdateInsertLanguage(lang);
+                db_.UpdateInsert(lang, db_.GetLanguageByCode(lang.Code));
             }
         }
 
