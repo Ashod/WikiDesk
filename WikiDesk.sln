@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebKitBrowser", "WebKitBrow
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockPanel", "DockPanel\WinFormsUI\DockPanel.csproj", "{C75532C4-765B-418E-B09B-46D36B2ABDB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDesk.Data.Test", "WikiDesk.Data\WikiDesk.Data.Test\WikiDesk.Data.Test.csproj", "{E280655D-5042-40EB-9D37-71722ABC9CB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E280655D-5042-40EB-9D37-71722ABC9CB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E280655D-5042-40EB-9D37-71722ABC9CB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E280655D-5042-40EB-9D37-71722ABC9CB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E280655D-5042-40EB-9D37-71722ABC9CB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
