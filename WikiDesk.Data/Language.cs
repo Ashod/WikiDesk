@@ -12,10 +12,11 @@
         [AutoIncrement]
         public int Id { get; set; }
 
+        [Unique]
         [MaxLength(16)]
-        [Indexed]
         public string Code { get; set; }
 
+        [Unique]
         [MaxLength(64)]
         public string Name { get; set; }
 

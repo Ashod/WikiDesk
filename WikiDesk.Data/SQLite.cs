@@ -178,6 +178,7 @@ namespace SQLite
 			var decl = string.Join(",\n", decls.ToArray());
 			query += decl;
 
+            // Multi-column Unique Constraints.
 		    var uniqueAttributes = ty.GetCustomAttributes(typeof(UniqueAttribute), false);
 		    foreach (UniqueAttribute uniqueAttribute in uniqueAttributes)
 		    {
@@ -192,10 +193,20 @@ namespace SQLite
                 }
             }
 
+            // Single-column Unique Constraints.
+            foreach (var u in map.Columns.Where(x => x.IsUnique))
+            {
+                query += string.Format(
+                            ",\nCONSTRAINT uc{0}_{1} UNIQUE ({1})\n",
+                            map.TableName,
+                            u.Name);
+            }
+
+            // Primary Key Constraint.
             var primarkeyAttributes = ty.GetCustomAttributes(typeof(PrimaryKeyAttribute), false);
             if (primarkeyAttributes.Length > 1)
             {
-                throw new InvalidOperationException("Only one primary");
+                throw new InvalidOperationException("Only one primary key may be added to a table.");
             }
 
             string[] pkColNames = (primarkeyAttributes.Length > 0) ? ((PrimaryKeyAttribute)primarkeyAttributes[0]).Fields : null;
@@ -797,6 +808,8 @@ namespace SQLite
 
 			public bool IsIndexed { get; protected set; }
 
+            public bool IsUnique { get; protected set; }
+
 			public bool IsNullable { get; protected set; }
 
 			public int MaxStringLength { get; protected set; }
@@ -819,7 +832,8 @@ namespace SQLite
 				IsAutoInc = Orm.IsAutoInc (prop);
 				IsPK = Orm.IsPK (prop);
 				IsIndexed = Orm.IsIndexed (prop);
-				IsNullable = !IsPK;
+                IsUnique = Orm.IsUnique(prop);
+                IsNullable = !IsPK;
 				MaxStringLength = Orm.MaxStringLength (prop);
 			}
 
@@ -912,6 +926,12 @@ namespace SQLite
 			var attrs = p.GetCustomAttributes(typeof(IndexedAttribute), true);
 			return attrs.Length > 0;
 		}
+
+        public static bool IsUnique(MemberInfo p)
+        {
+            var attrs = p.GetCustomAttributes(typeof(UniqueAttribute), true);
+            return attrs.Length > 0;
+        }
 
 		public static int MaxStringLength(PropertyInfo p)
 		{
