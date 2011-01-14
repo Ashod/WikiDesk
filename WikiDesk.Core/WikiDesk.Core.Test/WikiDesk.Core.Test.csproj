@@ -31,6 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="WikiTableParseTest.cs" />
+    <Compile Include="WikiImageParseTest.cs" />
     <Compile Include="WikiParseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

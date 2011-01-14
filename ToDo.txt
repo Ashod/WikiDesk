@@ -1,5 +1,7 @@
+* I18n.
+* Multi-language Wiki support.
+* Navigation bar is broken.
 * Skins. (Partially done.)
-* Full-text search.
 * Navigation History.
 * Favs.
 * Media Cache. (Partially done.)
@@ -13,6 +15,8 @@ Wiki2Html:
 * References.
 * Templates.
 * Audio/Video.
+* Annotated images.
+* Magnifying glass on images.
 
 Done:
 
@@ -22,3 +26,4 @@ Done:
 * Index.
 * Other languages.
 * Case-insensitive title search. (Standard Wiki normalization only.)
+* Full-text search.

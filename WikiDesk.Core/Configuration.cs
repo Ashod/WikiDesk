@@ -31,7 +31,7 @@
             get { return "http://" + CurrentLanguageCode + BaseUrl; }
         }
 
-        public string SkinsPath;
+        public string SkinsPath = string.Empty;
 
         /// <summary>
         /// The common-images path within the skins folder.
