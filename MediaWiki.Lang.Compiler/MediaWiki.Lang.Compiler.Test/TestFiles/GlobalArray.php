@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
   * These determine things like interwikis, language selectors, and so on.
   * Safe to change without running scripts on the respective sites.
@@ -6,13 +6,20 @@
   * @ingroup Language
   */
 /* private */ $wgLanguageNames = array(
-	'aa' => 'QafÃ¡r af',	# Afar
-	'ab' => 'ÐÒ§ÑÑƒÐ°',	# Abkhaz, should possibly add ' Ð±Ñ‹ÑÐ¶Ñ¡Ð°'
-	'ace' => 'AcÃ¨h',	# Aceh
-	'zh-mo' => "\xE2\x80\xAAä¸­æ–‡(æ¾³é–€)\xE2\x80\xAC",	# Chinese (Macau)
-	'zh-my' => "\xE2\x80\xAAä¸­æ–‡(é©¬æ¥è¥¿äºš)\xE2\x80\xAC",	# Chinese (Malaysia)
-	'zh-sg' => "\xE2\x80\xAAä¸­æ–‡(æ–°åŠ å¡)\xE2\x80\xAC",	# Chinese (Singapore)
-	'zh-tw' => "\xE2\x80\xAAä¸­æ–‡(å°ç£)\xE2\x80\xAC",	# Chinese (Taiwan)
-	'zh-yue' => 'ç²µèªž',					# Cantonese -- (see bug 8217)
-	'zu' => 'isiZulu'		# Zulu
+	'aa' => 'Qafár af',	# Afar
+	'ab' => 'Аҧсуа',	# Abkhaz, should possibly add ' бысжѡа'
+	'ace' => 'Acèh',	# Aceh
+	'af' => 'Afrikaans',	# Afrikaans
+	'ak' => 'Akan',		# Akan
+	'aln' => 'Gegë',	# Gheg Albanian
+	'als' => 'Alemannisch',	# Alemannic -- not a valid code, for compatibility. See gsw.
+	'am' => 'አማርኛ',	# Amharic
+	'an' => 'Aragonés',	# Aragonese
+	'ang' => 'Ænglisc',	# Old English (Bug 23283)
+	'ar' => 'العربية',	# Arabic
+	'arc' => 'ܐܪܡܝܐ',	# Aramaic
+	'arn' => 'Mapudungun',	# Mapuche, Mapudungu, Araucanian (Araucano)
+	'arz' => 'مصرى',	# Egyptian Spoken Arabic
+	'as' => 'অসমীয়া',	# Assamese
+	'ast' => 'Asturianu',	# Asturian
 );

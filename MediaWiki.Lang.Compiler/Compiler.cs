@@ -32,12 +32,19 @@
             List<string> units = new List<string>(args.Length);
             for (int i = 2; i < args.Length; ++i)
             {
-                string filename = PreprocessFile(args[i], namespaceName);
-                Console.WriteLine("Compiling " + filename);
+                string filename = Path.GetTempFileName();
+                Console.Write("Preprocessing " + args[i]);
+                PreprocessFile(args[i], filename, namespaceName);
+                Console.WriteLine(" Done.");
+
                 units.Add(filename);
             }
 
-            return Compile(units, assemblyName, true) ? 0 : 1;
+            Console.Write("Compiling...");
+            int ret = Compile(units, assemblyName, true) ? 0 : 1;
+            Console.WriteLine(" Done.");
+
+            return ret;
         }
 
         public static bool Compile(
@@ -103,17 +110,39 @@
             return !errorSink.AnyError;
         }
 
-        public static string PreprocessFile(string filename, string namespaceName)
+        /// <summary>
+        /// Process a file into an output file.
+        /// </summary>
+        /// <param name="sourceFilename">The source file to process.</param>
+        /// <param name="outputFilename">The file name where the processed code will be written.</param>
+        /// <param name="namespaceName">The namespace to wrap the file in.</param>
+        public static void PreprocessFile(string sourceFilename, string outputFilename, string namespaceName)
         {
-            string code = File.ReadAllText(filename);
+            string code = File.ReadAllText(sourceFilename);
 
-            string output = PreprocessText(code, namespaceName, Path.GetFileNameWithoutExtension(filename));
+            string output = PreprocessText(code, namespaceName, Path.GetFileNameWithoutExtension(sourceFilename));
 
-            string tempfile = Path.GetTempFileName();
-            File.WriteAllText(tempfile, output);
-            return tempfile;
+            File.WriteAllText(outputFilename, output);
         }
 
+        /// <summary>
+        /// Process a file in-place, overwriting the source.
+        /// </summary>
+        /// <param name="sourceFilename">The source file to process.</param>
+        /// <param name="namespaceName">The namespace to wrap the file in.</param>
+        public static void PreprocessFile(string sourceFilename, string namespaceName)
+        {
+            PreprocessFile(sourceFilename, sourceFilename, namespaceName);
+        }
+
+        /// <summary>
+        /// Process a code string returning the result. Wraps globals in a new class.
+        /// NOTE: If the file already contains any classes, no globals will be wrapped.
+        /// </summary>
+        /// <param name="code">The code string to process.</param>
+        /// <param name="namespaceName">The namespace to wrap the file in.</param>
+        /// <param name="className">The class name to wrap globals in.</param>
+        /// <returns>The processed code string.</returns>
         public static string PreprocessText(string code, string namespaceName, string className)
         {
             List<string> lines = new List<string>(2048);
@@ -125,11 +154,20 @@
                 code.Substring(0, code.Length - 2);
             }
 
+            // Escape Preg placeholders.
+            code = RegexReplace(
+                    rexPregPlaceholder,
+                    matchPreg => (string.IsNullOrEmpty(matchPreg.Groups[2].Value) ? "\\" : string.Empty) + matchPreg.Groups[3].Value,
+                    code);
+
             // If there are any classes in the file, skip wrapping.
             Match match = rexClass.Match(code);
             if (!match.Success)
             {
-                code = FixVariables(code);
+                code = RegexReplace(
+                        rexVars,
+                        matchVar => "public " + matchVar.Groups[2] + " = ",
+                        code);
 
                 String2Lines(code, lines);
 
@@ -145,7 +183,7 @@
             // Add namespace.
             lines.Insert(1, "namespace " + namespaceName + "{");
             lines.Insert(lines.Count, "}");
-            
+
             lines.Add("?>");
 
             return string.Join(Environment.NewLine, lines.ToArray());
@@ -165,20 +203,22 @@
             }
         }
 
-        private static string FixVariables(string input)
+        private static string RegexReplace(Regex regex, RegexHandler handler, string input)
         {
             int lastIndex = 0;
             StringBuilder sb = new StringBuilder(input.Length * 2);
 
-            Match match = rexVars.Match(input);
+            Match match = regex.Match(input);
             while (match.Success && (lastIndex < input.Length))
             {
                 // Copy the skipped part.
                 sb.Append(input.Substring(lastIndex, match.Index - lastIndex));
 
                 // Handle the match.
-                string text = "public " + match.Groups[2] + " = ";
-                sb.Append(text);
+                string text = handler(match);
+
+                // Either copy a replacement or the matched part as-is.
+                sb.Append(text ?? match.Value);
 
                 lastIndex = match.Index + match.Length;
 
@@ -197,7 +237,16 @@
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Handles a matching regex.
+        /// May return null to skip conversion of the matching block.
+        /// </summary>
+        /// <param name="match">The regex match instance.</param>
+        /// <returns>A replacement string, or null to skip.</returns>
+        private delegate string RegexHandler(Match match);
+
         private static readonly Regex rexClass = new Regex(@"(.+?)class(\w+extends)?\w+(.+?)\{", RegexOptions.Multiline | RegexOptions.Compiled);
-        private static readonly Regex rexVars = new Regex(@"(.+?)(\$.+?)(\w+)?=", RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex rexVars = new Regex(@"(.+?)?(\$.+?)(\w+)?=", RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex rexPregPlaceholder = new Regex(@"(^|[^a-zA-Z]+)(\\)?(\$\d+)", RegexOptions.Multiline | RegexOptions.Compiled);
     }
 }

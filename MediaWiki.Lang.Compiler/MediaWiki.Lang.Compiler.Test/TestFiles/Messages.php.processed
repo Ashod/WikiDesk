@@ -1,0 +1,20 @@
+﻿<?php
+namespace Test:::Space{
+class TestClass{
+/**
+ * @defgroup Language Language
+ *
+ * @file
+ * @ingroup Language
+ */
+
+public $bookstoreList  =  array(
+	'Amazon.com' => 'http://www.amazon.com/exec/obidos/ISBN\$1'
+'titleprotected'       => "Այս անվանմամբ էջի ստեղծումը արգելվել է [[User\$2''։",
+
+# Virus scanner
+'virus-badscanner\$1''",
+);
+}
+}
+?>
