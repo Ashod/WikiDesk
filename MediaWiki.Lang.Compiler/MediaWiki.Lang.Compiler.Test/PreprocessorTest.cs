@@ -32,11 +32,34 @@ namespace MediaWiki.Lang.Compiler.Test
         }
 
         [Test]
+        public void PreprocessClass2()
+        {
+            const string CODE = @"<?php
+/**
+ * Base class for language conversion.
+ * @ingroup Language
+ *
+ * @author Zhengzhu Feng <zhengzhu@gmail.com>
+ * @maintainers fdcn <fdcn64@gmail.com>, shinjiman <shinjiman@gmail.com>, PhiLiP <philip.npc@gmail.com>
+ */
+class LanguageConverter {
+	var $mMainLanguageCode;
+	var $mVariants, $mVariantFallbacks, $mVariantNames;
+}
+";
+
+            string output = Compiler.PreprocessText(CODE, "Test:::Space", "TestClass");
+        }
+
+        [Test]
         public void PreprocessMessages()
         {
             string code = File.ReadAllText("TestFiles/Messages.php");
 
             string output = Compiler.PreprocessText(code, "Test:::Space", "TestClass");
+
+            string expected = File.ReadAllText("TestFiles/Messages.php.processed");
+            Assert.AreEqual(expected, output);
         }
 
         [Test]
@@ -66,6 +89,15 @@ namespace MediaWiki.Lang.Compiler.Test
                 // Instantiate.
                 object instance = Activator.CreateInstance(globalArrayType, ScriptContext.CurrentContext, true);
                 Assert.NotNull(instance);
+
+                // Read a predetermined field.
+                object value = wgLanguageNamesField.GetValue(instance);
+                Assert.NotNull(value);
+
+                PhpArray array = (PhpArray)((PhpReference)value).value;
+                Assert.NotNull(array);
+
+                Assert.AreEqual(16, array.Count);
             }
             finally
             {

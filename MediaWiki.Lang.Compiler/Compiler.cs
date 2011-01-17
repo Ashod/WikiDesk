@@ -22,25 +22,49 @@
             if (args.Length < 3)
             {
                 // Error.
-                Console.Error.WriteLine("Usage: TargetAssemblyName NamespaceName <Sources>");
+                Console.Error.WriteLine("Usage: RootPath AssemblyName RootNamespaceName");
                 return 1;
             }
 
-            string assemblyName = args[0];
-            string namespaceName = args[1].Replace(".", ":::");
+            string rootPath = args[0];
+            string assemblyName = args[1];
+            string rootNamespace = args[2].Replace(".", ":::");
 
-            List<string> units = new List<string>(args.Length);
-            for (int i = 2; i < args.Length; ++i)
+            int rootPathLength = rootPath.Length;
+            string tempPath = Path.Combine(Path.GetTempPath(), "WikiDeskPhP");
+            if (Directory.Exists(tempPath))
             {
-                string filename = Path.GetTempFileName();
-                Console.Write("Preprocessing " + args[i]);
-                PreprocessFile(args[i], filename, namespaceName);
+                try
+                {
+                    Directory.Delete(tempPath);
+                }
+                catch
+                {
+                }
+            }
+
+            string[] filenames = Directory.GetFiles(rootPath, "*.php", SearchOption.AllDirectories);
+            List<string> units = new List<string>(filenames.Length);
+
+            foreach (string file in filenames)
+            {
+                string relFilename = file.Substring(rootPathLength);
+                string directories = Path.GetDirectoryName(relFilename);
+                string relNamespace = directories.Replace("\\", ":::");
+
+                string filename = Path.Combine(tempPath, relFilename);
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+
+                Console.Write("Preprocessing " + file);
+                string namespaceName = rootNamespace +
+                    (!string.IsNullOrEmpty(relNamespace) ? ":::" + relNamespace : string.Empty);
+                PreprocessFile(file, filename, namespaceName);
                 Console.WriteLine(" Done.");
 
                 units.Add(filename);
             }
 
-            Console.Write("Compiling...");
+            Console.WriteLine("Compiling...");
             int ret = Compile(units, assemblyName, true) ? 0 : 1;
             Console.WriteLine(" Done.");
 
@@ -155,9 +179,11 @@
             }
 
             // Escape Preg placeholders.
+            int id;
             code = RegexReplace(
                     rexPregPlaceholder,
-                    matchPreg => (string.IsNullOrEmpty(matchPreg.Groups[2].Value) ? "\\" : string.Empty) + matchPreg.Groups[3].Value,
+                    matchPreg => int.TryParse(matchPreg.Groups[3].Value, out id) ? "{" + (id - 1) + "}" :
+                                    "\\$" + matchPreg.Groups[3].Value,
                     code);
 
             // If there are any classes in the file, skip wrapping.
@@ -166,13 +192,14 @@
             {
                 code = RegexReplace(
                         rexVars,
-                        matchVar => "public " + matchVar.Groups[2] + " = ",
+                        matchVar => "public " + matchVar.Groups[1] + " = ",
                         code);
 
                 String2Lines(code, lines);
 
                 // Add a class engulfing all the code.
-                lines.Insert(1, "class " + className + "{");
+                string classDecl = string.Format("class {1}{0}{{", Environment.NewLine, className);
+                lines.Insert(1, classDecl);
                 lines.Insert(lines.Count, "}");
             }
             else
@@ -181,7 +208,8 @@
             }
 
             // Add namespace.
-            lines.Insert(1, "namespace " + namespaceName + "{");
+            string namespaceDecl = string.Format("namespace {0}{1}{{", namespaceName, Environment.NewLine);
+            lines.Insert(1, namespaceDecl);
             lines.Insert(lines.Count, "}");
 
             lines.Add("?>");
@@ -245,8 +273,8 @@
         /// <returns>A replacement string, or null to skip.</returns>
         private delegate string RegexHandler(Match match);
 
-        private static readonly Regex rexClass = new Regex(@"(.+?)class(\w+extends)?\w+(.+?)\{", RegexOptions.Multiline | RegexOptions.Compiled);
-        private static readonly Regex rexVars = new Regex(@"(.+?)?(\$.+?)(\w+)?=", RegexOptions.Multiline | RegexOptions.Compiled);
-        private static readonly Regex rexPregPlaceholder = new Regex(@"(^|[^a-zA-Z]+)(\\)?(\$\d+)", RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex rexClass = new Regex(@"class\s+\w+(\s+extends\s+\w+)?\s+\{", RegexOptions.Compiled);
+        private static readonly Regex rexVars = new Regex(@"(\$\w+)(\s+)?=", RegexOptions.Compiled);
+        private static readonly Regex rexPregPlaceholder = new Regex(@"(\\)?(\$(\d|\W))", RegexOptions.Compiled);
     }
 }

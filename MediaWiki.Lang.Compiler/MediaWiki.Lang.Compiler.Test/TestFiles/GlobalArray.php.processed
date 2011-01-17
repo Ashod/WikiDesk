@@ -1,13 +1,15 @@
 ﻿<?php
-namespace Test:::Space{
-class TestClass{
+namespace Test:::Space
+{
+class TestClass
+{
 /**
   * These determine things like interwikis, language selectors, and so on.
   * Safe to change without running scripts on the respective sites.
   *
   * @ingroup Language
   */
-public $wgLanguageNames  =  array(
+/* private */ public $wgLanguageNames =  array(
 	'aa' => 'Qafár af',	# Afar
 	'ab' => 'Аҧсуа',	# Abkhaz, should possibly add ' бысжѡа'
 	'ace' => 'Acèh',	# Aceh
