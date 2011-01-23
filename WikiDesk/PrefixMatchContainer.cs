@@ -36,7 +36,17 @@ namespace WikiDesk
 
         public void Add(string key, TValue value)
         {
-            strings_.Add(key);
+            // Find where this key should go.
+            int index = FindIndex(key);
+
+            if (index < Count && string.Compare(strings_[index], key, false) == 0)
+            {
+                // Already exists.
+                return;
+            }
+
+            // Insert at the designated location.
+            strings_.Insert(index, key);
         }
 
         public int Find(string key, bool ignoreCase, bool exact)
@@ -46,18 +56,22 @@ namespace WikiDesk
                 return strings_.IndexOf(key);
             }
 
-            for (int i = 0; i < strings_.Count; ++i)
+            if (exact)
             {
-                string s = strings_[i];
-                if (exact)
+                for (int i = 0; i < strings_.Count; ++i)
                 {
-                    if (String.Compare(key, s, ignoreCase, CultureInfo.CurrentCulture) == 0)
+                    string s = strings_[i];
+                    if (String.Compare(key, s, true, CultureInfo.CurrentCulture) == 0)
                     {
                         return i;
                     }
                 }
-                else
+            }
+            else
+            {
+                for (int i = 0; i < strings_.Count; ++i)
                 {
+                    string s = strings_[i];
                     if (String.Compare(key, 0, s, 0, key.Length, ignoreCase, CultureInfo.CurrentCulture) == 0)
                     {
                         return i;
@@ -69,6 +83,42 @@ namespace WikiDesk
         }
 
         #region implementation
+
+        private int FindIndex(string key)
+        {
+            if (strings_.Count == 0)
+            {
+                return 0;
+            }
+
+            int low = 0;
+            int high = strings_.Count - 1;
+            while (high - low >= 1)
+            {
+                int index = low + ((high - low + 1) / 2);
+                int dir = String.Compare(strings_[index], key, true, CultureInfo.InvariantCulture);
+                if (dir > 0)
+                {
+                    high = index;
+                }
+                else
+                if (dir < 0)
+                {
+                    low = index;
+                }
+                else
+                {
+                    return index;
+                }
+            }
+
+            if (String.Compare(strings_[low], key, true, CultureInfo.InvariantCulture) < 0)
+            {
+                return low + 1;
+            }
+
+            return low;
+        }
 
         private void InvokeOnCollectionChanged(CollectionChangeEventArgs e)
         {
