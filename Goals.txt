@@ -4,7 +4,7 @@ Unlike other offline readers, this isn't an offline reader. It's an online reade
 
 Primary:
 
-* A stand-alone, portable Wiki markup parser.
+* A stand-alone, portable WikiMedia markup parser.
 * Offline reader with on-demand update and customized database.
 * Support for all wiki domains and languages.
 
@@ -15,5 +15,9 @@ Secondary:
 * Promote more participation.
 
 
-Tertiary:
+Non-Goals/Out of scope:
 
+* Exact reproduction of wikipedia.
+* Backup of revisions (only one revision per entry is stored.)
+* User- or account-specific functionality.
+* Live wiki server specific functionality.

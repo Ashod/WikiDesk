@@ -19,32 +19,29 @@
         [STAThread]
         public static int Main(string[] args)
         {
-            if (args.Length < 3)
+            if (args.Length < 2)
             {
                 // Error.
-                Console.Error.WriteLine("Usage: RootPath AssemblyName RootNamespaceName");
+                Console.Error.WriteLine("Usage: RootPath RootNamespaceName [OutputFolder]");
                 return 1;
             }
 
             string rootPath = args[0];
-            string assemblyName = args[1];
-            string rootNamespace = args[2].Replace(".", ":::");
+            string rootNamespace = args[1].Replace(".", ":::");
+            string outputFolder = args.Length > 2 ? args[2] : string.Empty;
 
             int rootPathLength = rootPath.Length;
             string tempPath = Path.Combine(Path.GetTempPath(), "WikiDeskPhP");
-            if (Directory.Exists(tempPath))
+            try
             {
-                try
-                {
-                    Directory.Delete(tempPath);
-                }
-                catch
-                {
-                }
+                Directory.Delete(tempPath);
+            }
+            catch
+            {
             }
 
             string[] filenames = Directory.GetFiles(rootPath, "*.php", SearchOption.AllDirectories);
-            List<string> units = new List<string>(filenames.Length);
+            //List<string> units = new List<string>(filenames.Length);
 
             foreach (string file in filenames)
             {
@@ -56,19 +53,23 @@
                 Directory.CreateDirectory(Path.GetDirectoryName(filename));
 
                 Console.Write("Preprocessing " + file);
-                string namespaceName = rootNamespace +
-                    (!string.IsNullOrEmpty(relNamespace) ? ":::" + relNamespace : string.Empty);
+                string namespaceName = rootNamespace; //+
+                    //(!string.IsNullOrEmpty(relNamespace) ? ":::" + relNamespace : string.Empty);
                 PreprocessFile(file, filename, namespaceName);
-                Console.WriteLine(" Done.");
 
+                Console.WriteLine(", Compiling...");
+                List<string> units = new List<string>(1);
                 units.Add(filename);
+                string assemblyName = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(filename));
+                int ret = Compile(units, assemblyName, true) ? 0 : 1;              
+                Console.WriteLine(" Done.");
             }
 
-            Console.WriteLine("Compiling...");
-            int ret = Compile(units, assemblyName, true) ? 0 : 1;
-            Console.WriteLine(" Done.");
+//             Console.WriteLine("Compiling...");
+//             int ret = Compile(units, assemblyName, true) ? 0 : 1;
+//             Console.WriteLine(" Done.");
 
-            return ret;
+            return 0;
         }
 
         public static bool Compile(

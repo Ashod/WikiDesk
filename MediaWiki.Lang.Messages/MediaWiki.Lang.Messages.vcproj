@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="MediaWiki.Lang.Messages"
+	ProjectGUID="{87AAA178-CDE5-4EC9-A297-A219B69FEF41}"
+	RootNamespace="MediaWiki.Lang.Messages"
+	Keyword="MakeFileProj"
+	TargetFrameworkVersion="131072"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="..\bin\$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="0"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)\messages MediaWiki.Lang $(OutDir)\Messages"
+				ReBuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)\messages MediaWiki.Lang $(OutDir)\Messages"
+				CleanCommandLine="del $(TargetPath)"
+				Output="MediaWiki.Lang.Messages.dll"
+				PreprocessorDefinitions="WIN32;_DEBUG"
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="..\bin\$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="0"
+			>
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)\messages MediaWiki.Lang $(OutDir)\Messages"
+				ReBuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)\messages MediaWiki.Lang $(OutDir)\Messages"
+				CleanCommandLine="del $(TargetPath)"
+				Output="MediaWiki.Lang.Messages.dll"
+				PreprocessorDefinitions="WIN32;NDEBUG"
+				IncludeSearchPath=""
+				ForcedIncludes=""
+				AssemblySearchPath=""
+				ForcedUsingAssemblies=""
+				CompileAsManaged=""
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<File
+			RelativePath=".\messages\MessagesEn.php"
+			>
+		</File>
+		<File
+			RelativePath=".\messages\MessagesHy.php"
+			>
+		</File>
+		<File
+			RelativePath=".\Names.php"
+			>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

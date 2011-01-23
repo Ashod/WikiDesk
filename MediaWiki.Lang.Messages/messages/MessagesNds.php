@@ -16,25 +16,6 @@
 
 $fallback = 'de';
 
-$namespaceNames = array(
-	NS_MEDIA            => 'Media',
-	NS_SPECIAL          => 'Spezial',
-	NS_TALK             => 'Diskuschoon',
-	NS_USER             => 'Bruker',
-	NS_USER_TALK        => 'Bruker_Diskuschoon',
-	NS_PROJECT_TALK     => '$1_Diskuschoon',
-	NS_FILE             => 'Datei',
-	NS_FILE_TALK        => 'Datei_Diskuschoon',
-	NS_MEDIAWIKI        => 'MediaWiki',
-	NS_MEDIAWIKI_TALK   => 'MediaWiki_Diskuschoon',
-	NS_TEMPLATE         => 'Vörlaag',
-	NS_TEMPLATE_TALK    => 'Vörlaag_Diskuschoon',
-	NS_HELP             => 'Hülp',
-	NS_HELP_TALK        => 'Hülp_Diskuschoon',
-	NS_CATEGORY         => 'Kategorie',
-	NS_CATEGORY_TALK    => 'Kategorie_Diskuschoon',
-);
-
 $namespaceAliases = array(
 	'Diskussion' => NS_TALK,
 	'Benutzer' => NS_USER,

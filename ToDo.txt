@@ -13,7 +13,8 @@ Wiki2Html:
 
 * Tables.
 * References.
-* Templates.
+* Variables and Templates.
+* Parser Functions.
 * Audio/Video.
 * Annotated images.
 * Magnifying glass on images.

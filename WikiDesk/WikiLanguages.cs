@@ -25,6 +25,8 @@ namespace WikiDesk
 
         public bool RightToLeft { get; set; }
 
+        public bool Disabled { get; set; }
+
         #region Implementation of IComparer<WikiLanguage>
 
         /// <summary>

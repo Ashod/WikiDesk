@@ -741,6 +741,7 @@
       <LocalName>Alemannisch</LocalName>
       <Notes>Alemannic</Notes>
       <RightToLeft>false</RightToLeft>
+	  <Disabled>true</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gu</Code>
@@ -1517,6 +1518,7 @@
       <LocalName>Bân-lâm-gú</LocalName>
       <Notes>Min-nan -- (bug 8217) nan instead of zh-min-nan</Notes>
       <RightToLeft>false</RightToLeft>
+	  <Disabled>true</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nap</Code>
