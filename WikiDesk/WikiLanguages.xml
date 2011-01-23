@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <LanguageCodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Languages>
     <WikiLanguage>
@@ -204,6 +204,7 @@
       <LocalName>Беларуская (тарашкевіца)</LocalName>
       <Notes>Belarusian in Taraskievica orthography; compat link</Notes>
       <RightToLeft>false</RightToLeft>
+	  <Disabled>true</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bg</Code>
@@ -802,7 +803,7 @@
     <WikiLanguage>
       <Code>hif-latn</Code>
       <Name />
-      <LocalName>Fiji Hindi</LocalName>
+      <LocalName>Fiji Hindi (latin)</LocalName>
       <Notes>Fiji Hindi (latin)</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>
@@ -1340,7 +1341,7 @@
     <WikiLanguage>
       <Code>lzh</Code>
       <Name />
-      <LocalName>文言</LocalName>
+      <LocalName>文言 (new)</LocalName>
       <Notes>Literary Chinese -- (bug 8217) lzh instead of zh-classical</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>
@@ -1530,7 +1531,7 @@
     <WikiLanguage>
       <Code>nb</Code>
       <Name />
-      <LocalName>Norsk (bokmål)</LocalName>
+      <LocalName>Norwegian (bokmål)</LocalName>
       <Notes>Norwegian (Bokmal)</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>
@@ -1894,7 +1895,7 @@
     <WikiLanguage>
       <Code>ruq-latn</Code>
       <Name />
-      <LocalName>Vlăheşte</LocalName>
+      <LocalName>Vlăheşte (Latin script)</LocalName>
       <Notes>Megleno-Romanian (Latin script)</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>
@@ -1978,7 +1979,7 @@
     <WikiLanguage>
       <Code>sgs</Code>
       <Name />
-      <LocalName>Žemaitėška</LocalName>
+      <LocalName>Žemaitėška (new)</LocalName>
       <Notes>Samogitian</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>
@@ -2182,7 +2183,7 @@
     <WikiLanguage>
       <Code>tg-cyrl</Code>
       <Name />
-      <LocalName>Тоҷикӣ</LocalName>
+      <LocalName>Тоҷикӣ (Cyrllic script)</LocalName>
       <Notes>Tajiki (Cyrllic script) (default)</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>
@@ -2427,7 +2428,7 @@
     <WikiLanguage>
       <Code>vro</Code>
       <Name />
-      <LocalName>Võro</LocalName>
+      <LocalName>Võro (new)</LocalName>
       <Notes>Võro</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>
@@ -2497,7 +2498,7 @@
     <WikiLanguage>
       <Code>yue</Code>
       <Name />
-      <LocalName>粵語</LocalName>
+      <LocalName>粵語 (new)</LocalName>
       <Notes>Cantonese -- (bug 8217) yue instead of zh-yue</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>
@@ -2525,7 +2526,7 @@
     <WikiLanguage>
       <Code>zh-classical</Code>
       <Name />
-      <LocalName>文言</LocalName>
+      <LocalName>文言 (Classical)</LocalName>
       <Notes>Classical Chinese/Literary Chinese -- (see bug 8217)</Notes>
       <RightToLeft>false</RightToLeft>
     </WikiLanguage>

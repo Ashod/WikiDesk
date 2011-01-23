@@ -170,6 +170,11 @@
 
             foreach (WikiLanguage language in langCodes.Languages)
             {
+                if (language.Disabled)
+                {
+                    continue;
+                }
+
                 Language lang = new Language
                     {
                         Code = language.Code,
