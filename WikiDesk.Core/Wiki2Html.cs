@@ -6,7 +6,6 @@ namespace WikiDesk.Core
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
-    using System.Web;
 
     public class Wiki2Html
     {
@@ -19,6 +18,15 @@ namespace WikiDesk.Core
         /// <param name="lanugageCode">The code if the target wiki language.</param>
         /// <returns>A valid full or relative URL.</returns>
         public delegate string ResolveWikiLink(string title, string lanugageCode);
+
+        /// <summary>
+        /// This delegate is used to get a template's contents.
+        /// This is typically used expand a template.
+        /// </summary>
+        /// <param name="title">The name of the template.</param>
+        /// <param name="lanugageCode">The code if the target wiki language.</param>
+        /// <returns>A valid full or relative URL.</returns>
+        public delegate string GetTemplateCode(string name, string lanugageCode);
 
         #region construction
 
@@ -102,7 +110,7 @@ namespace WikiDesk.Core
             string url = ResolveLink(value, config_.CurrentLanguageCode);
 
             StringBuilder sb = new StringBuilder(128);
-            sb.Append("<span class=\"redirectText\"><a href=\"");
+            sb.Append("Redirected to <span class=\"redirectText\"><a href=\"");
             sb.Append(url);
             sb.Append("\" title=\"");
             sb.Append(value);
@@ -566,6 +574,10 @@ namespace WikiDesk.Core
                 return sb.ToString();
             }
 
+#if DEBUG
+            Trace.TraceInformation("Unknown Token: " + name);
+#endif // DEBUG
+
             return null;
         }
 
@@ -580,6 +592,7 @@ namespace WikiDesk.Core
                 {
                     if (line.Length == 0 ||
                         line.StartsWith("<h") ||
+                        line.StartsWith("<t") ||
                         line.StartsWith("<p") ||
                         line.StartsWith("<d") ||
                         line.StartsWith("<u") ||
@@ -728,13 +741,15 @@ namespace WikiDesk.Core
 
         #region representation
 
-        #endregion // representation
-
         private readonly Configuration config_;
 
         private readonly ResolveWikiLink resolveWikiLinkDel_;
 
         private readonly IFileCache fileCache_;
+
+        private readonly string commonImagesPath_;
+
+        #endregion // representation
 
         #region Regex
 
@@ -777,13 +792,11 @@ namespace WikiDesk.Core
                                     @"\[\[(Image|File)\:(.+?)" +
                                     @"((\|.+?)*)\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
-
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         private static readonly Regex TemplateRegex = new Regex(@"\{\{(.+?)(\|(.+?))?\}\}", RegexOptions.Compiled | RegexOptions.Singleline);
 
-        private readonly string commonImagesPath_;
+        private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 
         #endregion // Regex
     }
