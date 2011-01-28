@@ -32,6 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="WikiMessages.cs" />
+    <Compile Include="WikiMagicWords.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="DumpParser.cs" />
     <Compile Include="IFileCache.cs" />
@@ -39,9 +41,12 @@
     <Compile Include="Wiki2Html.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WikiImage2Html.cs" />
+    <Compile Include="WikiMagicWordConstants.cs" />
+    <Compile Include="WikiParserFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

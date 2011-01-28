@@ -30,7 +30,7 @@
             string rootNamespace = args[1].Replace(".", ":::");
             string outputFolder = args.Length > 2 ? args[2] : string.Empty;
 
-            int rootPathLength = rootPath.Length;
+            int rootPathLength = rootPath.Length + 1;
             string tempPath = Path.Combine(Path.GetTempPath(), "WikiDeskPhP");
             try
             {
@@ -61,7 +61,7 @@
                 List<string> units = new List<string>(1);
                 units.Add(filename);
                 string assemblyName = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(filename));
-                int ret = Compile(units, assemblyName, true) ? 0 : 1;              
+                int ret = Compile(units, assemblyName, true) ? 0 : 1;
                 Console.WriteLine(" Done.");
             }
 
