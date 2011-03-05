@@ -93,7 +93,7 @@ namespace WikiDesk
 
             int low = 0;
             int high = strings_.Count - 1;
-            while (high - low >= 1)
+            while (high - low > 1)
             {
                 int index = low + ((high - low + 1) / 2);
                 int dir = String.Compare(strings_[index], key, true, CultureInfo.InvariantCulture);
@@ -114,6 +114,11 @@ namespace WikiDesk
 
             if (String.Compare(strings_[low], key, true, CultureInfo.InvariantCulture) < 0)
             {
+                if (String.Compare(strings_[high], key, true, CultureInfo.InvariantCulture) < 0)
+                {
+                    return high + 1;
+                }
+
                 return low + 1;
             }
 
