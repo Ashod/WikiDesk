@@ -26,18 +26,39 @@
                                 int domainId,
                                 int languageId)
         {
+            bool cancel = false;
+            int pages = 0;
+            ImportFromXml(stream, db, dumpDate, indexOnly, domainId, languageId, ref cancel, ref pages);
+        }
+
+        /// <summary>
+        /// Loads articles from an XML dump stream.
+        /// </summary>
+        /// <param name="stream">The stream which contains the XML dump.</param>
+        /// <param name="domainId">The domain ID.</param>
+        /// <param name="languageId">The ID of the language of the dump.</param>
+        /// <param name="db">The database into which to import the dump.</param>
+        /// <param name="dumpDate">The date when the dump was created.</param>
+        /// <param name="indexOnly">If True, article text is not added, just the meta data.</param>
+        /// <param name="cancel">When set, this function terminates.</param>
+        /// <param name="pages">Cumulates the number of pages updated/inserted into the DB.</param>
+        public static void ImportFromXml(
+                                Stream stream,
+                                Database db,
+                                DateTime dumpDate,
+                                bool indexOnly,
+                                int domainId,
+                                int languageId,
+                                ref bool cancel,
+                                ref int pages)
+        {
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;
 
-                while (true)
+                while (!cancel)
                 {
                     Page page = ParsePageTag(reader);
-                    if (page == null)
-                    {
-                        break;
-                    }
-
                     page.Domain = domainId;
                     page.Language = languageId;
                     page.LastUpdateDateUtc = dumpDate;
@@ -47,6 +68,7 @@
                     }
 
                     db.UpdateInsert(page, db.SelectPage(page.Domain, page.Language, page.Title));
+                    ++pages;
                 }
             }
         }
