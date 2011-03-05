@@ -6,6 +6,8 @@
     using System.Text.RegularExpressions;
     using System.Windows.Forms;
 
+    using WikiDesk.Core;
+
     public partial class ImportForm : Form
     {
         public ImportForm(WikiDomains domains, LanguageCodes languages)

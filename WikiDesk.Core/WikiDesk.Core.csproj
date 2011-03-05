@@ -32,6 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="WikiDomain.cs" />
+    <Compile Include="WikiLanguage.cs" />
     <Compile Include="WikiMessages.cs" />
     <Compile Include="WikiMagicWords.cs" />
     <Compile Include="Download.cs" />
