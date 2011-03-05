@@ -8,6 +8,8 @@
     using System.Text;
     using System.Windows.Forms;
 
+    using ICSharpCode.SharpZipLib.BZip2;
+
     using WebKit;
 
     using WeifenLuo.WinFormsUI.Docking;
@@ -654,7 +656,18 @@
 
                     using (FileStream stream = new FileStream(frmImport_.DumpFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
                     {
-                        DumpParser.ImportFromXml(stream, db_, frmImport_.Date, frmImport_.IndexOnly, domain.Id, language.Id);
+                        string dumpFilename = frmImport_.DumpFilename.ToUpperInvariant();
+                        if (dumpFilename.EndsWith("BZ2"))
+                        {
+                            using (BZip2InputStream bz2Stream = new BZip2InputStream(stream))
+                            {
+                                DumpParser.ImportFromXml(bz2Stream, db_, frmImport_.Date, frmImport_.IndexOnly, domain.Id, language.Id);
+                            }
+                        }
+                        else
+                        {
+                            DumpParser.ImportFromXml(stream, db_, frmImport_.Date, frmImport_.IndexOnly, domain.Id, language.Id);
+                        }
                     }
                 }
                 catch (Exception ex)

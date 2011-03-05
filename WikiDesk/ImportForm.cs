@@ -109,7 +109,13 @@
 
         private void UpdateImportButton()
         {
-            btnImport_.Enabled = File.Exists(txtFilepath_.Text) &&
+            bool exists = File.Exists(txtFilepath_.Text);
+            cboDomains_.Enabled = exists;
+            cboLanguages_.Enabled = exists;
+            cboDomains_.Enabled = exists;
+            dateTimePicker_.Enabled = exists;
+            chkIndexOnly_.Enabled = exists;
+            btnImport_.Enabled = exists &&
                                  cboDomains_.SelectedIndex >= 0 &&
                                  cboLanguages_.SelectedIndex >= 0 &&
                                  dateTimePicker_.Value != DateTime.MinValue;
