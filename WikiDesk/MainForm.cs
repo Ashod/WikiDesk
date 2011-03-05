@@ -496,7 +496,7 @@
             Configuration config = new Configuration();
             config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
 
-            Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, fileCache_);
+            Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnResolveMagicWord, fileCache_);
             string html = wiki2Html.Convert(text);
             html = WrapInHtmlBody(title, html);
 
@@ -514,6 +514,21 @@
         {
             //TODO: take the language code into consideration.
             return WIKI_PROTOCOL_STRING + Title.EncodeNonAsciiCharacters(title);
+        }
+
+        private string OnResolveMagicWord(string word, string lanugageCode)
+        {
+            //TODO: Get the Template namespace from somewhere.
+            word = "Template:" + Title.Normalize(word);
+            string url = string.Concat("http://", lanugageCode, currentDomain_.ExportUrl, word);
+
+            string pageXml = Download.DownloadPage(url);
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
+            {
+                //DumpParser.ImportFromXml(ms, db_, DateTime.UtcNow, false, currentDomain_., language.Id);
+            }
+
+            return pageXml;
         }
 
         private string WrapInHtmlBody(string title, string html)

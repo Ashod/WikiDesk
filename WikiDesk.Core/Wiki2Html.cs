@@ -20,13 +20,14 @@ namespace WikiDesk.Core
         public delegate string ResolveWikiLink(string title, string lanugageCode);
 
         /// <summary>
-        /// This delegate is used to get a template's contents.
+        /// This delegate is used to resolve a magic word.
         /// This is typically used expand a template.
+        /// The return value is recursively resolved.
         /// </summary>
-        /// <param name="title">The name of the template.</param>
+        /// <param name="word">The magic word to resolve.</param>
         /// <param name="lanugageCode">The code if the target wiki language.</param>
         /// <returns>A valid full or relative URL.</returns>
-        public delegate string GetTemplateCode(string name, string lanugageCode);
+        public delegate string ResolveMagicWord(string word, string lanugageCode);
 
         #region construction
 
@@ -36,22 +37,29 @@ namespace WikiDesk.Core
         }
 
         public Wiki2Html(Configuration config)
-            : this(config, null, null)
+            : this(config, null, null, null)
         {
         }
 
         public Wiki2Html(Configuration config,
                          ResolveWikiLink resolveWikiLinkDel,
+                         ResolveMagicWord resolveWikiTemplateDel,
                          IFileCache fileCache)
         {
             config_ = config;
             resolveWikiLinkDel_ = resolveWikiLinkDel;
+            resolveWikiTemplateDel_ = resolveWikiTemplateDel;
             fileCache_ = fileCache;
 
             commonImagesPath_ = Path.Combine(config.SkinsPath, config.CommonImagesPath);
             commonImagesPath_ = commonImagesPath_.Replace('\\', '/');
             commonImagesPath_ = "file:///" + commonImagesPath_;
             commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
+
+            parserFunctions_ = new ParserFunctions();
+
+            //TODO: Where should this go?
+            //parserFunctions_.RegisterHandler("lc", false, );
         }
 
         #endregion // construction
@@ -91,7 +99,7 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
             wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
 
-            wikicode = ConvertBinaryCode(TemplateRegex, Template, wikicode);
+//             wikicode = ConvertBinaryCode(MagicWordRegex, MagicWord, wikicode);
 
             wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
@@ -357,7 +365,7 @@ namespace WikiDesk.Core
                                         commonImagesPath_);
             }
 
-            // Remove the first pipe to avoid an emtpy first token.
+            // Remove the first pipe to avoid an empty first token.
             options = options.TrimStart('|');
 
             WikiImage2Html.Type? type = null;
@@ -527,8 +535,33 @@ namespace WikiDesk.Core
             return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text, "</a>");
         }
 
-        private string Template(Match match)
+        private string MagicWord(Match match)
         {
+            string magicWord = match.Groups[1].Value;
+
+            // Is it a parser function?
+            Match parserFunctionMatch = ParserFunctionRegex.Match(magicWord);
+            if (parserFunctionMatch.Success)
+            {
+                string functionName = match.Groups[1].Value;
+                string input = string.Empty;
+                string output;
+                ParserFunctions.ParserFunctionResult parserFunctionResult =
+                            parserFunctions_.Execute(functionName, input, out output);
+                if (parserFunctionResult != ParserFunctions.ParserFunctionResult.Unknown)
+                {
+                    return output;
+                }
+            }
+
+            Match templateMatch = TemplateRegex.Match(magicWord);
+            if (templateMatch.Success)
+            {
+                return Template(templateMatch);
+            }
+
+
+
             string name = match.Groups[1].Value;
             string nameUpper = name.ToUpperInvariant();
             string options = match.Groups[2].Value.Trim('|');
@@ -579,6 +612,17 @@ namespace WikiDesk.Core
 #endif // DEBUG
 
             return null;
+        }
+
+        private string Template(Match match)
+        {
+            if (resolveWikiTemplateDel_ != null)
+            {
+                string value = resolveWikiTemplateDel_(match.Groups[1].Value, config_.CurrentLanguageCode);
+                return value;
+            }
+
+            return string.Empty;
         }
 
         private static string ConvertParagraphs(string wikicode)
@@ -745,9 +789,13 @@ namespace WikiDesk.Core
 
         private readonly ResolveWikiLink resolveWikiLinkDel_;
 
+        private readonly ResolveMagicWord resolveWikiTemplateDel_;
+
         private readonly IFileCache fileCache_;
 
         private readonly string commonImagesPath_;
+
+        private readonly ParserFunctions parserFunctions_;
 
         #endregion // representation
 
@@ -794,7 +842,9 @@ namespace WikiDesk.Core
 
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        private static readonly Regex TemplateRegex = new Regex(@"\{\{(.+?)(\|(.+?))?\}\}", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex MagicWordRegex = new Regex(@"\{\{(.+?)\}\}", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex ParserFunctionRegex = new Regex(@"((#)?(.+?))\:(.+?)", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex TemplateRegex = new Regex(@"((Template\:)?(.+?))|((.+?)\|(.+?))", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 

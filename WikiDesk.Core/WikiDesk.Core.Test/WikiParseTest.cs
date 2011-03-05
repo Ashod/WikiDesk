@@ -92,6 +92,27 @@
                 "<p><a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a></p>");
         }
 
+        [Test]
+        public void ParserFunctionSimple()
+        {
+            TestConvert("{{lc:KIKOS}}",
+                "<p>kikos</p>");
+        }
+
+        [Test]
+        public void ParserTemplateExclaim()
+        {
+            TestConvert("{{!}}",
+                "|");
+        }
+
+        [Test]
+        public void ParserTemplateExclaimExplicit()
+        {
+            TestConvert("{{Template:!}}",
+                "|");
+        }
+
         #region templates
 
         [Test]
