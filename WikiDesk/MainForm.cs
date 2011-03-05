@@ -6,6 +6,7 @@
     using System.IO;
     using System.Reflection;
     using System.Text;
+    using System.Threading;
     using System.Windows.Forms;
 
     using ICSharpCode.SharpZipLib.BZip2;
@@ -647,38 +648,115 @@
                 frmImport_ = new ImportForm(domains_, languages_);
             }
 
-            if (frmImport_.ShowDialog(this) == DialogResult.OK)
+            if (frmImport_.ShowDialog(this) != DialogResult.OK)
             {
-                try
-                {
-                    Domain domain = db_.GetDomain(frmImport_.DomainName);
-                    Language language = db_.GetLanguageByName(frmImport_.LanguageName);
+                return;
+            }
 
-                    using (FileStream stream = new FileStream(frmImport_.DumpFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
+            try
+            {
+                Enabled = false;
+
+                Domain domain = db_.GetDomain(frmImport_.DomainName);
+                Language language = db_.GetLanguageByName(frmImport_.LanguageName);
+
+                using (
+                    FileStream stream = new FileStream(
+                        frmImport_.DumpFilename, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024))
+                {
+                    string dumpFilename = frmImport_.DumpFilename.ToUpperInvariant();
+                    if (dumpFilename.EndsWith("BZ2"))
                     {
-                        string dumpFilename = frmImport_.DumpFilename.ToUpperInvariant();
-                        if (dumpFilename.EndsWith("BZ2"))
+                        using (BZip2InputStream bz2Stream = new BZip2InputStream(stream))
                         {
-                            using (BZip2InputStream bz2Stream = new BZip2InputStream(stream))
-                            {
-                                DumpParser.ImportFromXml(bz2Stream, db_, frmImport_.Date, frmImport_.IndexOnly, domain.Id, language.Id);
-                            }
-                        }
-                        else
-                        {
-                            DumpParser.ImportFromXml(stream, db_, frmImport_.Date, frmImport_.IndexOnly, domain.Id, language.Id);
+                            ImportProgress(stream, bz2Stream, domain, language);
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        string.Format("Unexpected error while importing dump file:{0}{0}{1}", Environment.NewLine, ex.Message),
-                        "Import Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation);
+                    else
+                    {
+                        ImportProgress(stream, stream, domain, language);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    string.Format(
+                        "Unexpected error while importing dump file:{0}{0}{1}", Environment.NewLine, ex.Message),
+                    "Import Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+            }
+            finally
+            {
+                Enabled = true;
+            }
+        }
+
+        delegate void exec();
+        private void ImportProgress(FileStream fileStream, Stream inputStream, Domain domain, Language language)
+        {
+            bool cancel = false;
+            int pages = 0;
+            exec d =
+                delegate
+                    {
+                        DumpParser.ImportFromXml(
+                            inputStream,
+                            db_,
+                            frmImport_.Date,
+                            frmImport_.IndexOnly,
+                            domain.Id,
+                            language.Id,
+                            ref cancel,
+                            ref pages);
+                    };
+            DateTime startTime = DateTime.UtcNow;
+            IAsyncResult asyncResult = d.BeginInvoke(null, null);
+
+            using (ProgressForm progForm = new ProgressForm())
+            {
+                progForm.Text = "Import Progress";
+                progForm.txtInfo.Text = string.Format("Importing Wiki dump file {0}...", fileStream.Name);
+                progForm.prgProgress.Minimum = 0;
+                progForm.prgProgress.Maximum = (int)inputStream.Length / 1024 / 1024;
+                Enabled = false;
+                progForm.Show(this);
+                while (!asyncResult.IsCompleted)
+                {
+                    cancel = progForm.DialogResult == DialogResult.Cancel;
+                    try
+                    {
+                        progForm.txtInfo.Text = string.Format(
+                                "Importing Wiki dump file {0}...{1}Imported {2} articles.",
+                                fileStream.Name,
+                                Environment.NewLine,
+                                pages);
+                        progForm.prgProgress.Value = (int)inputStream.Position / 1024 / 1024;
+                    }
+                    catch (Exception)
+                    {
+                        // When the user cancels, the stream is closed and Position throws.
+                    }
+
+                    double pcnt = 100.0 * progForm.prgProgress.Value / progForm.prgProgress.Maximum;
+                    if (pcnt > 0.02)
+                    {
+                        TimeSpan elapsed = DateTime.UtcNow - startTime;
+                        double remSeconds = (100.0 - pcnt) * elapsed.TotalSeconds / pcnt;
+                        progForm.lblRemainingTimeValue_.Text = TimeSpan.FromSeconds(remSeconds + 0.5).ToString();
+                    }
+                    else
+                    {
+                        progForm.lblRemainingTimeValue_.Text = "Estimating...";
+                    }
+
+                    Application.DoEvents();
+                    Thread.Sleep(266);
+                }
+            }
+
+            d.EndInvoke(asyncResult);
         }
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
