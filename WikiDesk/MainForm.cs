@@ -67,21 +67,29 @@
 
             OpenDatabase(settings_.DefaultDatabaseFilename);
 
+            // Language.
             languages_ = LanguageCodes.Deserialize(Path.Combine(userDataFolderPath_, settings_.LanguagesFilename));
             StoreWikiLanguages(languages_);
+            WikiLanguage wikiLanguage = languages_.Languages.Find(lang => settings_.CurrentLanguageCode == lang.Code) ??
+                                        languages_.Languages.Find(lang => settings_.DefaultLanguageCode == lang.Code);
 
+            if (wikiLanguage == null)
+            {
+                throw new ApplicationException("Can't load the current or default language!");
+            }
+
+            // Domain.
             domains_ = WikiDomains.Deserialize(Path.Combine(userDataFolderPath_, settings_.DomainsFilename));
             StoreWikiDomains(domains_);
+            WikiDomain wikiDomain = domains_.FindByName(settings_.CurrentDomainName) ??
+                                    domains_.FindByName(settings_.DefaultDomainName);
 
-            currentDomain_ = domains_.FindByName(settings_.CurrentDomainName);
-            if (currentDomain_ == null)
+            if (wikiDomain == null)
             {
-                currentDomain_ = domains_.FindByName(settings_.DefaultDomainName);
-                if (currentDomain_ != null)
-                {
-                    settings_.CurrentDomainName = settings_.DefaultDomainName;
-                }
+                throw new ApplicationException("Can't load the current or default domain!");
             }
+
+            SetCurrentWikiSite(new WikiSite(wikiDomain, wikiLanguage));
 
             ShowAllLanguages();
 
@@ -198,7 +206,7 @@
                 title = title.Replace('/', '\\');
                 title = Title.DecodeEncodedNonAsciiCharacters(title);
 
-                BrowseWikiArticle(currentDomain_, settings_.CurrentLanguageCode, title);
+                BrowseWikiArticle(title);
 
                 // Handled, don't navigate.
                 return false;
@@ -401,7 +409,7 @@
                     url = url.Substring(WIKI_PROTOCOL_STRING.Length);
                 }
 
-                BrowseWikiArticle(currentDomain_, settings_.CurrentLanguageCode, url);
+                BrowseWikiArticle(url);
             }
         }
 
@@ -418,21 +426,19 @@
             Language language = db_.GetLanguageByName(languageName);
             if (domain != null && language != null)
             {
-                BrowseWikiArticle(domain, language.Code, title);
+
+                BrowseWikiArticle(title);
             }
         }
 
-        private void BrowseWikiArticle(WikiDomain domain, string languageCode, string title)
+        private void BrowseWikiArticle(string title)
         {
             title = Title.Normalize(title);
 
             currentWikiPageName_ = title;
-            currentDomain_ = domain;
-            settings_.CurrentDomainName = domain.Name;
-            settings_.CurrentLanguageCode = languageCode;
 
-            int domainId = db_.GetDomain(domain.Name).Id;
-            Language language = db_.GetLanguageByCode(languageCode);
+            int domainId = db_.GetDomain(currentSite_.Domain.Name).Id;
+            Language language = db_.GetLanguageByCode(currentSite_.Language.Code);
 
             Page page = db_.SelectPage(domainId, language.Id, title);
 
@@ -440,7 +446,7 @@
                 settings_.AutoRetrieveMissing)
             {
                 // Download and import from the web...
-                page = ImportLivePage(title, domain, domainId, language);
+                page = ImportLivePage(title, currentSite_.Domain, domainId, language);
             }
 
             if (page != null && !string.IsNullOrEmpty(page.Text))
@@ -448,6 +454,57 @@
                 ShowWikiPage(title, page.Text);
                 return;
             }
+        }
+
+        /// <summary>
+        /// Changes the current language to the given one.
+        /// </summary>
+        /// <param name="languageCode">The code of the language to change to.</param>
+        /// <returns>True if a change took place, otherwise False.</returns>
+        private bool ChangeCurrentLanguage(string languageCode)
+        {
+            if (languageCode != settings_.CurrentLanguageCode)
+            {
+                WikiLanguage wikiLanguage = languages_.Languages.Find(lang => languageCode == lang.Code);
+                if (wikiLanguage != null)
+                {
+                    SetCurrentWikiSite(new WikiSite(currentSite_.Domain, wikiLanguage));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Changes the current domain to the given one.
+        /// </summary>
+        /// <param name="domainName">The name of the domain to change to.</param>
+        /// <returns>True if a change took place, otherwise False.</returns>
+        private bool ChangeCurrentDomain(string domainName)
+        {
+            if (domainName != settings_.CurrentDomainName)
+            {
+                WikiDomain wikiDomain = domains_.FindByName(settings_.CurrentDomainName);
+                if (wikiDomain != null)
+                {
+                    SetCurrentWikiSite(new WikiSite(wikiDomain, currentSite_.Language));
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Sets the current site.
+        /// </summary>
+        /// <param name="site">The current site to set.</param>
+        private void SetCurrentWikiSite(WikiSite site)
+        {
+            currentSite_ = site;
+            settings_.CurrentDomainName = site.Domain.Name;
+            settings_.CurrentLanguageCode = site.Language.Code;
         }
 
         private Page ImportLivePage(string title, WikiDomain domain, int domainId, Language language)
@@ -520,7 +577,7 @@
         {
             //TODO: Get the Template namespace from somewhere.
             word = "Template:" + Title.Normalize(word);
-            string url = string.Concat("http://", lanugageCode, currentDomain_.ExportUrl, word);
+            string url = string.Concat("http://", lanugageCode, currentSite_.Domain.ExportUrl, word);
 
             string pageXml = Download.DownloadPage(url);
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
@@ -641,18 +698,14 @@
         {
             if (cboLanguage.SelectedIndex >= 0)
             {
-                WikiArticleName name = (WikiArticleName)cboLanguage.Items[cboLanguage.SelectedIndex];
-                if (!string.IsNullOrEmpty(name.Name))
+                WikiArticleName name = cboLanguage.Items[cboLanguage.SelectedIndex] as WikiArticleName;
+                if (name != null && ChangeCurrentLanguage(name.LanguageCode))
                 {
-                    if (name.LanguageCode != settings_.CurrentLanguageCode)
+                    if (!string.IsNullOrEmpty(name.Name))
                     {
-                        settings_.CurrentLanguageCode = name.LanguageCode;
-                        BrowseWikiArticle(currentDomain_, name.LanguageCode, name.Name);
+                        BrowseWikiArticle(name.Name);
                     }
                 }
-
-                // Always change anyway.
-                settings_.CurrentLanguageCode = name.LanguageCode;
             }
         }
 
@@ -823,7 +876,8 @@
 
         private readonly LanguageCodes languages_;
         private readonly WikiDomains domains_;
-        private WikiDomain currentDomain_;
+
+        private WikiSite currentSite_;
 
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
 
