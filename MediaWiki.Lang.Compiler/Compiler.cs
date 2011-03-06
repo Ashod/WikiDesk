@@ -145,7 +145,9 @@
         {
             string code = File.ReadAllText(sourceFilename);
 
-            string output = PreprocessText(code, namespaceName, Path.GetFileNameWithoutExtension(sourceFilename));
+            // The class name is the filename in all lower-case.
+            string className = Path.GetFileNameWithoutExtension(sourceFilename).ToLowerInvariant();
+            string output = PreprocessText(code, namespaceName, className);
 
             File.WriteAllText(outputFilename, output);
         }

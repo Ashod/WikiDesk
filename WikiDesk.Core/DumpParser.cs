@@ -59,6 +59,11 @@
                 while (!cancel)
                 {
                     Page page = ParsePageTag(reader);
+                    if (page == null)
+                    {
+                        break;
+                    }
+
                     page.Domain = domainId;
                     page.Language = languageId;
                     page.LastUpdateDateUtc = dumpDate;
