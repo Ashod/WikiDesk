@@ -47,8 +47,7 @@
 
         private void cboDomains__SelectedIndexChanged(object sender, EventArgs e)
         {
-            cboLanguages_.SelectedIndex = -1;
-
+            int langIndex = -1;
             if (cboDomains_.SelectedIndex >= 0)
             {
                 Dictionary<string, PrefixMatchContainer<string>> langEntries;
@@ -62,16 +61,28 @@
                     }
 
                     //TODO: Automatically select the default or current language.
-                    cboLanguages_.SelectedIndex = (cboLanguages_.Items.Count > 0) ? 0 : -1;
-                    return;
+                    langIndex = (cboLanguages_.Items.Count > 0) ? 0 : -1;
                 }
             }
 
-            if (cboLanguages_.SelectedIndex < 0)
+            cboLanguages_.SelectedIndex = langIndex;
+
+            if (cboDomains_.SelectedIndex < 0 ||
+                cboLanguages_.SelectedIndex < 0)
             {
                 titles_ = null;
                 lstTitles_.VirtualListSize = 0;
                 lstTitles_.Items.Clear();
+
+                cboLanguages_.Enabled = false;
+                lstTitles_.Enabled = false;
+                txtTitle_.Enabled = false;
+            }
+            else
+            {
+                cboLanguages_.Enabled = true;
+                lstTitles_.Enabled = true;
+                txtTitle_.Enabled = true;
             }
 
             lstTitles_.Invalidate();

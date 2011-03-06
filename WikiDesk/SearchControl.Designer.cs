@@ -59,6 +59,7 @@
             this.txtTitle_.Size = new System.Drawing.Size(285, 20);
             this.txtTitle_.TabIndex = 2;
             this.txtTitle_.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtTitle__KeyDown);
+            this.txtTitle_.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtTitle__KeyUp);
             //
             // lstTitles_
             //
@@ -122,7 +123,6 @@
             this.Text = "Search";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
