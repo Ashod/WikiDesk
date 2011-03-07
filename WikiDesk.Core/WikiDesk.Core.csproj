@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="MagicWordProcessor.cs" />
+    <Compile Include="ParserFunctionProcessor.cs" />
     <Compile Include="WikiDomain.cs" />
     <Compile Include="WikiLanguage.cs" />
     <Compile Include="WikiMessages.cs" />

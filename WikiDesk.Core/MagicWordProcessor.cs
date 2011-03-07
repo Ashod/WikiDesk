@@ -12,7 +12,7 @@ namespace WikiDesk.Core
 
         public Result Execute(string functionName, string input, out string output)
         {
-            ParserFunction func = FindHandler(functionName);
+            Handler func = FindHandler(functionName);
             if (func != null)
             {
                 return func(input, out output);
@@ -45,16 +45,16 @@ namespace WikiDesk.Core
             Html
         }
 
-        public delegate Result ParserFunction(string input, out string output);
+        public delegate Result Handler(string input, out string output);
 
-        public void RegisterHandler(string name, ParserFunction func)
+        public void RegisterHandler(string name, Handler func)
         {
             functionsMap_[name] = func;
         }
 
-        private ParserFunction FindHandler(string name)
+        private Handler FindHandler(string name)
         {
-            ParserFunction func;
+            Handler func;
             if (functionsMap_.TryGetValue(name, out func))
             {
                 return func;
@@ -96,7 +96,7 @@ namespace WikiDesk.Core
             RegisterHandler("padleft",           DoNothing);
             RegisterHandler("padright",          DoNothing);
             RegisterHandler("anchorencode",      DoNothing);
-            RegisterHandler("#special",           DoNothing);
+            RegisterHandler("#special",          DoNothing);
             RegisterHandler("defaultsort",       DoNothing);
             RegisterHandler("filepath",          DoNothing);
             RegisterHandler("pagesincategory",   DoNothing);
@@ -121,7 +121,7 @@ namespace WikiDesk.Core
             RegisterHandler("subjectpagename",   DoNothing);
             RegisterHandler("subjectpagenamee",  DoNothing);
             RegisterHandler("tag",               DoNothing);
-            RegisterHandler("#formatdate",        DoNothing);
+            RegisterHandler("#formatdate",       DoNothing);
         }
 
         private Result DoNothing(string input, out string output)
@@ -134,7 +134,7 @@ namespace WikiDesk.Core
 
         #region representation
 
-        private readonly Dictionary<string, ParserFunction> functionsMap_ = new Dictionary<string, ParserFunction>(16);
+        private readonly Dictionary<string, Handler> functionsMap_ = new Dictionary<string, Handler>(16);
 
         #endregion // representation
     }
