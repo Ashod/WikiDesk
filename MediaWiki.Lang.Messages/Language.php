@@ -5,7 +5,7 @@
  * @file
  * @ingroup Language
  */
-
+/*
 if( !defined( 'MEDIAWIKI' ) ) {
 	echo "This file is part of MediaWiki, it is not a valid entry point.\n";
 	exit( 1 );
@@ -16,17 +16,18 @@ global $wgLanguageNames;
 require_once( dirname(__FILE__) . '/Names.php' ) ;
 
 global $wgInputEncoding, $wgOutputEncoding;
-
+*/
 /**
  * These are always UTF-8, they exist only for backwards compatibility
  */
+/*
 $wgInputEncoding    = "UTF-8";
 $wgOutputEncoding	= "UTF-8";
 
 if( function_exists( 'mb_strtoupper' ) ) {
 	mb_internal_encoding('UTF-8');
 }
-
+*/
 /**
  * a fake language converter
  *
@@ -142,12 +143,12 @@ class Language {
 	 * Create a language object for a given language code
 	 */
 	protected static function newFromCode( $code ) {
-		global $IP;
+		#global $IP;
 		static $recursionLevel = 0;
 		if ( $code == 'en' ) {
 			$class = 'Language';
 		} else {
-			$class = 'Language' . str_replace( '-', '_', ucfirst( $code ) );
+/*			$class = 'Language' . str_replace( '-', '_', ucfirst( $code ) );
 			// Preload base classes to work around APC/PHP5 bug
 			if ( file_exists( "$IP/languages/classes/$class.deps.php" ) ) {
 				include_once("$IP/languages/classes/$class.deps.php");
@@ -155,6 +156,7 @@ class Language {
 			if ( file_exists( "$IP/languages/classes/$class.php" ) ) {
 				include_once("$IP/languages/classes/$class.php");
 			}
+*/
 		}
 
 		if ( $recursionLevel > 5 ) {

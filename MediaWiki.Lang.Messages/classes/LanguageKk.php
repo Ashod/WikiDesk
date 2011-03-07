@@ -1,5 +1,5 @@
 <?php
-
+/*
 require_once( dirname(__FILE__).'/../LanguageConverter.php' );
 require_once( dirname(__FILE__).'/LanguageKk_cyrl.php' );
 
@@ -10,7 +10,7 @@ define( 'KK_L_LC', 'aäbcçdeéfgğhıiïjklmnñoöpqrsştuüvwxyýz' ); # Kazak
 //define( 'KK_A', 'ٴابپتجحدرزسشعفقكلمنڭەوۇۋۆىيچھ' ); # Kazakh Arabic
 define( 'H_HAMZA', 'ٴ' ); # U+0674 ARABIC LETTER HIGH HAMZA
 //define( 'ZWNJ', '‌' ); # U+200C ZERO WIDTH NON-JOINER
-
+*/
 /** Kazakh (Қазақша)
  * converter routines
  *

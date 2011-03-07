@@ -1,8 +1,8 @@
 <?php
 
-require_once( dirname(__FILE__).'/../LanguageConverter.php' );
-require_once( dirname(__FILE__).'/LanguageSr_ec.php' );
-require_once( dirname(__FILE__).'/LanguageSr_el.php' );
+#require_once( dirname(__FILE__).'/../LanguageConverter.php' );
+#require_once( dirname(__FILE__).'/LanguageSr_ec.php' );
+#require_once( dirname(__FILE__).'/LanguageSr_el.php' );
 
 /**
  * There are two levels of conversion for Serbian: the script level
