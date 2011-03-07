@@ -94,7 +94,15 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
             wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
 
-            wikicode = ConvertBinaryCode(MagicWordRegex, MagicWord, wikicode);
+            // Magic words, templates and parser functions are recursive.
+            // Process them until the output no longer changes.
+            int length;
+            do
+            {
+                length = wikicode.Length;
+                wikicode = ConvertBinaryCode(MagicWordRegex, MagicWord, wikicode);
+            }
+            while (wikicode.Length != length);
 
             wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
@@ -535,77 +543,22 @@ namespace WikiDesk.Core
             string magicWord = match.Groups[1].Value;
 
             // Is it a parser function?
-            Match parserFunctionMatch = ParserFunctionRegex.Match(magicWord);
-            if (parserFunctionMatch.Success)
+            Match parserFuncMatch = ParserFunctionRegex.Match(magicWord);
+            if (parserFuncMatch.Success)
             {
-                string functionName = match.Groups[1].Value;
+                string functionName = parserFuncMatch.Groups[1].Value;
                 string input = string.Empty;
                 string output;
                 ParserFunctions.ParserFunctionResult parserFunctionResult =
-                            parserFunctions_.Execute(functionName, input, out output);
+                    parserFunctions_.Execute(functionName, input, out output);
                 if (parserFunctionResult != ParserFunctions.ParserFunctionResult.Unknown)
                 {
                     return output;
                 }
             }
 
+            // Assume it's a template.
             return Template(magicWord);
-
-            Match templateMatch = TemplateRegex.Match(magicWord);
-            if (templateMatch.Success)
-            {
-            }
-
-            string name = match.Groups[1].Value;
-            string nameUpper = name.ToUpperInvariant();
-            string options = match.Groups[2].Value.Trim('|');
-
-            if (nameUpper.StartsWith("LANG-"))
-            {
-                string lang = name.Substring("LANG-".Length);
-                StringBuilder sb = new StringBuilder(128);
-                sb.Append("<span lang=\"");
-                sb.Append(lang);
-                sb.Append("\" xml:lang=\"");
-                sb.Append(lang);
-                sb.Append("\">");
-                sb.Append(options);
-                sb.Append("</span>");
-                return sb.ToString();
-            }
-
-            if (nameUpper == "MAIN")
-            {
-                StringBuilder sb = new StringBuilder(128);
-                sb.Append("<div class=\"rellink relarticle mainarticle\">Main article: <a href=\"");
-                sb.Append(ResolveLink(options, config_.CurrentLanguageCode));
-                sb.Append("\" title=\"");
-                sb.Append(options);
-                sb.Append("\">");
-                sb.Append(options);
-                sb.Append("</a></div>");
-                return sb.ToString();
-            }
-
-            if (nameUpper == "OCLC")
-            {
-                StringBuilder sb = new StringBuilder(128);
-                sb.Append("<a href=\"");
-                sb.Append(ResolveLink("Online Computer Library Center", config_.CurrentLanguageCode));
-                sb.Append("\" title=\"Online Computer Library Center\">OCLC</a>");
-                sb.Append("&nbsp;<a href=\"http://www.worldcat.org/oclc/");
-                sb.Append(options);
-                sb.Append("\" class=\"external text\" rel=\"nofollow\">");
-                sb.Append(options);
-                sb.Append("</a>");
-                return sb.ToString();
-            }
-
-#if DEBUG
-            Trace.TraceInformation("Unknown Token: " + name);
-#endif // DEBUG
-
-            return null;
         }
 
         private string Template(string templateCall)
