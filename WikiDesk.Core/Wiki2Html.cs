@@ -31,11 +31,6 @@ namespace WikiDesk.Core
 
         #region construction
 
-        public Wiki2Html()
-            : this(new Configuration())
-        {
-        }
-
         public Wiki2Html(Configuration config)
             : this(config, null, null, null)
         {
@@ -617,7 +612,18 @@ namespace WikiDesk.Core
         {
             if (resolveWikiTemplateDel_ != null)
             {
-                string value = resolveWikiTemplateDel_(templateCall, config_.CurrentLanguageCode);
+                string templateName;
+                int paramIndex = templateCall.IndexOf("|");
+                if (paramIndex >= 0)
+                {
+                    templateName = templateCall.Substring(0, paramIndex);
+                }
+                else
+                {
+                    templateName = templateCall;
+                }
+
+                string value = resolveWikiTemplateDel_(templateName, config_.CurrentLanguageCode);
                 return value;
             }
 

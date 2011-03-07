@@ -26,7 +26,8 @@ namespace WikiDesk.Core
             string moduleFilePath = Path.Combine("Messages", "Messages" + language_.Code + ".dll");
 
             module_ = new Module(moduleFilePath);
-            namespaces_ = module_.GetStringMapField("namespaceNames");
+            namespaces_ = module_.GetString2StringMapField("namespaceNames");
+            specialPageAliases_ = module_.GetString2StringsMapField("specialPageAliases");
         }
 
         #endregion // construction
@@ -41,6 +42,21 @@ namespace WikiDesk.Core
         public WikiDomain Domain
         {
             get { return domain_; }
+        }
+
+        public string BaseUrl
+        {
+            get { return string.Format(".{0}.org/wiki/", domain_.Name); }
+        }
+
+        public string ExportUrl
+        {
+            get
+            {
+                string[] aliases = GetSpecialPageAliases("Export");
+                string export = aliases != null ? aliases[0] : "Export";
+                return string.Format("{0}{1}:{2}", BaseUrl, GetNamespace(Namespace.Special), export);
+            }
         }
 
         #endregion // properties
@@ -72,7 +88,7 @@ namespace WikiDesk.Core
         /// <returns>The site-specific name of the namespace.</returns>
         public string GetNamespace(Namespace ns)
         {
-            object value;
+            string value;
             switch (ns)
             {
                 case Namespace.Media:
@@ -143,14 +159,26 @@ namespace WikiDesk.Core
                     throw new System.ArgumentOutOfRangeException();
             }
 
-            return value as string;
+            return value;
+        }
+
+        public string[] GetSpecialPageAliases(string pageName)
+        {
+            string[] aliases;
+            if (specialPageAliases_.TryGetValue(pageName, out aliases))
+            {
+                return aliases;
+            }
+
+            return null;
         }
 
         #region representation
 
         private readonly Module module_;
 
-        private readonly Dictionary<string, object> namespaces_;
+        private readonly Dictionary<string, string> namespaces_;
+        private readonly Dictionary<string, string[]> specialPageAliases_;
 
         private WikiMessages messages_;
 

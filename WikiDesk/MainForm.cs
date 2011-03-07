@@ -599,8 +599,10 @@
 
             ShowArticleLanguages(title, Wiki2Html.ExtractLanguages(ref text));
 
-            Configuration config = new Configuration();
-            config.CurrentLanguageCode = settings_.CurrentLanguageCode;
+            Configuration config = new Configuration(
+                                        currentSite_.Language.Code,
+                                        currentSite_.BaseUrl,
+                                        currentSite_.ExportUrl);
             config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
 
             Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnResolveMagicWord, fileCache_);
@@ -626,12 +628,29 @@
         private string OnResolveMagicWord(string word, string lanugageCode)
         {
             string templateName = currentSite_.GetNamespace(WikiSite.Namespace.Tempalate);
-            string title = templateName + ":" + Title.Normalize(word);
+            string title = templateName + ":" + word;
             Page page = RetrievePage(title);
             if (page != null)
             {
-                //TODO: Must return the Include section only!
-                return page.Text;
+                string text = page.Text;
+                while (true)
+                {
+                    int start = text.IndexOf("<noinclude>");
+                    if (start < 0)
+                    {
+                        break;
+                    }
+
+                    int end = text.IndexOf("</noinclude>", start);
+                    if (end < 0)
+                    {
+                        break;
+                    }
+
+                    text = text.Remove(start, end - start + "</noinclude>".Length);
+                }
+
+                return text;
             }
 
             return string.Empty;

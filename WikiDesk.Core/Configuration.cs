@@ -2,6 +2,13 @@
 {
     public class Configuration
     {
+        public Configuration(string languageCode, string baseUrl, string exportUrl)
+        {
+            CurrentLanguageCode = languageCode;
+            BaseUrl = baseUrl;
+            ExportUrl = exportUrl;
+        }
+
         public string InternalLinkPrefix = "wiki://";
 
         /// <summary>

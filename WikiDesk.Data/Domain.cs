@@ -12,7 +12,7 @@
         [AutoIncrement]
         public int Id { get; set; }
 
-        [MaxLength(32)]
+        [MaxLength(64)]
         [Indexed]
         public string Name { get; set; }
 
