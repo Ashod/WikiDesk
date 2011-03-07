@@ -51,10 +51,10 @@ namespace WikiDesk.Core
             commonImagesPath_ = "file:///" + commonImagesPath_;
             commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
 
-            parserFunctions_ = new ParserFunctions();
+            magicWordProcessor_ = new MagicWordProcessor();
 
             //TODO: Where should this go?
-            //parserFunctions_.RegisterHandler("lc", false, );
+            //magicWordProcessor_.RegisterHandler("lc", false, );
         }
 
         #endregion // construction
@@ -549,9 +549,9 @@ namespace WikiDesk.Core
                 string functionName = parserFuncMatch.Groups[1].Value;
                 string input = string.Empty;
                 string output;
-                ParserFunctions.ParserFunctionResult parserFunctionResult =
-                    parserFunctions_.Execute(functionName, input, out output);
-                if (parserFunctionResult != ParserFunctions.ParserFunctionResult.Unknown)
+                MagicWordProcessor.Result result =
+                    magicWordProcessor_.Execute(functionName, input, out output);
+                if (result != MagicWordProcessor.Result.Unknown)
                 {
                     return output;
                 }
@@ -753,7 +753,7 @@ namespace WikiDesk.Core
 
         private readonly string commonImagesPath_;
 
-        private readonly ParserFunctions parserFunctions_;
+        private readonly MagicWordProcessor magicWordProcessor_;
 
         #endregion // representation
 

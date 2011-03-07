@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="MagicWordProcessor.cs" />
     <Compile Include="WikiDomain.cs" />
     <Compile Include="WikiLanguage.cs" />
     <Compile Include="WikiMessages.cs" />
@@ -44,7 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WikiImage2Html.cs" />
     <Compile Include="WikiMagicWordConstants.cs" />
-    <Compile Include="WikiParserFunctions.cs" />
     <Compile Include="WikiSite.cs">
       <SubType>Code</SubType>
     </Compile>

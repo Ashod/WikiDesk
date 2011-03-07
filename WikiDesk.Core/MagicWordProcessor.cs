@@ -3,14 +3,14 @@ namespace WikiDesk.Core
 {
     using System.Collections.Generic;
 
-    public class ParserFunctions
+    public class MagicWordProcessor
     {
-        public ParserFunctions()
+        public MagicWordProcessor()
         {
             RegisterHandlers();
         }
 
-        public ParserFunctionResult Execute(string functionName, string input, out string output)
+        public Result Execute(string functionName, string input, out string output)
         {
             ParserFunction func = FindHandler(functionName);
             if (func != null)
@@ -19,10 +19,10 @@ namespace WikiDesk.Core
             }
 
             output = null;
-            return ParserFunctionResult.Unknown;
+            return Result.Unknown;
         }
 
-        public enum ParserFunctionResult
+        public enum Result
         {
             /// <summary>
             /// Unknown function.
@@ -45,7 +45,7 @@ namespace WikiDesk.Core
             Html
         }
 
-        public delegate ParserFunctionResult ParserFunction(string input, out string output);
+        public delegate Result ParserFunction(string input, out string output);
 
         public void RegisterHandler(string name, ParserFunction func)
         {
@@ -124,10 +124,10 @@ namespace WikiDesk.Core
             RegisterHandler("#formatdate",        DoNothing);
         }
 
-        private ParserFunctionResult DoNothing(string input, out string output)
+        private Result DoNothing(string input, out string output)
         {
             output = string.Empty;
-            return ParserFunctionResult.Html;
+            return Result.Html;
         }
 
         #endregion // implementation
