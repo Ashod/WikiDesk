@@ -113,32 +113,6 @@
                 "|");
         }
 
-        #region templates
-
-        [Test]
-        public void TemplateLang()
-        {
-            TestConvert("{{lang-ka|kikos}}",
-                "<p><span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
-        }
-
-        [Test]
-        public void TemplateMain()
-        {
-            TestConvert("{{Main|History of Tbilisi}}",
-                "<div class=\"rellink relarticle mainarticle\">Main article: <a href=\"http://en.wikipedia.org/wiki/History_of_Tbilisi\" title=\"History of Tbilisi\">History of Tbilisi</a></div>");
-        }
-
-        [Test]
-        public void TemplateOCLC()
-        {
-            TestConvert("{{OCLC|224781861}}",
-                "<p><a href=\"http://en.wikipedia.org/wiki/Online_Computer_Library_Center\" title=\"Online Computer Library Center\">OCLC</a>" +
-                "&nbsp;<a href=\"http://www.worldcat.org/oclc/224781861\" class=\"external text\" rel=\"nofollow\">224781861</a></p>");
-        }
-
-        #endregion // templates
-
         [Test]
         public void Link()
         {
@@ -165,7 +139,12 @@
 
         internal static void TestConvert(string wikicode, string expected)
         {
-            Wiki2Html converter = new Wiki2Html();
+            Configuration config = new Configuration(
+                                        "en",
+                                        ".wikipedia.org/wiki/",
+                                        ".wikipedia.org/wiki/Special:Export");
+
+            Wiki2Html converter = new Wiki2Html(config);
             string html = converter.Convert(wikicode);
             Assert.AreEqual(expected, html);
         }

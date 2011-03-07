@@ -388,9 +388,9 @@
         [Ignore]
         public void Image()
         {
-            const string WIKI_CODE = "[[Image:Westminstpalace.jpg|frame|none|alt=alt text|caption text]]";
-            Wiki2Html converter = new Wiki2Html();
-            string html = converter.Convert(WIKI_CODE);
+            WikiParseTest.TestConvert(
+                "[[Image:Westminstpalace.jpg|frame|none|alt=alt text|caption text]]",
+                "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">kiko</a>");
 
 //             [[Image:Westminstpalace.jpg|frame|none|alt=alt text|caption text]]
 //             <div class="thumb tnone">
@@ -430,8 +430,6 @@
 //                 </div>
 //             </div>
 
-            const string EXPECTED = "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">kiko</a>";
-            Assert.AreEqual(EXPECTED, html);
         }
 
         [Test]

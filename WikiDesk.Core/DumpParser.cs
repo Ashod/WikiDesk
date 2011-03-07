@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.IO;
+    using System.Text;
     using System.Xml;
 
     using WikiDesk.Data;
@@ -75,6 +76,31 @@
                     db.UpdateInsert(page, db.SelectPage(page.Domain, page.Language, page.Title));
                     ++pages;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Parses a page from an XML dump stream.
+        /// </summary>
+        /// <param name="xmlText">The XML dump.</param>
+        public static Page PageFromXml(string xmlText)
+        {
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(xmlText)))
+            {
+                return PageFromXml(ms);
+            }
+        }
+
+        /// <summary>
+        /// Parses a page from an XML dump stream.
+        /// </summary>
+        /// <param name="stream">The stream which contains the XML dump.</param>
+        public static Page PageFromXml(Stream stream)
+        {
+            using (XmlTextReader reader = new XmlTextReader(stream))
+            {
+                reader.WhitespaceHandling = WhitespaceHandling.None;
+                return ParsePageTag(reader);
             }
         }
 
