@@ -24,7 +24,8 @@ namespace WikiDesk.Core
             domain_ = domain;
             language_ = language;
 
-            string moduleFilePath = Path.Combine("Messages", "Messages" + language_.Code + ".dll");
+            string langCode = language_.MimeCode ?? language_.Code;
+            string moduleFilePath = Path.Combine("Messages", "Messages" + langCode + ".dll");
 
             module_ = new Module(moduleFilePath);
             namespaces_ = module_.GetString2StringMapField("namespaceNames");
