@@ -1,6 +1,7 @@
 ﻿
 namespace WikiDesk.Core
 {
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
 
@@ -57,6 +58,11 @@ namespace WikiDesk.Core
                 string export = aliases != null ? aliases[0] : "Export";
                 return string.Format("{0}{1}:{2}", BaseUrl, GetNamespace(Namespace.Special), export);
             }
+        }
+
+        public ICollection<string> Namespaces
+        {
+            get { return namespaces_.Values; }
         }
 
         #endregion // properties

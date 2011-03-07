@@ -605,7 +605,7 @@
                                         currentSite_.ExportUrl);
             config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
 
-            Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnResolveMagicWord, fileCache_);
+            Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnResolveTemplate, fileCache_);
             string html = wiki2Html.Convert(text);
             html = WrapInHtmlBody(title, html);
 
@@ -625,10 +625,18 @@
             return WIKI_PROTOCOL_STRING + Title.EncodeNonAsciiCharacters(title);
         }
 
-        private string OnResolveMagicWord(string word, string lanugageCode)
+        private string OnResolveTemplate(string word, string lanugageCode)
         {
-            string templateName = currentSite_.GetNamespace(WikiSite.Namespace.Tempalate);
-            string title = templateName + ":" + word;
+            string title = word;
+
+            int colIndex = word.IndexOf(':');
+            if (colIndex < 0 || !currentSite_.Namespaces.Contains(word.Substring(0, colIndex)))
+            {
+                // Missing or invalid namespace, assume "Template".
+                string templateName = currentSite_.GetNamespace(WikiSite.Namespace.Tempalate);
+                title = templateName + ':' + word;
+            }
+
             Page page = RetrievePage(title);
             if (page != null)
             {

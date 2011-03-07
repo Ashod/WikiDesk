@@ -52,9 +52,7 @@ namespace WikiDesk.Core
             commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
 
             magicWordProcessor_ = new MagicWordProcessor();
-
-            //TODO: Where should this go?
-            //magicWordProcessor_.RegisterHandler("lc", false, );
+            parserFunctionsProcessor_ = new ParserFunctionProcessor();
         }
 
         #endregion // construction
@@ -80,7 +78,14 @@ namespace WikiDesk.Core
 
         public string Convert(string wikicode)
         {
-            wikicode = ConvertUnaryCode(RedirectRegex, Redirect, wikicode);
+            // Process redirections first.
+            string newTitle = Redirection(wikicode);
+            if (newTitle != null)
+            {
+                //TODO: Should download and process the new title.
+                return Redirect(newTitle);
+            }
+
             wikicode = ConvertListCode(wikicode);
 
             wikicode = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikicode);
@@ -113,20 +118,18 @@ namespace WikiDesk.Core
             return wikicode;
         }
 
-        private string Redirect(Match match)
+        private string Redirect(string newTitle)
         {
-            string value = match.Groups[2].Value;
-
             //TODO: Consider language codes.
-            string url = ResolveLink(value, config_.CurrentLanguageCode);
+            string url = ResolveLink(newTitle, config_.CurrentLanguageCode);
 
             StringBuilder sb = new StringBuilder(128);
             sb.Append("Redirected to <span class=\"redirectText\"><a href=\"");
             sb.Append(url);
             sb.Append("\" title=\"");
-            sb.Append(value);
+            sb.Append(newTitle);
             sb.Append("\">");
-            sb.Append(value);
+            sb.Append(newTitle);
             sb.Append("</a></span>");
 
             return sb.ToString();
@@ -250,6 +253,23 @@ namespace WikiDesk.Core
 
             sb.Append(wikicode.Substring(lastIndex));
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Checks if the wikicode is a redirection.
+        /// If redirection is in place, it returns the new page title, otherwise null.
+        /// </summary>
+        /// <param name="wikicode">The wikicode to parse.</param>
+        /// <returns>A new page title or null if no redirection.</returns>
+        private static string Redirection(string wikicode)
+        {
+            Match match = RedirectRegex.Match(wikicode);
+            if (match.Success)
+            {
+                return match.Groups[2].Value;
+            }
+
+            return null;
         }
 
         #region Headers
@@ -540,43 +560,53 @@ namespace WikiDesk.Core
 
         private string MagicWord(Match match)
         {
-            string magicWord = match.Groups[1].Value;
+            string magic = match.Groups[1].Value;
+
+            string command = magic;
+            string[] param = null;
+            int paramIndex = magic.IndexOf("|");
+            if (paramIndex >= 0)
+            {
+                command = magic.Substring(0, paramIndex);
+                param = magic.Substring(paramIndex + 1).Split('|');
+            }
 
             // Is it a parser function?
-            Match parserFuncMatch = ParserFunctionRegex.Match(magicWord);
-            if (parserFuncMatch.Success)
+            string output;
+            ParserFunctionProcessor.Result result =
+                parserFunctionsProcessor_.Execute(command, param, out output);
+            if (result != ParserFunctionProcessor.Result.Unknown)
             {
-                string functionName = parserFuncMatch.Groups[1].Value;
-                string input = string.Empty;
-                string output;
-                MagicWordProcessor.Result result =
-                    magicWordProcessor_.Execute(functionName, input, out output);
-                if (result != MagicWordProcessor.Result.Unknown)
-                {
-                    return output;
-                }
+                return output;
             }
 
             // Assume it's a template.
-            return Template(magicWord);
+            return Template(command, param);
         }
 
-        private string Template(string templateCall)
+        private string Template(string name, string[] param)
         {
             if (resolveWikiTemplateDel_ != null)
             {
-                string templateName;
-                int paramIndex = templateCall.IndexOf("|");
-                if (paramIndex >= 0)
+                string value = resolveWikiTemplateDel_(name, config_.CurrentLanguageCode);
+
+                // Redirection?
+                string newTitle = Redirection(value);
+                if (newTitle != null)
                 {
-                    templateName = templateCall.Substring(0, paramIndex);
-                }
-                else
-                {
-                    templateName = templateCall;
+                    value = resolveWikiTemplateDel_(newTitle, config_.CurrentLanguageCode);
+                    newTitle = Redirection(value);
+                    if (newTitle != null)
+                    {
+                        return "<b><em>Redirection Loop!</em></b>";
+                    }
                 }
 
-                string value = resolveWikiTemplateDel_(templateName, config_.CurrentLanguageCode);
+                if (param != null && param.Length > 0)
+                {
+                    // Process the parameters.
+                }
+
                 return value;
             }
 
@@ -754,6 +784,7 @@ namespace WikiDesk.Core
         private readonly string commonImagesPath_;
 
         private readonly MagicWordProcessor magicWordProcessor_;
+        private readonly ParserFunctionProcessor parserFunctionsProcessor_;
 
         #endregion // representation
 
@@ -801,8 +832,8 @@ namespace WikiDesk.Core
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         private static readonly Regex MagicWordRegex = new Regex(@"\{\{(.+?)\}\}", RegexOptions.Compiled | RegexOptions.Singleline);
-        private static readonly Regex ParserFunctionRegex = new Regex(@"((#)?(.+?))\:(.+?)", RegexOptions.Compiled | RegexOptions.Singleline);
-        private static readonly Regex TemplateRegex = new Regex(@"((Template\:)?(.+?))|((.+?)\|(.+?))", RegexOptions.Compiled | RegexOptions.Singleline);
+//         private static readonly Regex ParserFunctionRegex = new Regex(@"((#)?(.+?))\:(.+?)", RegexOptions.Compiled | RegexOptions.Singleline);
+//         private static readonly Regex TemplateRegex = new Regex(@"((Template\:)?(.+?))|((.+?)\|(.+?))", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 
