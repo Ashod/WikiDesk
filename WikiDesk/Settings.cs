@@ -41,7 +41,7 @@ namespace WikiDesk
             }
         }
 
-        public bool AutoUpdate = true;
+        public int AutoUpdateDays = 7;
         public bool AutoRetrieveMissing = true;
 
         #region domain

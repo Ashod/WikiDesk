@@ -414,49 +414,6 @@
         }
 
         /// <summary>
-        /// Browse to a title given the domain name, language name and title.
-        /// Typically called from a shortcut control, such as IndexControl or FavoritsControl.
-        /// </summary>
-        /// <param name="domainName">The domain name.</param>
-        /// <param name="languageName">The language name.</param>
-        /// <param name="title">The title of the entry.</param>
-        private void BrowseWikiArticle(string domainName, string languageName, string title)
-        {
-            WikiDomain domain = domains_.FindByName(domainName);
-            Language language = db_.GetLanguageByName(languageName);
-            if (domain != null && language != null)
-            {
-
-                BrowseWikiArticle(title);
-            }
-        }
-
-        private void BrowseWikiArticle(string title)
-        {
-            title = Title.Normalize(title);
-
-            currentWikiPageName_ = title;
-
-            int domainId = db_.GetDomain(currentSite_.Domain.Name).Id;
-            Language language = db_.GetLanguageByCode(currentSite_.Language.Code);
-
-            Page page = db_.SelectPage(domainId, language.Id, title);
-
-            if ((page == null || string.IsNullOrEmpty(page.Text)) &&
-                settings_.AutoRetrieveMissing)
-            {
-                // Download and import from the web...
-                page = ImportLivePage(title, currentSite_.Domain, domainId, language);
-            }
-
-            if (page != null && !string.IsNullOrEmpty(page.Text))
-            {
-                ShowWikiPage(title, page.Text);
-                return;
-            }
-        }
-
-        /// <summary>
         /// Changes the current language to the given one.
         /// </summary>
         /// <param name="languageCode">The code of the language to change to.</param>
@@ -485,7 +442,7 @@
         {
             if (domainName != settings_.CurrentDomainName)
             {
-                WikiDomain wikiDomain = domains_.FindByName(settings_.CurrentDomainName);
+                WikiDomain wikiDomain = domains_.FindByName(domainName);
                 if (wikiDomain != null)
                 {
                     SetCurrentWikiSite(new WikiSite(wikiDomain, currentSite_.Language));
@@ -507,6 +464,85 @@
             settings_.CurrentLanguageCode = site.Language.Code;
         }
 
+        /// <summary>
+        /// Sets the current site.
+        /// </summary>
+        /// <param name="domainName">The name of the domain to change to.</param>
+        /// <param name="languageCode">The code of the language to change to.</param>
+        private void SetCurrentWikiSite(string domainName, string languageCode)
+        {
+            WikiDomain wikiDomain = domains_.FindByName(domainName);
+            WikiLanguage wikiLanguage = languages_.Languages.Find(lang => languageCode == lang.Code);
+            if (wikiDomain != null && wikiLanguage != null)
+            {
+                SetCurrentWikiSite(new WikiSite(wikiDomain, wikiLanguage));
+            }
+        }
+
+        /// <summary>
+        /// Browse to a title given the domain name, language name and title.
+        /// Typically called from a shortcut control, such as IndexControl or FavoritsControl.
+        /// </summary>
+        /// <param name="domainName">The domain name.</param>
+        /// <param name="languageName">The language name.</param>
+        /// <param name="title">The title of the entry.</param>
+        private void BrowseWikiArticle(string domainName, string languageName, string title)
+        {
+            Language language = db_.GetLanguageByName(languageName);
+            if (language != null)
+            {
+                SetCurrentWikiSite(domainName, language.Code);
+                BrowseWikiArticle(title);
+            }
+        }
+
+        private void BrowseWikiArticle(string title)
+        {
+            currentWikiPageName_ = null;
+
+            Page page = RetrievePage(title);
+            if (page != null && !string.IsNullOrEmpty(page.Text))
+            {
+                ShowWikiPage(title, page.Text);
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves a page either from the DB or from the web.
+        /// </summary>
+        /// <returns></returns>
+        private Page RetrievePage(string title)
+        {
+            title = Title.Normalize(title);
+
+            int domainId = db_.GetDomain(currentSite_.Domain.Name).Id;
+            Language language = db_.GetLanguageByCode(currentSite_.Language.Code);
+
+            Page page = db_.SelectPage(domainId, language.Id, title);
+
+            // If we got it and need no update, just return it.
+            if (page != null && !string.IsNullOrEmpty(page.Text))
+            {
+                if (settings_.AutoUpdateDays == 0 ||
+                    (DateTime.UtcNow - page.LastUpdateDateUtc).TotalDays < settings_.AutoUpdateDays)
+                {
+                    return page;
+                }
+            }
+            else
+            if (!settings_.AutoRetrieveMissing)
+            {
+                // Missing and auto-retrieve disabled.
+                return null;
+            }
+
+            // Download and import from the web...
+            page = ImportLivePage(title, currentSite_.Domain, domainId, language);
+
+            return page;
+        }
+
         private Page ImportLivePage(string title, WikiDomain domain, int domainId, Language language)
         {
             title = Title.Normalize(title);
@@ -520,37 +556,51 @@
             Page page = db_.SelectPage(domainId, language.Id, title);
             if (page != null)
             {
-                Dictionary<string, PrefixMatchContainer<string>> langEntries;
-                if (!entriesMap_.TryGetValue(domain.Name, out langEntries))
-                {
-                    langEntries = new Dictionary<string, PrefixMatchContainer<string>>();
-                    entriesMap_.Add(domain.Name, langEntries);
-                }
-
-                PrefixMatchContainer<string> titles;
-                if (!langEntries.TryGetValue(language.Name, out titles))
-                {
-                    titles = new PrefixMatchContainer<string>();
-                    langEntries.Add(language.Name, titles);
-                }
-
-                string titleDenorm = Title.Denormalize(page.Title);
-                if (titles.Find(titleDenorm, false, true) < 0)
-                {
-                    titles.Add(titleDenorm, titleDenorm);
-                    indexControl_.UpdateListItems();
-                }
+                UpdateGuiLists(language.Name, domain.Name, page.Title);
             }
 
             return page;
         }
 
+        /// <summary>
+        /// Updates the Entries list, languages and the index control with the new page.
+        /// </summary>
+        /// <param name="languageName">The page language name.</param>
+        /// <param name="domainName">The page domain name.</param>
+        /// <param name="title">The page title.</param>
+        private void UpdateGuiLists(string languageName, string domainName, string title)
+        {
+            Dictionary<string, PrefixMatchContainer<string>> langEntries;
+            if (!entriesMap_.TryGetValue(domainName, out langEntries))
+            {
+                langEntries = new Dictionary<string, PrefixMatchContainer<string>>();
+                entriesMap_.Add(domainName, langEntries);
+            }
+
+            PrefixMatchContainer<string> titles;
+            if (!langEntries.TryGetValue(languageName, out titles))
+            {
+                titles = new PrefixMatchContainer<string>();
+                langEntries.Add(languageName, titles);
+            }
+
+            string titleDenorm = Title.Denormalize(title);
+            if (titles.Find(titleDenorm, false, true) < 0)
+            {
+                titles.Add(titleDenorm, titleDenorm);
+                indexControl_.UpdateListItems();
+            }
+        }
+
         private void ShowWikiPage(string title, string text)
         {
             title = Title.Denormalize(title);
+            currentWikiPageName_ = title;
+
             ShowArticleLanguages(title, Wiki2Html.ExtractLanguages(ref text));
 
             Configuration config = new Configuration();
+            config.CurrentLanguageCode = settings_.CurrentLanguageCode;
             config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
 
             Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnResolveMagicWord, fileCache_);
@@ -575,17 +625,16 @@
 
         private string OnResolveMagicWord(string word, string lanugageCode)
         {
-            //TODO: Get the Template namespace from somewhere.
-            word = "Template:" + Title.Normalize(word);
-            string url = string.Concat("http://", lanugageCode, currentSite_.Domain.ExportUrl, word);
-
-            string pageXml = Download.DownloadPage(url);
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
+            string templateName = currentSite_.GetNamespace(WikiSite.Namespace.Tempalate);
+            string title = templateName + ":" + Title.Normalize(word);
+            Page page = RetrievePage(title);
+            if (page != null)
             {
-                //DumpParser.ImportFromXml(ms, db_, DateTime.UtcNow, false, currentDomain_., language.Id);
+                //TODO: Must return the Include section only!
+                return page.Text;
             }
 
-            return pageXml;
+            return string.Empty;
         }
 
         private string WrapInHtmlBody(string title, string html)

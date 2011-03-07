@@ -72,7 +72,7 @@ namespace WikiDesk.Core
         /// <returns>The site-specific name of the namespace.</returns>
         public string GetNamespace(Namespace ns)
         {
-            object value = null;
+            object value;
             switch (ns)
             {
                 case Namespace.Media:
@@ -143,10 +143,10 @@ namespace WikiDesk.Core
                     throw new System.ArgumentOutOfRangeException();
             }
 
-            return string.Empty;
+            return value as string;
         }
 
-        #region represenation
+        #region representation
 
         private readonly Module module_;
 

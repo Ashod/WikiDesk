@@ -99,7 +99,7 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
             wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
 
-//             wikicode = ConvertBinaryCode(MagicWordRegex, MagicWord, wikicode);
+            wikicode = ConvertBinaryCode(MagicWordRegex, MagicWord, wikicode);
 
             wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
@@ -554,13 +554,12 @@ namespace WikiDesk.Core
                 }
             }
 
+            return Template(magicWord);
+
             Match templateMatch = TemplateRegex.Match(magicWord);
             if (templateMatch.Success)
             {
-                return Template(templateMatch);
             }
-
-
 
             string name = match.Groups[1].Value;
             string nameUpper = name.ToUpperInvariant();
@@ -614,11 +613,11 @@ namespace WikiDesk.Core
             return null;
         }
 
-        private string Template(Match match)
+        private string Template(string templateCall)
         {
             if (resolveWikiTemplateDel_ != null)
             {
-                string value = resolveWikiTemplateDel_(match.Groups[1].Value, config_.CurrentLanguageCode);
+                string value = resolveWikiTemplateDel_(templateCall, config_.CurrentLanguageCode);
                 return value;
             }
 
