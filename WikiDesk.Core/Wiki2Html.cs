@@ -1,6 +1,7 @@
 ﻿
 namespace WikiDesk.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -27,7 +28,7 @@ namespace WikiDesk.Core
         /// <param name="word">The magic word to resolve.</param>
         /// <param name="lanugageCode">The code if the target wiki language.</param>
         /// <returns>A valid full or relative URL.</returns>
-        public delegate string ResolveMagicWord(string word, string lanugageCode);
+        public delegate string ResolveTemplate(string word, string lanugageCode);
 
         #region construction
 
@@ -38,7 +39,7 @@ namespace WikiDesk.Core
 
         public Wiki2Html(Configuration config,
                          ResolveWikiLink resolveWikiLinkDel,
-                         ResolveMagicWord resolveWikiTemplateDel,
+                         ResolveTemplate resolveWikiTemplateDel,
                          IFileCache fileCache)
         {
             config_ = config;
@@ -99,15 +100,7 @@ namespace WikiDesk.Core
             wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
             wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
 
-            // Magic words, templates and parser functions are recursive.
-            // Process them until the output no longer changes.
-            int length;
-            do
-            {
-                length = wikicode.Length;
-                wikicode = ConvertBinaryCode(MagicWordRegex, MagicWord, wikicode);
-            }
-            while (wikicode.Length != length);
+            wikicode = ProcessMagicWords(wikicode);
 
             wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
@@ -223,10 +216,15 @@ namespace WikiDesk.Core
 
         private static string ConvertBinaryCode(Regex regex, MatchedCodeHandler handler, string wikicode)
         {
+            Match match = regex.Match(wikicode);
+            if (!match.Success)
+            {
+                return wikicode;
+            }
+
             int lastIndex = 0;
             StringBuilder sb = new StringBuilder(wikicode.Length * 2);
 
-            Match match = regex.Match(wikicode);
             while (match.Success && (lastIndex < wikicode.Length))
             {
                 // Copy the skipped part.
@@ -558,33 +556,196 @@ namespace WikiDesk.Core
             return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text, "</a>");
         }
 
-        private string MagicWord(Match match)
-        {
-            string magic = match.Groups[1].Value;
+        #region MagicWords, Functions and Templates
 
-            string command = magic;
-            string[] param = null;
-            int paramIndex = magic.IndexOf("|");
-            if (paramIndex >= 0)
+        private string ProcessMagicWords(string wikicode)
+        {
+            int endIndex;
+            int startIndex = MagicParser.FindMagicBlock(wikicode, out endIndex);
+            if (startIndex < 0)
             {
-                command = magic.Substring(0, paramIndex);
-                param = magic.Substring(paramIndex + 1).Split('|');
+                return wikicode;
             }
+
+            int lastIndex = 0;
+            StringBuilder sb = new StringBuilder(wikicode.Length * 16);
+
+            while (lastIndex < wikicode.Length)
+            {
+                // Copy the skipped part.
+                sb.Append(wikicode.Substring(lastIndex, startIndex - lastIndex));
+
+                // Handle the match.
+                string magic = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
+                string nestedMagic = MagicParser.FindMagicBlock(magic);
+                if (!string.IsNullOrEmpty(nestedMagic))
+                {
+                    magic = ProcessMagicWords(magic);
+                }
+
+                string text = MagicWord(magic);
+                sb.Append(text);
+
+                lastIndex = startIndex + (endIndex - startIndex + 1);
+
+                startIndex = MagicParser.FindMagicBlock(wikicode, lastIndex, out endIndex);
+            }
+
+            // Copy the remaining bit.
+            if (lastIndex == 0)
+            {
+                // There were no matches.
+                Debug.Assert(sb.Length == 0, "Expected no matches.");
+                return wikicode;
+            }
+
+            sb.Append(wikicode.Substring(lastIndex));
+            return sb.ToString();
+        }
+
+        private string MagicWord(string magic)
+        {
+            List<KeyValuePair<string, string>> args;
+            string command = GetMagicWordAndParams(magic, out args);
 
             // Is it a parser function?
             string output;
             ParserFunctionProcessor.Result result =
-                parserFunctionsProcessor_.Execute(command, param, out output);
+                parserFunctionsProcessor_.Execute(command, args, out output);
             if (result != ParserFunctionProcessor.Result.Unknown)
             {
                 return output;
             }
 
             // Assume it's a template.
-            return Template(command, param);
+            return Template(command, args);
         }
 
-        private string Template(string name, string[] param)
+        /// <summary>
+        /// Find the index of the first occurrence of ch outside of the wrapper
+        /// characters open and close.
+        /// </summary>
+        /// <param name="text">The text to search within.</param>
+        /// <param name="offset">The offset where to start the search.</param>
+        /// <param name="ch">The character to find.</param>
+        /// <param name="open">The opening wrapper character.</param>
+        /// <param name="close">The closing wrapper character.</param>
+        /// <returns>The index of ch or -ve if not found.</returns>
+        private static int FindUnwrapped(string text, int offset, char ch, char open, char close)
+        {
+            int nesting = 0;
+            for (int pos = offset; pos < text.Length; ++pos)
+            {
+                char c = text[pos];
+                if (c == open)
+                {
+                    ++nesting;
+                }
+                else
+                if (c == close)
+                {
+                    --nesting;
+                }
+                else
+                if (c == ch)
+                {
+                    if (nesting == 0)
+                    {
+                        return pos;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets the magic-word/variable/function-name/template-name and all params.
+        /// </summary>
+        /// <example>"#if:{{{lang|}}}|{{{{{lang}}}}}&nbsp;" should return
+        /// "#if", {{{lang|}}}, {{{{{lang}}}}}&nbsp;
+        /// </example>
+        /// <example>"" should return
+        ///
+        /// </example>
+        /// <param name="code">The code to parse.</param>
+        /// <param name="args">The parameters, if any.</param>
+        /// <returns>The command name.</returns>
+        private string GetMagicWordAndParams(string code, out List<KeyValuePair<string, string>> args)
+        {
+            int barIndex = code.IndexOf('|');
+            if (barIndex < 0)
+            {
+                args = null;
+                return code;
+            }
+
+            List<string> parameters = new List<string>(4);
+
+            // If the magic word ends with a colon, parse it now.
+            int colonIndex = code.IndexOf(':');
+            if (colonIndex >= 0)
+            {
+                parameters.Add(code.Substring(0, colonIndex));
+                code = code.Substring(colonIndex + 1);
+            }
+
+            int curParamStart = 0;
+            while (true)
+            {
+                barIndex = FindUnwrapped(code, curParamStart, '|', '{', '}');
+                if (barIndex >= 0)
+                {
+                    parameters.Add(code.Substring(curParamStart, barIndex - curParamStart));
+                    curParamStart = barIndex + 1;
+                }
+                else
+                {
+                    // Last param.
+                    parameters.Add(code.Substring(curParamStart));
+                    break;
+                }
+            }
+
+            if (parameters.Count == 0)
+            {
+                args = null;
+                return null;
+            }
+
+            string command = parameters[0];
+            parameters.RemoveAt(0);
+
+            args = new List<KeyValuePair<string, string>>(parameters.Count);
+
+            int paramNumber = 1;
+            foreach (string parameter in parameters)
+            {
+                string name;
+                string value;
+                int indexOfAssignment = parameter.IndexOf('=');
+                if (indexOfAssignment >= 0)
+                {
+                    name = parameter.Substring(0, indexOfAssignment);
+                    value = parameter.Substring(indexOfAssignment + 1);
+                }
+                else
+                {
+                    name = paramNumber.ToString();
+                    value = parameter;
+                    ++paramNumber;
+                }
+
+                // Expand parameters, if necessary.
+                value = ProcessMagicWords(value);
+
+                args.Add(new KeyValuePair<string, string>(name, value));
+            }
+
+            return command;
+        }
+
+        private string Template(string name, List<KeyValuePair<string, string>> args)
         {
             if (resolveWikiTemplateDel_ != null)
             {
@@ -602,16 +763,24 @@ namespace WikiDesk.Core
                     }
                 }
 
-                if (param != null && param.Length > 0)
+                if (args != null && args.Count > 0)
                 {
                     // Process the parameters.
+                    foreach (KeyValuePair<string, string> pair in args)
+                    {
+                        string argName = "{{{" + pair.Key + "}}}";
+                        value = value.Replace(argName, pair.Value);
+                    }
                 }
 
-                return value;
+                // Expand, if necessary.
+                return ProcessMagicWords(value);
             }
 
             return string.Empty;
         }
+
+        #endregion // MagicWords, Functions and Templates
 
         private static string ConvertParagraphs(string wikicode)
         {
@@ -777,7 +946,7 @@ namespace WikiDesk.Core
 
         private readonly ResolveWikiLink resolveWikiLinkDel_;
 
-        private readonly ResolveMagicWord resolveWikiTemplateDel_;
+        private readonly ResolveTemplate resolveWikiTemplateDel_;
 
         private readonly IFileCache fileCache_;
 
@@ -831,7 +1000,7 @@ namespace WikiDesk.Core
 
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-        private static readonly Regex MagicWordRegex = new Regex(@"\{\{(.+?)\}\}", RegexOptions.Compiled | RegexOptions.Singleline);
+//         private static readonly Regex MagicWordRegex = new Regex(@"(\{{2})(.+?)(?:\}{2,})", RegexOptions.Compiled | RegexOptions.Singleline);
 //         private static readonly Regex ParserFunctionRegex = new Regex(@"((#)?(.+?))\:(.+?)", RegexOptions.Compiled | RegexOptions.Singleline);
 //         private static readonly Regex TemplateRegex = new Regex(@"((Template\:)?(.+?))|((.+?)\|(.+?))", RegexOptions.Compiled | RegexOptions.Singleline);
 
