@@ -7,6 +7,8 @@ namespace WikiDesk.Core
     using System.Text;
     using System.Text.RegularExpressions;
 
+    using Tracy;
+
     public class Wiki2Html
     {
         /// <summary>
@@ -53,6 +55,8 @@ namespace WikiDesk.Core
 
             magicWordProcessor_ = new MagicWordProcessor();
             parserFunctionsProcessor_ = new ParserFunctionProcessor();
+
+            logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
         }
 
         #endregion // construction
@@ -78,10 +82,14 @@ namespace WikiDesk.Core
 
         public string Convert(string wikicode)
         {
+            logger_.Log(Levels.Debug, "Converting: " + wikicode);
+
             // Process redirections first.
             string newTitle = Redirection(wikicode);
             if (newTitle != null)
             {
+                logger_.Log(Levels.Info, "Redirection: " + newTitle);
+
                 //TODO: Should download and process the new title.
                 return Redirect(newTitle);
             }
@@ -559,6 +567,8 @@ namespace WikiDesk.Core
 
         private string ProcessMagicWords(string wikicode)
         {
+            logger_.Log(Levels.Debug, "Processing Magic: {0}.", wikicode);
+
             int endIndex;
             int startIndex = MagicParser.FindMagicBlock(wikicode, out endIndex);
             if (startIndex < 0)
@@ -569,7 +579,7 @@ namespace WikiDesk.Core
             int lastIndex = 0;
             StringBuilder sb = new StringBuilder(wikicode.Length * 16);
 
-            while (lastIndex < wikicode.Length)
+            while (startIndex >= 0 && lastIndex < wikicode.Length)
             {
                 // Copy the skipped part.
                 sb.Append(wikicode.Substring(lastIndex, startIndex - lastIndex));
@@ -588,20 +598,14 @@ namespace WikiDesk.Core
                 startIndex = MagicParser.FindMagicBlock(wikicode, lastIndex, out endIndex);
             }
 
-            // Copy the remaining bit.
-            if (lastIndex == 0)
-            {
-                // There were no matches.
-                Debug.Assert(sb.Length == 0, "Expected no matches.");
-                return wikicode;
-            }
-
             sb.Append(wikicode.Substring(lastIndex));
             return sb.ToString();
         }
 
         private string MagicWord(string magic)
         {
+            logger_.Log(Levels.Debug, "Magic: " + magic);
+
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(magic, out args);
 
@@ -611,6 +615,7 @@ namespace WikiDesk.Core
                 parserFunctionsProcessor_.Execute(command, args, out output);
             if (result != ParserFunctionProcessor.Result.Unknown)
             {
+                logger_.Log(Levels.Debug, "ParserFunction for command [{0}] - {1}.", command, output);
                 return output;
             }
 
@@ -625,31 +630,23 @@ namespace WikiDesk.Core
                 return string.Empty;
             }
 
-            string value = resolveWikiTemplateDel_(name, config_.CurrentLanguageCode);
+            string template = resolveWikiTemplateDel_(name, config_.CurrentLanguageCode);
+            logger_.Log(Levels.Debug, "Template for [{0}] - {1}.", name, template);
 
             // Redirection?
-            string newTitle = Redirection(value);
+            string newTitle = Redirection(template);
             if (newTitle != null)
             {
-                value = resolveWikiTemplateDel_(newTitle, config_.CurrentLanguageCode);
-                newTitle = Redirection(value);
+                template = resolveWikiTemplateDel_(newTitle, config_.CurrentLanguageCode);
+                newTitle = Redirection(template);
                 if (newTitle != null)
                 {
+                    logger_.Log(Levels.Warn, "Template redirection loop on [{0}].", template);
                     return "<b><em>Redirection Loop!</em></b>";
                 }
             }
 
-            if (args != null && args.Count > 0)
-            {
-                // Process the parameters.
-                foreach (KeyValuePair<string, string> pair in args)
-                {
-                    string argName = "{{{" + pair.Key + "}}}";
-                    value = value.Replace(argName, pair.Value);
-                }
-            }
-
-            return value;
+            return MagicParser.ProcessTemplateParams(template, args);
         }
 
         #endregion // MagicWords, Functions and Templates
@@ -826,6 +823,8 @@ namespace WikiDesk.Core
 
         private readonly MagicWordProcessor magicWordProcessor_;
         private readonly ParserFunctionProcessor parserFunctionsProcessor_;
+
+        private readonly ILogger logger_;
 
         #endregion // representation
 
