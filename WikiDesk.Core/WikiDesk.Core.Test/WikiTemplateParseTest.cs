@@ -8,6 +8,40 @@
     public class WikiTemplateParseTest
     {
         [Test]
+        public void FindMagicBlock()
+        {
+            string magicBlock = MagicParser.FindMagicBlock("{{#if:{{{lang|}}}|{{{{{lang}}}}}&nbsp;}}");
+            Assert.AreEqual("#if:{{{lang|}}}|{{{{{lang}}}}}&nbsp;", magicBlock);
+        }
+
+        [Test]
+        public void FindMagicBlockNested()
+        {
+            const string RAW =
+                "{{#if:{{{cat|{{{category|}}}}}}|a category|{{#if:{{{mul|{{{dab|{{{disambiguation|}}}}}}}}}|articles|{{#if:{{{mulcat|}}}|categories|{{#if:{{{portal|}}}|a portal|an article}}}}}}}}";
+
+            string magicBlock = MagicParser.FindMagicBlock(RAW);
+            Assert.AreEqual(
+                "#if:{{{cat|{{{category|}}}}}}|a category|{{#if:{{{mul|{{{dab|{{{disambiguation|}}}}}}}}}|articles|{{#if:{{{mulcat|}}}|categories|{{#if:{{{portal|}}}|a portal|an article}}}}}}",
+                magicBlock);
+
+            magicBlock = MagicParser.FindMagicBlock(magicBlock);
+            Assert.AreEqual(
+                "#if:{{{mul|{{{dab|{{{disambiguation|}}}}}}}}}|articles|{{#if:{{{mulcat|}}}|categories|{{#if:{{{portal|}}}|a portal|an article}}}}",
+                magicBlock);
+
+            magicBlock = MagicParser.FindMagicBlock(magicBlock);
+            Assert.AreEqual(
+                "#if:{{{mulcat|}}}|categories|{{#if:{{{portal|}}}|a portal|an article}}",
+                magicBlock);
+
+            magicBlock = MagicParser.FindMagicBlock(magicBlock);
+            Assert.AreEqual(
+                "#if:{{{portal|}}}|a portal|an article",
+                magicBlock);
+        }
+
+        [Test]
         public void TemplateA()
         {
             TestConvert("{{!}}",
