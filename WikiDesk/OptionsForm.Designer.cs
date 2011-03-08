@@ -31,28 +31,28 @@
             this.tabs_ = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tpCache_ = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.btnClearCacheNow_ = new System.Windows.Forms.Button();
+            this.chkClearCacheOnExit_ = new System.Windows.Forms.CheckBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cacheSizeBar_ = new System.Windows.Forms.TrackBar();
+            this.btnBrowse_ = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtCacheFolder_ = new System.Windows.Forms.TextBox();
+            this.chkEnableCaching_ = new System.Windows.Forms.CheckBox();
             this.btnSave_ = new System.Windows.Forms.Button();
             this.btnCancel_ = new System.Windows.Forms.Button();
-            this.chkEnableCaching_ = new System.Windows.Forms.CheckBox();
-            this.txtCacheFolder_ = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnBrowse_ = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.cacheSizeBar_ = new System.Windows.Forms.TrackBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.chkClearCacheOnExit_ = new System.Windows.Forms.CheckBox();
-            this.btnClearCacheNow_ = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
             this.tabs_.SuspendLayout();
             this.tpCache_.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cacheSizeBar_)).BeginInit();
@@ -107,6 +107,179 @@
             this.tpCache_.Text = "Cache";
             this.tpCache_.UseVisualStyleBackColor = true;
             //
+            // label3
+            //
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(476, 120);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "128 GB";
+            //
+            // btnClearCacheNow_
+            //
+            this.btnClearCacheNow_.Location = new System.Drawing.Point(198, 165);
+            this.btnClearCacheNow_.Name = "btnClearCacheNow_";
+            this.btnClearCacheNow_.Size = new System.Drawing.Size(110, 23);
+            this.btnClearCacheNow_.TabIndex = 9;
+            this.btnClearCacheNow_.Text = "Clear cache now";
+            this.btnClearCacheNow_.UseVisualStyleBackColor = true;
+            //
+            // chkClearCacheOnExit_
+            //
+            this.chkClearCacheOnExit_.AutoSize = true;
+            this.chkClearCacheOnExit_.Location = new System.Drawing.Point(32, 169);
+            this.chkClearCacheOnExit_.Name = "chkClearCacheOnExit_";
+            this.chkClearCacheOnExit_.Size = new System.Drawing.Size(123, 17);
+            this.chkClearCacheOnExit_.TabIndex = 8;
+            this.chkClearCacheOnExit_.Text = "Clear cache on exit?";
+            this.chkClearCacheOnExit_.UseVisualStyleBackColor = true;
+            //
+            // label13
+            //
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(442, 120);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(37, 13);
+            this.label13.TabIndex = 7;
+            this.label13.Text = "64 GB";
+            //
+            // label12
+            //
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(402, 120);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(37, 13);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "32 GB";
+            //
+            // label11
+            //
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(362, 120);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(37, 13);
+            this.label11.TabIndex = 7;
+            this.label11.Text = "16 GB";
+            //
+            // label10
+            //
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(329, 120);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(31, 13);
+            this.label10.TabIndex = 7;
+            this.label10.Text = "8 GB";
+            //
+            // label9
+            //
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(292, 120);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(31, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "4 GB";
+            //
+            // label8
+            //
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(255, 120);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "2 GB";
+            //
+            // label7
+            //
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(217, 120);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(31, 13);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "1024";
+            //
+            // label6
+            //
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(181, 120);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(25, 13);
+            this.label6.TabIndex = 7;
+            this.label6.Text = "512";
+            //
+            // label5
+            //
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(144, 120);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(25, 13);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "256";
+            //
+            // label4
+            //
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(108, 120);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(25, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "128";
+            //
+            // label2
+            //
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(34, 95);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Cache Limit:";
+            //
+            // cacheSizeBar_
+            //
+            this.cacheSizeBar_.AutoSize = false;
+            this.cacheSizeBar_.Location = new System.Drawing.Point(105, 88);
+            this.cacheSizeBar_.Maximum = 11;
+            this.cacheSizeBar_.Minimum = 1;
+            this.cacheSizeBar_.Name = "cacheSizeBar_";
+            this.cacheSizeBar_.Size = new System.Drawing.Size(404, 45);
+            this.cacheSizeBar_.TabIndex = 4;
+            this.cacheSizeBar_.Value = 1;
+            //
+            // btnBrowse_
+            //
+            this.btnBrowse_.Location = new System.Drawing.Point(479, 49);
+            this.btnBrowse_.Name = "btnBrowse_";
+            this.btnBrowse_.Size = new System.Drawing.Size(30, 23);
+            this.btnBrowse_.TabIndex = 3;
+            this.btnBrowse_.Text = "...";
+            this.btnBrowse_.UseVisualStyleBackColor = true;
+            //
+            // label1
+            //
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(26, 54);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Cache Folder:";
+            //
+            // txtCacheFolder_
+            //
+            this.txtCacheFolder_.Location = new System.Drawing.Point(105, 51);
+            this.txtCacheFolder_.Name = "txtCacheFolder_";
+            this.txtCacheFolder_.Size = new System.Drawing.Size(368, 20);
+            this.txtCacheFolder_.TabIndex = 1;
+            //
+            // chkEnableCaching_
+            //
+            this.chkEnableCaching_.AutoSize = true;
+            this.chkEnableCaching_.Location = new System.Drawing.Point(8, 20);
+            this.chkEnableCaching_.Name = "chkEnableCaching_";
+            this.chkEnableCaching_.Size = new System.Drawing.Size(153, 17);
+            this.chkEnableCaching_.TabIndex = 0;
+            this.chkEnableCaching_.Text = "Enable media file caching?";
+            this.chkEnableCaching_.UseVisualStyleBackColor = true;
+            //
             // btnSave_
             //
             this.btnSave_.Location = new System.Drawing.Point(441, 271);
@@ -125,182 +298,9 @@
             this.btnCancel_.Text = "Cancel";
             this.btnCancel_.UseVisualStyleBackColor = true;
             //
-            // chkEnableCaching_
-            //
-            this.chkEnableCaching_.AutoSize = true;
-            this.chkEnableCaching_.Location = new System.Drawing.Point(8, 20);
-            this.chkEnableCaching_.Name = "chkEnableCaching_";
-            this.chkEnableCaching_.Size = new System.Drawing.Size(153, 17);
-            this.chkEnableCaching_.TabIndex = 0;
-            this.chkEnableCaching_.Text = "Enable media file caching?";
-            this.chkEnableCaching_.UseVisualStyleBackColor = true;
-            //
-            // txtCacheFolder_
-            //
-            this.txtCacheFolder_.Location = new System.Drawing.Point(105, 51);
-            this.txtCacheFolder_.Name = "txtCacheFolder_";
-            this.txtCacheFolder_.Size = new System.Drawing.Size(368, 20);
-            this.txtCacheFolder_.TabIndex = 1;
-            //
-            // label1
-            //
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(26, 54);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Cache Folder:";
-            //
-            // btnBrowse_
-            //
-            this.btnBrowse_.Location = new System.Drawing.Point(479, 49);
-            this.btnBrowse_.Name = "btnBrowse_";
-            this.btnBrowse_.Size = new System.Drawing.Size(30, 23);
-            this.btnBrowse_.TabIndex = 3;
-            this.btnBrowse_.Text = "...";
-            this.btnBrowse_.UseVisualStyleBackColor = true;
-            //
             // openFileDialog1
             //
             this.openFileDialog1.FileName = "openFileDialog_";
-            //
-            // cacheSizeBar_
-            //
-            this.cacheSizeBar_.AutoSize = false;
-            this.cacheSizeBar_.Location = new System.Drawing.Point(105, 88);
-            this.cacheSizeBar_.Maximum = 11;
-            this.cacheSizeBar_.Minimum = 1;
-            this.cacheSizeBar_.Name = "cacheSizeBar_";
-            this.cacheSizeBar_.Size = new System.Drawing.Size(404, 45);
-            this.cacheSizeBar_.TabIndex = 4;
-            this.cacheSizeBar_.Value = 1;
-            //
-            // label2
-            //
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(34, 95);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Cache Limit:";
-            //
-            // label4
-            //
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(108, 120);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(25, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "128";
-            //
-            // label5
-            //
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(144, 120);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(25, 13);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "256";
-            //
-            // label6
-            //
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(181, 120);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(25, 13);
-            this.label6.TabIndex = 7;
-            this.label6.Text = "512";
-            //
-            // label7
-            //
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(217, 120);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(31, 13);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "1024";
-            //
-            // label8
-            //
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(255, 120);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 13);
-            this.label8.TabIndex = 7;
-            this.label8.Text = "2 GB";
-            //
-            // label9
-            //
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(292, 120);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(31, 13);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "4 GB";
-            //
-            // label10
-            //
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(329, 120);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(31, 13);
-            this.label10.TabIndex = 7;
-            this.label10.Text = "8 GB";
-            //
-            // label11
-            //
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(362, 120);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(37, 13);
-            this.label11.TabIndex = 7;
-            this.label11.Text = "16 GB";
-            //
-            // label12
-            //
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(402, 120);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(37, 13);
-            this.label12.TabIndex = 7;
-            this.label12.Text = "32 GB";
-            //
-            // label13
-            //
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(442, 120);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(37, 13);
-            this.label13.TabIndex = 7;
-            this.label13.Text = "64 GB";
-            //
-            // chkClearCacheOnExit_
-            //
-            this.chkClearCacheOnExit_.AutoSize = true;
-            this.chkClearCacheOnExit_.Location = new System.Drawing.Point(32, 169);
-            this.chkClearCacheOnExit_.Name = "chkClearCacheOnExit_";
-            this.chkClearCacheOnExit_.Size = new System.Drawing.Size(123, 17);
-            this.chkClearCacheOnExit_.TabIndex = 8;
-            this.chkClearCacheOnExit_.Text = "Clear cache on exit?";
-            this.chkClearCacheOnExit_.UseVisualStyleBackColor = true;
-            //
-            // btnClearCacheNow_
-            //
-            this.btnClearCacheNow_.Location = new System.Drawing.Point(198, 165);
-            this.btnClearCacheNow_.Name = "btnClearCacheNow_";
-            this.btnClearCacheNow_.Size = new System.Drawing.Size(110, 23);
-            this.btnClearCacheNow_.TabIndex = 9;
-            this.btnClearCacheNow_.Text = "Clear cache now";
-            this.btnClearCacheNow_.UseVisualStyleBackColor = true;
-            //
-            // label3
-            //
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(476, 120);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "128 GB";
             //
             // OptionsForm
             //
@@ -311,6 +311,7 @@
             this.Controls.Add(this.btnSave_);
             this.Controls.Add(this.tabs_);
             this.Name = "OptionsForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
             this.tabs_.ResumeLayout(false);
             this.tpCache_.ResumeLayout(false);
