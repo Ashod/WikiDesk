@@ -1,5 +1,7 @@
 ﻿namespace WikiDesk.Core.Test
 {
+    using System.Collections.Generic;
+
     using NUnit.Framework;
 
     using WikiDesk.Data;
@@ -39,6 +41,111 @@
             Assert.AreEqual(
                 "#if:{{{portal|}}}|a portal|an article",
                 magicBlock);
+        }
+
+        [Test]
+        public void GetMagicWordAndParamsWeather()
+        {
+            const string RAW = "Weather|Maine|cold";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("Weather", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("Maine", args[0].Value);
+            Assert.AreEqual("2", args[1].Key);
+            Assert.AreEqual("cold", args[1].Value);
+        }
+
+        [Test]
+        public void GetMagicWordAndParamsFurther()
+        {
+            const string RAW = "Further|[[Cats]], [[Dogs]], and [[Fish]]";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("Further", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("[[Cats]], [[Dogs]], and [[Fish]]", args[0].Value);
+        }
+
+        [Test]
+        public void GetMagicWordAndParamsFurtherComplex()
+        {
+            const string RAW = "Further|[[Article 1]], [[Article 2]], and [[Article Something#3|Article 3]]";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("Further", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("[[Article 1]], [[Article 2]], and [[Article Something#3|Article 3]]", args[0].Value);
+        }
+
+        [Test]
+        public void ProcessTemplateParamsA()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("1", "a")
+                };
+
+            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", args);
+            Assert.AreEqual("start-a-end", value);
+        }
+
+        [Test]
+        public void ProcessTemplateParamsSpace()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("1", " ")
+                };
+
+            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", args);
+            Assert.AreEqual("start- -end", value);
+        }
+
+        [Test]
+        public void ProcessTemplateParamsBlank()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("1", string.Empty)
+                };
+
+            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", args);
+            Assert.AreEqual("start--end", value);
+        }
+
+        [Test]
+        public void ProcessTemplateParamsNamed()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("1", "no surprise")
+                };
+
+            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", args);
+            Assert.AreEqual("start-no surprise-end", value);
+        }
+
+        [Test]
+        public void ProcessTemplateParamsNone()
+        {
+            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", null);
+            Assert.AreEqual("start-pqr-end", value);
+        }
+
+        [Test]
+        public void ProcessTemplateParamsWrong()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("2", "a")
+                };
+
+            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", args);
+            Assert.AreEqual("start-pqr-end", value);
         }
 
         [Test]
