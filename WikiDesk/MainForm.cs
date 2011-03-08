@@ -548,11 +548,20 @@
             title = Title.Normalize(title);
             string url = string.Concat("http://", language.Code, domain.ExportUrl, title);
             string pageXml = Download.DownloadPage(url);
+            if (pageXml.ToUpperInvariant().StartsWith("<!DOCTYPE HTML PUBLIC") ||
+                pageXml.ToUpperInvariant().StartsWith("<HTML"))
+            {
+                // XML response expected. HTML probably means error.
+                return null;
+            }
+
+            // Import the new data.
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
             {
                 DumpParser.ImportFromXml(ms, db_, DateTime.UtcNow, false, domainId, language.Id);
             }
 
+            // Try to retrieve the target page.
             Page page = db_.SelectPage(domainId, language.Id, title);
             if (page != null)
             {

@@ -1,7 +1,6 @@
 ﻿
 namespace WikiDesk.Core
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -577,17 +576,15 @@ namespace WikiDesk.Core
 
                 // Handle the match.
                 string magic = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
-                string nestedMagic = MagicParser.FindMagicBlock(magic);
-                if (!string.IsNullOrEmpty(nestedMagic))
+                magic = MagicWord(magic);
+                if (!string.IsNullOrEmpty(magic))
                 {
-                    magic = ProcessMagicWords(magic);
+                    // Recursively process.
+                    string text = ProcessMagicWords(magic);
+                    sb.Append(text);
                 }
 
-                string text = MagicWord(magic);
-                sb.Append(text);
-
                 lastIndex = startIndex + (endIndex - startIndex + 1);
-
                 startIndex = MagicParser.FindMagicBlock(wikicode, lastIndex, out endIndex);
             }
 
@@ -606,7 +603,7 @@ namespace WikiDesk.Core
         private string MagicWord(string magic)
         {
             List<KeyValuePair<string, string>> args;
-            string command = GetMagicWordAndParams(magic, out args);
+            string command = MagicParser.GetMagicWordAndParams(magic, out args);
 
             // Is it a parser function?
             string output;
@@ -621,163 +618,38 @@ namespace WikiDesk.Core
             return Template(command, args);
         }
 
-        /// <summary>
-        /// Find the index of the first occurrence of ch outside of the wrapper
-        /// characters open and close.
-        /// </summary>
-        /// <param name="text">The text to search within.</param>
-        /// <param name="offset">The offset where to start the search.</param>
-        /// <param name="ch">The character to find.</param>
-        /// <param name="open">The opening wrapper character.</param>
-        /// <param name="close">The closing wrapper character.</param>
-        /// <returns>The index of ch or -ve if not found.</returns>
-        private static int FindUnwrapped(string text, int offset, char ch, char open, char close)
-        {
-            int nesting = 0;
-            for (int pos = offset; pos < text.Length; ++pos)
-            {
-                char c = text[pos];
-                if (c == open)
-                {
-                    ++nesting;
-                }
-                else
-                if (c == close)
-                {
-                    --nesting;
-                }
-                else
-                if (c == ch)
-                {
-                    if (nesting == 0)
-                    {
-                        return pos;
-                    }
-                }
-            }
-
-            return -1;
-        }
-
-        /// <summary>
-        /// Gets the magic-word/variable/function-name/template-name and all params.
-        /// </summary>
-        /// <example>"#if:{{{lang|}}}|{{{{{lang}}}}}&nbsp;" should return
-        /// "#if", {{{lang|}}}, {{{{{lang}}}}}&nbsp;
-        /// </example>
-        /// <example>"" should return
-        ///
-        /// </example>
-        /// <param name="code">The code to parse.</param>
-        /// <param name="args">The parameters, if any.</param>
-        /// <returns>The command name.</returns>
-        private string GetMagicWordAndParams(string code, out List<KeyValuePair<string, string>> args)
-        {
-            int barIndex = code.IndexOf('|');
-            if (barIndex < 0)
-            {
-                args = null;
-                return code;
-            }
-
-            List<string> parameters = new List<string>(4);
-
-            // If the magic word ends with a colon, parse it now.
-            int colonIndex = code.IndexOf(':');
-            if (colonIndex >= 0)
-            {
-                parameters.Add(code.Substring(0, colonIndex));
-                code = code.Substring(colonIndex + 1);
-            }
-
-            int curParamStart = 0;
-            while (true)
-            {
-                barIndex = FindUnwrapped(code, curParamStart, '|', '{', '}');
-                if (barIndex >= 0)
-                {
-                    parameters.Add(code.Substring(curParamStart, barIndex - curParamStart));
-                    curParamStart = barIndex + 1;
-                }
-                else
-                {
-                    // Last param.
-                    parameters.Add(code.Substring(curParamStart));
-                    break;
-                }
-            }
-
-            if (parameters.Count == 0)
-            {
-                args = null;
-                return null;
-            }
-
-            string command = parameters[0];
-            parameters.RemoveAt(0);
-
-            args = new List<KeyValuePair<string, string>>(parameters.Count);
-
-            int paramNumber = 1;
-            foreach (string parameter in parameters)
-            {
-                string name;
-                string value;
-                int indexOfAssignment = parameter.IndexOf('=');
-                if (indexOfAssignment >= 0)
-                {
-                    name = parameter.Substring(0, indexOfAssignment);
-                    value = parameter.Substring(indexOfAssignment + 1);
-                }
-                else
-                {
-                    name = paramNumber.ToString();
-                    value = parameter;
-                    ++paramNumber;
-                }
-
-                // Expand parameters, if necessary.
-                value = ProcessMagicWords(value);
-
-                args.Add(new KeyValuePair<string, string>(name, value));
-            }
-
-            return command;
-        }
-
         private string Template(string name, List<KeyValuePair<string, string>> args)
         {
-            if (resolveWikiTemplateDel_ != null)
+            if (resolveWikiTemplateDel_ == null)
             {
-                string value = resolveWikiTemplateDel_(name, config_.CurrentLanguageCode);
-
-                // Redirection?
-                string newTitle = Redirection(value);
-                if (newTitle != null)
-                {
-                    value = resolveWikiTemplateDel_(newTitle, config_.CurrentLanguageCode);
-                    newTitle = Redirection(value);
-                    if (newTitle != null)
-                    {
-                        return "<b><em>Redirection Loop!</em></b>";
-                    }
-                }
-
-                if (args != null && args.Count > 0)
-                {
-                    // Process the parameters.
-                    foreach (KeyValuePair<string, string> pair in args)
-                    {
-                        string argName = "{{{" + pair.Key + "}}}";
-                        value = value.Replace(argName, pair.Value);
-                    }
-                }
-
-                // Expand, if necessary.
-                return ProcessMagicWords(value);
+                return string.Empty;
             }
 
-            return string.Empty;
+            string value = resolveWikiTemplateDel_(name, config_.CurrentLanguageCode);
+
+            // Redirection?
+            string newTitle = Redirection(value);
+            if (newTitle != null)
+            {
+                value = resolveWikiTemplateDel_(newTitle, config_.CurrentLanguageCode);
+                newTitle = Redirection(value);
+                if (newTitle != null)
+                {
+                    return "<b><em>Redirection Loop!</em></b>";
+                }
+            }
+
+            if (args != null && args.Count > 0)
+            {
+                // Process the parameters.
+                foreach (KeyValuePair<string, string> pair in args)
+                {
+                    string argName = "{{{" + pair.Key + "}}}";
+                    value = value.Replace(argName, pair.Value);
+                }
+            }
+
+            return value;
         }
 
         #endregion // MagicWords, Functions and Templates
