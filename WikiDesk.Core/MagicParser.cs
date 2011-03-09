@@ -296,11 +296,13 @@ namespace WikiDesk.Core
                 }
 
                 lastIndex = startIndex + (endIndex - startIndex + 1);
-                startIndex = FindMagicBlock(template, lastIndex, out endIndex);
+                startIndex = FindWrappedBlock(template, lastIndex, out endIndex, '{', '}', 3);
             }
 
             sb.Append(template.Substring(lastIndex));
-            return sb.ToString();
+            template = sb.ToString();
+            startIndex = FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
+            return startIndex >= 0 ? ProcessTemplateParams(template, args) : template;
         }
 
         /// <summary>
