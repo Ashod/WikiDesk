@@ -2,6 +2,7 @@
 namespace WikiDesk.Core
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
 
     public class MagicWordProcessor
     {
@@ -10,11 +11,18 @@ namespace WikiDesk.Core
             RegisterHandlers();
         }
 
-        public Result Execute(string functionName, string input, out string output)
+        public Result Execute(string functionName, List<KeyValuePair<string, string>> args, out string output)
         {
             Handler func = FindHandler(functionName);
             if (func != null)
             {
+                string input = string.Empty;
+                if (args != null)
+                {
+                    Debug.Assert(args.Count == 1);
+                    input = args[0].Value;
+                }
+
                 return func(input, out output);
             }
 
@@ -71,10 +79,10 @@ namespace WikiDesk.Core
             RegisterHandler("ns",                DoNothing);
             RegisterHandler("nse",               DoNothing);
             RegisterHandler("urlencode",         DoNothing);
-            RegisterHandler("lcfirst",           DoNothing);
-            RegisterHandler("ucfirst",           DoNothing);
-            RegisterHandler("lc",                DoNothing);
-            RegisterHandler("uc",                DoNothing);
+            RegisterHandler("lcfirst",           LcFirst);
+            RegisterHandler("ucfirst",           UcFirst);
+            RegisterHandler("lc",                Lc);
+            RegisterHandler("uc",                Uc);
             RegisterHandler("localurl",          DoNothing);
             RegisterHandler("localurle",         DoNothing);
             RegisterHandler("fullurl",           DoNothing);
@@ -122,6 +130,30 @@ namespace WikiDesk.Core
             RegisterHandler("subjectpagenamee",  DoNothing);
             RegisterHandler("tag",               DoNothing);
             RegisterHandler("#formatdate",       DoNothing);
+        }
+
+        private static Result Lc(string input, out string output)
+        {
+            output = input.ToLowerInvariant();
+            return Result.Found;
+        }
+
+        private static Result Uc(string input, out string output)
+        {
+            output = input.ToUpperInvariant();
+            return Result.Found;
+        }
+
+        private static Result UcFirst(string input, out string output)
+        {
+            output = input[0].ToString().ToUpperInvariant() + input.Substring(1);
+            return Result.Found;
+        }
+
+        private static Result LcFirst(string input, out string output)
+        {
+            output = input[0].ToString().ToLowerInvariant() + input.Substring(1);
+            return Result.Found;
         }
 
         private Result DoNothing(string input, out string output)

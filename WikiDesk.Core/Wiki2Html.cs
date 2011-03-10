@@ -611,11 +611,19 @@ namespace WikiDesk.Core
 
             // Is it a parser function?
             string output;
-            ParserFunctionProcessor.Result result =
-                parserFunctionsProcessor_.Execute(command, args, out output);
+            ParserFunctionProcessor.Result result = parserFunctionsProcessor_.Execute(command, args, out output);
             if (result != ParserFunctionProcessor.Result.Unknown)
             {
                 logger_.Log(Levels.Debug, "ParserFunction for command [{0}] - {1}.", command, output);
+                return output;
+            }
+
+            // Is it a magic word?
+            MagicWordProcessor.Result resMagic =
+                magicWordProcessor_.Execute(command, args, out output);
+            if (resMagic != MagicWordProcessor.Result.Unknown)
+            {
+                logger_.Log(Levels.Debug, "MagicWord for [{0}] - {1}.", command, output);
                 return output;
             }
 
