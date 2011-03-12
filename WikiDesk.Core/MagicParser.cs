@@ -130,11 +130,9 @@ namespace WikiDesk.Core
         /// <summary>
         /// Gets the magic-word/variable/function-name/template-name and all params.
         /// </summary>
-        /// <example>"#if:{{{lang|}}}|{{{{{lang}}}}}&nbsp;" should return
+        /// <example>
+        /// "#if:{{{lang|}}}|{{{{{lang}}}}}&nbsp;" should return
         /// "#if", {{{lang|}}}, {{{{{lang}}}}}&nbsp;
-        /// </example>
-        /// <example>"" should return
-        ///
         /// </example>
         /// <param name="code">The code to parse.</param>
         /// <param name="args">The parameters, if any.</param>
@@ -161,16 +159,21 @@ namespace WikiDesk.Core
             int curParamStart = 0;
             while (true)
             {
-                barIndex = FindUnwrapped(code, curParamStart, '|', '{', '}');
+                barIndex = FindParam(code, curParamStart);
+
                 if (barIndex >= 0)
                 {
-                    parameters.Add(code.Substring(curParamStart, barIndex - curParamStart));
+                    string param = code.Substring(curParamStart, barIndex - curParamStart);
+                    param = param.Trim().Trim('\n').Trim('\r').Trim();
+                    parameters.Add(param);
                     curParamStart = barIndex + 1;
                 }
                 else
                 {
                     // Last param.
-                    parameters.Add(code.Substring(curParamStart));
+                    string param = code.Substring(curParamStart);
+                    param = param.Trim().Trim('\n').Trim('\r').Trim();
+                    parameters.Add(param);
                     break;
                 }
             }
@@ -204,10 +207,49 @@ namespace WikiDesk.Core
                     ++paramNumber;
                 }
 
+                name = name.Trim().Trim('\n').Trim('\r').Trim();
+                value = value.Trim().Trim('\n').Trim('\r').Trim();
                 args.Add(new KeyValuePair<string, string>(name, value));
             }
 
             return command;
+        }
+
+        /// <summary>
+        /// Gets the index of the next param start,
+        /// the index that is both outside {} and [].
+        /// Bars in braces are the argument default.
+        /// Bars in brackets are wiki link names.
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="startOffset"></param>
+        /// <returns></returns>
+        private static int FindParam(string code, int startOffset)
+        {
+            int nesting = 0;
+            for (int pos = startOffset; pos < code.Length; ++pos)
+            {
+                char c = code[pos];
+                if (c == '{' || c == '[')
+                {
+                    ++nesting;
+                }
+                else
+                if (c == '}' || c == ']')
+                {
+                    --nesting;
+                }
+                else
+                if (c == '|')
+                {
+                    if (nesting == 0)
+                    {
+                        return pos;
+                    }
+                }
+            }
+
+            return -1;
         }
 
         /// <summary>

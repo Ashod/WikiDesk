@@ -70,6 +70,68 @@
         }
 
         [Test]
+        public void GetMagicWordAndParamsFunction()
+        {
+            const string RAW = "#if:{{{lang|}}}|{{{{{lang}}}}}&nbsp;";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("#if", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("{{{lang|}}}", args[0].Value);
+            Assert.AreEqual("2", args[1].Key);
+            Assert.AreEqual("{{{{{lang}}}}}&nbsp;", args[1].Value);
+        }
+
+        [Test]
+        public void GetMagicWordAndParamsFunctionWiki()
+        {
+            const string RAW = "#if:{{{lang|}}}|{{{{{lang}}}}}[[Canton of Zürich|Canton Zürich]]";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("#if", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("{{{lang|}}}", args[0].Value);
+            Assert.AreEqual("2", args[1].Key);
+            Assert.AreEqual("{{{{{lang}}}}}[[Canton of Zürich|Canton Zürich]]", args[1].Value);
+        }
+
+        [Test]
+        public void GetMagicWordAndParamsFunctionWiki2()
+        {
+            const string RAW = "#if:{{{lang|}}}|{{{{{lang}}}}}[[Canton of Zürich|Canton Zürich]]|{{name|}}[[link|link]]{{{name|}}}";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("#if", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("{{{lang|}}}", args[0].Value);
+            Assert.AreEqual("2", args[1].Key);
+            Assert.AreEqual("{{{{{lang}}}}}[[Canton of Zürich|Canton Zürich]]", args[1].Value);
+            Assert.AreEqual("3", args[2].Key);
+            Assert.AreEqual("{{name|}}[[link|link]]{{{name|}}}", args[2].Value);
+        }
+
+        [Test]
+        public void GetMagicWordAndParamsNewLine()
+        {
+            const string RAW = "navbox\n|name  = Canton Zurich\n|title = Districts of [[Canton of Zürich|Canton Zürich]]\n\n|list1 = [[Affoltern (district)|Affoltern]]{{·}} [[Andelfingen (district)|Andelfingen]]{{·}} [[Bülach (district)|Bülach]]{{·}} [[Dielsdorf (district)|Dielsdorf]]{{·}} [[Dietikon (district)|Dietikon]]{{·}} [[Hinwil (district)|Hinwil]]{{·}} [[Horgen (district)|Horgen]]{{·}} [[Meilen (district)|Meilen]]{{·}} [[Pfäffikon (district)|Pfäffikon]]{{·}} [[Uster (district)|Uster]]{{·}} [[Winterthur (district)|Winterthur]]{{·}} [[Zürich (district)|Zurich]]\n\n|below = [[Districts of Switzerland#Zurich|Districts of Switzerland]]{{·}} [[Municipalities of the canton of Zurich]]\n";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("navbox", command);
+            Assert.AreEqual("name", args[0].Key);
+            Assert.AreEqual("Canton Zurich", args[0].Value);
+            Assert.AreEqual("title", args[1].Key);
+            Assert.AreEqual("Districts of [[Canton of Zürich|Canton Zürich]]", args[1].Value);
+            Assert.AreEqual("list1", args[2].Key);
+            Assert.AreEqual("[[Affoltern (district)|Affoltern]]{{·}} [[Andelfingen (district)|Andelfingen]]{{·}} [[Bülach (district)|Bülach]]{{·}} [[Dielsdorf (district)|Dielsdorf]]{{·}} [[Dietikon (district)|Dietikon]]{{·}} [[Hinwil (district)|Hinwil]]{{·}} [[Horgen (district)|Horgen]]{{·}} [[Meilen (district)|Meilen]]{{·}} [[Pfäffikon (district)|Pfäffikon]]{{·}} [[Uster (district)|Uster]]{{·}} [[Winterthur (district)|Winterthur]]{{·}} [[Zürich (district)|Zurich]]", args[2].Value);
+            Assert.AreEqual("below", args[3].Key);
+            Assert.AreEqual("[[Districts of Switzerland#Zurich|Districts of Switzerland]]{{·}} [[Municipalities of the canton of Zurich]]", args[3].Value);
+        }
+
+        [Test]
         public void GetMagicWordAndParamsFurtherComplex()
         {
             const string RAW = "Further|[[Article 1]], [[Article 2]], and [[Article Something#3|Article 3]]";
