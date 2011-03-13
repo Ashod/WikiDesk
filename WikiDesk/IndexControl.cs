@@ -30,7 +30,10 @@
             cboDomains_.Items.Clear();
             foreach (KeyValuePair<string, Dictionary<string, PrefixMatchContainer<string>>> domainLangPair in entriesMap_)
             {
-                cboDomains_.Items.Add(domainLangPair.Key);
+                if (domainLangPair.Value.Count > 0)
+                {
+                    cboDomains_.Items.Add(domainLangPair.Key);
+                }
             }
 
             if (cboDomains_.SelectedIndex >= 0)

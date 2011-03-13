@@ -363,6 +363,16 @@
 
             //TODO: How should auto-complete work? Should we add a domain selector?
             // cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
+
+            if (indexControl_ != null)
+            {
+                indexControl_.UpdateListItems();
+            }
+
+            if (searchControl_ != null)
+            {
+                searchControl_.UpdateListItems();
+            }
         }
 
         private void OpenClick(object sender, EventArgs e)
@@ -825,8 +835,6 @@
             finally
             {
                 ReloadDatabase();
-                indexControl_.UpdateListItems();
-                searchControl_.UpdateListItems();
                 Enabled = true;
             }
         }
