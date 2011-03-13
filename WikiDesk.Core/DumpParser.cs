@@ -19,7 +19,7 @@
         /// <param name="db">The database into which to import the dump.</param>
         /// <param name="dumpDate">The date when the dump was created.</param>
         /// <param name="indexOnly">If True, article text is not added, just the meta data.</param>
-        public static void ImportFromXml(
+        public static string ImportFromXml(
                                 Stream stream,
                                 Database db,
                                 DateTime dumpDate,
@@ -29,7 +29,7 @@
         {
             bool cancel = false;
             int pages = 0;
-            ImportFromXml(stream, db, dumpDate, indexOnly, domainId, languageId, ref cancel, ref pages);
+            return ImportFromXml(stream, db, dumpDate, indexOnly, domainId, languageId, ref cancel, ref pages);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@
         /// <param name="indexOnly">If True, article text is not added, just the meta data.</param>
         /// <param name="cancel">When set, this function terminates.</param>
         /// <param name="pages">Cumulates the number of pages updated/inserted into the DB.</param>
-        public static void ImportFromXml(
+        public static string ImportFromXml(
                                 Stream stream,
                                 Database db,
                                 DateTime dumpDate,
@@ -53,6 +53,7 @@
                                 ref bool cancel,
                                 ref int pages)
         {
+            string title = string.Empty;
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;
@@ -73,10 +74,13 @@
                         page.Text = null;
                     }
 
+                    title = page.Title;
                     db.UpdateInsert(page, db.SelectPage(page.Domain, page.Language, page.Title));
                     ++pages;
                 }
             }
+
+            return title;
         }
 
         /// <summary>

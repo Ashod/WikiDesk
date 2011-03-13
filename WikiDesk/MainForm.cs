@@ -330,6 +330,11 @@
         {
             db_ = new Database(dbPath);
 
+            ReloadDatabase();
+        }
+
+        private void ReloadDatabase()
+        {
             entriesMap_.Clear();
             foreach (Domain domain in db_.GetDomains())
             {
@@ -356,7 +361,7 @@
             }
 
             //TODO: How should auto-complete work? Should we add a domain selector?
-//            cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
+            // cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
         }
 
         private void OpenClick(object sender, EventArgs e)
@@ -558,7 +563,11 @@
             // Import the new data.
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(pageXml)))
             {
-                DumpParser.ImportFromXml(ms, db_, DateTime.UtcNow, false, domainId, language.Id);
+                string newTitle = DumpParser.ImportFromXml(ms, db_, DateTime.UtcNow, false, domainId, language.Id);
+                if (newTitle.ToUpperInvariant() == title.ToUpperInvariant())
+                {
+                    title = newTitle;
+                }
             }
 
             // Try to retrieve the target page.
@@ -842,6 +851,9 @@
             }
             finally
             {
+                ReloadDatabase();
+                indexControl_.UpdateListItems();
+                searchControl_.UpdateListItems();
                 Enabled = true;
             }
         }
