@@ -144,6 +144,20 @@
         }
 
         [Test]
+        public void GetMagicWordAndParamsFullUrl()
+        {
+            const string RAW = "fullurl:{{FULLPAGENAME}}|action=edit";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("fullurl", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("{{FULLPAGENAME}}", args[0].Value);
+            Assert.AreEqual("action", args[1].Key);
+            Assert.AreEqual("edit", args[1].Value);
+        }
+
+        [Test]
         public void ProcessTemplateParamsA()
         {
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()

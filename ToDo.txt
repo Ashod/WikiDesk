@@ -6,8 +6,9 @@
 * Favs.
 * Media Cache. (Partially done.)
 * Editable settings.
-* Compressed Database.
 * Load from web backups. (Partially done.)
+* Page view progresss.
+* Splash Screen.
 
 Wiki2Html:
 
@@ -28,3 +29,4 @@ Done:
 * Other languages.
 * Case-insensitive title search. (Standard Wiki normalization only.)
 * Full-text search.
+* Compressed Database.

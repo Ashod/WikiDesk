@@ -16,14 +16,7 @@ namespace WikiDesk.Core
             Handler func = FindHandler(functionName);
             if (func != null)
             {
-                string input = string.Empty;
-                if (args != null)
-                {
-                    Debug.Assert(args.Count == 1);
-                    input = args[0].Value;
-                }
-
-                return func(input, out output);
+                return func(args, out output);
             }
 
             output = null;
@@ -53,7 +46,7 @@ namespace WikiDesk.Core
             Html
         }
 
-        public delegate Result Handler(string input, out string output);
+        public delegate Result Handler(List<KeyValuePair<string, string>> args, out string output);
 
         public void RegisterHandler(string name, Handler func)
         {
@@ -132,34 +125,68 @@ namespace WikiDesk.Core
             RegisterHandler("#formatdate",       DoNothing);
         }
 
-        private static Result Lc(string input, out string output)
+        private static Result Lc(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = input.ToLowerInvariant();
+            if (args != null && args.Count > 0)
+            {
+                output = args[0].Value.ToLowerInvariant();
+            }
+            else
+            {
+                output = string.Empty;
+            }
+
             return Result.Found;
         }
 
-        private static Result Uc(string input, out string output)
+        private static Result Uc(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = input.ToUpperInvariant();
+            if (args != null && args.Count > 0)
+            {
+                output = args[0].Value.ToUpperInvariant();
+            }
+            else
+            {
+                output = string.Empty;
+            }
+
             return Result.Found;
         }
 
-        private static Result UcFirst(string input, out string output)
+        private static Result UcFirst(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = input[0].ToString().ToUpperInvariant() + input.Substring(1);
+            if (args != null && args.Count > 0)
+            {
+                string arg = args[0].Value;
+                output = arg[0].ToString().ToUpperInvariant() + arg.Substring(1);
+            }
+            else
+            {
+                output = string.Empty;
+            }
+
             return Result.Found;
         }
 
-        private static Result LcFirst(string input, out string output)
+        private static Result LcFirst(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = input[0].ToString().ToLowerInvariant() + input.Substring(1);
+            if (args != null && args.Count > 0)
+            {
+                string arg = args[0].Value;
+                output = arg[0].ToString().ToLowerInvariant() + arg.Substring(1);
+            }
+            else
+            {
+                output = string.Empty;
+            }
+
             return Result.Found;
         }
 
-        private Result DoNothing(string input, out string output)
+        private Result DoNothing(List<KeyValuePair<string, string>> args, out string output)
         {
             output = string.Empty;
-            return Result.Html;
+            return Result.Found;
         }
 
         #endregion // implementation
