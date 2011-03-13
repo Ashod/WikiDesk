@@ -44,6 +44,8 @@ namespace WikiDesk
         public int AutoUpdateDays = 7;
         public bool AutoRetrieveMissing = true;
 
+        public string InstallationFolder;
+
         #region domain
 
         /// <summary>

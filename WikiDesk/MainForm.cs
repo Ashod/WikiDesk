@@ -62,6 +62,7 @@
             tempFileUrl_ = "file:///" + tempFilename_.Replace('\\', '/');
 
             settings_ = Settings.Deserialize(Path.Combine(userDataFolderPath_, CONFIG_FILENAME));
+            settings_.InstallationFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             fileCache_ = new FileCache(settings_.FileCacheFolder);
 
@@ -89,7 +90,7 @@
                 throw new ApplicationException("Can't load the current or default domain!");
             }
 
-            SetCurrentWikiSite(new WikiSite(wikiDomain, wikiLanguage));
+            SetCurrentWikiSite(wikiDomain, wikiLanguage);
 
             ShowAllLanguages();
 
@@ -366,20 +367,16 @@
 
         private void OpenClick(object sender, EventArgs e)
         {
-//             openFileDialog.CheckFileExists = true;
-//             openFileDialog.ReadOnlyChecked = true;
-//             openFileDialog.ShowReadOnly = false;
-//             openFileDialog.Multiselect = false;
-//             openFileDialog.DefaultExt = "db";
-//             openFileDialog.Filter = "Sqlite database files (*.db)|*.db|All files (*.*)|*.*";
-//             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
-//             {
-//                 OpenDatabase(openFileDialog.FileName);
-//             }
-
-            string folder = "Z:\\"; //Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string dbPath = Path.Combine(folder, "wikidesk.db");
-            OpenDatabase(dbPath);
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.ReadOnlyChecked = true;
+            openFileDialog.ShowReadOnly = false;
+            openFileDialog.Multiselect = false;
+            openFileDialog.DefaultExt = "db";
+            openFileDialog.Filter = "Sqlite database files (*.db)|*.db|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                OpenDatabase(openFileDialog.FileName);
+            }
         }
 
         private void Titles_SelectedIndexChanged(object sender, EventArgs e)
@@ -428,31 +425,7 @@
             if (languageCode != settings_.CurrentLanguageCode)
             {
                 WikiLanguage wikiLanguage = languages_.Languages.Find(lang => languageCode == lang.Code);
-                if (wikiLanguage != null)
-                {
-                    SetCurrentWikiSite(new WikiSite(currentSite_.Domain, wikiLanguage));
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Changes the current domain to the given one.
-        /// </summary>
-        /// <param name="domainName">The name of the domain to change to.</param>
-        /// <returns>True if a change took place, otherwise False.</returns>
-        private bool ChangeCurrentDomain(string domainName)
-        {
-            if (domainName != settings_.CurrentDomainName)
-            {
-                WikiDomain wikiDomain = domains_.FindByName(domainName);
-                if (wikiDomain != null)
-                {
-                    SetCurrentWikiSite(new WikiSite(wikiDomain, currentSite_.Language));
-                    return true;
-                }
+                return SetCurrentWikiSite(currentSite_.Domain, wikiLanguage);
             }
 
             return false;
@@ -461,27 +434,23 @@
         /// <summary>
         /// Sets the current site.
         /// </summary>
-        /// <param name="site">The current site to set.</param>
-        private void SetCurrentWikiSite(WikiSite site)
+        /// <param name="wikiDomain">The domain to set.</param>
+        /// <param name="wikiLanguage">The language to set.</param>
+        private bool SetCurrentWikiSite(WikiDomain wikiDomain, WikiLanguage wikiLanguage)
         {
-            currentSite_ = site;
-            settings_.CurrentDomainName = site.Domain.Name;
-            settings_.CurrentLanguageCode = site.Language.Code;
-        }
-
-        /// <summary>
-        /// Sets the current site.
-        /// </summary>
-        /// <param name="domainName">The name of the domain to change to.</param>
-        /// <param name="languageCode">The code of the language to change to.</param>
-        private void SetCurrentWikiSite(string domainName, string languageCode)
-        {
-            WikiDomain wikiDomain = domains_.FindByName(domainName);
-            WikiLanguage wikiLanguage = languages_.Languages.Find(lang => languageCode == lang.Code);
             if (wikiDomain != null && wikiLanguage != null)
             {
-                SetCurrentWikiSite(new WikiSite(wikiDomain, wikiLanguage));
+                WikiSite wikiSite = new WikiSite(
+                                            wikiDomain,
+                                            wikiLanguage,
+                                            settings_.InstallationFolder);
+                currentSite_ = wikiSite;
+                settings_.CurrentDomainName = wikiDomain.Name;
+                settings_.CurrentLanguageCode = wikiLanguage.Code;
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>
@@ -496,8 +465,12 @@
             Language language = db_.GetLanguageByName(languageName);
             if (language != null)
             {
-                SetCurrentWikiSite(domainName, language.Code);
-                BrowseWikiArticle(title);
+                WikiDomain wikiDomain = domains_.FindByName(domainName);
+                WikiLanguage wikiLanguage = languages_.Languages.Find(lang => language.Code == lang.Code);
+                if (SetCurrentWikiSite(wikiDomain, wikiLanguage))
+                {
+                    BrowseWikiArticle(title);
+                }
             }
         }
 

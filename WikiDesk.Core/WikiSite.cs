@@ -19,13 +19,14 @@ namespace WikiDesk.Core
     {
         #region construction
 
-        public WikiSite(WikiDomain domain, WikiLanguage language)
+        public WikiSite(WikiDomain domain, WikiLanguage language, string folder)
         {
             domain_ = domain;
             language_ = language;
 
             string langCode = language_.MimeCode ?? language_.Code;
-            string moduleFilePath = Path.Combine("Messages", "Messages" + langCode + ".dll");
+            string moduleFilePath = Path.Combine(folder, "Messages");
+            moduleFilePath = Path.Combine(moduleFilePath, "Messages" + langCode + ".dll");
 
             module_ = new Module(moduleFilePath);
             namespaces_ = module_.GetString2StringMapField("namespaceNames");
