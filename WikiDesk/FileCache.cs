@@ -148,7 +148,13 @@ namespace WikiDesk
         /// <returns></returns>
         public string ResolveSourceUrl(string mediaName, string languageCode)
         {
-            return cacheFolderUrl_ + mediaName;
+            string url = cacheFolderUrl_ + mediaName;
+            if (mediaName.ToUpperInvariant().EndsWith(".SVG"))
+            {
+                url += "/400px-" + mediaName + ".png";
+            }
+
+            return url.Replace('\\', '/');
         }
 
         /// <summary>
@@ -160,6 +166,11 @@ namespace WikiDesk
         /// <param name="url">The url of the media file to cache.</param>
         public void CacheMedia(string mediaName, string languageCode, string url)
         {
+            if (mediaName.ToUpperInvariant().EndsWith(".SVG"))
+            {
+                mediaName = "400px-" + mediaName + ".png";
+            }
+
             // Open a connection
             HttpWebRequest webRequestObject = (HttpWebRequest)WebRequest.Create(url);
 
