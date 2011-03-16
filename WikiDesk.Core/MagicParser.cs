@@ -139,6 +139,14 @@ namespace WikiDesk.Core
         /// <returns>The command name.</returns>
         public static string GetMagicWordAndParams(string code, out List<KeyValuePair<string, string>> args)
         {
+            if (string.IsNullOrEmpty(code))
+            {
+                args = null;
+                return null;
+            }
+
+            code = code.Trim(WhiteSpaceChars);
+
             int barIndex = code.IndexOf('|');
             if (barIndex < 0)
             {
@@ -150,11 +158,13 @@ namespace WikiDesk.Core
 
             // If the magic word ends with a colon, parse it now.
             int colonIndex = code.IndexOf(':');
-            if (colonIndex >= 0)
+            if (colonIndex >= 0 && colonIndex < barIndex)
             {
-                parameters.Add(code.Substring(0, colonIndex));
-                code = code.Substring(colonIndex + 1);
+                barIndex = colonIndex;
             }
+
+            parameters.Add(code.Substring(0, barIndex).Trim(WhiteSpaceChars));
+            code = code.Substring(barIndex + 1).Trim(WhiteSpaceChars);
 
             int curParamStart = 0;
             while (true)
@@ -164,16 +174,14 @@ namespace WikiDesk.Core
                 if (barIndex >= 0)
                 {
                     string param = code.Substring(curParamStart, barIndex - curParamStart);
-                    param = param.Trim().Trim('\n').Trim('\r').Trim();
-                    parameters.Add(param);
+                    parameters.Add(param.Trim(WhiteSpaceChars));
                     curParamStart = barIndex + 1;
                 }
                 else
                 {
                     // Last param.
                     string param = code.Substring(curParamStart);
-                    param = param.Trim().Trim('\n').Trim('\r').Trim();
-                    parameters.Add(param);
+                    parameters.Add(param.Trim(WhiteSpaceChars));
                     break;
                 }
             }
@@ -207,8 +215,8 @@ namespace WikiDesk.Core
                     ++paramNumber;
                 }
 
-                name = name.Trim().Trim('\n').Trim('\r').Trim();
-                value = value.Trim().Trim('\n').Trim('\r').Trim();
+                name = name.Trim(WhiteSpaceChars);
+                value = value.Trim(WhiteSpaceChars);
                 args.Add(new KeyValuePair<string, string>(name, value));
             }
 
@@ -409,6 +417,8 @@ namespace WikiDesk.Core
         private readonly string code_;
 
         private readonly Dictionary<string, string> args_;
+
+        private static readonly char[] WhiteSpaceChars = { ' ', '\n', '\r', '\t' };
 
         #endregion // representation
     }

@@ -608,6 +608,10 @@ namespace WikiDesk.Core
 
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(magic, out args);
+            if (string.IsNullOrEmpty(command))
+            {
+                return string.Empty;
+            }
 
             // Is it a parser function?
             string output;

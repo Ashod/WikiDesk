@@ -625,7 +625,7 @@
 
         private string OnResolveTemplate(string word, string lanugageCode)
         {
-            string title = word;
+            string title = Title.Normalize(word);
 
             int colIndex = word.IndexOf(':');
             if (colIndex < 0 || !currentSite_.Namespaces.Contains(word.Substring(0, colIndex)))
