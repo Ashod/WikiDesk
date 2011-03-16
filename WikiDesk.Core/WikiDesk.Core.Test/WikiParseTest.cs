@@ -1,10 +1,22 @@
 ﻿namespace WikiDesk.Core.Test
 {
+    using System.IO;
+    using System.Reflection;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class WikiParseTest
     {
+        static WikiParseTest()
+        {
+            WikiDomain wikiDomain = new WikiDomain("wikipedia");
+            WikiLanguage wikiLanguage = new WikiLanguage("English", "en");
+            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            WikiSite wikiSite = new WikiSite(wikiDomain, wikiLanguage, folder + "\\..\\");
+            config_ = new Configuration(wikiSite);
+        }
+
         #region Header
 
         [Test]
@@ -118,7 +130,7 @@
         {
             TestConvert(
                     "[[Brazil|kiko]]",
-                    "<p><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a></p>");
+                    "<p><a href=\"http://en.wikipedia.org/w/index.php?title=Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a></p>");
         }
 
         [Test]
@@ -126,7 +138,7 @@
         {
             TestConvert(
                     "#REDIRECT [[Brazil]]",
-                    "<p>Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></span></p>");
+                    "Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/w/index.php?title=Brazil\" title=\"Brazil\">Brazil</a></span>");
         }
 
         [Test]
@@ -134,19 +146,21 @@
         {
             TestConvert(
                     "#REDIRECT: [[Brazil]]",
-                    "<p>Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></span></p>");
+                    "Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/w/index.php?title=Brazil\" title=\"Brazil\">Brazil</a></span>");
         }
 
         internal static void TestConvert(string wikicode, string expected)
         {
-            Configuration config = new Configuration(
-                                        "en",
-                                        ".wikipedia.org/wiki/",
-                                        ".wikipedia.org/wiki/Special:Export");
-
-            Wiki2Html converter = new Wiki2Html(config);
+            Wiki2Html converter = new Wiki2Html(config_);
             string html = converter.Convert(wikicode);
             Assert.AreEqual(expected, html);
         }
+
+        #region representation
+
+        private static readonly Configuration config_;
+
+        #endregion // representation
+
     }
 }

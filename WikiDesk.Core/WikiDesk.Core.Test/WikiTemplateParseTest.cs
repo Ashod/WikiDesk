@@ -1,6 +1,8 @@
 ﻿namespace WikiDesk.Core.Test
 {
     using System.Collections.Generic;
+    using System.IO;
+    using System.Reflection;
 
     using NUnit.Framework;
 
@@ -9,6 +11,15 @@
     [TestFixture]
     public class WikiTemplateParseTest
     {
+        static WikiTemplateParseTest()
+        {
+            WikiDomain wikiDomain = new WikiDomain("wikipedia");
+            WikiLanguage wikiLanguage = new WikiLanguage("English", "en");
+            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            WikiSite wikiSite = new WikiSite(wikiDomain, wikiLanguage, folder + "\\..\\");
+            config_ = new Configuration(wikiSite);
+        }
+
         [Test]
         public void FindMagicBlock()
         {
@@ -151,6 +162,47 @@
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("fullurl", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("{{FULLPAGENAME}}", args[0].Value);
+            Assert.AreEqual("action", args[1].Key);
+            Assert.AreEqual("edit", args[1].Value);
+        }
+
+        [Test]
+        public void GetMagicWordAndParamsInfoboxCountry()
+        {
+            const string RAW =
+@"Infobox Country|
+ fullcountryname= Republic of Armenia<br />
+Hayastani Hanrapetutyun |
+ image_flag= Flag of Armenia.svg |
+ image_coa= Coat of arms of Armenia.svg |
+ image_location=LocationArmenia.png |
+ nationalmotto=One Nation, One Culture |
+ nationalsong=Our Fatherland |
+ nationalflower=n/a |
+ nationalanimal=n/a |
+ officiallanguages= [[Armenian language|Armenian]] |
+ populationtotal=3,016,000 |
+ populationrank=136 |
+ populationdensity=73 |
+ countrycapital=[[Yerevan]] |
+ countrylargestcity=[[Yerevan]] |
+ areatotal= 29,800 |
+ arearank= 139 |
+ areawater= n/a |
+ areawaterpercent=n/a |
+ establishedin= [[September 21]], [[1991]] |
+ leadertitlename=[[President of Armenia|President]]: [[Robert Kocharian]]<br />[[Prime Minister of Armenia|Prime Minister]]: Serzh Sargsyan |
+ currency= [[Dram]] (AMD) |
+ utcoffset=+05:00 |
+ dialingcode=374 |
+ internettld=.am
+";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("Infobox Country", command);
             Assert.AreEqual("1", args[0].Key);
             Assert.AreEqual("{{FULLPAGENAME}}", args[0].Value);
             Assert.AreEqual("action", args[1].Key);
@@ -303,10 +355,7 @@
 
         #region representation
 
-        private static readonly Configuration config_ = new Configuration(
-                            "en",
-                            ".wikipedia.org/wiki/",
-                            ".wikipedia.org/wiki/Special:Export/");
+        private static readonly Configuration config_;
 
         #endregion // representation
 

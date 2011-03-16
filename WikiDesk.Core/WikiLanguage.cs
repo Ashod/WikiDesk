@@ -7,6 +7,20 @@ namespace WikiDesk.Core
     [Serializable]
     public class WikiLanguage : IComparer<WikiLanguage>, IComparable<WikiLanguage>
     {
+        public WikiLanguage()
+        {
+
+        }
+
+        public WikiLanguage(string name, string code)
+        {
+            Name = name;
+            Code = code;
+            LocalName = name;
+            RightToLeft = false;
+            Disabled = false;
+        }
+
         public string Code { get; set; }
 
         /// <summary>
