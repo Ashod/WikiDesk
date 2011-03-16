@@ -2,11 +2,9 @@
 {
     public class Configuration
     {
-        public Configuration(string languageCode, string baseUrl, string exportUrl)
+        public Configuration(WikiSite wikiSite)
         {
-            CurrentLanguageCode = languageCode;
-            BaseUrl = baseUrl;
-            ExportUrl = exportUrl;
+            wikiSite_ = wikiSite;
         }
 
         public string InternalLinkPrefix = "wiki://";
@@ -15,18 +13,27 @@
         /// The base URL for the wiki.
         /// A language code is prepended to this base-url.
         /// </summary>
-        public string BaseUrl = ".wikipedia.org/wiki/";
+        public string BaseUrl
+        {
+            get { return wikiSite_.BaseUrl; }
+        }
 
         /// <summary>
         /// The export-page URL for the wiki.
         /// A language code is prepended to this url.
         /// </summary>
-        public string ExportUrl = ".wikipedia.org/wiki/Special:Export/";
+        public string ExportUrl
+        {
+            get { return wikiSite_.ExportUrl; }
+        }
 
         /// <summary>
         /// The current language code.
         /// </summary>
-        public string CurrentLanguageCode = "en";
+        public string CurrentLanguageCode
+        {
+            get { return wikiSite_.Language.Code; }
+        }
 
         public string FileUrl
         {
@@ -51,5 +58,7 @@
         public int ThumbnailWidthPixels = 220;
 
         public string FileCacheFolder = "Z:\\wikidesk_cache\\";
+
+        private readonly WikiSite wikiSite_;
     }
 }

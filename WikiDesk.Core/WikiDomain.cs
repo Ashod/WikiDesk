@@ -7,21 +7,50 @@ namespace WikiDesk.Core
     [Serializable]
     public class WikiDomain : IComparer<WikiDomain>, IComparable<WikiDomain>
     {
+        public WikiDomain()
+            : this(string.Empty)
+        {
+        }
+
+        public WikiDomain(string name)
+            : this(name, name + ".org")
+        {
+        }
+
+        public WikiDomain(string name, string domain)
+        {
+            Name = name;
+            Domain = domain;
+            FiendlyPath = "/";
+            FullPath = "/w/index.php?title=";
+        }
+
+        /// <summary>
+        /// The name is typically the host name, without the domain.
+        /// <example>Wikipedia</example>
+        /// <example>Wikinews</example>
+        /// </summary>
         public string Name;
 
         /// <summary>
-        /// The base URL for the wiki.
-        /// A language code is prepended to this base-url.
+        /// The Domain is the host name.
+        /// <example>wikipedia.org</example>
+        /// <example>wikinews.org</example>
         /// </summary>
-        public string BaseUrl;
+        public string Domain;
 
         /// <summary>
-        /// The export-page URL for the wiki.
-        /// A language code is prepended to this url.
+        /// For editing, the full path must be provided, as opposed to the
+        /// shortcut viewing path.
+        /// <example>/w/index.php?title=</example>
         /// </summary>
-        public string ExportUrl;
+        public string FullPath;
 
-        public string EditUrl;
+        /// <summary>
+        /// User-friendly path to the pages. Can't take arguments. Not used for editing.
+        /// <example>/wiki/</example>
+        /// </summary>
+        public string FiendlyPath;
 
         #region Implementation of IComparer<WikiDomain>
 
@@ -62,19 +91,19 @@ namespace WikiDesk.Core
                 return val;
             }
 
-            val = BaseUrl.CompareTo(other.BaseUrl);
+            val = Domain.CompareTo(other.Domain);
             if (val != 0)
             {
                 return val;
             }
 
-            val = ExportUrl.CompareTo(other.ExportUrl);
+            val = FiendlyPath.CompareTo(other.FiendlyPath);
             if (val != 0)
             {
                 return val;
             }
 
-            val = EditUrl.CompareTo(other.EditUrl);
+            val = FullPath.CompareTo(other.FullPath);
             return val;
         }
 

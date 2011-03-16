@@ -14,8 +14,8 @@ namespace WikiDesk
         public static WikiDomains DefaultDomains()
         {
             WikiDomains domains = new WikiDomains();
-            domains.Domains.Add(new WikiDomain() { Name = "wikipedia", BaseUrl = ".wikipedia.org/wiki/", ExportUrl = ".wikipedia.org/wiki/Special:Export/" });
-            domains.Domains.Add(new WikiDomain() { Name = "wiktionary", BaseUrl = ".wiktionary.org/wiki/", ExportUrl = ".wiktionary.org/wiki/Special:Export/" });
+            domains.Domains.Add(new WikiDomain("wikipedia"));
+            domains.Domains.Add(new WikiDomain("wiktionary"));
 
             return domains;
         }

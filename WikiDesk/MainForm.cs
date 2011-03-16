@@ -534,7 +534,7 @@
         private Page ImportLivePage(string title, WikiDomain domain, int domainId, Language language)
         {
             title = Title.Normalize(title);
-            string url = string.Concat("http://", language.Code, domain.ExportUrl, title);
+            string url = currentSite_.GetExportUrl(title);
             string pageXml = Download.DownloadPage(url);
             if (pageXml.ToUpperInvariant().StartsWith("<!DOCTYPE HTML PUBLIC") ||
                 pageXml.ToUpperInvariant().StartsWith("<HTML"))
@@ -600,10 +600,7 @@
 
             ShowArticleLanguages(title, Wiki2Html.ExtractLanguages(ref text));
 
-            Configuration config = new Configuration(
-                                        currentSite_.Language.Code,
-                                        currentSite_.BaseUrl,
-                                        currentSite_.ExportUrl);
+            Configuration config = new Configuration(currentSite_);
             config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
 
             Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnResolveTemplate, fileCache_);

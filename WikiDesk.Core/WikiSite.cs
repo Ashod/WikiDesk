@@ -1,7 +1,6 @@
 ﻿
 namespace WikiDesk.Core
 {
-    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
 
@@ -49,7 +48,7 @@ namespace WikiDesk.Core
 
         public string BaseUrl
         {
-            get { return string.Format(".{0}.org/wiki/", domain_.Name); }
+            get { return string.Format(".{0}{1}", domain_.Domain, domain_.FullPath); }
         }
 
         public string ExportUrl
@@ -58,7 +57,7 @@ namespace WikiDesk.Core
             {
                 string[] aliases = GetSpecialPageAliases("Export");
                 string export = aliases != null ? aliases[0] : "Export";
-                return string.Format("{0}{1}:{2}", BaseUrl, GetNamespace(Namespace.Special), export);
+                return string.Format("{0}{1}:{2}/", BaseUrl, GetNamespace(Namespace.Special), export);
             }
         }
 
@@ -68,6 +67,21 @@ namespace WikiDesk.Core
         }
 
         #endregion // properties
+
+        public string GetUrl(string title)
+        {
+            return string.Format("http://{0}{1}{2}", language_.Code, BaseUrl, Title.Normalize(title));
+        }
+
+        public string GetExportUrl(string title)
+        {
+            return string.Format("http://{0}{1}{2}", language_.Code, ExportUrl, Title.Normalize(title));
+        }
+
+        public string GetEditUrl(string title)
+        {
+            return string.Format("http://{0}{1}{2}&action=edit", language_.Code, BaseUrl, Title.Normalize(title));
+        }
 
         public enum Namespace
         {
@@ -187,8 +201,6 @@ namespace WikiDesk.Core
 
         private readonly Dictionary<string, string> namespaces_;
         private readonly Dictionary<string, string[]> specialPageAliases_;
-
-        private WikiMessages messages_;
 
         private readonly WikiLanguage language_;
 
