@@ -12,7 +12,7 @@
         public delegate void OnTitleNavigate(string domainName, string languageName, string title);
 
         public IndexControl(Dictionary<string,
-                                Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
+                            Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
                             OnTitleNavigate onTitleNavigate)
         {
             InitializeComponent();
@@ -27,6 +27,9 @@
 
         public void UpdateListItems()
         {
+            string domain = cboDomains_.Text;
+            string title = lstTitles_.Text;
+
             cboDomains_.Items.Clear();
             foreach (KeyValuePair<string, Dictionary<string, PrefixMatchContainer<string>>> domainLangPair in entriesMap_)
             {
@@ -36,13 +39,13 @@
                 }
             }
 
-            if (cboDomains_.SelectedIndex >= 0)
+            cboDomains_.SelectedIndex = cboDomains_.FindStringExact(domain);
+            ListViewItem lvi = lstTitles_.FindItemWithText(title);
+            // Focus on the item found and scroll it into view.
+            if (lvi != null)
             {
-                cboDomains_.SelectedIndex = cboDomains_.SelectedIndex;
-            }
-            else
-            {
-                cboDomains_.SelectedIndex = (cboDomains_.Items.Count > 0) ? 0 : -1;
+                lstTitles_.FocusedItem = lvi;
+                lstTitles_.EnsureVisible(lvi.Index);
             }
         }
 

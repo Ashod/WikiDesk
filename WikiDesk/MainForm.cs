@@ -486,13 +486,31 @@
 
         private void BrowseWikiArticle(string title)
         {
-            currentWikiPageName_ = null;
+            Dictionary<string, PrefixMatchContainer<string>> langEntries =
+                                        entriesMap_[currentSite_.Domain.Name];
+            int languageEntriesCount = langEntries.Count;
 
-            Page page = RetrievePage(title);
-            if (page != null && !string.IsNullOrEmpty(page.Text))
+            PrefixMatchContainer<string> titles = langEntries[currentSite_.Language.LocalName];
+            int titlesCount = titles.Count;
+
+            try
             {
-                ShowWikiPage(title, page.Text);
-                return;
+                currentWikiPageName_ = null;
+
+                Page page = RetrievePage(title);
+                if (page != null && !string.IsNullOrEmpty(page.Text))
+                {
+                    ShowWikiPage(title, page.Text);
+                    return;
+                }
+            }
+            finally
+            {
+                if (languageEntriesCount != langEntries.Count ||
+                    titlesCount != titles.Count)
+                {
+                    indexControl_.UpdateListItems();
+                }
             }
         }
 
@@ -589,7 +607,6 @@
             if (titles.Find(titleDenorm, false, true) < 0)
             {
                 titles.Add(titleDenorm, titleDenorm);
-                indexControl_.UpdateListItems();
             }
         }
 
