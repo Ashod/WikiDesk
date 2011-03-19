@@ -1,6 +1,7 @@
 ﻿
 namespace WikiDesk.Core
 {
+    using System;
     using System.Collections.Generic;
 
     public class ParserFunctionProcessor
@@ -67,9 +68,23 @@ namespace WikiDesk.Core
 
         private void RegisterHandlers()
         {
-            RegisterHandler("#expr", DoNothing);
+            RegisterHandler("#expr", Expr);
             RegisterHandler("#if", If);
-            RegisterHandler("#ifexists", DoNothing);
+            RegisterHandler("#ifeq", IfEq);
+            RegisterHandler("#iferror", IfError);
+            RegisterHandler("#ifexpr", IfExpr);
+            RegisterHandler("#ifexists", IfExists);
+            RegisterHandler("#rel2abs", Rel2Abs);
+            RegisterHandler("#switch", Switch);
+            RegisterHandler("#time", Time);
+            RegisterHandler("#timel", TimeL);
+            RegisterHandler("#titleparts", TitleParts);
+        }
+
+        private Result Expr(List<KeyValuePair<string, string>> args, out string output)
+        {
+            output = "~EXPRESSION~";
+            return Result.Found;
         }
 
         /// <summary>
@@ -139,10 +154,82 @@ namespace WikiDesk.Core
             return Result.Found;
         }
 
-        private Result DoNothing(List<KeyValuePair<string, string>> args, out string output)
+        /// <summary>
+        /// This parser function compares two strings and determines whether they are identical.
+        /// {{#ifeq: string 1 | string 2 | value if identical | value if different }}
+        /// If both strings are valid numerical values, the strings are compared numerically:
+        /// {{#ifeq: 01 | 1 | yes | no}} → yes
+        /// {{#ifeq: 0 | -0 | yes | no}} → yes
+        /// {{#ifeq: 1e3 | 1000 | yes | no}} → yes
+        /// {{#ifeq: {{#expr:10^3}} | 1000 | yes | no}} → yes
+        /// Otherwise the comparison is made as text; this comparison is case sensitive:
+        /// {{#ifeq: foo | bar | yes | no}} → no
+        /// {{#ifeq: foo | Foo | yes | no}} → no
+        /// {{#ifeq: "01" | "1" | yes | no}} → no
+        /// {{#ifeq: 10^3 | 1000 | yes | no}} → no
+        /// Warning:	Numerical comparisons with #ifeq and #switch are not equivalent
+        ///             with comparisons in expressions:
+        /// {{#ifeq:12345678901234567|12345678901234568|1|0}} gives 0
+        /// because PHP compares two numbers of type integer here; where as
+        /// {{#ifexpr:12345678901234567=12345678901234568|1|0}} gives 1
+        /// because MediaWiki converts literal numbers in expressions to type float,
+        /// which, for large integers like these, involves rounding.
+        /// Warning:	Content inside parser tags (such as &lt;nowiki&gt;) is temporarily
+        /// replaced by a unique code. This affects comparisons:
+        /// {{#ifeq: &lt;nowiki&gt;foo&lt;/nowiki&gt; | &lt;nowiki>foo&lt;/nowiki&gt; | yes | no}} → no
+        /// {{#ifeq: &lt;math&gt;foo&lt;/math&gt; | &lt;math>foo&lt;/math&gt; | yes | no}} → no
+        /// {{#ifeq: {{#tag:math|foo}} | {{#tag:math|foo}} | yes | no}} → no
+        /// {{#ifeq: [[foo]] | [[foo]] | yes | no}} → yes
+        /// It the strings to be compared are given as equal calls to the same
+        /// template containing such tags then the condition is true, but in the case
+        /// of two templates with identical content containing such tags it is false.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <param name="output"></param>
+        /// <returns></returns>
+        private Result IfEq(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = string.Empty;
-            return Result.Html;
+            throw new NotImplementedException();
+        }
+
+        private Result IfError(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Result IfExpr(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Result IfExists(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Result Rel2Abs(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Result Switch(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Result Time(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Result TimeL(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
+        }
+
+        private Result TitleParts(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion // implementation
