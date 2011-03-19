@@ -28,7 +28,9 @@
         public void UpdateListItems()
         {
             string domain = cboDomains_.Text;
-            string title = lstTitles_.Text;
+            string title = lstTitles_.FocusedItem != null ?
+                            lstTitles_.FocusedItem.Text :
+                            lstTitles_.Text;
 
             cboDomains_.Items.Clear();
             foreach (KeyValuePair<string, Dictionary<string, PrefixMatchContainer<string>>> domainLangPair in entriesMap_)
@@ -41,6 +43,7 @@
 
             cboDomains_.SelectedIndex = cboDomains_.FindStringExact(domain);
             ListViewItem lvi = lstTitles_.FindItemWithText(title);
+
             // Focus on the item found and scroll it into view.
             if (lvi != null)
             {

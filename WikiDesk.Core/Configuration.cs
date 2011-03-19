@@ -7,6 +7,11 @@
             wikiSite_ = wikiSite;
         }
 
+        public WikiSite WikiSite
+        {
+            get { return wikiSite_; }
+        }
+
         public string InternalLinkPrefix = "wiki://";
 
         /// <summary>
@@ -15,7 +20,7 @@
         /// </summary>
         public string BaseUrl
         {
-            get { return wikiSite_.BaseUrl; }
+            get { return WikiSite.BaseUrl; }
         }
 
         /// <summary>
@@ -24,7 +29,7 @@
         /// </summary>
         public string ExportUrl
         {
-            get { return wikiSite_.ExportUrl; }
+            get { return WikiSite.ExportUrl; }
         }
 
         /// <summary>
@@ -32,7 +37,7 @@
         /// </summary>
         public string CurrentLanguageCode
         {
-            get { return wikiSite_.Language.Code; }
+            get { return WikiSite.Language.Code; }
         }
 
         public string FileUrl
