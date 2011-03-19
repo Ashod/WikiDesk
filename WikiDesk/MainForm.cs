@@ -740,6 +740,7 @@
             sb.AppendLine("<link rel=\"copyright\" href=\"http://creativecommons.org/licenses/by-sa/3.0/\" />");
 
             string skinsFolderpath = Path.Combine(userDataFolderPath_, "skins");
+            skinsFolderpath = skinsFolderpath.Replace('\\', '/');
 
             // Main.
             sb.Append("<link rel=\"stylesheet\" href=\"file:///");

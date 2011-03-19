@@ -633,7 +633,7 @@ namespace WikiDesk.Core
                 // Try processing.
                 magicWordProcessor_.SetContext(nameSpace_, pageTitle_);
                 MagicWordProcessor.Result resMagic =
-                                magicWordProcessor_.Execute(command, args, out output);
+                                magicWordProcessor_.Execute(magicWordId, args, out output);
                 if (resMagic != MagicWordProcessor.Result.Unknown)
                 {
                     logger_.Log(Levels.Debug, "MagicWord for [{0}] - {1}.", command, output);
@@ -661,6 +661,7 @@ namespace WikiDesk.Core
                 return string.Empty;
             }
 
+            logger_.Log(Levels.Debug, "Resolving template [{0}].", name);
             string template = resolveWikiTemplateDel_(name, config_.CurrentLanguageCode);
             if (template == null)
             {
@@ -671,26 +672,26 @@ namespace WikiDesk.Core
             logger_.Log(Levels.Debug, "Template for [{0}] - {1}.", name, template);
 
             // Redirection?
-            string newTitle = Redirection(template);
-            if (newTitle != null)
+            string newName = Redirection(template);
+            if (newName != null)
             {
-                logger_.Log(Levels.Debug, "Template [{0}] redirects to .", template, newTitle);
-                template = resolveWikiTemplateDel_(newTitle, config_.CurrentLanguageCode);
+                logger_.Log(Levels.Debug, "Template [{0}] redirects to .", template, newName);
+                template = resolveWikiTemplateDel_(newName, config_.CurrentLanguageCode);
                 if (template == null)
                 {
-                    logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", newTitle);
+                    logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", newName);
                     return "~" + name + "~";
                 }
 
-                newTitle = Redirection(template);
-                if (newTitle != null)
+                newName = Redirection(template);
+                if (newName != null)
                 {
                     logger_.Log(Levels.Warn, "Template redirection loop on [{0}].", template);
                     return "<b><em>Redirection Loop!</em></b>";
                 }
             }
 
-            logger_.Log(Levels.Debug, "Processing Template [{0}].", template);
+            logger_.Log(Levels.Debug, "Processing template params for [{0}].", template);
             return MagicParser.ProcessTemplateParams(template, args);
         }
 
