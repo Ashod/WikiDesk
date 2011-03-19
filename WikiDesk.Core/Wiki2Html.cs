@@ -622,23 +622,31 @@ namespace WikiDesk.Core
                 return string.Empty;
             }
 
-            // Is it a parser function?
             string output;
+
+            // Get the magic-word ID.
+            string magicWordId = config_.WikiSite.MagicWords.FindId(command);
+            if (!string.IsNullOrEmpty(magicWordId))
+            {
+                logger_.Log(Levels.Debug, "MagicWord ID for [{0}] is [{1}].", command, magicWordId);
+
+                // Try processing.
+                magicWordProcessor_.SetContext(nameSpace_, pageTitle_);
+                MagicWordProcessor.Result resMagic =
+                                magicWordProcessor_.Execute(command, args, out output);
+                if (resMagic != MagicWordProcessor.Result.Unknown)
+                {
+                    logger_.Log(Levels.Debug, "MagicWord for [{0}] - {1}.", command, output);
+                    return output;
+                }
+            }
+
+            // Is it a parser function?
             ParserFunctionProcessor.Result result =
                             parserFunctionsProcessor_.Execute(command, args, out output);
             if (result != ParserFunctionProcessor.Result.Unknown)
             {
                 logger_.Log(Levels.Debug, "ParserFunction for command [{0}] - {1}.", command, output);
-                return output;
-            }
-
-            // Is it a magic word?
-            magicWordProcessor_.SetContext(nameSpace_, pageTitle_);
-            MagicWordProcessor.Result resMagic =
-                            magicWordProcessor_.Execute(command, args, out output);
-            if (resMagic != MagicWordProcessor.Result.Unknown)
-            {
-                logger_.Log(Levels.Debug, "MagicWord for [{0}] - {1}.", command, output);
                 return output;
             }
 
@@ -682,6 +690,7 @@ namespace WikiDesk.Core
                 }
             }
 
+            logger_.Log(Levels.Debug, "Processing Template [{0}].", template);
             return MagicParser.ProcessTemplateParams(template, args);
         }
 

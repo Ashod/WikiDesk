@@ -1,6 +1,7 @@
 ﻿
 namespace WikiDesk.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
 
@@ -30,6 +31,7 @@ namespace WikiDesk.Core
             module_ = new Module(moduleFilePath);
             namespaces_ = module_.GetString2StringMapField("namespaceNames");
             specialPageAliases_ = module_.GetString2StringsMapField("specialPageAliases");
+            GenerateMagicWords(module_.GetString2StringsMapField("magicWords"));
         }
 
         #endregion // construction
@@ -64,6 +66,11 @@ namespace WikiDesk.Core
         public ICollection<string> Namespaces
         {
             get { return namespaces_.Values; }
+        }
+
+        public WikiMagicWords MagicWords
+        {
+            get { return magicWords_; }
         }
 
         #endregion // properties
@@ -178,7 +185,7 @@ namespace WikiDesk.Core
                     break;
 
                 default:
-                    throw new System.ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
             }
 
             return value;
@@ -195,6 +202,44 @@ namespace WikiDesk.Core
             return null;
         }
 
+        #region implementation
+
+        /// <summary>
+        /// Populate the MagicWords instance from the map provided by the MessagesXX.php.
+        /// </summary>
+        /// <param name="mapMagicWords"></param>
+        private void GenerateMagicWords(Dictionary<string, string[]> mapMagicWords)
+        {
+            magicWords_ = new WikiMagicWords();
+
+            foreach (KeyValuePair<string, string[]> pair in mapMagicWords)
+            {
+                if (pair.Value != null && pair.Value.Length >= 2)
+                {
+                    // The format of the value is: ['?', "name1", "name2", ..., "nameN" ]
+                    // Where '?' is either 1 (case-sensitive) or 2 (case-insensitive).
+                    bool caseSensitive = false;
+                    if (pair.Value[0] == "1")
+                    {
+                        caseSensitive = true;
+                    }
+                    else
+                    if (pair.Value[0] != "0")
+                    {
+                        continue;
+                    }
+
+                    for (int i = 1; i < pair.Value.Length; ++i)
+                    {
+                        string word = pair.Value[i];
+                        magicWords_.RegisterWord(pair.Key, word, caseSensitive);
+                    }
+                }
+            }
+        }
+
+        #endregion // implementation
+
         #region representation
 
         private readonly Module module_;
@@ -205,6 +250,8 @@ namespace WikiDesk.Core
         private readonly WikiLanguage language_;
 
         private readonly WikiDomain domain_;
+
+        private WikiMagicWords magicWords_;
 
         #endregion // representation
     }
