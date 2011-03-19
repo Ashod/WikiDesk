@@ -1,14 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WikiDesk.Core
+﻿namespace WikiDesk.Core
 {
+    using System;
     using System.Globalization;
+    using System.Text;
     using System.Text.RegularExpressions;
 
     public class Title
     {
+        /// <summary>
+        /// Given a full page name, parses the namespace and page title.
+        /// </summary>
+        /// <param name="pageName">The full page name to parse.</param>
+        /// <param name="nameSpace">The namespace, if any. Empty if not found.</param>
+        /// <returns>The page title.</returns>
+        public static string ParseFullPageName(string pageName, out string nameSpace)
+        {
+            if (pageName == null)
+            {
+                nameSpace = string.Empty;
+                return string.Empty;
+            }
+
+            pageName = pageName.Trim();
+            int index = pageName.IndexOf(':');
+            if (index >= 0)
+            {
+                nameSpace = pageName.Substring(0, index);
+                return pageName.Substring(index + 1);
+            }
+
+            nameSpace = string.Empty;
+            return pageName;
+        }
+
+        /// <summary>
+        /// Given a namepsace and page title, return a full page name.
+        /// </summary>
+        /// <param name="nameSpace">An optional namespace.</param>
+        /// <param name="pageTitle">The page title.</param>
+        /// <returns>Full page name.</returns>
+        public static string FullPageName(string nameSpace, string pageTitle)
+        {
+            if (nameSpace != null)
+            {
+                nameSpace = nameSpace.Trim();
+                if (nameSpace.Length > 0)
+                {
+                    return nameSpace + ':' + pageTitle;
+                }
+            }
+
+            return pageTitle;
+        }
+
         /// <summary>
         /// Converts a title such that the first character is in upper-case
         /// and all spaces are converted to underscores.
