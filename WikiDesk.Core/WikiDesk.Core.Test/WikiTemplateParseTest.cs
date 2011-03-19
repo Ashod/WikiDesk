@@ -169,6 +169,45 @@
         }
 
         [Test]
+        public void GetMagicWordAndParamsSwitch1()
+        {
+            const string RAW = "#switch:{{{2}}}|1=C41E3A|2=FFFFFF|3=000000|4=C41E3A";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            Assert.AreEqual("#switch", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("{{{2}}}", args[0].Value);
+            Assert.AreEqual("1", args[1].Key);
+            Assert.AreEqual("C41E3A", args[1].Value);
+            Assert.AreEqual("2", args[2].Key);
+            Assert.AreEqual("FFFFFF", args[2].Value);
+            Assert.AreEqual("3", args[3].Key);
+            Assert.AreEqual("000000", args[3].Value);
+            Assert.AreEqual("4", args[4].Key);
+            Assert.AreEqual("C41E3A", args[4].Value);
+        }
+
+        [Test]
+        public void GetMagicWordAndParamsSwitch2()
+        {
+            const string RAW = "#switch: baz | foo = Foo | baz = Baz | Bar ";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            Assert.AreEqual("#switch", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("baz", args[0].Value);
+            Assert.AreEqual("foo", args[1].Key);
+            Assert.AreEqual("Foo", args[1].Value);
+            Assert.AreEqual("baz", args[2].Key);
+            Assert.AreEqual("Baz", args[2].Value);
+            Assert.AreEqual("2", args[3].Key);
+            Assert.AreEqual("Bar", args[3].Value);
+        }
+
+        [Test]
         public void GetMagicWordAndParamsInfoboxCountry()
         {
             const string RAW =

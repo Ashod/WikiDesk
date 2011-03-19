@@ -454,6 +454,14 @@
         {
             if (wikiDomain != null && wikiLanguage != null)
             {
+                // Don't create new WikiSite if nothing changed.
+                if (currentSite_ != null &&
+                    currentSite_.Domain == wikiDomain &&
+                    currentSite_.Language == wikiLanguage)
+                {
+                    return true;
+                }
+
                 WikiSite wikiSite = new WikiSite(
                                             wikiDomain,
                                             wikiLanguage,
