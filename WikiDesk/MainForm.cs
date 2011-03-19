@@ -610,19 +610,22 @@
             }
         }
 
-        private void ShowWikiPage(string title, string text)
+        private void ShowWikiPage(string pageName, string wikiText)
         {
-            title = Title.Denormalize(title);
-            currentWikiPageName_ = title;
+            pageName = Title.Denormalize(pageName);
+            currentWikiPageName_ = pageName;
 
-            ShowArticleLanguages(title, Wiki2Html.ExtractLanguages(ref text));
+            ShowArticleLanguages(pageName, Wiki2Html.ExtractLanguages(ref wikiText));
 
             Configuration config = new Configuration(currentSite_);
             config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
 
             Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnResolveTemplate, fileCache_);
-            string html = wiki2Html.Convert(text);
-            html = WrapInHtmlBody(title, html);
+
+            string nameSpace;
+            string pageTitle = Title.ParseFullPageName(pageName, out nameSpace);
+            string html = wiki2Html.Convert(nameSpace, pageTitle, wikiText);
+            html = WrapInHtmlBody(pageName, html);
 
             using (FileStream fs = new FileStream(tempFilename_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
             {
@@ -676,7 +679,7 @@
                 return text;
             }
 
-            return string.Empty;
+            return null;
         }
 
         private string WrapInHtmlBody(string title, string html)

@@ -53,7 +53,7 @@ namespace WikiDesk.Core
             commonImagesPath_ = "file:///" + commonImagesPath_;
             commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
 
-            magicWordProcessor_ = new MagicWordProcessor();
+            magicWordProcessor_ = new MagicWordProcessor(config.WikiSite);
             parserFunctionsProcessor_ = new ParserFunctionProcessor();
 
             logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
@@ -80,12 +80,20 @@ namespace WikiDesk.Core
 
         #endregion // properties
 
-        public string Convert(string wikicode)
+        public string Convert(string nameSpace, string pageTitle, string wikiText)
         {
-            logger_.Log(Levels.Debug, "Converting: " + wikicode);
+            logger_.Log(
+                    Levels.Debug,
+                    "Converting - NameSpace = {0}, PageTitle = {1}, WikiText = {2}.",
+                    nameSpace,
+                    pageTitle,
+                    wikiText);
+
+            nameSpace_ = nameSpace;
+            pageTitle_ = pageTitle;
 
             // Process redirections first.
-            string newTitle = Redirection(wikicode);
+            string newTitle = Redirection(wikiText);
             if (newTitle != null)
             {
                 logger_.Log(Levels.Info, "Redirection: " + newTitle);
@@ -94,28 +102,28 @@ namespace WikiDesk.Core
                 return Redirect(newTitle);
             }
 
-            wikicode = ConvertListCode(wikicode);
+            wikiText = ConvertListCode(wikiText);
 
-            wikicode = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikicode);
-            wikicode = ConvertBinaryCode(BoldRegex, Bold, wikicode);
-            wikicode = ConvertBinaryCode(ItalicRegex, Italic, wikicode);
+            wikiText = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikiText);
+            wikiText = ConvertBinaryCode(BoldRegex, Bold, wikiText);
+            wikiText = ConvertBinaryCode(ItalicRegex, Italic, wikiText);
 
-            wikicode = ConvertBinaryCode(H6Regex, H6, wikicode);
-            wikicode = ConvertBinaryCode(H5Regex, H5, wikicode);
-            wikicode = ConvertBinaryCode(H4Regex, H4, wikicode);
-            wikicode = ConvertBinaryCode(H3Regex, H3, wikicode);
-            wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
-            wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
+            wikiText = ConvertBinaryCode(H6Regex, H6, wikiText);
+            wikiText = ConvertBinaryCode(H5Regex, H5, wikiText);
+            wikiText = ConvertBinaryCode(H4Regex, H4, wikiText);
+            wikiText = ConvertBinaryCode(H3Regex, H3, wikiText);
+            wikiText = ConvertBinaryCode(H2Regex, H2, wikiText);
+            wikiText = ConvertBinaryCode(H1Regex, H1, wikiText);
 
-            wikicode = ProcessMagicWords(wikicode);
+            wikiText = ProcessMagicWords(wikiText);
 
-            wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
-            wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
-            wikicode = ConvertBinaryCode(ExtLinkRegex, ExtLink, wikicode);
+            wikiText = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikiText);
+            wikiText = ConvertBinaryCode(ImageRegex, Image, wikiText);
+            wikiText = ConvertBinaryCode(ExtLinkRegex, ExtLink, wikiText);
 
-            wikicode = ConvertParagraphs(wikicode);
+            wikiText = ConvertParagraphs(wikiText);
 
-            return wikicode;
+            return wikiText;
         }
 
         private string Redirect(string newTitle)
@@ -261,10 +269,10 @@ namespace WikiDesk.Core
         }
 
         /// <summary>
-        /// Checks if the wikicode is a redirection.
+        /// Checks if the wikiText is a redirection.
         /// If redirection is in place, it returns the new page title, otherwise null.
         /// </summary>
-        /// <param name="wikicode">The wikicode to parse.</param>
+        /// <param name="wikicode">The wikiText to parse.</param>
         /// <returns>A new page title or null if no redirection.</returns>
         private static string Redirection(string wikicode)
         {
@@ -610,12 +618,14 @@ namespace WikiDesk.Core
             string command = MagicParser.GetMagicWordAndParams(magic, out args);
             if (string.IsNullOrEmpty(command))
             {
+                logger_.Log(Levels.Debug, "Failed to find command and params in the magic: " + magic);
                 return string.Empty;
             }
 
             // Is it a parser function?
             string output;
-            ParserFunctionProcessor.Result result = parserFunctionsProcessor_.Execute(command, args, out output);
+            ParserFunctionProcessor.Result result =
+                            parserFunctionsProcessor_.Execute(command, args, out output);
             if (result != ParserFunctionProcessor.Result.Unknown)
             {
                 logger_.Log(Levels.Debug, "ParserFunction for command [{0}] - {1}.", command, output);
@@ -623,8 +633,9 @@ namespace WikiDesk.Core
             }
 
             // Is it a magic word?
+            magicWordProcessor_.SetContext(nameSpace_, pageTitle_);
             MagicWordProcessor.Result resMagic =
-                magicWordProcessor_.Execute(command, args, out output);
+                            magicWordProcessor_.Execute(command, args, out output);
             if (resMagic != MagicWordProcessor.Result.Unknown)
             {
                 logger_.Log(Levels.Debug, "MagicWord for [{0}] - {1}.", command, output);
@@ -643,13 +654,26 @@ namespace WikiDesk.Core
             }
 
             string template = resolveWikiTemplateDel_(name, config_.CurrentLanguageCode);
+            if (template == null)
+            {
+                logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", name);
+                return "~" + name + "~";
+            }
+
             logger_.Log(Levels.Debug, "Template for [{0}] - {1}.", name, template);
 
             // Redirection?
             string newTitle = Redirection(template);
             if (newTitle != null)
             {
+                logger_.Log(Levels.Debug, "Template [{0}] redirects to .", template, newTitle);
                 template = resolveWikiTemplateDel_(newTitle, config_.CurrentLanguageCode);
+                if (template == null)
+                {
+                    logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", newTitle);
+                    return "~" + name + "~";
+                }
+
                 newTitle = Redirection(template);
                 if (newTitle != null)
                 {
@@ -888,6 +912,10 @@ namespace WikiDesk.Core
 //         private static readonly Regex TemplateRegex = new Regex(@"((Template\:)?(.+?))|((.+?)\|(.+?))", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
+
+        private string nameSpace_;
+
+        private string pageTitle_;
 
         #endregion // Regex
     }
