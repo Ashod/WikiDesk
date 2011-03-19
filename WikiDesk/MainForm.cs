@@ -11,6 +11,8 @@
 
     using ICSharpCode.SharpZipLib.BZip2;
 
+    using Tracy;
+
     using WebKit;
 
     using WeifenLuo.WinFormsUI.Docking;
@@ -31,6 +33,8 @@
             {
                 throw new ApplicationException("Invalid or missing user-data folder.");
             }
+
+            logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
 
             browser_.Visible = true;
             browser_.Dock = DockStyle.Fill;
@@ -612,6 +616,8 @@
 
         private void ShowWikiPage(string pageName, string wikiText)
         {
+            logger_.Log(Levels.Info, "Generating Html for {0}.", pageName);
+
             pageName = Title.Denormalize(pageName);
             currentWikiPageName_ = pageName;
 
@@ -626,6 +632,8 @@
             string pageTitle = Title.ParseFullPageName(pageName, out nameSpace);
             string html = wiki2Html.Convert(nameSpace, pageTitle, wikiText);
             html = WrapInHtmlBody(pageName, html);
+
+            logger_.Log(Levels.Info, "Generated Html for {0}.", pageName);
 
             using (FileStream fs = new FileStream(tempFilename_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
             {
@@ -955,24 +963,12 @@
 
         #region representation
 
-        private Database db_;
-
         private readonly Settings settings_;
 
         private readonly string userDataFolderPath_;
 
-        private ImportForm frmImport_;
-
-        /// <summary>
-        /// The current wiki-page name/title.
-        /// Valid only if we are on an internal wiki page.
-        /// </summary>
-        private string currentWikiPageName_;
-
         private readonly LanguageCodes languages_;
         private readonly WikiDomains domains_;
-
-        private WikiSite currentSite_;
 
         private readonly WebKitBrowser browser_ = new WebKitBrowser();
 
@@ -988,6 +984,18 @@
 
         private readonly string tempFilename_;
         private readonly string tempFileUrl_;
+
+        private readonly ILogger logger_;
+
+        private Database db_;
+        private ImportForm frmImport_;
+
+        /// <summary>
+        /// The current wiki-page name/title.
+        /// Valid only if we are on an internal wiki page.
+        /// </summary>
+        private string currentWikiPageName_;
+        private WikiSite currentSite_;
 
         #endregion // representation
 
