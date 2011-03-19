@@ -83,10 +83,10 @@ namespace WikiDesk.Core
             RegisterHandler("ucfirst",           UcFirst);
             RegisterHandler("lc",                Lc);
             RegisterHandler("uc",                Uc);
-            RegisterHandler("localurl",          DoNothing);
-            RegisterHandler("localurle",         DoNothing);
-            RegisterHandler("fullurl",           DoNothing);
-            RegisterHandler("fullurle",          DoNothing);
+            RegisterHandler("localurl",          LocalUrl);
+            RegisterHandler("localurle",         LocalUrl);
+            RegisterHandler("fullurl",           FullUrl);
+            RegisterHandler("fullurle",          FullUrl);
             RegisterHandler("formatnum",         DoNothing);
             RegisterHandler("grammar",           DoNothing);
             RegisterHandler("gender",            DoNothing);
@@ -139,7 +139,7 @@ namespace WikiDesk.Core
         /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
-        /// <param name="output">Output text.</param>
+        /// <param name="output">The output text.</param>
         /// <returns>A Result type.</returns>
         private Result PageName(List<KeyValuePair<string, string>> args, out string output)
         {
@@ -154,7 +154,7 @@ namespace WikiDesk.Core
         /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Help:Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
-        /// <param name="output">Output text.</param>
+        /// <param name="output">The output text.</param>
         /// <returns>A Result type.</returns>
         private Result FullPageName(List<KeyValuePair<string, string>> args, out string output)
         {
@@ -173,7 +173,7 @@ namespace WikiDesk.Core
         /// For more complex splitting, use {{#titleparts:}} from ParserFunctions extension.
         /// </remarks>
         /// <param name="args">The arguments, if any.</param>
-        /// <param name="output">Output text.</param>
+        /// <param name="output">The output text.</param>
         /// <returns>A Result type.</returns>
         private Result BasePageName(List<KeyValuePair<string, string>> args, out string output)
         {
@@ -188,7 +188,7 @@ namespace WikiDesk.Core
         /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
-        /// <param name="output">Output text.</param>
+        /// <param name="output">The output text.</param>
         /// <returns>A Result type.</returns>
         private Result SubPageName(List<KeyValuePair<string, string>> args, out string output)
         {
@@ -203,7 +203,7 @@ namespace WikiDesk.Core
         /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Help talk:Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
-        /// <param name="output">Output text.</param>
+        /// <param name="output">The output text.</param>
         /// <returns>A Result type.</returns>
         private Result TalkPageName(List<KeyValuePair<string, string>> args, out string output)
         {
@@ -218,7 +218,7 @@ namespace WikiDesk.Core
         /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Help:Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
-        /// <param name="output">Output text.</param>
+        /// <param name="output">The output text.</param>
         /// <returns>A Result type.</returns>
         private Result SubjectPageName(List<KeyValuePair<string, string>> args, out string output)
         {
@@ -240,13 +240,15 @@ namespace WikiDesk.Core
         {
             if (args != null && args.Count > 0)
             {
-                output = args[0].Value.ToLowerInvariant();
-            }
-            else
-            {
-                output = string.Empty;
+                string arg = args[0].Value;
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    output = arg.ToLowerInvariant();
+                    return Result.Found;
+                }
             }
 
+            output = string.Empty;
             return Result.Found;
         }
 
@@ -254,13 +256,15 @@ namespace WikiDesk.Core
         {
             if (args != null && args.Count > 0)
             {
-                output = args[0].Value.ToUpperInvariant();
-            }
-            else
-            {
-                output = string.Empty;
+                string arg = args[0].Value;
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    output = arg.ToUpperInvariant();
+                    return Result.Found;
+                }
             }
 
+            output = string.Empty;
             return Result.Found;
         }
 
@@ -269,13 +273,19 @@ namespace WikiDesk.Core
             if (args != null && args.Count > 0)
             {
                 string arg = args[0].Value;
-                output = arg[0].ToString().ToUpperInvariant() + arg.Substring(1);
-            }
-            else
-            {
-                output = string.Empty;
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    output = arg.Substring(0, 1).ToUpperInvariant();
+                    if (arg.Length > 1)
+                    {
+                        output += arg.Substring(1);
+                    }
+
+                    return Result.Found;
+                }
             }
 
+            output = string.Empty;
             return Result.Found;
         }
 
@@ -284,14 +294,55 @@ namespace WikiDesk.Core
             if (args != null && args.Count > 0)
             {
                 string arg = args[0].Value;
-                output = arg[0].ToString().ToLowerInvariant() + arg.Substring(1);
-            }
-            else
-            {
-                output = string.Empty;
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    output = arg.Substring(0, 1).ToLowerInvariant();
+                    if (arg.Length > 1)
+                    {
+                        output += arg.Substring(1);
+                    }
+
+                    return Result.Found;
+                }
             }
 
+            output = string.Empty;
             return Result.Found;
+        }
+
+        /// <summary>
+        /// Returns the relative path to the title.
+        /// {{localurl:page name}}
+        /// {{localurl:page name|query_string}}
+        /// </summary>
+        /// <example>
+        /// {{localurl:MediaWiki}} → /wiki/MediaWiki
+        /// {{localurl:MediaWiki|printable=yes}} → /w/index.php?title=MediaWiki&printable=yes
+        /// </example>
+        /// <param name="args">The arguments, if any.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        private Result LocalUrl(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Returns the absolute path to the title. This will also resolve Interwiki prefixes.
+        /// {{fullurl:page name}}
+        /// {{fullurl:page name|query_string}}
+        /// {{fullurl:interwiki:remote page name|query_string}}
+        /// </summary>
+        /// <example>
+        /// {{fullurl:Category:Top level}} → http://www.mediawiki.org/wiki/Category:Top_level
+        /// {{fullurl:Category:Top level|action=edit}} → http://www.mediawiki.org/w/index.php?title=Category:Top_level&action=edit
+        /// </example>
+        /// <param name="args">The arguments, if any.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        private Result FullUrl(List<KeyValuePair<string, string>> args, out string output)
+        {
+            throw new NotImplementedException();
         }
 
         private Result DoNothing(List<KeyValuePair<string, string>> args, out string output)

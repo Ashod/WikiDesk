@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MagicWordProcessorTest.cs" />
     <Compile Include="WikiTitleTest.cs" />
     <Compile Include="WikiParserFunctionProcessorTest.cs" />
     <Compile Include="WikiTemplateParseTest.cs" />
