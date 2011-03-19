@@ -53,7 +53,7 @@ namespace WikiDesk.Core
             commonImagesPath_ = "file:///" + commonImagesPath_;
             commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
 
-            magicWordProcessor_ = new MagicWordProcessor(config.WikiSite);
+            magicWordProcessor_ = new MagicWordProcessor();
             parserFunctionsProcessor_ = new ParserFunctionProcessor();
 
             logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
@@ -594,13 +594,14 @@ namespace WikiDesk.Core
 
                 // Handle the match.
                 string magic = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
-                magic = MagicWord(magic);
-                if (!string.IsNullOrEmpty(magic))
+                string output;
+                if (MagicWord(magic, out output) == VariableProcessor.Result.Found)
                 {
                     // Recursively process.
-                    string text = ProcessMagicWords(magic);
-                    sb.Append(text);
+                    output = ProcessMagicWords(output);
                 }
+
+                sb.Append(output);
 
                 lastIndex = startIndex + (endIndex - startIndex + 1);
                 startIndex = MagicParser.FindMagicBlock(wikicode, lastIndex, out endIndex);
@@ -610,19 +611,20 @@ namespace WikiDesk.Core
             return sb.ToString();
         }
 
-        private string MagicWord(string magic)
+        private VariableProcessor.Result MagicWord(string magic, out string output)
         {
             logger_.Log(Levels.Debug, "Magic: " + magic);
+
+            VariableProcessor.Result result = VariableProcessor.Result.Unknown;
 
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(magic, out args);
             if (string.IsNullOrEmpty(command))
             {
                 logger_.Log(Levels.Debug, "Failed to find command and params in the magic: " + magic);
-                return string.Empty;
+                output = string.Empty;
+                return result;
             }
-
-            string output;
 
             // Get the magic-word ID.
             string magicWordId = config_.WikiSite.MagicWords.FindId(command);
@@ -631,34 +633,36 @@ namespace WikiDesk.Core
                 logger_.Log(Levels.Debug, "MagicWord ID for [{0}] is [{1}].", command, magicWordId);
 
                 // Try processing.
-                magicWordProcessor_.SetContext(nameSpace_, pageTitle_);
-                MagicWordProcessor.Result resMagic =
-                                magicWordProcessor_.Execute(magicWordId, args, out output);
-                if (resMagic != MagicWordProcessor.Result.Unknown)
+                magicWordProcessor_.SetContext(config_.WikiSite, nameSpace_, pageTitle_);
+                result = magicWordProcessor_.Execute(magicWordId, args, out output);
+                if (result != VariableProcessor.Result.Unknown)
                 {
                     logger_.Log(Levels.Debug, "MagicWord for [{0}] - {1}.", command, output);
-                    return output;
+                    return result;
                 }
             }
 
             // Is it a parser function?
-            ParserFunctionProcessor.Result result =
-                            parserFunctionsProcessor_.Execute(command, args, out output);
-            if (result != ParserFunctionProcessor.Result.Unknown)
+            result = parserFunctionsProcessor_.Execute(command, args, out output);
+            if (result != VariableProcessor.Result.Unknown)
             {
                 logger_.Log(Levels.Debug, "ParserFunction for command [{0}] - {1}.", command, output);
-                return output;
+                return result;
             }
 
             // Assume it's a template.
-            return Template(command, args);
+            return Template(command, args, out output);
         }
 
-        private string Template(string name, List<KeyValuePair<string, string>> args)
+        private VariableProcessor.Result Template(
+                                            string name,
+                                            List<KeyValuePair<string, string>> args,
+                                            out string output)
         {
             if (resolveWikiTemplateDel_ == null)
             {
-                return string.Empty;
+                output = string.Empty;
+                return VariableProcessor.Result.Unknown;
             }
 
             logger_.Log(Levels.Debug, "Resolving template [{0}].", name);
@@ -666,7 +670,8 @@ namespace WikiDesk.Core
             if (template == null)
             {
                 logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", name);
-                return "~" + name + "~";
+                output = "~" + name + "~";
+                return VariableProcessor.Result.Html;
             }
 
             logger_.Log(Levels.Debug, "Template for [{0}] - {1}.", name, template);
@@ -680,19 +685,22 @@ namespace WikiDesk.Core
                 if (template == null)
                 {
                     logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", newName);
-                    return "~" + name + "~";
+                    output = "~" + name + "~";
+                    return VariableProcessor.Result.Html;
                 }
 
                 newName = Redirection(template);
                 if (newName != null)
                 {
                     logger_.Log(Levels.Warn, "Template redirection loop on [{0}].", template);
-                    return "<b><em>Redirection Loop!</em></b>";
+                    output = "<b><em>Redirection Loop!</em></b>";
+                    return VariableProcessor.Result.Html;
                 }
             }
 
             logger_.Log(Levels.Debug, "Processing template params for [{0}].", template);
-            return MagicParser.ProcessTemplateParams(template, args);
+            output = MagicParser.ProcessTemplateParams(template, args);
+            return VariableProcessor.Result.Found;
         }
 
         #endregion // MagicWords, Functions and Templates

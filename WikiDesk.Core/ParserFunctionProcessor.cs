@@ -4,64 +4,11 @@ namespace WikiDesk.Core
     using System;
     using System.Collections.Generic;
 
-    public class ParserFunctionProcessor
+    public class ParserFunctionProcessor : VariableProcessor
     {
         public ParserFunctionProcessor()
         {
             RegisterHandlers();
-        }
-
-        public Result Execute(string functionName, List<KeyValuePair<string, string>> args, out string output)
-        {
-            Handler func = FindHandler(functionName);
-            if (func != null)
-            {
-                return func(args, out output);
-            }
-
-            output = null;
-            return Result.Unknown;
-        }
-
-        public enum Result
-        {
-            /// <summary>
-            /// Unknown function.
-            /// </summary>
-            Unknown,
-
-            /// <summary>
-            /// The text returned is valid, stop processing the template.
-            /// </summary>
-            Found,
-
-            /// <summary>
-            /// Wiki markup in the return value should be escaped.
-            /// </summary>
-            NoWiki,
-
-            /// <summary>
-            /// The returned text is HTML, armor it against wikitext transformation.
-            /// </summary>
-            Html
-        }
-
-        public delegate Result Handler(List<KeyValuePair<string, string>> args, out string output);
-
-        public void RegisterHandler(string name, Handler func)
-        {
-            functionsMap_[name] = func;
-        }
-
-        private Handler FindHandler(string name)
-        {
-            Handler func;
-            if (functionsMap_.TryGetValue(name, out func))
-            {
-                return func;
-            }
-
-            return null;
         }
 
         #region implementation
@@ -189,32 +136,127 @@ namespace WikiDesk.Core
         /// <returns></returns>
         private Result IfEq(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "~IfEq~";
+            return Result.Found;
         }
 
         private Result IfError(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "~IfError~";
+            return Result.Found;
         }
 
         private Result IfExpr(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "~IfExpr~";
+            return Result.Found;
         }
 
         private Result IfExists(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "~IfExists~";
+            return Result.Found;
         }
 
         private Result Rel2Abs(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "~Rel2Abs~";
+            return Result.Found;
         }
 
+        /// <summary>
+        /// This function compares one input value against several test cases,
+        /// returning an associated string if a match is found.
+        /// {{#switch: comparison string
+        ///  | case = result
+        ///  | case = result
+        ///  | ...
+        ///  | case = result
+        ///  | default result
+        /// }}
+        /// Alternatively, the default result may be explicitly declared with a
+        /// case string of "#default".
+        /// {{#switch: comparison string
+        ///  | case = result
+        ///  | case = result
+        ///  | ...
+        ///  | case = result
+        ///  | #default = default result
+        /// }}
+        /// </summary>
+        /// <example>
+        /// {{#switch: baz | foo = Foo | baz = Baz | Bar }} → Baz
+        /// #switch allows an editor to add information in one template and this
+        /// information will be visible in several other templates which all have
+        /// different formatting.
+        /// Default:
+        /// The default result is returned if no case string matches the comparison string:
+        /// {{#switch: test | foo = Foo | baz = Baz | Bar }} → Bar
+        /// In this syntax, the default result must be the last parameter and 
+        /// must not contain a raw equals sign.
+        /// {{#switch: test | Bar | foo = Foo | baz = Baz }} →
+        /// {{#switch: test | foo = Foo | baz = Baz | B=ar }} →
+        /// Alternatively, the default result may be explicitly declared with a
+        /// case string of "#default".
+        /// {{#switch: comparison string
+        ///  | case = result
+        ///  | case = result
+        ///  | ...
+        ///  | case = result
+        ///  | #default = default result
+        /// }}
+        /// Default results declared in this way may be placed anywhere within the function:
+        /// {{#switch: test | foo = Foo | #default = Bar | baz = Baz }} → Bar
+        /// If the default parameter is omitted and no match is made, no result is returned:
+        /// {{#switch: test | foo = Foo | baz = Baz }} →
+        /// Grouping results:
+        /// It is possible to have 'fall through' values, where several case 
+        /// strings return the same result string. This minimizes duplication.
+        /// {{#switch: comparison string
+        ///  | case1 = result1
+        ///  | case2 
+        ///  | case3 
+        ///  | case4 = result2
+        ///  | case5 = result3
+        ///  | case6 
+        ///  | case7 = result4
+        ///  | #default = default result
+        /// }}
+        /// Here cases 2, 3 and 4 all return result2; cases 6 and 7 both return result4
+        /// Comparison behavior:
+        /// As with #ifeq, the comparison is made numerically if both the 
+        /// comparison string and the case string being tested are numeric; 
+        /// or as a case-sensitive string otherwise:
+        /// {{#switch: 0 + 1 | 1 = one | 2 = two | three}} → three
+        /// {{#switch: {{#expr: 0 + 1}} | 1 = one | 2 = two | three}} → one
+        /// {{#switch: a | a = A | b = B | C}} → A
+        /// {{#switch: A | a = A | b = B | C}} → C
+        /// A case string may be empty:
+        /// {{#switch: | = Nothing | foo = Foo | Something }} → Nothing
+        /// Once a match is found, subsequent cases are ignored:
+        /// {{#switch: b | f = Foo | b = Bar | b = Baz | }} → Bar
+        /// Warning:	Numerical comparisons with #switch and #ifeq are not 
+        /// equivalent with comparisons in expressions (see also above):
+        /// {{#switch: 12345678901234567 | 12345678901234568 = A | B}} → B
+        /// {{#ifexpr: 12345678901234567 = 12345678901234568 | A | B}} → A
+        /// Raw equal signs:
+        /// "Case" strings cannot contain raw equals signs. To work around this,
+        /// create a template {{=}} containing a single equals sign: =.
+        /// Example:
+        /// {{#switch: 1=2
+        ///  | 1=2 = raw
+        ///  | 1&lt;nowiki&gt;=&lt;/nowiki&gt;2 = nowiki
+        ///  | 1&#61;2 = html
+        ///  | 1{{=}}2 = template
+        ///  | default }} → template
+        /// </example>
+        /// <param name="args">The arguments.</param>
+        /// <param name="output">The output string.</param>
+        /// <returns>A result code.</returns>
         private Result Switch(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "~Switch~";
+            return Result.Found;
         }
 
         private Result Time(List<KeyValuePair<string, string>> args, out string output)
@@ -233,11 +275,5 @@ namespace WikiDesk.Core
         }
 
         #endregion // implementation
-
-        #region representation
-
-        private readonly Dictionary<string, Handler> functionsMap_ = new Dictionary<string, Handler>(16);
-
-        #endregion // representation
     }
 }

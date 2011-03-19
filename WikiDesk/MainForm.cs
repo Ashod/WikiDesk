@@ -659,19 +659,20 @@
             return WIKI_PROTOCOL_STRING + Title.EncodeNonAsciiCharacters(title);
         }
 
-        private string OnResolveTemplate(string word, string lanugageCode)
+        private string OnResolveTemplate(string pageName, string lanugageCode)
         {
-            string title = Title.Normalize(word);
+            pageName = Title.Normalize(pageName);
 
-            int colIndex = word.IndexOf(':');
-            if (colIndex < 0 || !currentSite_.Namespaces.Contains(word.Substring(0, colIndex)))
+            string nameSpace;
+            string title = Title.ParseFullPageName(pageName, out nameSpace);
+            if (string.IsNullOrEmpty(nameSpace))
             {
                 // Missing or invalid namespace, assume "Template".
-                string templateName = currentSite_.GetNamespace(WikiSite.Namespace.Tempalate);
-                title = templateName + ':' + word;
+                nameSpace = currentSite_.GetNamespace(WikiSite.Namespace.Tempalate);
+                pageName = Title.FullPageName(nameSpace, title);
             }
 
-            Page page = RetrievePage(title);
+            Page page = RetrievePage(pageName);
             if (page != null)
             {
                 string text = page.Text;
