@@ -152,5 +152,39 @@
         }
 
         #endregion // #if
+
+        #region #switch
+
+        [Test]
+        public void SwitchSimple1()
+        {
+            const string RAW = "#switch: baz | foo = Foo | baz = Baz | Bar ";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor();
+            string output;
+
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual("Baz", output);
+        }
+
+        [Test]
+        public void SwitchSimple2()
+        {
+            const string RAW = "#switch:4|1=C41E3A|2=FFFFFF|3=000000|4=C41E3A";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor();
+            string output;
+
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual("C41E3A", output);
+        }
+
+        #endregion // #switch
     }
 }

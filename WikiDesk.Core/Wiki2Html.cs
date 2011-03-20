@@ -575,7 +575,7 @@ namespace WikiDesk.Core
 
         private string ProcessMagicWords(string wikicode)
         {
-            logger_.Log(Levels.Debug, "Processing Magic: {0}.", wikicode);
+            logger_.Log(Levels.Debug, "Processing Magic:\n{0}", wikicode);
 
             int endIndex;
             int startIndex = MagicParser.FindMagicBlock(wikicode, out endIndex);
@@ -613,7 +613,7 @@ namespace WikiDesk.Core
 
         private VariableProcessor.Result MagicWord(string magic, out string output)
         {
-            logger_.Log(Levels.Debug, "Magic: " + magic);
+            logger_.Log(Levels.Debug, "Magic:\n{0}", magic);
 
             VariableProcessor.Result result = VariableProcessor.Result.Unknown;
 
@@ -625,6 +625,8 @@ namespace WikiDesk.Core
                 output = string.Empty;
                 return result;
             }
+
+            logger_.Log(Levels.Debug, "Magic Variable: [{0}].", command);
 
             // Get the magic-word ID.
             string magicWordId = config_.WikiSite.MagicWords.FindId(command);
@@ -674,13 +676,13 @@ namespace WikiDesk.Core
                 return VariableProcessor.Result.Html;
             }
 
-            logger_.Log(Levels.Debug, "Template for [{0}] - {1}.", name, template);
+            logger_.Log(Levels.Debug, "Template for [{0}]:\n{1}.", name, template);
 
             // Redirection?
             string newName = Redirection(template);
             if (newName != null)
             {
-                logger_.Log(Levels.Debug, "Template [{0}] redirects to .", template, newName);
+                logger_.Log(Levels.Debug, "Template [{0}] redirects to [{1}].", template, newName);
                 template = resolveWikiTemplateDel_(newName, config_.CurrentLanguageCode);
                 if (template == null)
                 {
@@ -698,12 +700,47 @@ namespace WikiDesk.Core
                 }
             }
 
-            logger_.Log(Levels.Debug, "Processing template params for [{0}].", template);
+            logger_.Log(Levels.Debug, "Removing comments from template:\n{0}", template);
+            template = RemoveComments(template);
+
+            logger_.Log(Levels.Debug, "Processing template params for:\n{0}", template);
             output = MagicParser.ProcessTemplateParams(template, args);
             return VariableProcessor.Result.Found;
         }
 
         #endregion // MagicWords, Functions and Templates
+
+        private static string RemoveComments(string wikicode)
+        {
+            int startIndex = wikicode.IndexOf("<!--");
+            if (startIndex < 0)
+            {
+                return wikicode;
+            }
+
+            int lastIndex = 0;
+            StringBuilder sb = new StringBuilder(wikicode.Length);
+
+            while (startIndex >= 0 && lastIndex < wikicode.Length)
+            {
+                // Copy the good part.
+                sb.Append(wikicode.Substring(lastIndex, startIndex - lastIndex));
+
+                // Skip over the match.
+                int endIndex = wikicode.IndexOf("-->", lastIndex);
+                if (endIndex < 0)
+                {
+                    // Shouldn't happen!
+                    break;
+                }
+
+                lastIndex = startIndex + (endIndex + 2 - startIndex + 1);
+                startIndex = wikicode.IndexOf("<!--", lastIndex);
+            }
+
+            sb.Append(wikicode.Substring(lastIndex));
+            return sb.ToString();
+        }
 
         private static string ConvertParagraphs(string wikicode)
         {
