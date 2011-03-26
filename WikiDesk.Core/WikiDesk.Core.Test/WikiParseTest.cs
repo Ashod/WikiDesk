@@ -112,25 +112,11 @@
         }
 
         [Test]
-        public void ParserTemplateExclaim()
-        {
-            TestConvert("{{!}}",
-                "|");
-        }
-
-        [Test]
-        public void ParserTemplateExclaimExplicit()
-        {
-            TestConvert("{{Template:!}}",
-                "|");
-        }
-
-        [Test]
         public void Link()
         {
             TestConvert(
                     "[[Brazil|kiko]]",
-                    "<p><a href=\"http://en.wikipedia.org/w/index.php?title=Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a></p>");
+                    "<p><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a></p>");
         }
 
         [Test]
@@ -138,7 +124,7 @@
         {
             TestConvert(
                     "#REDIRECT [[Brazil]]",
-                    "Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/w/index.php?title=Brazil\" title=\"Brazil\">Brazil</a></span>");
+                    "Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></span>");
         }
 
         [Test]
@@ -146,7 +132,7 @@
         {
             TestConvert(
                     "#REDIRECT: [[Brazil]]",
-                    "Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/w/index.php?title=Brazil\" title=\"Brazil\">Brazil</a></span>");
+                    "Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></span>");
         }
 
         internal static void TestConvert(string wikicode, string expected)

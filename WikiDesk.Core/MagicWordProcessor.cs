@@ -184,7 +184,7 @@ namespace WikiDesk.Core
             throw new NotImplementedException();
         }
 
-        private Result UrlEncode(List<KeyValuePair<string, string>> args, out string output)
+        private static Result UrlEncode(List<KeyValuePair<string, string>> args, out string output)
         {
             if (args != null && args.Count > 0)
             {
