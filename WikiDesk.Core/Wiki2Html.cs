@@ -621,12 +621,24 @@ namespace WikiDesk.Core
                 return result;
             }
 
-            logger_.Log(Levels.Debug, "Magic Variable: [{0}].", command);
+            LogEntry logEntry = logger_.CreateEntry(Levels.Debug, "Magic Variable: [{0}].", command);
+            if (args != null)
+            {
+                foreach (KeyValuePair<string, string> pair in args)
+                {
+                    if (pair.Key != null)
+                    {
+                        logEntry.Properties[pair.Key] = pair.Value ?? string.Empty;
+                    }
+                }
+            }
+
+            logger_.Log(logEntry);
 
             // If it's an explicit template, process now.
             if (command.TrimEnd(':') == config_.WikiSite.GetNamespace(WikiSite.Namespace.Tempalate))
             {
-                if (args.Count > 0)
+                if (args != null && args.Count > 0)
                 {
                     command = args[0].Value;
                     args.RemoveAt(0);
@@ -708,23 +720,12 @@ namespace WikiDesk.Core
 
             template = RemoveComments(template);
 
-            LogEntry logEntry = logger_.CreateEntry(
-                                            Levels.Debug,
-                                            "Processing template params for:{0}{1}",
-                                            Environment.NewLine,
-                                            template);
-            if (args != null)
-            {
-                foreach (KeyValuePair<string, string> pair in args)
-                {
-                    if (pair.Key != null)
-                    {
-                        logEntry.Properties[pair.Key] = pair.Value ?? string.Empty;
-                    }
-                }
-            }
+            logger_.Log(
+                Levels.Debug,
+                "Processing template params for:{0}{1}",
+                Environment.NewLine,
+                template);
 
-            logger_.Log(logEntry);
             output = MagicParser.ProcessTemplateParams(template, args);
             return VariableProcessor.Result.Found;
         }

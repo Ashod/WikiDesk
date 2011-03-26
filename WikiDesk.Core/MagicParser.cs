@@ -293,11 +293,6 @@ namespace WikiDesk.Core
         {
             Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
 
-            if (args == null || args.Count == 0)
-            {
-                return template;
-            }
-
             // Find the first argument to process.
             int endIndex;
             int startIndex = FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
@@ -307,10 +302,14 @@ namespace WikiDesk.Core
             }
 
             // Convert args to a map for faster query.
-            Dictionary<string, string> mapArgs = new Dictionary<string, string>(args.Count);
-            foreach (KeyValuePair<string, string> pair in args)
+            Dictionary<string, string> mapArgs = null;
+            if (args != null && args.Count > 0)
             {
-                mapArgs[pair.Key] = pair.Value;
+                mapArgs = new Dictionary<string, string>(args.Count);
+                foreach (KeyValuePair<string, string> pair in args)
+                {
+                    mapArgs[pair.Key] = pair.Value;
+                }
             }
 
             // Process the params, passing the first match.
@@ -322,7 +321,7 @@ namespace WikiDesk.Core
                                     Dictionary<string, string> args)
         {
             Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
-            Debug.Assert(args != null && args.Count > 0, "Invalid args.");
+
 
             // Find the first argument to process.
             int endIndex;
@@ -343,7 +342,6 @@ namespace WikiDesk.Core
                                     int endIndex)
         {
             Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
-            Debug.Assert(args != null && args.Count > 0, "Invalid args.");
             Debug.Assert(startIndex >= 0, "Invalid startIndex.");
             Debug.Assert(endIndex >= 0, "Invalid endIndex.");
 
@@ -384,7 +382,7 @@ namespace WikiDesk.Core
 
             string argName = arg.Substring(3, end - 3);
             string value;
-            if (args.TryGetValue(argName, out value))
+            if (args != null && args.TryGetValue(argName, out value))
             {
                 return value;
             }

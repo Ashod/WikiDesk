@@ -345,7 +345,7 @@ Hayastani Hanrapetutyun |
         [Test]
         public void ProcessTemplateParamsNone()
         {
-            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", null);
+            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", new List<KeyValuePair<string, string>>());
             Assert.AreEqual("start-pqr-end", value);
         }
 
