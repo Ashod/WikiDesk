@@ -3,6 +3,7 @@ namespace WikiDesk.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Web;
 
     public class MagicWordProcessor : VariableProcessor
     {
@@ -25,7 +26,7 @@ namespace WikiDesk.Core
             RegisterHandler("int",               DoNothing);
             RegisterHandler("ns",                DoNothing);
             RegisterHandler("nse",               DoNothing);
-            RegisterHandler("urlencode",         DoNothing);
+            RegisterHandler("urlencode",         UrlEncode);
             RegisterHandler("lcfirst",           LcFirst);
             RegisterHandler("ucfirst",           UcFirst);
             RegisterHandler("lc",                Lc);
@@ -183,6 +184,23 @@ namespace WikiDesk.Core
             throw new NotImplementedException();
         }
 
+        private Result UrlEncode(List<KeyValuePair<string, string>> args, out string output)
+        {
+            if (args != null && args.Count > 0)
+            {
+                string arg = args[0].Value;
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    arg = arg.Trim(WhiteSpaceChars);
+                    output = HttpUtility.UrlEncode(arg);
+                    return Result.Found;
+                }
+            }
+
+            output = string.Empty;
+            return Result.Found;
+        }
+
         private static Result Lc(List<KeyValuePair<string, string>> args, out string output)
         {
             if (args != null && args.Count > 0)
@@ -295,6 +313,8 @@ namespace WikiDesk.Core
         #endregion // implementation
 
         #region representation
+
+        private static readonly char[] WhiteSpaceChars = { ' ', '\n', '\r', '\t' };
 
         private WikiSite wikiSite_;
         private string nameSpace_;
