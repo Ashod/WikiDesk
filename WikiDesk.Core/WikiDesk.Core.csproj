@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="StringUtils.cs" />
     <Compile Include="VariableProcessor.cs" />
     <Compile Include="MagicParser.cs" />
     <Compile Include="MagicWordProcessor.cs" />
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Tracy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

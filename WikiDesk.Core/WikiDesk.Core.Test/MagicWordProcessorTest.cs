@@ -20,8 +20,8 @@
         [SetUp]
         public void Setup()
         {
-            proc_ = new MagicWordProcessor(wikiSite_);
-            proc_.SetContext(string.Empty, "TestPage");
+            proc_ = new MagicWordProcessor();
+            proc_.SetContext(wikiSite_, string.Empty, "TestPage");
             args_ = new List<KeyValuePair<string, string>>(4);
         }
 
