@@ -2,6 +2,7 @@
 namespace WikiDesk.Core
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Text;
 
     public class MagicParser
@@ -290,6 +291,13 @@ namespace WikiDesk.Core
         /// <returns>The processed result.</returns>
         public static string ProcessTemplateParams(string template, List<KeyValuePair<string, string>> args)
         {
+            Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
+
+            if (args == null || args.Count == 0)
+            {
+                return template;
+            }
+
             // Find the first argument to process.
             int endIndex;
             int startIndex = FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
@@ -298,8 +306,55 @@ namespace WikiDesk.Core
                 return template;
             }
 
+            // Convert args to a map for faster query.
+            Dictionary<string, string> mapArgs = new Dictionary<string, string>(args.Count);
+            foreach (KeyValuePair<string, string> pair in args)
+            {
+                mapArgs[pair.Key] = pair.Value;
+            }
+
+            // Process the params, passing the first match.
+            return ProcessTemplateParams(template, mapArgs, startIndex, endIndex);
+        }
+
+        public static string ProcessTemplateParams(
+                                    string template,
+                                    Dictionary<string, string> args)
+        {
+            Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
+            Debug.Assert(args != null && args.Count > 0, "Invalid args.");
+
+            // Find the first argument to process.
+            int endIndex;
+            int startIndex = FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
+            if (startIndex < 0)
+            {
+                return template;
+            }
+
+            // Process the params, passing the first match.
+            return ProcessTemplateParams(template, args, startIndex, endIndex);
+        }
+
+        public static string ProcessTemplateParams(
+                                    string template,
+                                    Dictionary<string, string> args,
+                                    int startIndex,
+                                    int endIndex)
+        {
+            Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
+            Debug.Assert(args != null && args.Count > 0, "Invalid args.");
+            Debug.Assert(startIndex >= 0, "Invalid startIndex.");
+            Debug.Assert(endIndex >= 0, "Invalid endIndex.");
+
+            if (startIndex == 0 && endIndex == template.Length - 1)
+            {
+                // One argument only.
+                return ProcessTemplateArg(template, args);
+            }
+
             int lastIndex = 0;
-            StringBuilder sb = new StringBuilder(template.Length * 16);
+            StringBuilder sb = new StringBuilder(template.Length * 8);
 
             while (startIndex >= 0 && lastIndex < template.Length)
             {
@@ -309,50 +364,43 @@ namespace WikiDesk.Core
                 // Handle the match.
                 string arg = template.Substring(startIndex, endIndex - startIndex + 1);
 
-                // Get the argument name.
-                int end = arg.IndexOfAny(new[] { '|', '}' });
-                if (end < 0)
-                {
-                    // Should never happen.
-                    break;
-                }
-
-                string argName = arg.Substring(3, end - 3);
-                string value = null;
-                if (args != null && args.Count > 0)
-                {
-                    foreach (KeyValuePair<string, string> pair in args)
-                    {
-                        if (pair.Key == argName)
-                        {
-                            value = pair.Value;
-                            break;
-                        }
-                    }
-                }
-
-                if (value != null)
-                {
-                    sb.Append(value);
-                }
-                else
-                {
-                    // See if there is a default value.
-                    if (arg[end] == '|')
-                    {
-                        string def = arg.Substring(end + 1, arg.Length - end - 3 - 1);
-                        sb.Append(def);
-                    }
-                }
+                sb.Append(ProcessTemplateArg(arg, args));
 
                 lastIndex = startIndex + (endIndex - startIndex + 1);
                 startIndex = FindWrappedBlock(template, lastIndex, out endIndex, '{', '}', 3);
             }
 
             sb.Append(template.Substring(lastIndex));
-            template = sb.ToString();
-            startIndex = FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
-            return startIndex >= 0 ? ProcessTemplateParams(template, args) : template;
+            return sb.ToString();
+        }
+
+        private static string ProcessTemplateArg(string arg, Dictionary<string, string> args)
+        {
+            Debug.Assert(arg.Length > 6, "Invalid argument.");
+
+            // Get the argument name.
+            int end = arg.IndexOfAny(PipeOrEndParamChars, 3);
+            Debug.Assert(end >= 0, "Invalid argument.");
+
+            string argName = arg.Substring(3, end - 3);
+            string value;
+            if (args.TryGetValue(argName, out value))
+            {
+                return value;
+            }
+
+            // See if there is a default value.
+            if (arg[end] == '|')
+            {
+                string def = arg.Substring(end + 1, arg.Length - end - 3 - 1);
+                if (def.Length > 0)
+                {
+                    // Process the default value.
+                    return ProcessTemplateParams(def, args);
+                }
+            }
+
+            return string.Empty;
         }
 
         /// <summary>
@@ -420,6 +468,7 @@ namespace WikiDesk.Core
 
         private static readonly char[] WhiteSpaceChars = { ' ', '\n', '\r', '\t' };
         private static readonly char[] ParamDelimChars = { ':', '|' };
+        private static readonly char[] PipeOrEndParamChars = { '|', '}' };
 
         #endregion // representation
     }

@@ -706,7 +706,6 @@ namespace WikiDesk.Core
                 }
             }
 
-            logger_.Log(Levels.Debug, "Removing comments from template:{0}{1}", Environment.NewLine, template);
             template = RemoveComments(template);
 
             LogEntry logEntry = logger_.CreateEntry(
