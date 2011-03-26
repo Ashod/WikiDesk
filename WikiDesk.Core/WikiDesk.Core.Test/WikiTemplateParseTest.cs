@@ -292,6 +292,8 @@ Hayastani Hanrapetutyun |
             Assert.AreEqual(".am", args[23].Value);
         }
 
+        #region ProcessTemplateParams
+
         [Test]
         public void ProcessTemplateParamsA()
         {
@@ -358,6 +360,20 @@ Hayastani Hanrapetutyun |
             string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", args);
             Assert.AreEqual("start-pqr-end", value);
         }
+
+        [Test]
+        public void ProcessTemplateParamsPartialName()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("title", "Shape and Form")
+                };
+
+            string value = MagicParser.ProcessTemplateParams("start-{{{trans_title|}}}-end", args);
+            Assert.AreEqual("start--end", value);
+        }
+
+        #endregion // ProcessTemplateParams
 
         [Test]
         public void TemplateA()

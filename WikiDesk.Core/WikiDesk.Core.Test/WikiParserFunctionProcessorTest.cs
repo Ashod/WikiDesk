@@ -21,7 +21,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("No", output);
         }
 
@@ -37,7 +37,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("Yes", output);
         }
 
@@ -53,7 +53,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("No", output);
         }
 
@@ -68,7 +68,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual(string.Empty, output);
         }
 
@@ -84,7 +84,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("No", output);
         }
 
@@ -100,7 +100,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("Yes", output);
         }
 
@@ -116,7 +116,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("Yes", output);
         }
 
@@ -131,7 +131,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual(string.Empty, output);
         }
 
@@ -147,7 +147,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("No", output);
         }
 
@@ -166,7 +166,7 @@
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             string output;
 
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
             Assert.AreEqual("Baz", output);
         }
 
@@ -181,7 +181,7 @@
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             string output;
 
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
             Assert.AreEqual("C41E3A", output);
         }
 
@@ -196,7 +196,7 @@
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             string output;
 
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
             Assert.AreEqual("Nothing", output);
         }
 
@@ -211,7 +211,7 @@
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             string output;
 
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
             Assert.AreEqual("Bar", output);
         }
 
@@ -226,7 +226,7 @@
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             string output;
 
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
             Assert.AreEqual(string.Empty, output);
         }
 
@@ -241,7 +241,7 @@
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             string output;
 
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
             Assert.AreEqual(string.Empty, output);
         }
 
