@@ -48,9 +48,14 @@ namespace WikiDesk.Core
             get { return domain_; }
         }
 
-        public string BaseUrl
+        public string BaseFullUrl
         {
             get { return string.Format(".{0}{1}", domain_.Domain, domain_.FullPath); }
+        }
+
+        public string BaseFriendlyUrl
+        {
+            get { return string.Format(".{0}{1}", domain_.Domain, domain_.FiendlyPath); }
         }
 
         public string ExportUrl
@@ -59,7 +64,7 @@ namespace WikiDesk.Core
             {
                 string[] aliases = GetSpecialPageAliases("Export");
                 string export = aliases != null ? aliases[0] : "Export";
-                return string.Format("{0}{1}:{2}/", BaseUrl, GetNamespace(Namespace.Special), export);
+                return string.Format("{0}{1}:{2}/", BaseFullUrl, GetNamespace(Namespace.Special), export);
             }
         }
 
@@ -75,9 +80,14 @@ namespace WikiDesk.Core
 
         #endregion // properties
 
-        public string GetUrl(string title)
+        public string GetViewUrl(string title)
         {
-            return string.Format("http://{0}{1}{2}", language_.Code, BaseUrl, Title.Normalize(title));
+            return string.Format("http://{0}{1}{2}", language_.Code, BaseFriendlyUrl, Title.Normalize(title));
+        }
+
+        public string GetFileUrl(string title)
+        {
+            return string.Format("http://{0}{1}File:{2}", language_.Code, BaseFriendlyUrl, Title.Normalize(title));
         }
 
         public string GetExportUrl(string title)
@@ -87,7 +97,7 @@ namespace WikiDesk.Core
 
         public string GetEditUrl(string title)
         {
-            return string.Format("http://{0}{1}{2}&action=edit", language_.Code, BaseUrl, Title.Normalize(title));
+            return string.Format("http://{0}{1}{2}&action=edit", language_.Code, BaseFullUrl, Title.Normalize(title));
         }
 
         public enum Namespace

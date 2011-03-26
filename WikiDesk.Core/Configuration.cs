@@ -14,42 +14,6 @@
 
         public string InternalLinkPrefix = "wiki://";
 
-        /// <summary>
-        /// The base URL for the wiki.
-        /// A language code is prepended to this base-url.
-        /// </summary>
-        public string BaseUrl
-        {
-            get { return WikiSite.BaseUrl; }
-        }
-
-        /// <summary>
-        /// The export-page URL for the wiki.
-        /// A language code is prepended to this url.
-        /// </summary>
-        public string ExportUrl
-        {
-            get { return WikiSite.ExportUrl; }
-        }
-
-        /// <summary>
-        /// The current language code.
-        /// </summary>
-        public string CurrentLanguageCode
-        {
-            get { return WikiSite.Language.Code; }
-        }
-
-        public string FileUrl
-        {
-            get { return FullUrl + "File:"; }
-        }
-
-        public string FullUrl
-        {
-            get { return "http://" + CurrentLanguageCode + BaseUrl; }
-        }
-
         public string SkinsPath = string.Empty;
 
         /// <summary>

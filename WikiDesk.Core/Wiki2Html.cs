@@ -63,16 +63,6 @@ namespace WikiDesk.Core
 
         #region properties
 
-        private string FullUrl
-        {
-            get { return config_.FullUrl; }
-        }
-
-        private string FileUrl
-        {
-            get { return config_.FileUrl; }
-        }
-
         private int ThumbnailWidthPixels
         {
             get { return config_.ThumbnailWidthPixels; }
@@ -129,7 +119,7 @@ namespace WikiDesk.Core
         private string Redirect(string newTitle)
         {
             //TODO: Consider language codes.
-            string url = ResolveLink(newTitle, config_.CurrentLanguageCode);
+            string url = ResolveLink(newTitle, config_.WikiSite.Language.Code);
 
             StringBuilder sb = new StringBuilder(128);
             sb.Append("Redirected to <span class=\"redirectText\"><a href=\"");
@@ -351,14 +341,14 @@ namespace WikiDesk.Core
         {
             string imageFileName = match.Groups[2].Value;
 
-            string imagePageUrl = FileUrl + imageFileName.Replace(' ', '_');
+            string imagePageUrl = config_.WikiSite.GetFileUrl(imageFileName);
             string imageSrcUrl = null;
 
             if (fileCache_ != null)
             {
-                if (fileCache_.IsSourceCached(imageFileName, config_.CurrentLanguageCode))
+                if (fileCache_.IsSourceCached(imageFileName, config_.WikiSite.Language.Code))
                 {
-                    imageSrcUrl = fileCache_.ResolveSourceUrl(imageFileName, config_.CurrentLanguageCode);
+                    imageSrcUrl = fileCache_.ResolveSourceUrl(imageFileName, config_.WikiSite.Language.Code);
                 }
             }
 
@@ -377,7 +367,7 @@ namespace WikiDesk.Core
 
                 if (fileCache_ != null)
                 {
-                    fileCache_.CacheMedia(imageFileName, config_.CurrentLanguageCode, imageSrcUrl);
+                    fileCache_.CacheMedia(imageFileName, config_.WikiSite.Language.Code, imageSrcUrl);
                 }
             }
 
@@ -540,7 +530,11 @@ namespace WikiDesk.Core
 
         private string WikiLink(Match match)
         {
-            string pageName = match.Groups[2].Value;
+            string pageName = match.Groups[2].Value.Trim();
+            if (pageName.Length == 0)
+            {
+                return match.Value;
+            }
 
             // Embedded links need special treatment, skip them.)
             if (pageName.StartsWith("Image:") || pageName.StartsWith("File:"))
@@ -554,7 +548,7 @@ namespace WikiDesk.Core
                 text = pageName;
             }
 
-            string url = ResolveLink(pageName, config_.CurrentLanguageCode);
+            string url = ResolveLink(pageName, config_.WikiSite.Language.Code);
             return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\" class=\"mw-redirect\">", text, "</a>");
         }
 
@@ -668,7 +662,7 @@ namespace WikiDesk.Core
             }
 
             logger_.Log(Levels.Debug, "Resolving template [{0}].", name);
-            string template = resolveWikiTemplateDel_(name, config_.CurrentLanguageCode);
+            string template = resolveWikiTemplateDel_(name, config_.WikiSite.Language.Code);
             if (template == null)
             {
                 logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", name);
@@ -683,7 +677,7 @@ namespace WikiDesk.Core
             if (newName != null)
             {
                 logger_.Log(Levels.Debug, "Template [{0}] redirects to [{1}].", template, newName);
-                template = resolveWikiTemplateDel_(newName, config_.CurrentLanguageCode);
+                template = resolveWikiTemplateDel_(newName, config_.WikiSite.Language.Code);
                 if (template == null)
                 {
                     logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", newName);
@@ -712,34 +706,7 @@ namespace WikiDesk.Core
 
         private static string RemoveComments(string wikicode)
         {
-            int startIndex = wikicode.IndexOf("<!--");
-            if (startIndex < 0)
-            {
-                return wikicode;
-            }
-
-            int lastIndex = 0;
-            StringBuilder sb = new StringBuilder(wikicode.Length);
-
-            while (startIndex >= 0 && lastIndex < wikicode.Length)
-            {
-                // Copy the good part.
-                sb.Append(wikicode.Substring(lastIndex, startIndex - lastIndex));
-
-                // Skip over the match.
-                int endIndex = wikicode.IndexOf("-->", lastIndex);
-                if (endIndex < 0)
-                {
-                    // Shouldn't happen!
-                    break;
-                }
-
-                lastIndex = startIndex + (endIndex + 2 - startIndex + 1);
-                startIndex = wikicode.IndexOf("<!--", lastIndex);
-            }
-
-            sb.Append(wikicode.Substring(lastIndex));
-            return sb.ToString();
+            return StringUtils.RemoveBlocks(wikicode, "<!--", "-->");
         }
 
         private static string ConvertParagraphs(string wikicode)
@@ -893,9 +860,8 @@ namespace WikiDesk.Core
                 return resolveWikiLinkDel_(title, languageCode);
             }
 
-            // Wikis replace spaces with underscores.
-            title = title.Replace(' ', '_');
-            return FullUrl + title;
+            // Link to the online version.
+            return config_.WikiSite.GetViewUrl(title);
         }
 
         #endregion // implementation

@@ -21,7 +21,7 @@ namespace WikiDesk.Core
         {
             Name = name;
             Domain = domain;
-            FiendlyPath = "/";
+            FiendlyPath = "/wiki/";
             FullPath = "/w/index.php?title=";
         }
 

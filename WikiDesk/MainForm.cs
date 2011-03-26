@@ -675,24 +675,24 @@
             Page page = RetrievePage(pageName);
             if (page != null)
             {
-                string text = page.Text;
-                while (true)
+                // Remove documentation and other data.
+                string text = StringUtils.RemoveBlocks(page.Text, "<noinclude>", "</noinclude>");
+
+                // Find an include block, if any.
+                string template = StringUtils.ExtractBlock(text, "<include>", "</include>");
+                if (template != null)
                 {
-                    int start = text.IndexOf("<noinclude>");
-                    if (start < 0)
-                    {
-                        break;
-                    }
-
-                    int end = text.IndexOf("</noinclude>", start);
-                    if (end < 0)
-                    {
-                        break;
-                    }
-
-                    text = text.Remove(start, end - start + "</noinclude>".Length);
+                    return template;
                 }
 
+                // Find an includeonly block, if any.
+                template = StringUtils.ExtractBlock(text, "<includeonly>", "</includeonly>");
+                if (template != null)
+                {
+                    return template;
+                }
+
+                // Whatever is left after the noinclude is all there is.
                 return text;
             }
 
