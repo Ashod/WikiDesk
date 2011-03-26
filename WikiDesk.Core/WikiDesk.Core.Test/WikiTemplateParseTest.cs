@@ -62,9 +62,9 @@
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("Weather", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("Maine", args[0].Value);
-            Assert.AreEqual("2", args[1].Key);
+            Assert.AreEqual(string.Empty, args[1].Key);
             Assert.AreEqual("cold", args[1].Value);
         }
 
@@ -76,7 +76,7 @@
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("Further", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("[[Cats]], [[Dogs]], and [[Fish]]", args[0].Value);
         }
 
@@ -87,10 +87,10 @@
 
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-            Assert.AreEqual("#if", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("#if:", command);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("{{{lang|}}}", args[0].Value);
-            Assert.AreEqual("2", args[1].Key);
+            Assert.AreEqual(string.Empty, args[1].Key);
             Assert.AreEqual("{{{{{lang}}}}}&nbsp;", args[1].Value);
         }
 
@@ -101,10 +101,10 @@
 
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-            Assert.AreEqual("#if", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("#if:", command);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("{{{lang|}}}", args[0].Value);
-            Assert.AreEqual("2", args[1].Key);
+            Assert.AreEqual(string.Empty, args[1].Key);
             Assert.AreEqual("{{{{{lang}}}}}[[Canton of Zürich|Canton Zürich]]", args[1].Value);
         }
 
@@ -115,12 +115,12 @@
 
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-            Assert.AreEqual("#if", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("#if:", command);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("{{{lang|}}}", args[0].Value);
-            Assert.AreEqual("2", args[1].Key);
+            Assert.AreEqual(string.Empty, args[1].Key);
             Assert.AreEqual("{{{{{lang}}}}}[[Canton of Zürich|Canton Zürich]]", args[1].Value);
-            Assert.AreEqual("3", args[2].Key);
+            Assert.AreEqual(string.Empty, args[2].Key);
             Assert.AreEqual("{{name|}}[[link|link]]{{{name|}}}", args[2].Value);
         }
 
@@ -150,7 +150,7 @@
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("Further", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("[[Article 1]], [[Article 2]], and [[Article Something#3|Article 3]]", args[0].Value);
         }
 
@@ -161,8 +161,8 @@
 
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-            Assert.AreEqual("fullurl", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("fullurl:", command);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("{{FULLPAGENAME}}", args[0].Value);
             Assert.AreEqual("action", args[1].Key);
             Assert.AreEqual("edit", args[1].Value);
@@ -175,8 +175,8 @@
 
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-            Assert.AreEqual("#switch", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("#switch:", command);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("{{{2}}}", args[0].Value);
             Assert.AreEqual("1", args[1].Key);
             Assert.AreEqual("C41E3A", args[1].Value);
@@ -196,14 +196,14 @@
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
 
-            Assert.AreEqual("#switch", command);
-            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("#switch:", command);
+            Assert.AreEqual(string.Empty, args[0].Key);
             Assert.AreEqual("baz", args[0].Value);
             Assert.AreEqual("foo", args[1].Key);
             Assert.AreEqual("Foo", args[1].Value);
             Assert.AreEqual("baz", args[2].Key);
             Assert.AreEqual("Baz", args[2].Value);
-            Assert.AreEqual("2", args[3].Key);
+            Assert.AreEqual(string.Empty, args[3].Key);
             Assert.AreEqual("Bar", args[3].Value);
         }
 
@@ -242,16 +242,60 @@ Hayastani Hanrapetutyun |
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("Infobox Country", command);
-            Assert.AreEqual("1", args[0].Key);
-            Assert.AreEqual("{{FULLPAGENAME}}", args[0].Value);
-            Assert.AreEqual("action", args[1].Key);
-            Assert.AreEqual("edit", args[1].Value);
+            Assert.AreEqual("fullcountryname", args[0].Key);
+            Assert.AreEqual("Republic of Armenia<br />\r\nHayastani Hanrapetutyun", args[0].Value);
+            Assert.AreEqual("image_flag", args[1].Key);
+            Assert.AreEqual("Flag of Armenia.svg", args[1].Value);
+            Assert.AreEqual("image_coa", args[2].Key);
+            Assert.AreEqual("Coat of arms of Armenia.svg", args[2].Value);
+            Assert.AreEqual("image_location", args[3].Key);
+            Assert.AreEqual("LocationArmenia.png", args[3].Value);
+            Assert.AreEqual("nationalmotto", args[4].Key);
+            Assert.AreEqual("One Nation, One Culture", args[4].Value);
+            Assert.AreEqual("nationalsong", args[5].Key);
+            Assert.AreEqual("Our Fatherland", args[5].Value);
+            Assert.AreEqual("nationalflower", args[6].Key);
+            Assert.AreEqual("n/a", args[6].Value);
+            Assert.AreEqual("nationalanimal", args[7].Key);
+            Assert.AreEqual("n/a", args[7].Value);
+            Assert.AreEqual("officiallanguages", args[8].Key);
+            Assert.AreEqual("[[Armenian language|Armenian]]", args[8].Value);
+            Assert.AreEqual("populationtotal", args[9].Key);
+            Assert.AreEqual("3,016,000", args[9].Value);
+            Assert.AreEqual("populationrank", args[10].Key);
+            Assert.AreEqual("136", args[10].Value);
+            Assert.AreEqual("populationdensity", args[11].Key);
+            Assert.AreEqual("73", args[11].Value);
+            Assert.AreEqual("countrycapital", args[12].Key);
+            Assert.AreEqual("[[Yerevan]]", args[12].Value);
+            Assert.AreEqual("countrylargestcity", args[13].Key);
+            Assert.AreEqual("[[Yerevan]]", args[13].Value);
+            Assert.AreEqual("areatotal", args[14].Key);
+            Assert.AreEqual("29,800", args[14].Value);
+            Assert.AreEqual("arearank", args[15].Key);
+            Assert.AreEqual("139", args[15].Value);
+            Assert.AreEqual("areawater", args[16].Key);
+            Assert.AreEqual("n/a", args[16].Value);
+            Assert.AreEqual("areawaterpercent", args[17].Key);
+            Assert.AreEqual("n/a", args[17].Value);
+            Assert.AreEqual("establishedin", args[18].Key);
+            Assert.AreEqual("[[September 21]], [[1991]]", args[18].Value);
+            Assert.AreEqual("leadertitlename", args[19].Key);
+            Assert.AreEqual("[[President of Armenia|President]]: [[Robert Kocharian]]<br />[[Prime Minister of Armenia|Prime Minister]]: Serzh Sargsyan", args[19].Value);
+            Assert.AreEqual("currency", args[20].Key);
+            Assert.AreEqual("[[Dram]] (AMD)", args[20].Value);
+            Assert.AreEqual("utcoffset", args[21].Key);
+            Assert.AreEqual("+05:00", args[21].Value);
+            Assert.AreEqual("dialingcode", args[22].Key);
+            Assert.AreEqual("374", args[22].Value);
+            Assert.AreEqual("internettld", args[23].Key);
+            Assert.AreEqual(".am", args[23].Value);
         }
 
         [Test]
         public void ProcessTemplateParamsA()
         {
-            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("1", "a")
                 };
@@ -263,7 +307,7 @@ Hayastani Hanrapetutyun |
         [Test]
         public void ProcessTemplateParamsSpace()
         {
-            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("1", " ")
                 };
@@ -275,7 +319,7 @@ Hayastani Hanrapetutyun |
         [Test]
         public void ProcessTemplateParamsBlank()
         {
-            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("1", string.Empty)
                 };
@@ -287,7 +331,7 @@ Hayastani Hanrapetutyun |
         [Test]
         public void ProcessTemplateParamsNamed()
         {
-            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("1", "no surprise")
                 };
@@ -306,7 +350,7 @@ Hayastani Hanrapetutyun |
         [Test]
         public void ProcessTemplateParamsWrong()
         {
-            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>()
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
                 {
                     new KeyValuePair<string, string>("2", "a")
                 };
@@ -323,13 +367,22 @@ Hayastani Hanrapetutyun |
         }
 
         [Test]
+        public void TemplateExclaimExplicit()
+        {
+            TestConvert("{{Template:!}}",
+                "<p>|</p>");
+        }
+
+
+        [Test]
         public void TemplateThankYou()
         {
             TestConvert("{{ThankYou}}",
-                "<p><a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\"><img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\"></a></p> '''Thank you'''<!--Template:Thank you-->");
+                "<p><a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\"><img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\"></a></p> '''Thank you'''");
         }
 
         [Test]
+        [Ignore]
         public void TemplateLang()
         {
             TestConvert("{{lang-ka|kikos}}",
@@ -337,6 +390,7 @@ Hayastani Hanrapetutyun |
         }
 
         [Test]
+        [Ignore]
         public void TemplateMain()
         {
             TestConvert("{{Main|History of Tbilisi}}",
@@ -344,6 +398,7 @@ Hayastani Hanrapetutyun |
         }
 
         [Test]
+        [Ignore]
         public void TemplateOCLC()
         {
             TestConvert("{{OCLC|224781861}}",
@@ -363,7 +418,7 @@ Hayastani Hanrapetutyun |
             string title = !word.StartsWith("Template:") ? "Template:" + word : word;
 
             title = Title.Normalize(title);
-            string url = string.Concat("http://", config_.CurrentLanguageCode, config_.ExportUrl, title);
+            string url = string.Concat("http://", config_.WikiSite.Language.Code, config_.WikiSite.ExportUrl, title);
             string xmlText = Download.DownloadPage(url);
             Page page = DumpParser.PageFromXml(xmlText);
             if (page == null)

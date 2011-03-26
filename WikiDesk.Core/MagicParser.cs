@@ -147,8 +147,8 @@ namespace WikiDesk.Core
 
             code = code.Trim(WhiteSpaceChars);
 
-            int barIndex = code.IndexOf('|');
-            if (barIndex < 0)
+            int index = code.IndexOfAny(ParamDelimChars);
+            if (index < 0)
             {
                 args = null;
                 return code;
@@ -156,26 +156,28 @@ namespace WikiDesk.Core
 
             List<string> parameters = new List<string>(4);
 
-            // If the magic word ends with a colon, parse it now.
-            int colonIndex = code.IndexOf(':');
-            if (colonIndex >= 0 && colonIndex < barIndex)
+            if (code[index] == ':')
             {
-                barIndex = colonIndex;
+                // If it's a colon, it's part of the command, include it.
+                parameters.Add(code.Substring(0, index + 1).Trim(WhiteSpaceChars));
+            }
+            else
+            {
+                parameters.Add(code.Substring(0, index).Trim(WhiteSpaceChars));
             }
 
-            parameters.Add(code.Substring(0, barIndex).Trim(WhiteSpaceChars));
-            code = code.Substring(barIndex + 1).Trim(WhiteSpaceChars);
+            code = code.Substring(index + 1).Trim(WhiteSpaceChars);
 
             int curParamStart = 0;
             while (true)
             {
-                barIndex = FindParam(code, curParamStart);
+                index = FindParam(code, curParamStart);
 
-                if (barIndex >= 0)
+                if (index >= 0)
                 {
-                    string param = code.Substring(curParamStart, barIndex - curParamStart);
+                    string param = code.Substring(curParamStart, index - curParamStart);
                     parameters.Add(param.Trim(WhiteSpaceChars));
-                    curParamStart = barIndex + 1;
+                    curParamStart = index + 1;
                 }
                 else
                 {
@@ -197,7 +199,6 @@ namespace WikiDesk.Core
 
             args = new List<KeyValuePair<string, string>>(parameters.Count);
 
-            int paramNumber = 1;
             foreach (string parameter in parameters)
             {
                 string name;
@@ -210,9 +211,8 @@ namespace WikiDesk.Core
                 }
                 else
                 {
-                    name = paramNumber.ToString();
+                    name = string.Empty;
                     value = parameter;
-                    ++paramNumber;
                 }
 
                 name = name.Trim(WhiteSpaceChars);
@@ -419,6 +419,7 @@ namespace WikiDesk.Core
         private readonly Dictionary<string, string> args_;
 
         private static readonly char[] WhiteSpaceChars = { ' ', '\n', '\r', '\t' };
+        private static readonly char[] ParamDelimChars = { ':', '|' };
 
         #endregion // representation
     }

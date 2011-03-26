@@ -1,6 +1,7 @@
 ﻿
 namespace WikiDesk.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -569,7 +570,7 @@ namespace WikiDesk.Core
 
         private string ProcessMagicWords(string wikicode)
         {
-            logger_.Log(Levels.Debug, "Processing Magic:\n{0}", wikicode);
+            logger_.Log(Levels.Debug, "Processing Magic:{0}{1}", Environment.NewLine, wikicode);
 
             int endIndex;
             int startIndex = MagicParser.FindMagicBlock(wikicode, out endIndex);
@@ -607,7 +608,7 @@ namespace WikiDesk.Core
 
         private VariableProcessor.Result MagicWord(string magic, out string output)
         {
-            logger_.Log(Levels.Debug, "Magic:\n{0}", magic);
+            logger_.Log(Levels.Debug, "Magic:{0}{1}", Environment.NewLine, magic);
 
             VariableProcessor.Result result = VariableProcessor.Result.Unknown;
 
@@ -621,6 +622,17 @@ namespace WikiDesk.Core
             }
 
             logger_.Log(Levels.Debug, "Magic Variable: [{0}].", command);
+
+            // If it's an explicit template, process now.
+            if (command.TrimEnd(':') == config_.WikiSite.GetNamespace(WikiSite.Namespace.Tempalate))
+            {
+                if (args.Count > 0)
+                {
+                    command = args[0].Value;
+                    args.RemoveAt(0);
+                    return Template(command, args, out output);
+                }
+            }
 
             // Get the magic-word ID.
             string magicWordId = config_.WikiSite.MagicWords.FindId(command);
@@ -670,7 +682,7 @@ namespace WikiDesk.Core
                 return VariableProcessor.Result.Html;
             }
 
-            logger_.Log(Levels.Debug, "Template for [{0}]:\n{1}.", name, template);
+            logger_.Log(Levels.Debug, "Template for [{0}]:{1}{2}.", name, Environment.NewLine, template);
 
             // Redirection?
             string newName = Redirection(template);
@@ -694,10 +706,26 @@ namespace WikiDesk.Core
                 }
             }
 
-            logger_.Log(Levels.Debug, "Removing comments from template:\n{0}", template);
+            logger_.Log(Levels.Debug, "Removing comments from template:{0}{1}", Environment.NewLine, template);
             template = RemoveComments(template);
 
-            logger_.Log(Levels.Debug, "Processing template params for:\n{0}", template);
+            LogEntry logEntry = logger_.CreateEntry(
+                                            Levels.Debug,
+                                            "Processing template params for:{0}{1}",
+                                            Environment.NewLine,
+                                            template);
+            if (args != null)
+            {
+                foreach (KeyValuePair<string, string> pair in args)
+                {
+                    if (pair.Key != null)
+                    {
+                        logEntry.Properties[pair.Key] = pair.Value ?? string.Empty;
+                    }
+                }
+            }
+
+            logger_.Log(logEntry);
             output = MagicParser.ProcessTemplateParams(template, args);
             return VariableProcessor.Result.Found;
         }

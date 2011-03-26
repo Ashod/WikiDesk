@@ -21,7 +21,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("No", output);
         }
 
@@ -37,7 +37,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("Yes", output);
         }
 
@@ -53,7 +53,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("No", output);
         }
 
@@ -68,7 +68,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual(string.Empty, output);
         }
 
@@ -84,7 +84,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("No", output);
         }
 
@@ -100,7 +100,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("Yes", output);
         }
 
@@ -116,7 +116,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("Yes", output);
         }
 
@@ -131,7 +131,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual(string.Empty, output);
         }
 
@@ -147,7 +147,7 @@
                 };
 
             string output;
-            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if", args, out output));
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute("#if:", args, out output));
             Assert.AreEqual("No", output);
         }
 
@@ -183,6 +183,66 @@
 
             Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
             Assert.AreEqual("C41E3A", output);
+        }
+
+        [Test]
+        public void SwitchEmpty()
+        {
+            const string RAW = "#switch: | = Nothing | foo = Foo | Something";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor();
+            string output;
+
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual("Nothing", output);
+        }
+
+        [Test]
+        public void SwitchEmptyDefault()
+        {
+            const string RAW = "#switch: b | f = Foo | b = Bar | b = Baz | ";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor();
+            string output;
+
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual("Bar", output);
+        }
+
+        [Test]
+        public void SwitchNoMatch1()
+        {
+            const string RAW = "#switch: test | Bar | foo = Foo | baz = Baz ";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor();
+            string output;
+
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual(string.Empty, output);
+        }
+
+        [Test]
+        public void SwitchNoMatch2()
+        {
+            const string RAW = "#switch: test | foo = Foo | baz = Baz | B=ar ";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor();
+            string output;
+
+            Assert.AreEqual(ParserFunctionProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual(string.Empty, output);
         }
 
         #endregion // #switch

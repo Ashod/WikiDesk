@@ -15,17 +15,17 @@ namespace WikiDesk.Core
 
         private void RegisterHandlers()
         {
-            RegisterHandler("#expr", Expr);
-            RegisterHandler("#if", If);
-            RegisterHandler("#ifeq", IfEq);
-            RegisterHandler("#iferror", IfError);
-            RegisterHandler("#ifexpr", IfExpr);
-            RegisterHandler("#ifexists", IfExists);
-            RegisterHandler("#rel2abs", Rel2Abs);
-            RegisterHandler("#switch", Switch);
-            RegisterHandler("#time", Time);
-            RegisterHandler("#timel", TimeL);
-            RegisterHandler("#titleparts", TitleParts);
+            RegisterHandler("#expr:", Expr);
+            RegisterHandler("#if:", If);
+            RegisterHandler("#ifeq:", IfEq);
+            RegisterHandler("#iferror:", IfError);
+            RegisterHandler("#ifexpr:", IfExpr);
+            RegisterHandler("#ifexists:", IfExists);
+            RegisterHandler("#rel2abs:", Rel2Abs);
+            RegisterHandler("#switch:", Switch);
+            RegisterHandler("#time:", Time);
+            RegisterHandler("#timel:", TimeL);
+            RegisterHandler("#titleparts:", TitleParts);
         }
 
         private Result Expr(List<KeyValuePair<string, string>> args, out string output)
@@ -192,7 +192,7 @@ namespace WikiDesk.Core
         /// Default:
         /// The default result is returned if no case string matches the comparison string:
         /// {{#switch: test | foo = Foo | baz = Baz | Bar }} → Bar
-        /// In this syntax, the default result must be the last parameter and 
+        /// In this syntax, the default result must be the last parameter and
         /// must not contain a raw equals sign.
         /// {{#switch: test | Bar | foo = Foo | baz = Baz }} →
         /// {{#switch: test | foo = Foo | baz = Baz | B=ar }} →
@@ -210,22 +210,22 @@ namespace WikiDesk.Core
         /// If the default parameter is omitted and no match is made, no result is returned:
         /// {{#switch: test | foo = Foo | baz = Baz }} →
         /// Grouping results:
-        /// It is possible to have 'fall through' values, where several case 
+        /// It is possible to have 'fall through' values, where several case
         /// strings return the same result string. This minimizes duplication.
         /// {{#switch: comparison string
         ///  | case1 = result1
-        ///  | case2 
-        ///  | case3 
+        ///  | case2
+        ///  | case3
         ///  | case4 = result2
         ///  | case5 = result3
-        ///  | case6 
+        ///  | case6
         ///  | case7 = result4
         ///  | #default = default result
         /// }}
         /// Here cases 2, 3 and 4 all return result2; cases 6 and 7 both return result4
         /// Comparison behavior:
-        /// As with #ifeq, the comparison is made numerically if both the 
-        /// comparison string and the case string being tested are numeric; 
+        /// As with #ifeq, the comparison is made numerically if both the
+        /// comparison string and the case string being tested are numeric;
         /// or as a case-sensitive string otherwise:
         /// {{#switch: 0 + 1 | 1 = one | 2 = two | three}} → three
         /// {{#switch: {{#expr: 0 + 1}} | 1 = one | 2 = two | three}} → one
@@ -235,7 +235,7 @@ namespace WikiDesk.Core
         /// {{#switch: | = Nothing | foo = Foo | Something }} → Nothing
         /// Once a match is found, subsequent cases are ignored:
         /// {{#switch: b | f = Foo | b = Bar | b = Baz | }} → Bar
-        /// Warning:	Numerical comparisons with #switch and #ifeq are not 
+        /// Warning:	Numerical comparisons with #switch and #ifeq are not
         /// equivalent with comparisons in expressions (see also above):
         /// {{#switch: 12345678901234567 | 12345678901234568 = A | B}} → B
         /// {{#ifexpr: 12345678901234567 = 12345678901234568 | A | B}} → A
@@ -253,9 +253,42 @@ namespace WikiDesk.Core
         /// <param name="args">The arguments.</param>
         /// <param name="output">The output string.</param>
         /// <returns>A result code.</returns>
-        private Result Switch(List<KeyValuePair<string, string>> args, out string output)
+        private static Result Switch(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = "~Switch~";
+            output = string.Empty;
+            if (args == null || args.Count < 2)
+            {
+                return Result.Found;
+            }
+
+            string def = string.Empty;
+            string key = args[0].Value.Trim();
+            for (int i = 1; i < args.Count; ++i)
+            {
+                if (args[i].Key == key)
+                {
+                    output = args[i].Value;
+                    return Result.Found;
+                }
+
+                if (args[i].Key == "#default")
+                {
+                    def = args[i].Value;
+                }
+            }
+
+            // Not found, use default if any.
+            if (def.Length > 0)
+            {
+                output = def;
+            }
+            else
+            if (args[args.Count - 1].Key.Length == 0)
+            {
+                // The last one is the default, if no key.
+                output = args[args.Count - 1].Value;
+            }
+
             return Result.Found;
         }
 
