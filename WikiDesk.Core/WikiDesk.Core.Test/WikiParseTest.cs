@@ -97,6 +97,96 @@
 
         #endregion // Bold/Italic
 
+        #region Unordered Lists
+
+        [Test]
+        public void UnorderedListSimple()
+        {
+            TestConvert(
+                    "* One list entry.",
+                    "<ul><li>One list entry.</li></ul>");
+        }
+
+        [Test]
+        public void UnorderedListSimple2()
+        {
+            TestConvert(
+                    "* Two list entries.\n" +
+                    "* Another One.",
+                    "<ul><li>Two list entries.</li><li>Another One.</li></ul>");
+        }
+
+        [Test]
+        public void UnorderedListWithSubList()
+        {
+            TestConvert(
+                    "* One list entry.\n" +
+                    "** With one sublist." +
+                    "** Make that two.",
+                    "<ul><li>One list entry.</li><ul><li>With one sublist.</li><li>Make that two.</li></ul></ul>");
+        }
+
+        [Test]
+        public void UnorderedListsComplex()
+        {
+            TestConvert(
+                    "# Numbered lists are:" +
+                    "## Very organized" +
+                    "## Easy to follow" +
+                    "#: Previous item continues" +
+                    "A new line marks the end of the list." +
+                    "# New numbering starts with 1.",
+                    "<ul><li><i>Unordered lists</i> are easy to do:<ul><li>Start every line with a star.<ul><li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul><li>A new line</li></ul></li><li>in a list</li></ul><p>marks the end of the list.</p><ul><li>Of course you can start again.</li></ul>");
+        }
+
+        #endregion // Unordered Lists
+
+        #region Unordered Lists
+
+        [Test]
+        public void OrderedListSimple()
+        {
+            TestConvert(
+                    "# One list entry.",
+                    "<ol><li>One list entry.</li></ol>");
+        }
+
+        [Test]
+        public void OrderedListSimple2()
+        {
+            TestConvert(
+                    "# Two list entries.\n" +
+                    "# Another One.",
+                    "<ol><li>Two list entries.</li><li>Another One.</li></ol>");
+        }
+
+        [Test]
+        public void OrderedListWithSubList()
+        {
+            TestConvert(
+                    "# One list entry.\n" +
+                    "## With one sublist." +
+                    "## Make that two.",
+                    "<ol><li>One list entry.</li><ol><li>With one sublist.</li><li>Make that two.</li></ol></ol>");
+        }
+
+        [Test]
+        public void OrderedListsComplex()
+        {
+            TestConvert(
+                    "* ''Unordered lists'' are easy to do:" +
+                    "** Start every line with a star." +
+                    "*** More stars indicate a deeper level." +
+                    "*: Previous item continues." +
+                    "** A new line" +
+                    "* in a list" +
+                    "marks the end of the list." +
+                    "* Of course you can start again.",
+                    "<ul><li><i>Unordered lists</i> are easy to do:<ul><li>Start every line with a star.<ul><li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul><li>A new line</li></ul></li><li>in a list</li></ul><p>marks the end of the list.</p><ul><li>Of course you can start again.</li></ul>");
+        }
+
+        #endregion // Ordered Lists
+
         [Test]
         public void ExtLink()
         {

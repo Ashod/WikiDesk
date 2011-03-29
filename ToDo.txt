@@ -9,11 +9,15 @@
 * Load from web backups. (Partially done.)
 * Page view progresss.
 * Splash Screen.
+* Compressed Database.
 
 Wiki2Html:
 
 * Tables.
 * References.
+* TOC.
+* Unordered Lists.
+* Ordered Lists.
 * Variables and Templates.
 * Parser Functions.
 * Audio/Video.
@@ -29,4 +33,3 @@ Done:
 * Other languages.
 * Case-insensitive title search. (Standard Wiki normalization only.)
 * Full-text search.
-* Compressed Database.

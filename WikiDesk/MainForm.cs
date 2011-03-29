@@ -678,8 +678,14 @@
                 // Remove documentation and other data.
                 string text = StringUtils.RemoveBlocks(page.Text, "<noinclude>", "</noinclude>");
 
+                //FIXME: These can be nested!
+                // <noinclude>: the content will not be rendered there. These tags have no effect here.
+                // <includeonly>: the content will render only there, and will not render here (like invisible ink made visible by means of transclusion).
+                // <onlyinclude>: the content will render here and will render there, but it will only render there what is between these tags.
+                // There can be several such section "elements". Also, they can be nested. All possible renderings are achievable. For example, to render there one or more sections of the page here use <onlyinclude> tags. To append text there, wrap the addition in <includeonly> tags above, within, or below the section. To omit portions of the section, nest <noinclude> tags within it.
+
                 // Find an include block, if any.
-                string template = StringUtils.ExtractBlock(text, "<include>", "</include>");
+                string template = StringUtils.ExtractBlock(text, "<onlyinclude>", "</onlyinclude>");
                 if (template != null)
                 {
                     return template;

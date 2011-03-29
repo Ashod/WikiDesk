@@ -12,6 +12,23 @@
             get { return wikiSite_; }
         }
 
+        public bool AutoRedirect = false;
+
+        /// <summary>
+        /// The number of H1 headers to automatically add TOC.
+        /// Default is 4.
+        /// -ve number to never automatically add TOC.
+        /// 0 number to always add TOC.
+        /// +ve number to add when at least that many headers exist.
+        /// </summary>
+        public int AutoTocHeaderCount = 4;
+
+        /// <summary>
+        /// The maximum heading number to include in the TOC.
+        /// Default is 2.
+        /// </summary>
+        public int MaxHeadingToIncludeInToc = 2;
+
         public string InternalLinkPrefix = "wiki://";
 
         public string SkinsPath = string.Empty;

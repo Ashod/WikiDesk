@@ -12,6 +12,15 @@ namespace WikiDesk.Core
 
     public class Wiki2Html
     {
+        private class TocEntry
+        {
+            public string Title = string.Empty;
+
+            public string Link = string.Empty;
+
+            public List<TocEntry> Children = new List<TocEntry>();
+        }
+
         /// <summary>
         /// This delegate is used to resolve wiki links.
         /// This is typically used to decide if the link is internal or
@@ -910,6 +919,8 @@ namespace WikiDesk.Core
         private readonly ParserFunctionProcessor parserFunctionsProcessor_;
 
         private readonly ILogger logger_;
+
+        private readonly List<TocEntry> tableOfContents_ = new List<TocEntry>(8);
 
         #endregion // representation
 
