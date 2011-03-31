@@ -50,6 +50,12 @@
                 lstTitles_.FocusedItem = lvi;
                 lstTitles_.EnsureVisible(lvi.Index);
             }
+
+            if (cboDomains_.SelectedIndex < 0)
+            {
+                // Trigger an index change because it will not if we stay at -1.
+                cboDomains__SelectedIndexChanged(null, null);
+            }
         }
 
         #region events
