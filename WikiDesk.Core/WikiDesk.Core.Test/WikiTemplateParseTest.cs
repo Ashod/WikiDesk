@@ -425,7 +425,9 @@ Hayastani Hanrapetutyun |
         internal static void TestConvert(string wikicode, string expected)
         {
             Wiki2Html converter = new Wiki2Html(config_, null, OnResolveTemplate, null);
-            string html = converter.Convert(string.Empty, "TestPage", wikicode);
+            string nameSpace = string.Empty;
+            string title = "TestPage";
+            string html = converter.Convert(ref nameSpace, ref title, wikicode);
             Assert.AreEqual(expected, html);
         }
 

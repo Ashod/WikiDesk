@@ -12,6 +12,19 @@ namespace WikiDesk.Core
 
     public class Wiki2Html
     {
+        private class WikiCode
+        {
+            public WikiCode(string wikiCode)
+            {
+//                 wikiCode_ = wikiCode;
+//                 string[] strings = wikiCode_.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+//                 LinkedList<string> s = new LinkedList<string>();
+//                 s.
+            }
+
+            private readonly string wikiCode_;
+        }
+
         private class TocEntry
         {
             public string Title = string.Empty;
@@ -39,7 +52,7 @@ namespace WikiDesk.Core
         /// <param name="word">The magic word to resolve.</param>
         /// <param name="lanugageCode">The code if the target wiki language.</param>
         /// <returns>A valid full or relative URL.</returns>
-        public delegate string ResolveTemplate(string word, string lanugageCode);
+        public delegate string RetrievePage(string word, string lanugageCode);
 
         #region construction
 
@@ -50,12 +63,12 @@ namespace WikiDesk.Core
 
         public Wiki2Html(Configuration config,
                          ResolveWikiLink resolveWikiLinkDel,
-                         ResolveTemplate resolveWikiTemplateDel,
+                         RetrievePage retrievePageDel,
                          IFileCache fileCache)
         {
             config_ = config;
             resolveWikiLinkDel_ = resolveWikiLinkDel;
-            resolveWikiTemplateDel_ = resolveWikiTemplateDel;
+            retrievePageDel_ = retrievePageDel;
             fileCache_ = fileCache;
 
             commonImagesPath_ = Path.Combine(config.SkinsPath, config.CommonImagesPath);
@@ -80,7 +93,7 @@ namespace WikiDesk.Core
 
         #endregion // properties
 
-        public string Convert(string nameSpace, string pageTitle, string wikiText)
+        public string Convert(ref string nameSpace, ref string pageTitle, string wikiText)
         {
             logger_.Log(
                     Levels.Debug,
@@ -89,18 +102,42 @@ namespace WikiDesk.Core
                     pageTitle,
                     wikiText);
 
-            nameSpace_ = nameSpace;
-            pageTitle_ = pageTitle;
-
             // Process redirections first.
             string newTitle = Redirection(wikiText);
             if (newTitle != null)
             {
                 logger_.Log(Levels.Info, "Redirection: " + newTitle);
 
-                //TODO: Should download and process the new title.
-                return Redirect(newTitle);
+                if (config_.AutoRedirect && retrievePageDel_ != null)
+                {
+                    for (int i = 0; i < MAX_REDIRECTION_CHAIN_COUNT; ++i)
+                    {
+                        string text = retrievePageDel_(newTitle, config_.WikiSite.Language.Code);
+                        if (text == null)
+                        {
+                            break;
+                        }
+
+                        pageTitle = newTitle;
+                        newTitle = Redirection(text);
+                        if (newTitle == null)
+                        {
+                            wikiText = text;
+                            break;
+                        }
+
+                        logger_.Log(Levels.Info, "Redirection: " + newTitle);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(newTitle))
+                {
+                    return Redirect(newTitle);
+                }
             }
+
+            nameSpace_ = nameSpace;
+            pageTitle_ = pageTitle;
 
             wikiText = ConvertListCode(wikiText);
 
@@ -688,14 +725,23 @@ namespace WikiDesk.Core
                                             List<KeyValuePair<string, string>> args,
                                             out string output)
         {
-            if (resolveWikiTemplateDel_ == null)
+            if (retrievePageDel_ == null)
             {
                 output = string.Empty;
                 return VariableProcessor.Result.Unknown;
             }
 
+            string nameSpace;
+            string title = Title.ParseFullPageName(name, out nameSpace);
+            if (string.IsNullOrEmpty(nameSpace))
+            {
+                // Missing or invalid namespace, assume "Template".
+                nameSpace = config_.WikiSite.GetNamespace(WikiSite.Namespace.Tempalate);
+                name = Title.FullPageName(nameSpace, title);
+            }
+
             logger_.Log(Levels.Debug, "Resolving template [{0}].", name);
-            string template = resolveWikiTemplateDel_(name, config_.WikiSite.Language.Code);
+            string template = RetrieveTemplate(name);
             if (template == null)
             {
                 logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", name);
@@ -710,7 +756,7 @@ namespace WikiDesk.Core
             if (newName != null)
             {
                 logger_.Log(Levels.Debug, "Template [{0}] redirects to [{1}].", template, newName);
-                template = resolveWikiTemplateDel_(newName, config_.WikiSite.Language.Code);
+                template = RetrieveTemplate(newName);
                 if (template == null)
                 {
                     logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", newName);
@@ -737,6 +783,43 @@ namespace WikiDesk.Core
 
             output = MagicParser.ProcessTemplateParams(template, args);
             return VariableProcessor.Result.Found;
+        }
+
+        private string RetrieveTemplate(string name)
+        {
+            Debug.Assert(retrievePageDel_ != null, "No RetrievePage delegate defined.");
+
+            string text = retrievePageDel_(name, config_.WikiSite.Language.Code);
+            if (string.IsNullOrEmpty(text))
+            {
+                return text;
+            }
+
+            // Remove documentation and other data.
+            text = StringUtils.RemoveBlocks(text, "<noinclude>", "</noinclude>");
+
+            //FIXME: These can be nested!
+            // <noinclude>: the content will not be rendered there. These tags have no effect here.
+            // <includeonly>: the content will render only there, and will not render here (like invisible ink made visible by means of transclusion).
+            // <onlyinclude>: the content will render here and will render there, but it will only render there what is between these tags.
+            // There can be several such section "elements". Also, they can be nested. All possible renderings are achievable. For example, to render there one or more sections of the page here use <onlyinclude> tags. To append text there, wrap the addition in <includeonly> tags above, within, or below the section. To omit portions of the section, nest <noinclude> tags within it.
+
+            // Find an include block, if any.
+            string template = StringUtils.ExtractBlock(text, "<onlyinclude>", "</onlyinclude>");
+            if (template != null)
+            {
+                return template;
+            }
+
+            // Find an includeonly block, if any.
+            template = StringUtils.ExtractBlock(text, "<includeonly>", "</includeonly>");
+            if (template != null)
+            {
+                return template;
+            }
+
+            // Whatever is left after the noinclude is all there is.
+            return text;
         }
 
         #endregion // MagicWords, Functions and Templates
@@ -909,7 +992,7 @@ namespace WikiDesk.Core
 
         private readonly ResolveWikiLink resolveWikiLinkDel_;
 
-        private readonly ResolveTemplate resolveWikiTemplateDel_;
+        private readonly RetrievePage retrievePageDel_;
 
         private readonly IFileCache fileCache_;
 
@@ -978,5 +1061,11 @@ namespace WikiDesk.Core
         private string pageTitle_;
 
         #endregion // Regex
+
+        #region constants
+
+        private const int MAX_REDIRECTION_CHAIN_COUNT = 3;
+
+        #endregion // constants
     }
 }

@@ -512,7 +512,8 @@
                 Page page = RetrievePage(title);
                 if (page != null && !string.IsNullOrEmpty(page.Text))
                 {
-                    ShowWikiPage(title, page.Text);
+                    ShowWikiPage(ref title, page.Text);
+                    cboNavigate.Text = title;
                     return;
                 }
             }
@@ -622,7 +623,7 @@
             }
         }
 
-        private void ShowWikiPage(string pageName, string wikiText)
+        private void ShowWikiPage(ref string pageName, string wikiText)
         {
             logger_.Log(Levels.Info, "Generating Html for {0}.", pageName);
 
@@ -634,11 +635,14 @@
             Configuration config = new Configuration(currentSite_);
             config.SkinsPath = Path.Combine(userDataFolderPath_, "skins");
 
-            Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnResolveTemplate, fileCache_);
+            Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnRetrievePage, fileCache_);
 
             string nameSpace;
             string pageTitle = Title.ParseFullPageName(pageName, out nameSpace);
-            string html = wiki2Html.Convert(nameSpace, pageTitle, wikiText);
+            string html = wiki2Html.Convert(ref nameSpace, ref pageTitle, wikiText);
+            
+            pageName = Title.FullPageName(nameSpace, pageTitle);
+            currentWikiPageName_ = pageName;
             html = WrapInHtmlBody(pageName, html);
 
             logger_.Log(Levels.Info, "Generated Html for {0}.", pageName);
@@ -659,50 +663,11 @@
             return WIKI_PROTOCOL_STRING + Title.EncodeNonAsciiCharacters(title);
         }
 
-        private string OnResolveTemplate(string pageName, string lanugageCode)
+        private string OnRetrievePage(string pageName, string lanugageCode)
         {
             pageName = Title.Normalize(pageName);
-
-            string nameSpace;
-            string title = Title.ParseFullPageName(pageName, out nameSpace);
-            if (string.IsNullOrEmpty(nameSpace))
-            {
-                // Missing or invalid namespace, assume "Template".
-                nameSpace = currentSite_.GetNamespace(WikiSite.Namespace.Tempalate);
-                pageName = Title.FullPageName(nameSpace, title);
-            }
-
             Page page = RetrievePage(pageName);
-            if (page != null)
-            {
-                // Remove documentation and other data.
-                string text = StringUtils.RemoveBlocks(page.Text, "<noinclude>", "</noinclude>");
-
-                //FIXME: These can be nested!
-                // <noinclude>: the content will not be rendered there. These tags have no effect here.
-                // <includeonly>: the content will render only there, and will not render here (like invisible ink made visible by means of transclusion).
-                // <onlyinclude>: the content will render here and will render there, but it will only render there what is between these tags.
-                // There can be several such section "elements". Also, they can be nested. All possible renderings are achievable. For example, to render there one or more sections of the page here use <onlyinclude> tags. To append text there, wrap the addition in <includeonly> tags above, within, or below the section. To omit portions of the section, nest <noinclude> tags within it.
-
-                // Find an include block, if any.
-                string template = StringUtils.ExtractBlock(text, "<onlyinclude>", "</onlyinclude>");
-                if (template != null)
-                {
-                    return template;
-                }
-
-                // Find an includeonly block, if any.
-                template = StringUtils.ExtractBlock(text, "<includeonly>", "</includeonly>");
-                if (template != null)
-                {
-                    return template;
-                }
-
-                // Whatever is left after the noinclude is all there is.
-                return text;
-            }
-
-            return null;
+            return page != null ? page.Text : null;
         }
 
         private string WrapInHtmlBody(string title, string html)
