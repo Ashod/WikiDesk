@@ -51,6 +51,7 @@
     <Compile Include="WikiSite.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WikiTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

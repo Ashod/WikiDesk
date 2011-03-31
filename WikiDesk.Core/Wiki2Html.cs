@@ -12,19 +12,6 @@ namespace WikiDesk.Core
 
     public class Wiki2Html
     {
-        private class WikiCode
-        {
-            public WikiCode(string wikiCode)
-            {
-//                 wikiCode_ = wikiCode;
-//                 string[] strings = wikiCode_.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-//                 LinkedList<string> s = new LinkedList<string>();
-//                 s.
-            }
-
-            private readonly string wikiCode_;
-        }
-
         private class TocEntry
         {
             public string Title = string.Empty;
