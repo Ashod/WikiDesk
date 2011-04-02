@@ -188,7 +188,7 @@
         [Test]
         public void SwitchEmpty()
         {
-            const string RAW = "#switch: | = Nothing | foo = Foo | Something";
+            const string RAW = "#switch: \n| \n=\n Nothing | foo = Foo\n | Something";
 
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
@@ -243,6 +243,21 @@
 
             Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
             Assert.AreEqual(string.Empty, output);
+        }
+
+        [Test]
+        public void NestedSwitch()
+        {
+            const string RAW = "#switch: foo | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor();
+            string output;
+
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual("{{#switch:x|y=z|def}}", output);
         }
 
         #endregion // #switch

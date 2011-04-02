@@ -513,7 +513,6 @@
                 if (page != null && !string.IsNullOrEmpty(page.Text))
                 {
                     ShowWikiPage(ref title, page.Text);
-                    cboNavigate.Text = title;
                     return;
                 }
             }
@@ -640,7 +639,7 @@
             string nameSpace;
             string pageTitle = Title.ParseFullPageName(pageName, out nameSpace);
             string html = wiki2Html.Convert(ref nameSpace, ref pageTitle, wikiText);
-            
+
             pageName = Title.FullPageName(nameSpace, pageTitle);
             currentWikiPageName_ = pageName;
             html = WrapInHtmlBody(pageName, html);

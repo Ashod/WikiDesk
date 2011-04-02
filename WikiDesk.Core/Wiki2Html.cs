@@ -623,7 +623,8 @@ namespace WikiDesk.Core
                 // Handle the match.
                 string magic = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
                 string output;
-                if (MagicWord(magic, out output) == VariableProcessor.Result.Found)
+                if (MagicWord(magic, out output) == VariableProcessor.Result.Found &&
+                    !string.IsNullOrEmpty(output))
                 {
                     // Recursively process.
                     output = ProcessMagicWords(output);
@@ -690,7 +691,7 @@ namespace WikiDesk.Core
                 result = magicWordProcessor_.Execute(magicWordId, args, out output);
                 if (result != VariableProcessor.Result.Unknown)
                 {
-                    logger_.Log(Levels.Debug, "MagicWord for [{0}] - {1}.", command, output);
+                    logger_.Log(Levels.Debug, "MagicWord result [{0}]:{1}{2}.", command, Environment.NewLine, output);
                     return result;
                 }
             }
@@ -699,7 +700,7 @@ namespace WikiDesk.Core
             result = parserFunctionsProcessor_.Execute(command, args, out output);
             if (result != VariableProcessor.Result.Unknown)
             {
-                logger_.Log(Levels.Debug, "ParserFunction for command [{0}] - {1}.", command, output);
+                logger_.Log(Levels.Debug, "ParserFunction result [{0}]:{1}{2}.", command, Environment.NewLine, output);
                 return result;
             }
 

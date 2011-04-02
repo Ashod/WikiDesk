@@ -203,9 +203,18 @@ namespace WikiDesk.Core
             foreach (string parameter in parameters)
             {
                 string name;
-                string value;
-                int indexOfAssignment = parameter.IndexOf('=');
-                if (indexOfAssignment >= 0)
+                string value = parameter.Trim(WhiteSpaceChars);
+
+                // If parameter is whitespace.
+                if (value.Length == 0)
+                {
+                    args.Add(new KeyValuePair<string, string>(string.Empty, parameter));
+                    continue;
+                }
+
+                // Avoid finding nested magic params.
+                int indexOfAssignment = parameter.IndexOfAny(new[] { '{', '|', '=' });
+                if (indexOfAssignment >= 0 && parameter[indexOfAssignment] == '=')
                 {
                     name = parameter.Substring(0, indexOfAssignment);
                     value = parameter.Substring(indexOfAssignment + 1);
