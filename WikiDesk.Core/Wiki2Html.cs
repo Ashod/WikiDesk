@@ -1001,7 +1001,7 @@ namespace WikiDesk.Core
         //
         // Unary Operators
         //
-        private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT(\:?)\s+\[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
+        private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT(\:?)\s*\[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
         private static readonly Regex ListRegex = new Regex(@"^(\*+)\s*(.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
         //

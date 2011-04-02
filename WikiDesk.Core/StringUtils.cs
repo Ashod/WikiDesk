@@ -32,8 +32,8 @@ namespace WikiDesk.Core
                 int endIndex = text.IndexOf(endMarker, startIndex + startMarker.Length);
                 if (endIndex < 0)
                 {
-                    // Shouldn't happen!
-                    break;
+                    // Missing end marker.
+                    return sb.ToString();
                 }
 
                 lastIndex = endIndex + endMarker.Length;

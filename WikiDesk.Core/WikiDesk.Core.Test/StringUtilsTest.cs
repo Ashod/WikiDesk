@@ -28,5 +28,13 @@
             const string EXP = "blik more text bzz";
             Assert.AreEqual(EXP, StringUtils.RemoveBlocks(RAW, "<!--", "-->"));
         }
+
+        [Test]
+        public void RemoveComentsNoEnd()
+        {
+            const string RAW = "blik more text bzz<!--comment";
+            const string EXP = "blik more text bzz";
+            Assert.AreEqual(EXP, StringUtils.RemoveBlocks(RAW, "<!--", "-->"));
+        }
     }
 }
