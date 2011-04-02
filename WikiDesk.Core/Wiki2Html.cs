@@ -63,8 +63,8 @@ namespace WikiDesk.Core
             commonImagesPath_ = "file:///" + commonImagesPath_;
             commonImagesPath_ = commonImagesPath_.TrimEnd('/') + '/';
 
-            magicWordProcessor_ = new MagicWordProcessor();
-            parserFunctionsProcessor_ = new ParserFunctionProcessor();
+            magicWordProcessor_ = new MagicWordProcessor(ProcessMagicWords);
+            parserFunctionsProcessor_ = new ParserFunctionProcessor(ProcessMagicWords);
 
             logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
         }
@@ -603,14 +603,14 @@ namespace WikiDesk.Core
 
         private string ProcessMagicWords(string wikicode)
         {
-            logger_.Log(Levels.Debug, "Processing Magic:{0}{1}", Environment.NewLine, wikicode);
-
             int endIndex;
             int startIndex = MagicParser.FindMagicBlock(wikicode, out endIndex);
             if (startIndex < 0)
             {
                 return wikicode;
             }
+
+            logger_.Log(Levels.Debug, "Processing Magic:{0}{1}", Environment.NewLine, wikicode);
 
             int lastIndex = 0;
             StringBuilder sb = new StringBuilder(wikicode.Length * 16);

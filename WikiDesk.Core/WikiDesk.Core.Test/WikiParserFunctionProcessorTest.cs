@@ -260,6 +260,56 @@
             Assert.AreEqual("{{#switch:x|y=z|def}}", output);
         }
 
+        [Test]
+        public void IfedSwitchFalse()
+        {
+            const string RAW = "#switch: {{#if:|foo|baz}} | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor(ProcessMagicWord);
+            string output;
+
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual("Baz", output);
+        }
+
+        [Test]
+        public void IfedSwitchTrue()
+        {
+            const string RAW = "#switch: {{#if:x|foo|baz}} | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor(ProcessMagicWord);
+            string output;
+
+            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
+            Assert.AreEqual("{{#switch:x|y=z|def}}", output);
+        }
+
         #endregion // #switch
+
+        private static string ProcessMagicWord(string wikicode)
+        {
+            int endIndex;
+            int startIndex = MagicParser.FindMagicBlock(wikicode, out endIndex);
+            if (startIndex < 0)
+            {
+                return wikicode;
+            }
+
+            wikicode = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(wikicode, out args);
+
+            ParserFunctionProcessor proc = new ParserFunctionProcessor(ProcessMagicWord);
+            string output;
+            proc.Execute(command, args, out output);
+            return output;
+        }
     }
 }

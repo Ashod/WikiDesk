@@ -7,6 +7,12 @@ namespace WikiDesk.Core
     public class ParserFunctionProcessor : VariableProcessor
     {
         public ParserFunctionProcessor()
+            : this(null)
+        {
+        }
+
+        public ParserFunctionProcessor(ProcessMagicWords processMagicWordsDel)
+            : base(processMagicWordsDel)
         {
             RegisterHandlers();
         }
@@ -55,7 +61,7 @@ namespace WikiDesk.Core
         /// <param name="args">The arguments.</param>
         /// <param name="output">The output string.</param>
         /// <returns>A result code.</returns>
-        private static Result If(List<KeyValuePair<string, string>> args, out string output)
+        private Result If(List<KeyValuePair<string, string>> args, out string output)
         {
             output = string.Empty;
             if (args == null || args.Count < 1)
@@ -64,6 +70,7 @@ namespace WikiDesk.Core
             }
 
             string condition = args[0].Value.Trim();
+            condition = ProcessMagicWord(condition);
 
             // Empty string -> No.
             if (condition.Length == 0)
@@ -253,7 +260,7 @@ namespace WikiDesk.Core
         /// <param name="args">The arguments.</param>
         /// <param name="output">The output string.</param>
         /// <returns>A result code.</returns>
-        private static Result Switch(List<KeyValuePair<string, string>> args, out string output)
+        private Result Switch(List<KeyValuePair<string, string>> args, out string output)
         {
             output = string.Empty;
             if (args == null || args.Count < 2)
@@ -263,6 +270,8 @@ namespace WikiDesk.Core
 
             string def = string.Empty;
             string key = args[0].Value.Trim();
+            key = ProcessMagicWord(key);
+
             for (int i = 1; i < args.Count; ++i)
             {
                 if (args[i].Key == key)

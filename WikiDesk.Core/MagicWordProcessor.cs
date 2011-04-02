@@ -8,6 +8,12 @@ namespace WikiDesk.Core
     public class MagicWordProcessor : VariableProcessor
     {
         public MagicWordProcessor()
+            : this(null)
+        {
+        }
+
+        public MagicWordProcessor(ProcessMagicWords processMagicWordsDel)
+            : base(processMagicWordsDel)
         {
             RegisterHandlers();
         }

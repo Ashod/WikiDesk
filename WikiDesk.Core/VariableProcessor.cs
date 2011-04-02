@@ -4,6 +4,8 @@ namespace WikiDesk.Core
 
     public abstract class VariableProcessor
     {
+        #region Nested Types
+
         public enum Result
         {
             /// <summary>
@@ -28,6 +30,24 @@ namespace WikiDesk.Core
         }
 
         public delegate Result Handler(List<KeyValuePair<string, string>> args, out string output);
+
+        /// <summary>
+        /// Delegate to process nested magic words.
+        /// </summary>
+        /// <param name="wikicode">The code to process.</param>
+        /// <returns>Processed result or the original if no magic is found.</returns>
+        public delegate string ProcessMagicWords(string wikicode);
+
+        #endregion // Nested Types
+
+        #region construction
+
+        public VariableProcessor(ProcessMagicWords processMagicWordsDel)
+        {
+            processMagicWordsDel_ = processMagicWordsDel;
+        }
+
+        #endregion // construction
 
         public Result Execute(string functionName, List<KeyValuePair<string, string>> args, out string output)
         {
@@ -54,6 +74,11 @@ namespace WikiDesk.Core
             return Result.Found;
         }
 
+        protected string ProcessMagicWord(string wikiCode)
+        {
+            return processMagicWordsDel_ != null ? processMagicWordsDel_(wikiCode) : wikiCode;
+        }
+
         private Handler FindHandler(string name)
         {
             Handler func;
@@ -70,6 +95,7 @@ namespace WikiDesk.Core
         #region representation
 
         private readonly Dictionary<string, Handler> functionsMap_ = new Dictionary<string, Handler>(32);
+        private readonly ProcessMagicWords processMagicWordsDel_;
 
         #endregion // representation
     }
