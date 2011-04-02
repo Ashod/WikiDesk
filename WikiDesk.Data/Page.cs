@@ -114,12 +114,7 @@
                 return true;
             }
 
-            if (obj.GetType() != typeof(Page))
-            {
-                return false;
-            }
-
-            return Equals((Page)obj);
+            return obj.GetType() == typeof(Page) && Equals((Page)obj);
         }
 
         /// <summary>
@@ -144,6 +139,7 @@
 
             return other.Domain == Domain &&
                    other.Language == Language &&
+                   other.LastUpdateDateUtc == LastUpdateDateUtc &&
                    Equals(other.Title, Title) &&
                    Equals(other.Text, Text);
         }
@@ -161,6 +157,7 @@
             {
                 int result = Domain;
                 result = (result * 397) ^ Language;
+                result = (result * 397) ^ LastUpdateDateUtc.GetHashCode();
                 result = (result * 397) ^ (Title != null ? Title.GetHashCode() : 0);
                 result = (result * 397) ^ (Text != null ? Text.GetHashCode() : 0);
                 return result;
