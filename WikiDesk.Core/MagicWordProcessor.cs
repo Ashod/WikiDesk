@@ -1,7 +1,6 @@
 ﻿
 namespace WikiDesk.Core
 {
-    using System;
     using System.Collections.Generic;
     using System.Web;
 
@@ -82,7 +81,6 @@ namespace WikiDesk.Core
             RegisterHandler("talkpagenamee",     TalkPageName);
             RegisterHandler("subjectpagename",   SubjectPageName);
             RegisterHandler("subjectpagenamee",  SubjectPageName);
-            RegisterHandler("tag",               Tag);
             RegisterHandler("#formatdate",       FormatDate);
         }
 
@@ -180,14 +178,10 @@ namespace WikiDesk.Core
             return Result.Found;
         }
 
-        private Result Tag(List<KeyValuePair<string, string>> args, out string output)
-        {
-            throw new NotImplementedException();
-        }
-
         private Result FormatDate(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "<strong style=\"color: red;\">formatdate</strong>";
+            return Result.Found;
         }
 
         private static Result UrlEncode(List<KeyValuePair<string, string>> args, out string output)
@@ -295,7 +289,8 @@ namespace WikiDesk.Core
         /// <returns>A Result type.</returns>
         private Result LocalUrl(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "<strong style=\"color: red;\">localurl</strong>";
+            return Result.Found;
         }
 
         /// <summary>
@@ -315,7 +310,7 @@ namespace WikiDesk.Core
         {
             if (args.Count == 0)
             {
-                output = string.Empty;
+                output = "<strong style=\"color: red;\">Error in fullurl!</strong>";
                 return Result.Found;
             }
 

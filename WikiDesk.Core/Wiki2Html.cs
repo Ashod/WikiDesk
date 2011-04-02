@@ -728,7 +728,6 @@ namespace WikiDesk.Core
                 name = Title.FullPageName(nameSpace, title);
             }
 
-            logger_.Log(Levels.Debug, "Resolving template [{0}].", name);
             string template = RetrieveTemplate(name);
             if (template == null)
             {
@@ -776,6 +775,8 @@ namespace WikiDesk.Core
         private string RetrieveTemplate(string name)
         {
             Debug.Assert(retrievePageDel_ != null, "No RetrievePage delegate defined.");
+
+            logger_.Log(Levels.Debug, "Resolving template [{0}].", name);
 
             string text = retrievePageDel_(name, config_.WikiSite.Language.Code);
             if (string.IsNullOrEmpty(text))

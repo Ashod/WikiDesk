@@ -42,7 +42,7 @@ namespace WikiDesk.Core
 
         #region construction
 
-        public VariableProcessor(ProcessMagicWords processMagicWordsDel)
+        protected VariableProcessor(ProcessMagicWords processMagicWordsDel)
         {
             processMagicWordsDel_ = processMagicWordsDel;
         }

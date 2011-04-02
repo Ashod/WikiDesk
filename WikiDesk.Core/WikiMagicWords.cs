@@ -17,10 +17,16 @@
         /// <returns>The magic word ID, if registered, otherwise null.</returns>
         public string FindId(string word)
         {
+            if (string.IsNullOrEmpty(word))
+            {
+                return null;
+            }
+
             string id;
 
             // Assume case-sensitive.
-            if (caseSensitiveWordsMap_.TryGetValue(word, out id))
+            if (caseSensitiveWordsMap_.TryGetValue(word, out id) ||
+                caseSensitiveWordsMap_.TryGetValue(word.TrimEnd(':'), out id))
             {
                 return id;
             }

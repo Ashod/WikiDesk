@@ -1,8 +1,8 @@
 ﻿
 namespace WikiDesk.Core
 {
-    using System;
     using System.Collections.Generic;
+    using System.Text;
 
     public class ParserFunctionProcessor : VariableProcessor
     {
@@ -32,11 +32,12 @@ namespace WikiDesk.Core
             RegisterHandler("#time:", Time);
             RegisterHandler("#timel:", TimeL);
             RegisterHandler("#titleparts:", TitleParts);
+            RegisterHandler("#tag:", Tag);
         }
 
         private Result Expr(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = "~EXPRESSION~";
+            output = "<strong style=\"color: red;\">#expr</strong>";
             return Result.Found;
         }
 
@@ -63,14 +64,15 @@ namespace WikiDesk.Core
         /// <returns>A result code.</returns>
         private Result If(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = string.Empty;
             if (args == null || args.Count < 1)
             {
+                output = "<strong style=\"color: red;\">Error in #if</strong>";
                 return Result.Found;
             }
 
             string condition = args[0].Value.Trim();
             condition = ProcessMagicWord(condition);
+            output = string.Empty;
 
             // Empty string -> No.
             if (condition.Length == 0)
@@ -145,7 +147,7 @@ namespace WikiDesk.Core
         {
             if (args.Count < 3)
             {
-                output = "<strong>Error in #IfEq!</strong>";
+                output = "<strong style=\"color: red;\">Error in #ifeq!</strong>";
                 return Result.Found;
             }
 
@@ -180,7 +182,7 @@ namespace WikiDesk.Core
 
         private Result IfError(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = "~IfError~";
+            output = "<strong style=\"color: red;\">#iferror</strong>";
             return Result.Found;
         }
 
@@ -189,19 +191,19 @@ namespace WikiDesk.Core
             /// {{#ifexpr:12345678901234567=12345678901234568|1|0}} gives 1
             /// because MediaWiki converts literal numbers in expressions to type float,
             /// which, for large integers like these, involves rounding.
-            output = "~IfExpr~";
+            output = "<strong style=\"color: red;\">#ifexpr</strong>";
             return Result.Found;
         }
 
         private Result IfExists(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = "~IfExists~";
+            output = "<strong style=\"color: red;\">#iIfexists</strong>";
             return Result.Found;
         }
 
         private Result Rel2Abs(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = "~Rel2Abs~";
+            output = "<strong style=\"color: red;\">#rel2abs</strong>";
             return Result.Found;
         }
 
@@ -296,9 +298,9 @@ namespace WikiDesk.Core
         /// <returns>A result code.</returns>
         private Result Switch(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = string.Empty;
             if (args == null || args.Count < 2)
             {
+                output = "<strong style=\"color: red;\">Error in #switch!</strong>";
                 return Result.Found;
             }
 
@@ -331,23 +333,80 @@ namespace WikiDesk.Core
                 // The last one is the default, if no key.
                 output = args[args.Count - 1].Value;
             }
+            else
+            {
+                output = string.Empty;
+            }
 
             return Result.Found;
         }
 
         private Result Time(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "<strong style=\"color: red;\">#time</strong>";
+            return Result.Found;
         }
 
         private Result TimeL(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "<strong style=\"color: red;\">#timel</strong>";
+            return Result.Found;
         }
 
         private Result TitleParts(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            output = "<strong style=\"color: red;\">#titleparts</strong>";
+            return Result.Found;
+        }
+
+        private static Result Tag(List<KeyValuePair<string, string>> args, out string output)
+        {
+            if (args.Count < 1 ||
+                string.IsNullOrEmpty(args[0].Value))
+            {
+                output = string.Empty;
+                return Result.Found;
+            }
+
+            string tag = args[0].Value;
+
+            if (args.Count == 1)
+            {
+                output = string.Format("<{0} />", tag);
+                return Result.Found;
+            }
+
+            // The last param is the content.
+            string contents = args[args.Count - 1].Value;
+            if (args.Count == 2)
+            {
+                output = string.Format("<{0}>{1}</{0}>", tag, contents);
+                return Result.Found;
+            }
+
+            StringBuilder sb = new StringBuilder(128);
+            sb.Append('<').Append(tag);
+
+            // Don't include the tag name or the contents.
+            for (int i = 1; i < args.Count - 1; ++i)
+            {
+                if (!string.IsNullOrEmpty(args[i].Key) &&
+                    !string.IsNullOrEmpty(args[i].Value))
+                {
+                    string attr = args[i].Key.Trim();
+                    string val = args[i].Value.Trim();
+                    if (attr.Length > 0 && val.Length > 0)
+                    {
+                        sb.Append(' ').Append(attr).Append('=').Append(val);
+                    }
+                }
+            }
+
+            sb.Append('>').Append(contents);
+            sb.Append("</").Append(tag).Append('>');
+
+            output = sb.ToString();
+            return Result.Found;
         }
 
         #endregion // implementation

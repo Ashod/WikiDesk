@@ -41,6 +41,8 @@
         /// <returns>Full page name.</returns>
         public static string FullPageName(string nameSpace, string pageTitle)
         {
+            pageTitle = Normalize(pageTitle ?? string.Empty);
+
             if (nameSpace != null)
             {
                 nameSpace = nameSpace.Trim();
