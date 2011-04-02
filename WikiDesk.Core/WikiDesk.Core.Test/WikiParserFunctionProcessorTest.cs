@@ -12,6 +12,8 @@
         [Test]
         public void IfNo()
         {
+            TestFunction("#if: |Yes|No", "No");
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -28,6 +30,8 @@
         [Test]
         public void IfYes()
         {
+            TestFunction("#if: blah|Yes|No", "Yes");
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -44,6 +48,8 @@
         [Test]
         public void IfBlank()
         {
+            TestFunction("#if:      |Yes|No", "No");
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -60,6 +66,8 @@
         [Test]
         public void IfMissingNo()
         {
+            TestFunction("#if: |Yes", string.Empty);
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -75,6 +83,8 @@
         [Test]
         public void IfMissingYes()
         {
+            TestFunction("#if: ||No", "No");
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -91,6 +101,8 @@
         [Test]
         public void IfArith()
         {
+            TestFunction("#if: 1==2|Yes|No", "Yes");
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -107,6 +119,8 @@
         [Test]
         public void If0()
         {
+            TestFunction("#if: 0|Yes|No", "Yes");
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -123,6 +137,8 @@
         [Test]
         public void IfEmpty()
         {
+            TestFunction("#if: |Yes", string.Empty);
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -138,6 +154,8 @@
         [Test]
         public void IfMissingArg()
         {
+            TestFunction("#if: {{{lang|}}}|Yes|No", "No");
+
             ParserFunctionProcessor proc = new ParserFunctionProcessor();
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>(4)
                 {
@@ -158,139 +176,167 @@
         [Test]
         public void SwitchSimple1()
         {
-            const string RAW = "#switch: baz | foo = Foo | baz = Baz | Bar ";
-
-            List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-
-            ParserFunctionProcessor proc = new ParserFunctionProcessor();
-            string output;
-
-            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual("Baz", output);
+            TestFunction("#switch: baz | foo = Foo | baz = Baz | Bar ", "Baz");
         }
 
         [Test]
         public void SwitchSimple2()
         {
-            const string RAW = "#switch:4|1=C41E3A|2=FFFFFF|3=000000|4=C41E3A";
-
-            List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-
-            ParserFunctionProcessor proc = new ParserFunctionProcessor();
-            string output;
-
-            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual("C41E3A", output);
+            TestFunction("#switch:4|1=C41E3A|2=FFFFFF|3=000000|4=C41E3A", "C41E3A");
         }
 
         [Test]
         public void SwitchEmpty()
         {
-            const string RAW = "#switch: \n| \n=\n Nothing | foo = Foo\n | Something";
-
-            List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-
-            ParserFunctionProcessor proc = new ParserFunctionProcessor();
-            string output;
-
-            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual("Nothing", output);
+            TestFunction("#switch: \n| \n=\n Nothing | foo = Foo\n | Something", "Nothing");
         }
 
         [Test]
         public void SwitchEmptyDefault()
         {
-            const string RAW = "#switch: b | f = Foo | b = Bar | b = Baz | ";
-
-            List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-
-            ParserFunctionProcessor proc = new ParserFunctionProcessor();
-            string output;
-
-            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual("Bar", output);
+            TestFunction("#switch: b | f = Foo | b = Bar | b = Baz | ", "Bar");
         }
 
         [Test]
         public void SwitchNoMatch1()
         {
-            const string RAW = "#switch: test | Bar | foo = Foo | baz = Baz ";
-
-            List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-
-            ParserFunctionProcessor proc = new ParserFunctionProcessor();
-            string output;
-
-            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual(string.Empty, output);
+            TestFunction("#switch: test | Bar | foo = Foo | baz = Baz ", string.Empty);
         }
 
         [Test]
         public void SwitchNoMatch2()
         {
-            const string RAW = "#switch: test | foo = Foo | baz = Baz | B=ar ";
-
-            List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-
-            ParserFunctionProcessor proc = new ParserFunctionProcessor();
-            string output;
-
-            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual(string.Empty, output);
-        }
+            TestFunction("#switch: test | foo = Foo | baz = Baz | B=ar ", string.Empty);        }
 
         [Test]
         public void NestedSwitch()
         {
-            const string RAW = "#switch: foo | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ";
-
-            List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-
-            ParserFunctionProcessor proc = new ParserFunctionProcessor();
-            string output;
-
-            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual("{{#switch:x|y=z|def}}", output);
+            TestFunction("#switch: foo | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ", "{{#switch:x|y=z|def}}");
         }
 
         [Test]
         public void IfedSwitchFalse()
         {
-            const string RAW = "#switch: {{#if:|foo|baz}} | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ";
-
-            List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
-
-            ParserFunctionProcessor proc = new ParserFunctionProcessor(ProcessMagicWord);
-            string output;
-
-            Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual("Baz", output);
+            TestFunction("#switch: {{#if:|foo|baz}} | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ", "Baz");
         }
 
         [Test]
         public void IfedSwitchTrue()
         {
-            const string RAW = "#switch: {{#if:x|foo|baz}} | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ";
+            TestFunction(
+                "#switch: {{#if:x|foo|baz}} | foo = {{#switch:x|y=z|def}} | baz = Baz | B=ar ",
+                "{{#switch:x|y=z|def}}");
+        }
 
+        #endregion // #switch
+
+        #region #ifeq
+
+        [Test]
+        public void IfEqSimple1()
+        {
+            TestFunction("#ifeq: 01 | 1 | yes | no", "yes");
+        }
+
+        [Test]
+        public void IfEqSimple2()
+        {
+            TestFunction("#ifeq: 1e3 | 1000 | yes | no", "no");
+        }
+
+        [Test]
+        public void IfEqSimple3()
+        {
+            TestFunction("#ifeq: 0 | -0 | yes | no", "yes");
+        }
+
+        [Test]
+        public void IfEqSimple4()
+        {
+            TestFunction("#ifeq: 1e3 | 1000 | yes | no", "yes");
+        }
+
+        [Test]
+        public void IfEqSimple5()
+        {
+            TestFunction("#ifeq: {{#expr:10^3}} | 1000 | yes | no", "yes");
+        }
+
+        [Test]
+        public void IfEqSimple6()
+        {
+            TestFunction("#ifeq: foo | bar | yes | no", "no");
+        }
+
+        [Test]
+        public void IfEqSimple7()
+        {
+            TestFunction("#ifeq: foo | Foo | yes | no", "no");
+        }
+
+        [Test]
+        public void IfEqSimple8()
+        {
+            TestFunction("#ifeq: \"01\" | \"1\" | yes | no", "no");
+        }
+
+        [Test]
+        public void IfEqSimple9()
+        {
+            TestFunction("#ifeq: 10^3 | 1000 | yes | no", "no");
+        }
+
+        [Test]
+        public void IfEqLong()
+        {
+            TestFunction("#ifeq: 12345678901234567 | 12345678901234568 | 1 | 0", "0");
+        }
+
+        [Test]
+        public void IfEqNoWiki()
+        {
+            TestFunction("#ifeq: <nowiki>foo</nowiki> | <nowiki>foo</nowiki> | yes | no", "no");
+        }
+
+        [Test]
+        public void IfEqMath()
+        {
+            TestFunction("#ifeq: <math>foo</math> | <math>foo</math> | yes | no", "no");
+        }
+
+        [Test]
+        public void IfEqTag()
+        {
+            TestFunction("#ifeq: {{#tag:math|foo}} | {{#tag:math|foo}} | yes | no", "no");
+        }
+
+        [Test]
+        public void IfEqWiki()
+        {
+            TestFunction("#ifeq: [[foo]] | [[foo]] | yes | no", "yes");
+        }
+
+        [Test]
+        public void IfEq3Args()
+        {
+            TestFunction("#ifeq: autocollapse|plain|yes", string.Empty);
+        }
+
+        #endregion // #ifeq
+
+        #region implementation
+
+        private static void TestFunction(string input, string expected)
+        {
             List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+            string command = MagicParser.GetMagicWordAndParams(input, out args);
 
             ParserFunctionProcessor proc = new ParserFunctionProcessor(ProcessMagicWord);
             string output;
 
             Assert.AreEqual(VariableProcessor.Result.Found, proc.Execute(command, args, out output));
-            Assert.AreEqual("{{#switch:x|y=z|def}}", output);
+            Assert.AreEqual(expected, output);
         }
-
-        #endregion // #switch
 
         private static string ProcessMagicWord(string wikicode)
         {
@@ -311,5 +357,7 @@
             proc.Execute(command, args, out output);
             return output;
         }
+
+        #endregion // implementation
     }
 }

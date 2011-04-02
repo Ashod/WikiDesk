@@ -131,7 +131,7 @@ namespace WikiDesk.Core
         /// Warning:	Content inside parser tags (such as &lt;nowiki&gt;) is temporarily
         /// replaced by a unique code. This affects comparisons:
         /// {{#ifeq: &lt;nowiki&gt;foo&lt;/nowiki&gt; | &lt;nowiki>foo&lt;/nowiki&gt; | yes | no}} → no
-        /// {{#ifeq: &lt;math&gt;foo&lt;/math&gt; | &lt;math>foo&lt;/math&gt; | yes | no}} → no
+        /// {{#ifeq: &lt;math&gt;foo&lt;/math&gt; | &lt;math&gt;foo&lt;/math&gt; | yes | no}} → no
         /// {{#ifeq: {{#tag:math|foo}} | {{#tag:math|foo}} | yes | no}} → no
         /// {{#ifeq: [[foo]] | [[foo]] | yes | no}} → yes
         /// It the strings to be compared are given as equal calls to the same
@@ -143,7 +143,38 @@ namespace WikiDesk.Core
         /// <returns></returns>
         private Result IfEq(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = "~IfEq~";
+            if (args.Count < 3)
+            {
+                output = "<strong>Error in #IfEq!</strong>";
+                return Result.Found;
+            }
+
+            string arg1 = args[0].Value;
+            arg1 = ProcessMagicWord(arg1);
+            string arg2 = args[1].Value;
+            arg2 = ProcessMagicWord(arg2);
+            string yes = args[2].Value;
+
+            if (arg1 == arg2)
+            {
+                output = yes;
+                return Result.Found;
+            }
+
+            // Try converting to numbers and compare again.
+            long num1;
+            long num2;
+            if (long.TryParse(arg1, out num1) &&
+                long.TryParse(arg2, out num2) &&
+                num1 == num2)
+            {
+                output = yes;
+            }
+            else
+            {
+                output = args.Count > 3 ? args[3].Value : string.Empty;
+            }
+
             return Result.Found;
         }
 
@@ -155,6 +186,9 @@ namespace WikiDesk.Core
 
         private Result IfExpr(List<KeyValuePair<string, string>> args, out string output)
         {
+            /// {{#ifexpr:12345678901234567=12345678901234568|1|0}} gives 1
+            /// because MediaWiki converts literal numbers in expressions to type float,
+            /// which, for large integers like these, involves rounding.
             output = "~IfExpr~";
             return Result.Found;
         }
