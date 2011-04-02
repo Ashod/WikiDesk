@@ -29,14 +29,14 @@ namespace WikiDesk.Core
                 sb.Append(text.Substring(lastIndex, startIndex - lastIndex));
 
                 // Skip over the match.
-                int endIndex = text.IndexOf(endMarker, lastIndex);
+                int endIndex = text.IndexOf(endMarker, startIndex + startMarker.Length);
                 if (endIndex < 0)
                 {
                     // Shouldn't happen!
                     break;
                 }
 
-                lastIndex = startIndex + (endIndex + 2 - startIndex + 1);
+                lastIndex = endIndex + endMarker.Length;
                 startIndex = text.IndexOf(startMarker, lastIndex);
             }
 

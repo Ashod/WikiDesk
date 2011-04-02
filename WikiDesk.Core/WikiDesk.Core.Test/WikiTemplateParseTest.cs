@@ -292,6 +292,70 @@ Hayastani Hanrapetutyun |
             Assert.AreEqual(".am", args[23].Value);
         }
 
+        [Test]
+        public void GetMagicWordAndParamsComplexTemplate()
+        {
+            const string RAW =
+                "Citation/make link" +
+"     | 1={{" +
+"           #if: {{#if:||http://www.afraidtoask.com/?page_id=119}}" +
+"           |{{#if:||http://www.afraidtoask.com/?page_id=119}}" +
+"           |{{" +
+"              #if: " +
+"              |" +
+"" +
+"              |{{#ifexpr:{{#time: U}} > {{#time: U | 1010-10-10 }}" +
+"                |{{" +
+"                   #if: " +
+"                   |http://www.pubmedcentral.nih.gov/articlerender.fcgi?tool=pmcentrez&artid=" +
+"                 }}" +
+"               }}" +
+"            }}" +
+"         }}" +
+"     | 2={{" +
+"           #if: " +
+"           |''<nowiki />{{" +
+"    #if:Size and Shape" +
+"    |Size and Shape" +
+"    |{{" +
+"      #if:" +
+"      |" +
+"      |{{Citation error|no <code>&#124;title&#61;</code> specified|Cite web}}" +
+"      }}" +
+"    }}<nowiki />''" +
+"           |\"{{" +
+"    #if:Size and Shape" +
+"    |Size and Shape" +
+"    |{{" +
+"      #if:" +
+"      |" +
+"      |{{Citation error|no <code>&#124;title&#61;</code> specified|Cite web}}" +
+"      }}" +
+"    }}{{" +
+"             #if: " +
+"             |{{" +
+"                #if: {{" +
+"    #if:Size and Shape" +
+"    |Size and Shape" +
+"    |{{" +
+"      #if:" +
+"      |" +
+"      |{{Citation error|no <code>&#124;title&#61;</code> specified|Cite web}}" +
+"      }}" +
+"    }}" +
+"                |&#32;" +
+"              }}&#91;&#93;" +
+"           }}\"" +
+"         }}";
+
+            List<KeyValuePair<string, string>> args;
+            string command = MagicParser.GetMagicWordAndParams(RAW, out args);
+
+            Assert.AreEqual("Citation/make link", command);
+            Assert.AreEqual("1", args[0].Key);
+            Assert.AreEqual("2", args[1].Key);
+        }
+
         #region ProcessTemplateParams
 
         [Test]
