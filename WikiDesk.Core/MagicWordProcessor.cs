@@ -313,7 +313,34 @@ namespace WikiDesk.Core
         /// <returns>A Result type.</returns>
         private Result FullUrl(List<KeyValuePair<string, string>> args, out string output)
         {
-            throw new NotImplementedException();
+            if (args.Count == 0)
+            {
+                output = string.Empty;
+                return Result.Found;
+            }
+
+            string pageName = args[0].Value;
+//             int indexOfInterwiki = pageName.IndexOf(':');
+//             string interWiki = string.Empty;
+//             if (indexOfInterwiki >= 0)
+//             {
+//                 interWiki = pageName.Substring(0, indexOfInterwiki);
+//                 pageName = pageName.Substring(indexOfInterwiki + 1);
+//             }
+
+            //TODO: Process interwiki.
+
+            if (args.Count > 1)
+            {
+                // With query.
+                output = string.Format("{0}&{1}={2}", wikiSite_.GetFullUrl(pageName), args[1].Key, args[1].Value);
+            }
+            else
+            {
+                output = wikiSite_.GetViewUrl(pageName);
+            }
+
+            return Result.Found;
         }
 
         #endregion // implementation

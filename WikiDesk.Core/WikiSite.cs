@@ -97,7 +97,12 @@ namespace WikiDesk.Core
 
         public string GetEditUrl(string title)
         {
-            return string.Format("http://{0}{1}{2}&action=edit", language_.Code, BaseFullUrl, Title.Normalize(title));
+            return GetFullUrl(title) + "&action=edit";
+        }
+
+        public string GetFullUrl(string title)
+        {
+            return string.Format("http://{0}{1}{2}", language_.Code, BaseFullUrl, Title.Normalize(title));
         }
 
         public enum Namespace

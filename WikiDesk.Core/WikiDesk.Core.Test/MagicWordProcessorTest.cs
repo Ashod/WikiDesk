@@ -32,19 +32,14 @@
         [Test]
         public void Lc()
         {
-            const string RAW = "lc:KIKOS";
-
-            string command = MagicParser.GetMagicWordAndParams(RAW, out args_);
-
-            string magicId = WikiSite.MagicWords.FindId(command);
-            string output;
-            Assert.AreEqual(VariableProcessor.Result.Found, proc_.Execute(magicId, args_, out output));
-            Assert.AreEqual("kikos", output);
+            TestProcessor("lc:KIKOS", "kikos");
         }
 
         [Test]
         public void LcA()
         {
+            TestProcessor("lc:1=TEST", "test");
+
             args_.Add(new KeyValuePair<string, string>("1", "TEST"));
 
             string output;
@@ -55,6 +50,8 @@
         [Test]
         public void LcB()
         {
+            TestProcessor("lc:1=test", "test");
+
             args_.Add(new KeyValuePair<string, string>("1", "test"));
 
             string output;
@@ -65,6 +62,8 @@
         [Test]
         public void LcSingleChar()
         {
+            TestProcessor("lc:1=A", "a");
+
             args_.Add(new KeyValuePair<string, string>("1", "A"));
 
             string output;
@@ -107,6 +106,8 @@
         [Test]
         public void UcA()
         {
+            TestProcessor("uc:1=test", "TEST");
+
             args_.Add(new KeyValuePair<string, string>("1", "test"));
 
             string output;
@@ -117,6 +118,8 @@
         [Test]
         public void UcB()
         {
+            TestProcessor("uc:1=TEST", "TEST");
+
             args_.Add(new KeyValuePair<string, string>("1", "TEST"));
 
             string output;
@@ -127,6 +130,8 @@
         [Test]
         public void UcSingleChar()
         {
+            TestProcessor("uc:1=a", "A");
+
             args_.Add(new KeyValuePair<string, string>("1", "a"));
 
             string output;
@@ -169,6 +174,8 @@
         [Test]
         public void LcFirstA()
         {
+            TestProcessor("lcfirst:1=TEST", "tEST");
+
             args_.Add(new KeyValuePair<string, string>("1", "TEST"));
 
             string output;
@@ -179,6 +186,8 @@
         [Test]
         public void LcFirstB()
         {
+            TestProcessor("lcfirst:1=test", "test");
+
             args_.Add(new KeyValuePair<string, string>("1", "test"));
 
             string output;
@@ -189,6 +198,8 @@
         [Test]
         public void LcFirstSingleChar()
         {
+            TestProcessor("lcfirst:1=A", "a");
+
             args_.Add(new KeyValuePair<string, string>("1", "A"));
 
             string output;
@@ -231,6 +242,8 @@
         [Test]
         public void UcFirstA()
         {
+            TestProcessor("ucfirst:1=test", "Test");
+
             args_.Add(new KeyValuePair<string, string>("1", "test"));
 
             string output;
@@ -241,6 +254,8 @@
         [Test]
         public void UcFirstB()
         {
+            TestProcessor("ucfirst:1=TEST", "TEST");
+
             args_.Add(new KeyValuePair<string, string>("1", "TEST"));
 
             string output;
@@ -251,6 +266,8 @@
         [Test]
         public void UcFirstSingleChar()
         {
+            TestProcessor("ucfirst:1=a", "A");
+
             args_.Add(new KeyValuePair<string, string>("1", "a"));
 
             string output;
@@ -288,7 +305,33 @@
 
         #endregion // UcFirst
 
+        #region FullUrl
+
+        [Test]
+        public void FullUrlCategory()
+        {
+            TestProcessor("fullurl:Category:Top level", "http://en.wikipedia.org/wiki/Category:Top_level");
+        }
+
+        [Test]
+        public void FullUrlQuery()
+        {
+            TestProcessor("fullurl:Category:Top level|action=edit", "http://en.wikipedia.org/w/index.php?title=Category:Top_level&action=edit");
+        }
+
+        #endregion // UcFirst
+
         #endregion // tests
+
+        public void TestProcessor(string input, string expected)
+        {
+            string command = MagicParser.GetMagicWordAndParams(input, out args_);
+
+            string magicId = WikiSite.MagicWords.FindId(command);
+            string output;
+            Assert.AreEqual(VariableProcessor.Result.Found, proc_.Execute(magicId, args_, out output));
+            Assert.AreEqual(expected, output);
+        }
 
         #region representation
 
