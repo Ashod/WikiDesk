@@ -34,7 +34,7 @@
         }
 
         /// <summary>
-        /// Given a namepsace and page title, return a full page name.
+        /// Given a namespace and page title, return a full page name.
         /// </summary>
         /// <param name="nameSpace">An optional namespace.</param>
         /// <param name="pageTitle">The page title.</param>
