@@ -39,8 +39,8 @@
             browser_.Visible = true;
             browser_.Dock = DockStyle.Fill;
             browser_.Name = "browser";
-            //browser.IsWebBrowserContextMenuEnabled = false;
-            //browser.IsScriptingEnabled = false;
+            //browser_.IsWebBrowserContextMenuEnabled = false;
+            //browser_.IsScriptingEnabled = false;
             browser_.BringToFront();
             browser_.ApplicationName = APPLICATION_NAME;
             browser_.DocumentTitleChanged += browser__DocumentTitleChanged;
@@ -52,7 +52,12 @@
             browser_.Navigating += browser__Navigating;
             browser_.Navigated += browser__Navigated;
             browser_.DecideNavigationAction += browser__DecideNavigationAction;
-            dockPanel_.Controls.Add(browser_);
+
+            dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
+            dockContent_.DockPanel = dockPanel_;
+            dockContent_.DockState = DockState.Document;
+            dockContent_.Controls.Add(browser_);
+            dockContent_.Show(dockPanel_);
 
             entriesMap_ = new Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>>();
 

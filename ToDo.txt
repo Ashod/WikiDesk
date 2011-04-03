@@ -10,6 +10,9 @@
 * Page view progresss.
 * Splash Screen.
 * Compressed Database.
+* Import from the web.
+* Include WebKit and misc data files under SVN.
+* Auto-copy required files to Bin upon build.
 
 Wiki2Html:
 
