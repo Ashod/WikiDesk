@@ -44,10 +44,12 @@
         public void FullPageName()
         {
             Assert.AreEqual("Wikipedia:Title", Title.FullPageName("Wikipedia", "Title"));
-            Assert.AreEqual("Template:Main Page", Title.FullPageName("Template", "Main Page"));
-            Assert.AreEqual("Main Page", Title.FullPageName(null, "Main Page"));
-            Assert.AreEqual("Main Page", Title.FullPageName(string.Empty, "Main Page"));
-            Assert.AreEqual("Main Page", Title.FullPageName("  ", "Main Page"));
+            Assert.AreEqual("Template:Main_Page", Title.FullPageName("Template", "Main Page"));
+            Assert.AreEqual("Template:Main_Page", Title.FullPageName("Template", "main Page"));
+            Assert.AreEqual("Template:Main_page", Title.FullPageName("Template", "main page"));
+            Assert.AreEqual("Main_Page", Title.FullPageName(null, "Main Page"));
+            Assert.AreEqual("Main_Page", Title.FullPageName(string.Empty, "Main Page"));
+            Assert.AreEqual("Main_Page", Title.FullPageName("  ", "Main Page"));
         }
     }
 }

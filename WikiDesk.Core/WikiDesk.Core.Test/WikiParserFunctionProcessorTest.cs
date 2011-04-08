@@ -251,13 +251,13 @@
         }
 
         [Test]
-        public void IfEqSimple4()
+        public void IfEqExponent()
         {
             TestFunction("#ifeq: 1e3 | 1000 | yes | no", "yes");
         }
 
         [Test]
-        public void IfEqSimple5()
+        public void IfEqExpression()
         {
             TestFunction("#ifeq: {{#expr:10^3}} | 1000 | yes | no", "yes");
         }
@@ -281,7 +281,7 @@
         }
 
         [Test]
-        public void IfEqSimple9()
+        public void IfEqPower()
         {
             TestFunction("#ifeq: 10^3 | 1000 | yes | no", "no");
         }
