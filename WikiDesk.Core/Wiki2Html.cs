@@ -80,17 +80,17 @@ namespace WikiDesk.Core
 
         #endregion // properties
 
-        public string Convert(ref string nameSpace, ref string pageTitle, string wikiText)
+        public string Convert(ref string nameSpace, ref string pageTitle, string wikicode)
         {
             logger_.Log(
                     Levels.Debug,
                     "Converting - NameSpace = {0}, PageTitle = {1}, WikiText = {2}.",
                     nameSpace,
                     pageTitle,
-                    wikiText);
+                    wikicode);
 
             // Process redirections first.
-            string newTitle = Redirection(wikiText);
+            string newTitle = Redirection(wikicode);
             if (newTitle != null)
             {
                 logger_.Log(Levels.Info, "Redirection: " + newTitle);
@@ -109,7 +109,7 @@ namespace WikiDesk.Core
                         newTitle = Redirection(text);
                         if (newTitle == null)
                         {
-                            wikiText = text;
+                            wikicode = text;
                             break;
                         }
 
@@ -126,28 +126,100 @@ namespace WikiDesk.Core
             nameSpace_ = nameSpace;
             pageTitle_ = pageTitle;
 
-            wikiText = ConvertListCode(wikiText);
+            wikicode = ConvertWikiCode(wikicode);
+            //wikicode = ProcessWikiCode(wikicode);
 
-            wikiText = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikiText);
-            wikiText = ConvertBinaryCode(BoldRegex, Bold, wikiText);
-            wikiText = ConvertBinaryCode(ItalicRegex, Italic, wikiText);
+            return wikicode;
+        }
 
-            wikiText = ConvertBinaryCode(H6Regex, H6, wikiText);
-            wikiText = ConvertBinaryCode(H5Regex, H5, wikiText);
-            wikiText = ConvertBinaryCode(H4Regex, H4, wikiText);
-            wikiText = ConvertBinaryCode(H3Regex, H3, wikiText);
-            wikiText = ConvertBinaryCode(H2Regex, H2, wikiText);
-            wikiText = ConvertBinaryCode(H1Regex, H1, wikiText);
+        private string ProcessWikiCode(string wikicode)
+        {
+            if (string.IsNullOrEmpty(wikicode))
+            {
+                return string.Empty;
+            }
 
-            wikiText = ProcessMagicWords(wikiText);
+            // Find the open tag.
+            int startOffset = 0;
+            int lastIndex;
+            string tag = null;
+            string attribs;
+            string contents = StringUtils.ExtractTag(wikicode, ref startOffset, out lastIndex, ref tag, out attribs);
+            if (string.IsNullOrEmpty(tag))
+            {
+                return ProcessWikiCode(ConvertWikiCode(wikicode));
+            }
 
-            wikiText = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikiText);
-            wikiText = ConvertBinaryCode(ImageRegex, Image, wikiText);
-            wikiText = ConvertBinaryCode(ExtLinkRegex, ExtLink, wikiText);
+            StringBuilder sb = new StringBuilder(wikicode.Length * 16);
 
-            wikiText = ConvertParagraphs(wikiText);
+            int curWikiOffset = 0;
+            while (lastIndex < wikicode.Length)
+            {
+                string wikiChunk = wikicode.Substring(curWikiOffset, startOffset - curWikiOffset);
+                sb.Append(ProcessWikiCode(ConvertWikiCode(wikiChunk)));
+                contents = ProcessWikiCode(contents);
+                sb.Append(contents);
 
-            return wikiText;
+                startOffset = lastIndex;
+                curWikiOffset = lastIndex;
+                tag = null;
+                contents = StringUtils.ExtractTag(wikicode, ref startOffset, out lastIndex, ref tag, out attribs);
+                if (string.IsNullOrEmpty(tag))
+                {
+                    if (lastIndex >= 0)
+                    {
+                        sb.Append(ProcessWikiCode(wikicode.Substring(lastIndex)));
+                    }
+
+                    break;
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private string ConvertWikiCode(string wikicode)
+        {
+            wikicode = ConvertListCode(wikicode);
+
+            wikicode = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikicode);
+            wikicode = ConvertBinaryCode(BoldRegex, Bold, wikicode);
+            wikicode = ConvertBinaryCode(ItalicRegex, Italic, wikicode);
+
+            wikicode = ConvertBinaryCode(H6Regex, H6, wikicode);
+            wikicode = ConvertBinaryCode(H5Regex, H5, wikicode);
+            wikicode = ConvertBinaryCode(H4Regex, H4, wikicode);
+            wikicode = ConvertBinaryCode(H3Regex, H3, wikicode);
+            wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
+            wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
+
+            wikicode = ProcessMagicWords(wikicode);
+
+            wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
+            wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
+            wikicode = ConvertBinaryCode(ExtLinkRegex, ExtLink, wikicode);
+
+            wikicode = ConvertParagraphs(wikicode);
+            return wikicode;
+        }
+
+        private string ProcessTag(string tag, string attribs, string contents)
+        {
+            // For now, just print out.
+            if (contents == null)
+            {
+                StringBuilder sb = new StringBuilder(128);
+                sb.Append("<").Append(tag).Append(" ").Append(attribs).Append(" />");
+                return sb.ToString();
+            }
+            else
+            {
+                StringBuilder sb = new StringBuilder(contents.Length * 2);
+                sb.Append("<").Append(tag).Append(" ").Append(attribs).Append(">");
+                sb.Append(contents);
+                sb.Append("</").Append(tag).Append(">");
+                return sb.ToString();
+            }
         }
 
         private string Redirect(string newTitle)
@@ -293,10 +365,10 @@ namespace WikiDesk.Core
         }
 
         /// <summary>
-        /// Checks if the wikiText is a redirection.
+        /// Checks if the wikicode is a redirection.
         /// If redirection is in place, it returns the new page title, otherwise null.
         /// </summary>
-        /// <param name="wikicode">The wikiText to parse.</param>
+        /// <param name="wikicode">The wikicode to parse.</param>
         /// <returns>A new page title or null if no redirection.</returns>
         private static string Redirection(string wikicode)
         {
