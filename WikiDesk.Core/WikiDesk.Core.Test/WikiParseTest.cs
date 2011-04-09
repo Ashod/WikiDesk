@@ -36,6 +36,54 @@
         }
 
         [Test]
+        public void Header3()
+        {
+            TestConvert(
+                    "===!===",
+                    "<h3><span class=\"mw-headline\">!</span></h3>");
+        }
+
+        [Test]
+        public void Header4()
+        {
+            TestConvert(
+                    "====!====",
+                    "<h4><span class=\"mw-headline\">!</span></h4>");
+        }
+
+        [Test]
+        public void Header5()
+        {
+            TestConvert(
+                    "=====!=====",
+                    "<h5><span class=\"mw-headline\">!</span></h5>");
+        }
+
+        [Test]
+        public void Header6()
+        {
+            TestConvert(
+                    "======!======",
+                    "<h6><span class=\"mw-headline\">!</span></h6>");
+        }
+
+        [Test]
+        public void Header8()
+        {
+            TestConvert(
+                    "========!========",
+                    "<p>========!========</p>");
+        }
+
+        [Test]
+        public void HeaderInvalid()
+        {
+            TestConvert(
+                    "=!========",
+                    "<p>=!========</p>");
+        }
+
+        [Test]
         public void Header2NewLine()
         {
             TestConvert(
@@ -55,8 +103,8 @@
         public void Header2PrePost()
         {
             TestConvert(
-                    "blah blha \n==!==\nThe bigest mistkae.",
-                    "<p>blah blha </p><h2><span class=\"mw-headline\">!</span></h2><p>The bigest mistkae.</p>");
+                    "blah blha \n==!==  \nThe bigest mistkae.",
+                    "<p>blah blha </p><h2><span class=\"mw-headline\">!</span></h2>  <p>The bigest mistkae.</p>");
         }
 
         #endregion // Header

@@ -80,6 +80,8 @@ namespace WikiDesk.Core
 
         #endregion // properties
 
+        #region operations
+
         public string Convert(ref string nameSpace, ref string pageTitle, string wikicode)
         {
             logger_.Log(
@@ -132,6 +134,8 @@ namespace WikiDesk.Core
             return wikicode;
         }
 
+        #endregion // operations
+
         private string ProcessWikiCode(string wikicode)
         {
             if (string.IsNullOrEmpty(wikicode))
@@ -180,20 +184,15 @@ namespace WikiDesk.Core
 
         private string ConvertWikiCode(string wikicode)
         {
+            wikicode = ProcessMagicWords(wikicode);
+
             wikicode = ConvertListCode(wikicode);
 
             wikicode = ConvertBinaryCode(BoldItalicRegex, BoldItalic, wikicode);
             wikicode = ConvertBinaryCode(BoldRegex, Bold, wikicode);
             wikicode = ConvertBinaryCode(ItalicRegex, Italic, wikicode);
 
-            wikicode = ConvertBinaryCode(H6Regex, H6, wikicode);
-            wikicode = ConvertBinaryCode(H5Regex, H5, wikicode);
-            wikicode = ConvertBinaryCode(H4Regex, H4, wikicode);
-            wikicode = ConvertBinaryCode(H3Regex, H3, wikicode);
-            wikicode = ConvertBinaryCode(H2Regex, H2, wikicode);
-            wikicode = ConvertBinaryCode(H1Regex, H1, wikicode);
-
-            wikicode = ProcessMagicWords(wikicode);
+            wikicode = ConvertBinaryCode(HeaderRegex, Header, wikicode);
 
             wikicode = ConvertBinaryCode(WikiLinkRegex, WikiLink, wikicode);
             wikicode = ConvertBinaryCode(ImageRegex, Image, wikicode);
@@ -381,45 +380,30 @@ namespace WikiDesk.Core
             return null;
         }
 
-        #region Headers
-
-        private static string H1(Match match)
+        /// <summary>
+        /// Processes Header codes.
+        /// </summary>
+        /// <param name="match">The regex match.</param>
+        /// <returns>HTML processed header tag.</returns>
+        private static string Header(Match match)
         {
-            string value = match.Value.Substring(1, match.Length - 2);
-            return string.Concat("<h1><span class=\"mw-headline\">", value, "</span></h1>");
-        }
+            if (match.Groups.Count != 4)
+            {
+                return match.Value;
+            }
 
-        private static string H2(Match match)
-        {
-            string value = match.Value.Substring(2, match.Length - 4);
-            return string.Concat("<h2><span class=\"mw-headline\">", value, "</span></h2>");
-        }
+            string left = match.Groups[1].ToString();
+            string right = match.Groups[3].ToString();
 
-        private static string H3(Match match)
-        {
-            string value = match.Value.Substring(3, match.Length - 6);
-            return string.Concat("<h3><span class=\"mw-headline\">", value, "</span></h3>");
-        }
+            if (left != right)
+            {
+                // The number of '=' chars mismatch. Not a valid header.
+                return match.Value;
+            }
 
-        private static string H4(Match match)
-        {
-            string value = match.Value.Substring(4, match.Length - 8);
-            return string.Concat("<h4><span class=\"mw-headline\">", value, "</span></h4>");
+            string value = match.Groups[2].ToString();
+            return string.Format("<h{0}><span class=\"mw-headline\">{1}</span></h{0}>", left.Length, value);
         }
-
-        private static string H5(Match match)
-        {
-            string value = match.Value.Substring(5, match.Length - 10);
-            return string.Concat("<h5><span class=\"mw-headline\">", value, "</span></h5>");
-        }
-
-        private static string H6(Match match)
-        {
-            string value = match.Value.Substring(6, match.Length - 12);
-            return string.Concat("<h6><span class=\"mw-headline\">", value, "</span></h6>");
-        }
-
-        #endregion // Headers
 
         #region Bold/Italic
 
@@ -1079,18 +1063,14 @@ namespace WikiDesk.Core
         //
         // These can appear only at the start of a line.
         //
-        private static readonly Regex H1Regex = new Regex(@"^=.+?=", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex H2Regex = new Regex(@"^==.+?==", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex H3Regex = new Regex(@"^===.+?===", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex H4Regex = new Regex(@"^====.+?====", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex H5Regex = new Regex(@"^=====.+?=====", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex H6Regex = new Regex(@"^=====.+?=====", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex HeaderRegex = new Regex(@"^(={1,6})(.+?)(={1,6})", RegexOptions.Compiled | RegexOptions.Multiline);
+
         //
         // These can appear anywhere in a line.
         //
-        private static readonly Regex ItalicRegex = new Regex(@"''.+?''", RegexOptions.Compiled | RegexOptions.Singleline);
-        private static readonly Regex BoldRegex = new Regex(@"'''.+?'''", RegexOptions.Compiled | RegexOptions.Singleline);
-        private static readonly Regex BoldItalicRegex = new Regex(@"'''''.+?'''''", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex ItalicRegex = new Regex(@"''.+?''", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex BoldRegex = new Regex(@"'''.+?'''", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex BoldItalicRegex = new Regex(@"'''''.+?'''''", RegexOptions.Compiled | RegexOptions.Multiline);
 
         /// <summary>
         /// Wiki link regex: excludes images.
