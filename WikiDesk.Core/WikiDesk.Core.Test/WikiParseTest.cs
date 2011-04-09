@@ -68,19 +68,11 @@
         }
 
         [Test]
-        public void Header8()
-        {
-            TestConvert(
-                    "========!========",
-                    "<p>========!========</p>");
-        }
-
-        [Test]
         public void HeaderInvalid()
         {
             TestConvert(
-                    "=!========",
-                    "<p>=!========</p>");
+                    "=!======",
+                    "=!======");
         }
 
         [Test]
@@ -104,7 +96,7 @@
         {
             TestConvert(
                     "blah blha \n==!==  \nThe bigest mistkae.",
-                    "<p>blah blha </p><h2><span class=\"mw-headline\">!</span></h2>  <p>The bigest mistkae.</p>");
+                    "<p>blah blha </p><h2><span class=\"mw-headline\">!</span></h2><p>  The bigest mistkae.</p>");
         }
 
         #endregion // Header
