@@ -165,14 +165,16 @@
         public void ExtractTagSelfClosing()
         {
             const string RAW = "blik more text <br />";
-            int offset = 0;
+            int startOffset = 0;
+            int endOffset;
             string tag = null;
-            string attribs = null;
-            Assert.AreEqual(null, StringUtils.ExtractTag(RAW, ref offset, ref tag, ref attribs));
+            string attribs;
+            Assert.AreEqual(null, StringUtils.ExtractTag(RAW, ref startOffset, out endOffset, ref tag, out attribs));
 
             Assert.AreEqual("br", tag);
             Assert.IsEmpty(attribs);
-            Assert.AreEqual(RAW.Length - 1, offset);
+            Assert.AreEqual(RAW.Length - 6, startOffset);
+            Assert.AreEqual(RAW.Length - 1, endOffset);
         }
 
         [Test]
@@ -180,28 +182,67 @@
         {
             const string RAW = "blik more text <b>bzz</b>";
             const string EXP = "bzz";
-            int offset = 0;
+            int startOffset = 0;
+            int endOffset;
             string tag = null;
-            string attribs = null;
-            Assert.AreEqual(EXP, StringUtils.ExtractTag(RAW, ref offset, ref tag, ref attribs));
+            string attribs;
+            Assert.AreEqual(EXP, StringUtils.ExtractTag(RAW, ref startOffset, out endOffset, ref tag, out attribs));
 
             Assert.AreEqual("b", tag);
             Assert.IsEmpty(attribs);
-            Assert.AreEqual(RAW.Length - 1, offset);
+            Assert.AreEqual(RAW.Length - 10, startOffset);
+            Assert.AreEqual(RAW.Length - 1, endOffset);
         }
 
         [Test]
-        [Ignore]
-        public void ExtractTag()
+        public void ExtractTagSpecific()
         {
-            const string RAW = "blik more text <b>bzz</b>";
+            const string RAW = "blik <i>more<i> text <b>bzz</b>";
             const string EXP = "bzz";
-            int offset = 0;
-            string tag = null;
-            string attribs = null;
-            Assert.AreEqual(EXP, StringUtils.ExtractTag(RAW, ref offset, ref tag, ref attribs));
+            int startOffset = 0;
+            int endOffset;
+            string tag = "B";
+            string attribs;
+            Assert.AreEqual(EXP, StringUtils.ExtractTag(RAW, ref startOffset, out endOffset, ref tag, out attribs));
+
+            Assert.That(string.Compare("b", tag, true) == 0);
+            Assert.IsEmpty(attribs);
+            Assert.AreEqual(RAW.Length - 10, startOffset);
+            Assert.AreEqual(RAW.Length - 1, endOffset);
         }
 
         #endregion // ExtractTag
+
+        #region FindTag
+
+        [Test]
+        public void FindTagOpen()
+        {
+            const string RAW = "blik <i>more<i> text <b>bzz</b>";
+            int endOffset;
+            bool closing;
+            string attribs;
+            Assert.AreEqual(RAW.Length - 10, StringUtils.FindTag(RAW, 0, out endOffset, "B", out closing, out attribs));
+
+            Assert.IsEmpty(attribs);
+            Assert.False(closing);
+            Assert.AreEqual(RAW.Length - 8, endOffset);
+        }
+
+        [Test]
+        public void FindTagClose()
+        {
+            const string RAW = "blik <i>more<i> text <b>bzz</b>";
+            int endOffset;
+            bool closing;
+            string attribs;
+            Assert.AreEqual(RAW.Length - 4, StringUtils.FindTag(RAW, 22, out endOffset, "B", out closing, out attribs));
+
+            Assert.IsNull(attribs);
+            Assert.True(closing);
+            Assert.AreEqual(RAW.Length - 1, endOffset);
+        }
+
+        #endregion // FindTag
     }
 }

@@ -60,7 +60,7 @@ namespace WikiDesk.Core
         /// <param name="endOffset">Contains the end index, on success, -1 on failure.</param>
         /// <returns>The text between the markers, if found, otherwise null.</returns>
         public static string ExtractBlock(
-                                string text, 
+                                string text,
                                 string startMarker,
                                 string endMarker,
                                 ref int startOffset,
@@ -132,75 +132,156 @@ namespace WikiDesk.Core
         /// <returns>The tag name.</returns>
         public static string ExtractTagName(string text, out string attribs, out bool closing)
         {
-            if (!string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
             {
-                text = text.Trim();
-                closing = text.StartsWith("/");
-                if (closing)
-                {
-                    attribs = null;
-                    return text.TrimStart('/').Trim();
-                }
-
-                int index = text.IndexOf(' ');
-                if (index >= 0)
-                {
-                    attribs = text.Substring(index + 1);
-                    closing = attribs.EndsWith("/");
-                    if (closing)
-                    {
-                        attribs = attribs.TrimEnd('/');
-                    }
-
-                    return text.Substring(0, index);
-                }
-
-                attribs = string.Empty;
-                closing = text.EndsWith("/");
-                return closing ? text.TrimEnd('/') : text;
+                attribs = null;
+                closing = false;
+                return string.Empty;
             }
 
-            attribs = null;
+            text = text.Trim();
+            closing = text.StartsWith("/");
+            if (closing)
+            {
+                attribs = null;
+                return text.TrimStart('/').Trim();
+            }
+
+            int index = text.IndexOf(' ');
+            if (index >= 0)
+            {
+                attribs = text.Substring(index + 1);
+                closing = attribs.EndsWith("/");
+                if (closing)
+                {
+                    attribs = attribs.TrimEnd('/');
+                }
+
+                return text.Substring(0, index);
+            }
+
+            attribs = string.Empty;
+            closing = text.EndsWith("/");
+            return closing ? text.TrimEnd('/') : text;
+        }
+
+        /// <summary>
+        /// Searches for a specific tag.
+        /// </summary>
+        /// <param name="text">The text to process.</param>
+        /// <param name="startOffset">
+        /// The offset where to start the search.
+        /// Contains the index of the open tag, if found.
+        /// </param>
+        /// <param name="endOffset">The end index of the tag, if found, otherwise -1.</param>
+        /// <param name="tag">The tag to search for.</param>
+        /// <param name="closing">True if the tag is a auto-closing. Meaningful if found.</param>
+        /// <param name="attribs">The parsed attribs. Empty if none. Null if closing.</param>
+        /// <returns>The index where it's found, otherwise -1.</returns>
+        public static int FindTag(
+                            string text,
+                            int startOffset,
+                            out int endOffset,
+                            string tag,
+                            out bool closing,
+                            out string attribs)
+        {
             closing = false;
-            return string.Empty;
+            if (string.IsNullOrEmpty(tag))
+            {
+                endOffset = -1;
+                attribs = null;
+                return -1;
+            }
+
+            string openTag;
+            do
+            {
+                // Find the next tag, compare with the request one.
+                int openEndIndex;
+                openTag = ExtractBlock(text, "<", ">", ref startOffset, out openEndIndex);
+                string curTagName = ExtractTagName(openTag, out attribs, out closing);
+                if (string.Compare(tag, curTagName, true) == 0)
+                {
+                    // Found.
+                    endOffset = openEndIndex;
+                    return startOffset;
+                }
+
+                startOffset = openEndIndex;
+            }
+            while (!string.IsNullOrEmpty(openTag) && startOffset < text.Length);
+
+            // Can't find the user's tag.
+            endOffset = -1;
+            attribs = null;
+            return -1;
         }
 
         /// <summary>
         /// Extracts the contents of the first matching tag.
         /// Returns null if self-closing, empty when there are no contents.
         /// </summary>
-        /// <param name="text"></param>
-        /// <param name="offset"></param>
-        /// <param name="tag"></param>
-        /// <param name="attribs"></param>
+        /// <param name="text">The text to process.</param>
+        /// <param name="startOffset">
+        /// The offset where to start the search.
+        /// Contains the index of the open tag, if found.
+        /// </param>
+        /// <param name="endOffset">The end index of the close tag, if found, otherwise -1.</param>
+        /// <param name="tag">The tag to search or the tag found.</param>
+        /// <param name="attribs">The tag attributes, if any.</param>
         /// <returns></returns>
-        public static string ExtractTag(string text, ref int offset, ref string tag, ref string attribs)
+        public static string ExtractTag(
+                                string text,
+                                ref int startOffset,
+                                out int endOffset,
+                                ref string tag,
+                                out string attribs)
         {
             // Find the open tag.
-            int openIndex = offset;
-            string openTag = ExtractBlock(text, "<", ">", ref openIndex);
+            int openEndIndex;
+            string openTag = ExtractBlock(text, "<", ">", ref startOffset, out openEndIndex);
             if (string.IsNullOrEmpty(openTag))
             {
                 // No tags.
+                endOffset = -1;
+                tag = null;
                 attribs = null;
                 return null;
+            }
+
+            if (!string.IsNullOrEmpty(tag))
+            {
+                // Find the tag requested.
+                while (startOffset < text.Length &&
+                       string.Compare(tag, openTag, true) != 0)
+                {
+                    startOffset = openEndIndex;
+                    openTag = ExtractBlock(text, "<", ">", ref startOffset, out openEndIndex);
+                    if (string.IsNullOrEmpty(openTag))
+                    {
+                        // Can't find the user's tag.
+                        endOffset = -1;
+                        tag = null;
+                        attribs = null;
+                        return null;
+                    }
+                }
             }
 
             bool closing;
             tag = ExtractTagName(openTag, out attribs, out closing);
             if (closing)
             {
-                offset = openIndex;
+                endOffset = openEndIndex;
                 return null;
             }
 
             // Search for the close tag.
-            int closeIndex = openIndex + openTag.Length;
-
+            int closeIndex = openEndIndex + 1;
             while (closeIndex >= 0 && closeIndex < text.Length)
             {
-                int endIndex;
-                string closeTag = ExtractBlock(text, "<", ">", ref closeIndex, out endIndex);
+                string closeTag = ExtractBlock(text, "<", ">", ref closeIndex, out endOffset);
                 if (closeIndex < 0)
                 {
                     // No tags, process all of it.
@@ -212,13 +293,12 @@ namespace WikiDesk.Core
                 string closingTagName = ExtractTagName(closeTag, out dummy, out closing);
                 if (closing && string.Compare(tag, closingTagName, true) == 0)
                 {
-                    // Found.
-                    offset = endIndex;
-                    return text.Substring(openIndex + 1, closeIndex - openIndex - 1);
+                    // Found. Extract the contents.
+                    return text.Substring(openEndIndex + 1, closeIndex - openEndIndex - 1);
                 }
             }
 
-            offset = -1;
+            endOffset = -1;
             return string.Empty;
         }
 
