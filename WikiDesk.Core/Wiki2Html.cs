@@ -137,7 +137,7 @@ namespace WikiDesk.Core
 
         #endregion // operations
 
-        private string ProcessWikiCode(string wikicode)
+        private static string ProcessWikiCode(string wikicode)
         {
             if (string.IsNullOrEmpty(wikicode))
             {
@@ -152,7 +152,7 @@ namespace WikiDesk.Core
             string contents = StringUtils.ExtractTag(wikicode, ref startOffset, out lastIndex, ref tag, out attribs);
             if (string.IsNullOrEmpty(tag))
             {
-                return ProcessWikiCode(ConvertWikiCode(wikicode));
+                return ProcessWikiCode(wikicode);
             }
 
             StringBuilder sb = new StringBuilder(wikicode.Length * 16);
@@ -161,7 +161,7 @@ namespace WikiDesk.Core
             while (lastIndex < wikicode.Length)
             {
                 string wikiChunk = wikicode.Substring(curWikiOffset, startOffset - curWikiOffset);
-                sb.Append(ProcessWikiCode(ConvertWikiCode(wikiChunk)));
+                sb.Append(ProcessWikiCode(wikiChunk));
                 contents = ProcessWikiCode(contents);
                 sb.Append(contents);
 
@@ -187,14 +187,10 @@ namespace WikiDesk.Core
         {
             wikicode = ProcessMagicWords(wikicode);
 
-            wikicode = ConvertListCode(wikicode);
-
             wikicode = ConvertBinaryCode(wikicode, x => x, BoldItalicRegex, BoldItalic);
+            wikicode = ConvertBinaryCode(wikicode, x => x, LinkRegex, Link);
 
-            wikicode = ConvertBinaryCode(wikicode, x => x, WikiLinkRegex, WikiLink);
-            wikicode = ConvertBinaryCode(wikicode, x => x, ImageRegex, Image);
-            wikicode = ConvertBinaryCode(wikicode, x => x, ExtLinkRegex, ExtLink);
-
+            wikicode = ConvertListCode(wikicode);
             wikicode = ConvertParagraphs(wikicode);
             return wikicode;
         }
@@ -455,10 +451,43 @@ namespace WikiDesk.Core
             return match.Value;
         }
 
-        private string Image(Match match)
+        private string Link(Match match)
         {
-            string imageFileName = match.Groups[2].Value;
+            string value = match.Groups[2].Value.Trim();
 
+            if (match.Groups[1].Value == "[" && match.Groups[3].Value == "]")
+            {
+                // [[ ]] internal link.
+                string upper = value.ToUpperInvariant();
+                if (upper.StartsWith("IMAGE:") || upper.StartsWith("FILE:"))
+                {
+                    // Throw away the prefix.
+                    StringUtils.BreakAt(value, ':', out value);
+
+                    // Image.
+                    string options;
+                    string imageFileName = StringUtils.BreakAt(value, '|', out options);
+                    return Image(imageFileName, options);
+                }
+
+                // Internal Link.
+                string text;
+                string pageName = StringUtils.BreakAt(value, '|', out text);
+                string url = ResolveLink(pageName, config_.WikiSite.Language.Code);
+                return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\" class=\"mw-redirect\">", text, "</a>");
+            }
+            else
+            {
+                // [ ] external link.
+                string text;
+                string url = StringUtils.BreakAt(value, ' ', out text);
+
+                return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text ?? url, "</a>");
+            }
+        }
+
+        private string Image(string imageFileName, string options)
+        {
             string imagePageUrl = config_.WikiSite.GetFileUrl(imageFileName);
             string imageSrcUrl = null;
 
@@ -492,7 +521,6 @@ namespace WikiDesk.Core
             int width = -1;
             int height = -1;
 
-            string options = match.Groups[3].Value;
             if (string.IsNullOrEmpty(options))
             {
                 // No options - return default.
@@ -644,43 +672,6 @@ namespace WikiDesk.Core
                                     altText,
                                     caption,
                                     commonImagesPath_);
-        }
-
-        private string WikiLink(Match match)
-        {
-            string pageName = match.Groups[2].Value.Trim();
-            if (pageName.Length == 0)
-            {
-                return match.Value;
-            }
-
-            // Embedded links need special treatment, skip them.)
-            if (pageName.StartsWith("Image:") || pageName.StartsWith("File:"))
-            {
-                return null;
-            }
-
-            string text = match.Groups[4].Value;
-            if (string.IsNullOrEmpty(text))
-            {
-                text = pageName;
-            }
-
-            string url = ResolveLink(pageName, config_.WikiSite.Language.Code);
-            return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\" class=\"mw-redirect\">", text, "</a>");
-        }
-
-        private static string ExtLink(Match match)
-        {
-            string url = match.Groups[1].Value;
-
-            string text = match.Groups[2].Value;
-            if (string.IsNullOrEmpty(text))
-            {
-                text = url;
-            }
-
-            return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text, "</a>");
         }
 
         #region MagicWords, Functions and Templates
@@ -1088,43 +1079,29 @@ namespace WikiDesk.Core
         private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT(\:?)\s*\[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
         private static readonly Regex ListRegex = new Regex(@"^(\*+)\s*(.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
-        //
-        // Headers (Can appear only at the start of a line.)
-        //
+        /// <summary>
+        /// Headers (Can appear only at the start of a line.)
+        /// </summary>
         private static readonly Regex HeaderRegex = new Regex(@"^(={1,6})(.+?)(={1,6})", RegexOptions.Compiled | RegexOptions.Multiline);
 
-        //
-        // Bold/Italic (Can appear anywhere in a line.)
-        //
+        /// <summary>
+        /// Bold/Italic (Can appear anywhere in a line.)
+        /// </summary>
         private static readonly Regex BoldItalicRegex = new Regex(@"('{2,5})(.+?)('{2,5})", RegexOptions.Compiled | RegexOptions.Multiline);
 
         /// <summary>
-        /// Wiki link regex: excludes images.
+        /// Links: internal, external and image. (Can appear anywhere in a line.)
         /// </summary>
-        private static readonly Regex WikiLinkRegex = new Regex(@"\[\[((?!Image\:)(?!File\:))(.+?)(\|(.+?))?\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
-
-        /// <summary>
-        /// External links.
-        /// </summary>
-        private static readonly Regex ExtLinkRegex = new Regex(@"\[(.+?)\s+(.+?)\]", RegexOptions.Compiled | RegexOptions.Singleline);
-
-        /// <summary>
-        /// Wiki image regex: matches all options as one group.
-        /// </summary>
-        private static readonly Regex ImageRegex = new Regex(
-                                    @"\[\[(Image|File)\:(.+?)" +
-                                    @"((\|.+?)*)\]\]", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex LinkRegex = new Regex(@"\[(\[)?(.+?)(\])?\]", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
-//         private static readonly Regex MagicWordRegex = new Regex(@"(\{{2})(.+?)(?:\}{2,})", RegexOptions.Compiled | RegexOptions.Singleline);
-//         private static readonly Regex ParserFunctionRegex = new Regex(@"((#)?(.+?))\:(.+?)", RegexOptions.Compiled | RegexOptions.Singleline);
-//         private static readonly Regex TemplateRegex = new Regex(@"((Template\:)?(.+?))|((.+?)\|(.+?))", RegexOptions.Compiled | RegexOptions.Singleline);
-
         private static readonly Regex ImageSourceRegex = new Regex("<img alt=\"File:(.+?)\" src=\"(.+?)\"");
 
+        /// <summary>The current Namespace.</summary>
         private string nameSpace_;
 
+        /// <summary>The current page-title.</summary>
         private string pageTitle_;
 
         #endregion // Regex

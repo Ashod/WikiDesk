@@ -8,6 +8,39 @@ namespace WikiDesk.Core
     public class StringUtils
     {
         /// <summary>
+        /// Breaks a string into two parts at the first point the at param appears.
+        /// Returns the first part, the second part is in
+        /// </summary>
+        /// <param name="text">The text to break.</param>
+        /// <param name="at">The character to break at.</param>
+        /// <param name="second">The part after the break character, exclusive.</param>
+        /// <returns>The part before the break character, exclusive.</returns>
+        public static string BreakAt(string text, char at, out string second)
+        {
+            if (text == null)
+            {
+                second = null;
+                return null;
+            }
+
+            if (text.Length == 0)
+            {
+                second = null;
+                return string.Empty;
+            }
+
+            int index = text.IndexOf(at);
+            if (index >= 0)
+            {
+                second = text.Substring(index + 1);
+                return text.Substring(0, index);
+            }
+
+            second = null;
+            return text;
+        }
+
+        /// <summary>
         /// Removes all text between the start and end markers, if any.
         /// </summary>
         /// <param name="text">The text to process.</param>

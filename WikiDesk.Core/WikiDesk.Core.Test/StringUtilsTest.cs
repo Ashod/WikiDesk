@@ -5,6 +5,83 @@
     [TestFixture]
     public class StringUtilsTest
     {
+        #region BreakAt
+
+        [Test]
+        public void BreakAt()
+        {
+            const string RAW = "something something+else other";
+            const string EXP_RET = "something something";
+            const string EXP_SEC = "else other";
+
+            string second;
+            Assert.AreEqual(EXP_RET, StringUtils.BreakAt(RAW, '+', out second));
+            Assert.AreEqual(EXP_SEC, second);
+        }
+
+        [Test]
+        public void BreakAtMulti()
+        {
+            const string RAW = "something something+else other+more";
+            const string EXP_RET = "something something";
+            const string EXP_SEC = "else other+more";
+
+            string second;
+            Assert.AreEqual(EXP_RET, StringUtils.BreakAt(RAW, '+', out second));
+            Assert.AreEqual(EXP_SEC, second);
+        }
+
+        [Test]
+        public void BreakAtEmptyFirst()
+        {
+            const string RAW = "+else other+more";
+            const string EXP_SEC = "else other+more";
+
+            string second;
+            Assert.IsEmpty(StringUtils.BreakAt(RAW, '+', out second));
+            Assert.AreEqual(EXP_SEC, second);
+        }
+
+        [Test]
+        public void BreakAtEmptySecond()
+        {
+            const string RAW = "something something+";
+            const string EXP_RET = "something something";
+
+            string second;
+            Assert.AreEqual(EXP_RET, StringUtils.BreakAt(RAW, '+', out second));
+            Assert.IsEmpty(second);
+        }
+
+        [Test]
+        public void BreakAtNoBreak()
+        {
+            const string RAW = "something something";
+            const string EXP_RET = "something something";
+
+            string second;
+            Assert.AreEqual(EXP_RET, StringUtils.BreakAt(RAW, '+', out second));
+            Assert.IsNull(second);
+        }
+
+        [Test]
+        public void BreakAtEmpty()
+        {
+            string second;
+            Assert.IsEmpty(StringUtils.BreakAt(string.Empty, '+', out second));
+            Assert.IsNull(second);
+        }
+
+        [Test]
+        public void BreakAtNull()
+        {
+            string second;
+            Assert.IsNull(StringUtils.BreakAt(null, '+', out second));
+            Assert.IsNull(second);
+        }
+
+        #endregion // BreakAt
+
         #region RemoveBlocks
 
         [Test]
@@ -57,7 +134,7 @@
             const string RAW = "blik <!--comment--> more text <!----> bzz";
 
             int offset = 20;
-            Assert.AreEqual(string.Empty, StringUtils.ExtractBlock(RAW, "<!--", "-->", ref offset));
+            Assert.IsEmpty(StringUtils.ExtractBlock(RAW, "<!--", "-->", ref offset));
             Assert.AreEqual(36, offset);
         }
 
@@ -68,7 +145,7 @@
 
             int startOffset = 20;
             int endOffset;
-            Assert.AreEqual(string.Empty, StringUtils.ExtractBlock(RAW, "<!--", "-->", ref startOffset, out endOffset));
+            Assert.IsEmpty(StringUtils.ExtractBlock(RAW, "<!--", "-->", ref startOffset, out endOffset));
             Assert.AreEqual(30, startOffset);
             Assert.AreEqual(36, endOffset);
         }
@@ -130,7 +207,7 @@
         {
             bool closing;
             string attribs;
-            Assert.AreEqual(string.Empty, StringUtils.ExtractTagName(string.Empty, out attribs, out closing));
+            Assert.IsEmpty(StringUtils.ExtractTagName(string.Empty, out attribs, out closing));
             Assert.False(closing);
             Assert.IsNull(attribs);
         }
@@ -140,7 +217,7 @@
         {
             bool closing;
             string attribs;
-            Assert.AreEqual(string.Empty, StringUtils.ExtractTagName(null, out attribs, out closing));
+            Assert.IsEmpty(StringUtils.ExtractTagName(null, out attribs, out closing));
             Assert.False(closing);
             Assert.IsNull(attribs);
         }
