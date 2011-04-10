@@ -398,14 +398,8 @@ namespace WikiDesk.Core
         /// <returns>HTML processed header tag.</returns>
         private static string Header(Match match)
         {
-            if (match.Groups.Count != 4)
-            {
-                return match.Value;
-            }
-
             string left = match.Groups[1].ToString();
             string right = match.Groups[3].ToString();
-
             if (left != right)
             {
                 // The number of '=' chars mismatch. Not a valid header.
@@ -418,34 +412,22 @@ namespace WikiDesk.Core
 
         private static string BoldItalic(Match match)
         {
-            if (match.Groups.Count != 4)
-            {
-                return match.Value;
-            }
-
             string left = match.Groups[1].ToString();
             string right = match.Groups[3].ToString();
-
-            if (left != right)
+            if (left == right)
             {
-                // The number of ' chars mismatch. Not valid.
-                return match.Value;
-            }
+                string value = match.Groups[2].ToString();
+                switch (left.Length)
+                {
+                    case 2:
+                        return string.Concat("<i>", value, "</i>");
 
-            string value = match.Groups[2].ToString();
-            if (left.Length == 2)
-            {
-                return string.Concat("<i>", value, "</i>");
-            }
+                    case 3:
+                        return string.Concat("<b>", value, "</b>");
 
-            if (left.Length == 3)
-            {
-                return string.Concat("<b>", value, "</b>");
-            }
-
-            if (left.Length == 5)
-            {
-                return string.Concat("<i><b>", value, "</b></i>");
+                    case 5:
+                        return string.Concat("<i><b>", value, "</b></i>");
+                }
             }
 
             return match.Value;
@@ -457,31 +439,27 @@ namespace WikiDesk.Core
 
             if (match.Groups[1].Value == "[" && match.Groups[3].Value == "]")
             {
-                // [[ ]] internal link.
+                // [[Image:blah.jpg | options]] internal link.
+                string param;
+                value = StringUtils.BreakAt(value, '|', out param);
+
                 string upper = value.ToUpperInvariant();
                 if (upper.StartsWith("IMAGE:") || upper.StartsWith("FILE:"))
                 {
                     // Throw away the prefix.
                     StringUtils.BreakAt(value, ':', out value);
-
-                    // Image.
-                    string options;
-                    string imageFileName = StringUtils.BreakAt(value, '|', out options);
-                    return Image(imageFileName, options);
+                    return Image(value, param);
                 }
 
-                // Internal Link.
-                string text;
-                string pageName = StringUtils.BreakAt(value, '|', out text);
-                string url = ResolveLink(pageName, config_.WikiSite.Language.Code);
-                return string.Concat("<a href=\"", url, "\" title=\"", pageName, "\" class=\"mw-redirect\">", text, "</a>");
+                // Internal Link. [[page_name | link_text]]
+                string url = ResolveLink(value, config_.WikiSite.Language.Code);
+                return string.Concat("<a href=\"", url, "\" title=\"", value, "\" class=\"mw-redirect\">", param, "</a>");
             }
             else
             {
-                // [ ] external link.
+                // [http://www.com name] external link.
                 string text;
                 string url = StringUtils.BreakAt(value, ' ', out text);
-
                 return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text ?? url, "</a>");
             }
         }
