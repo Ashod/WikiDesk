@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Wiki2HtmlTest.cs" />
     <Compile Include="StringUtilsTest.cs" />
     <Compile Include="WikiTreeTest.cs" />
     <Compile Include="MagicWordProcessorTest.cs" />
@@ -57,6 +58,16 @@
       <Project>{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}</Project>
       <Name>WikiDesk.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestFiles\HeaderBoldItalic.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestFiles\HeaderBoldItalic.wiki">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

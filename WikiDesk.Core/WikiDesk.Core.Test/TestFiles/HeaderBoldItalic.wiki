@@ -1,0 +1,7 @@
+==Header==
+
+This is a sample for '''headers''' and text with some '''''bold''''' and '''italic''' items. The text is very simple and don't contain any special tricks, links or anything else.
+
+===Conclusion===
+
+This concludes our test.
