@@ -80,6 +80,108 @@ namespace WikiDesk.Core
         }
 
         /// <summary>
+        /// Returns the position of the first open marker if found, otherwise -1.
+        /// </summary>
+        /// <param name="text">A string to search within.</param>
+        /// <param name="startOffset">The offset at which to start the search.</param>
+        /// <param name="end">The end position of the block, if any. -1 if not found.</param>
+        /// <param name="open">The opening character.</param>
+        /// <param name="close">The closing character.</param>
+        /// <param name="repeat">The repetition count, 0 for exact match.</param>
+        /// <returns>The position of the first open marker if found, otherwise -1.</returns>
+        public static int FindWrappedBlock(
+                                string text,
+                                int startOffset,
+                                out int end,
+                                char open,
+                                char close,
+                                int repeat)
+        {
+            // Find start of a wrapped block.
+            int indexOfOpen = text.IndexOf(open, startOffset);
+
+            while (repeat > 0 && indexOfOpen >= 0)
+            {
+                int count = CountRepetition(text, indexOfOpen);
+                if (count == repeat)
+                {
+                    break;
+                }
+
+                indexOfOpen = text.IndexOf(open, indexOfOpen + count);
+            }
+
+            if (indexOfOpen < 0)
+            {
+                // No blocks found.
+                end = -1;
+                return -1;
+            }
+
+            // Find end of the magic block.
+            int nesting = 0;
+            int pos = indexOfOpen;
+            while (pos < text.Length)
+            {
+                if (text[pos] == open)
+                {
+                    ++nesting;
+                }
+                else
+                if (text[pos] == close)
+                {
+                    --nesting;
+                }
+
+                if (nesting == 0)
+                {
+                    break;
+                }
+
+                ++pos;
+            }
+
+            if (nesting == 0 && pos < text.Length)
+            {
+                end = pos;
+                return indexOfOpen;
+            }
+
+            // No blocks found.
+            end = -1;
+            return -1;
+        }
+
+        /// <summary>
+        /// Extracts the text between the start and end markers, if any.
+        /// Returns null if either marker were not found and offset is left as-is.
+        /// </summary>
+        /// <param name="text">The text to process.</param>
+        /// <param name="startMarker">The start marker.</param>
+        /// <param name="endMarker">The end marker.</param>
+        /// <param name="startOffset">
+        /// The offset to start searching from.
+        /// Contains the start index, on success, -1 on failure.
+        /// </param>
+        /// <param name="endOffset">Contains the end index, on success, -1 on failure.</param>
+        /// <returns>The text between the markers, if found, otherwise null.</returns>
+        public static string ExtractBlock(
+                                string text,
+                                char startMarker,
+                                char endMarker,
+                                ref int startOffset,
+                                out int endOffset)
+        {
+            startOffset = FindWrappedBlock(text, startOffset, out endOffset, startMarker, endMarker, 0);
+            if (startOffset < 0)
+            {
+                return null;
+            }
+
+            return text.Substring(startOffset + 1, endOffset - startOffset - 1);
+        }
+
+        /// <summary>
         /// Extracts the text between the start and end markers, if any.
         /// Returns null if either marker were not found and offset is left as-is.
         /// </summary>
@@ -107,17 +209,36 @@ namespace WikiDesk.Core
                 return null;
             }
 
-            int startIndex = startOffset + 1;
-            int endIndex = text.IndexOf(endMarker, startIndex);
-            if (endIndex < 0)
+            // At least one block found, now account for nesting
+            // and find the matching end marker.
+            int endIndex;
+            int depth = 0;
+            int startIndex = startOffset;
+            do
             {
-                startOffset = -1;
-                endOffset = -1;
-                return null;
+                endIndex = text.IndexOf(endMarker, startIndex);
+                if (endIndex < 0)
+                {
+                    startOffset = -1;
+                    endOffset = -1;
+                    return null;
+                }
+
+                startIndex = text.IndexOf(startMarker, startIndex);
+                if (startIndex < 0 || startIndex > endIndex)
+                {
+                    --depth;
+                }
+                else
+                {
+                    ++depth;
+                    startIndex += startMarker.Length;
+                }
             }
+            while (depth > 0);
 
             endOffset = endIndex + endMarker.Length - 1;
-            startIndex = startIndex + startMarker.Length - 1;
+            startIndex = startOffset + startMarker.Length;
             return text.Substring(startIndex, endIndex - startIndex);
         }
 
@@ -367,5 +488,24 @@ namespace WikiDesk.Core
             attribs = null;
             return string.Empty;
         }
+
+        private static int CountRepetition(string value, int pos)
+        {
+            int count = 1;
+            char ch = value[pos];
+            while (++pos < value.Length)
+            {
+                if (value[pos] == ch)
+                {
+                    ++count;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return count;
+        }       
     }
 }

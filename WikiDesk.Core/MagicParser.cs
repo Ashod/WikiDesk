@@ -33,79 +33,7 @@ namespace WikiDesk.Core
         /// <returns>A magic block, without braces, otherwise null.</returns>
         public static int FindMagicBlock(string value, int startOffset, out int end)
         {
-            return FindWrappedBlock(value, startOffset, out end, '{', '}', 2);
-        }
-
-        /// <summary>
-        /// Returns a magic block or null if non is found.
-        /// </summary>
-        /// <param name="text">A string to search within.</param>
-        /// <param name="startOffset">The offset at which to start the search.</param>
-        /// <param name="end">The end position of the block, if any. -1 if not found.</param>
-        /// <param name="open">The opening character.</param>
-        /// <param name="close">The closing character.</param>
-        /// <param name="repeat">The repetition count.</param>
-        /// <returns>A magic block, without braces, otherwise null.</returns>
-        public static int FindWrappedBlock(
-                                string text,
-                                int startOffset,
-                                out int end,
-                                char open,
-                                char close,
-                                int repeat)
-        {
-            // Find start of a wrapped block.
-            int indexOfOpen = text.IndexOf(open, startOffset);
-            while (indexOfOpen >= 0)
-            {
-                int count = CountRepetition(text, indexOfOpen);
-                if (count == repeat)
-                {
-                    break;
-                }
-
-                indexOfOpen = text.IndexOf(open, indexOfOpen + count);
-            }
-
-            if (indexOfOpen < 0)
-            {
-                // No blocks found.
-                end = -1;
-                return -1;
-            }
-
-            // Find end of the magic block.
-            int nesting = 0;
-            int pos = indexOfOpen;
-            while (pos < text.Length)
-            {
-                if (text[pos] == open)
-                {
-                    ++nesting;
-                }
-                else
-                if (text[pos] == close)
-                {
-                    --nesting;
-                }
-
-                if (nesting == 0)
-                {
-                    break;
-                }
-
-                ++pos;
-            }
-
-            if (nesting == 0 && pos < text.Length)
-            {
-                end = pos;
-                return indexOfOpen;
-            }
-
-            // No blocks found.
-            end = -1;
-            return -1;
+            return StringUtils.FindWrappedBlock(value, startOffset, out end, '{', '}', 2);
         }
 
         /// <summary>
@@ -304,7 +232,7 @@ namespace WikiDesk.Core
 
             // Find the first argument to process.
             int endIndex;
-            int startIndex = FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
+            int startIndex = StringUtils.FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
             if (startIndex < 0)
             {
                 return template;
@@ -334,7 +262,7 @@ namespace WikiDesk.Core
 
             // Find the first argument to process.
             int endIndex;
-            int startIndex = FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
+            int startIndex = StringUtils.FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
             if (startIndex < 0)
             {
                 return template;
@@ -374,7 +302,7 @@ namespace WikiDesk.Core
                 sb.Append(ProcessTemplateArg(arg, args));
 
                 lastIndex = startIndex + (endIndex - startIndex + 1);
-                startIndex = FindWrappedBlock(template, lastIndex, out endIndex, '{', '}', 3);
+                startIndex = StringUtils.FindWrappedBlock(template, lastIndex, out endIndex, '{', '}', 3);
             }
 
             sb.Append(template.Substring(lastIndex));
@@ -446,25 +374,6 @@ namespace WikiDesk.Core
             }
 
             return -1;
-        }
-
-        private static int CountRepetition(string value, int pos)
-        {
-            int count = 1;
-            char ch = value[pos];
-            while (++pos < value.Length)
-            {
-                if (value[pos] == ch)
-                {
-                    ++count;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            return count;
         }
 
         #region representation
