@@ -412,12 +412,13 @@ namespace WikiDesk.Core
                 sb.Append(misHandler(wikiChunk));
                 sb.Append(hitHandler(contents));
 
+                ++lastIndex;
                 startOffset = lastIndex;
                 curWikiOffset = lastIndex;
                 contents = StringUtils.ExtractBlock(wikicode, startMarker, endMarker, ref startOffset, out lastIndex);
                 if (string.IsNullOrEmpty(contents))
                 {
-                    if (curWikiOffset >= 0)
+                    if (curWikiOffset >= 0 && curWikiOffset < wikicode.Length)
                     {
                         sb.Append(misHandler(wikicode.Substring(curWikiOffset)));
                     }

@@ -96,6 +96,18 @@
         }
 
         [Test]
+        public void TextImageText()
+        {
+            WikiParseTest.TestConvert(
+                "Hi [[Image:Westminstpalace.jpg|alt=alternate texte]] Bye",
+                "<p>Hi " +
+                    "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
+                        "<img alt=\"alternate texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\">" +
+                    "</a>" +
+                " Bye</p>");
+        }
+
+        [Test]
         public void ImageAlt()
         {
 //         [[Image:Westminstpalace.jpg|alt=alternate texte]]
