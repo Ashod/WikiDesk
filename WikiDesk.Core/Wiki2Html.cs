@@ -188,7 +188,7 @@ namespace WikiDesk.Core
             wikicode = ProcessMagicWords(wikicode);
 
             wikicode = ConvertBinaryCode(wikicode, x => x, BoldItalicRegex, BoldItalic);
-            wikicode = ConvertBinaryCode(wikicode, x => x, LinkRegex, Link);
+            wikicode = ConvertBinaryCode(wikicode, x => x, '[', ']', Link);
 
             wikicode = ConvertListCode(wikicode);
             wikicode = ConvertParagraphs(wikicode);
@@ -237,7 +237,15 @@ namespace WikiDesk.Core
         /// </summary>
         /// <param name="match">The regex match instance.</param>
         /// <returns>A replacement string, or null to skip.</returns>
-        private delegate string MatchedCodeHandler(Match match);
+        private delegate string MatchedRegexHandler(Match match);
+
+        /// <summary>
+        /// Handles conversion of a matching binary markers into HTML.
+        /// May return null to skip conversion of the matching block.
+        /// </summary>
+        /// <param name="code">The code that is bound by the matched markers.</param>
+        /// <returns>A replacement string, or null to skip.</returns>
+        private delegate string MatchedCodeHandler(string code);
 
         /// <summary>
         /// Handles text that didn't match the current Regex.
@@ -304,7 +312,7 @@ namespace WikiDesk.Core
             return wikicode;
         }
 
-        private static string ConvertUnaryCode(Regex regex, MatchedCodeHandler handler, string wikicode)
+        private static string ConvertUnaryCode(Regex regex, MatchedRegexHandler handler, string wikicode)
         {
             Match match = regex.Match(wikicode);
             while (match.Success)
@@ -328,7 +336,7 @@ namespace WikiDesk.Core
                                     string wikicode,
                                     MismatchedCodeHandler misHandler,
                                     Regex regex,
-                                    MatchedCodeHandler hitHandler)
+                                    MatchedRegexHandler hitHandler)
         {
             if (string.IsNullOrEmpty(wikicode))
             {
@@ -374,6 +382,53 @@ namespace WikiDesk.Core
             return sb.ToString();
         }
 
+        private static string ConvertBinaryCode(
+                                    string wikicode,
+                                    MismatchedCodeHandler misHandler,
+                                    char startMarker,
+                                    char endMarker,
+                                    MatchedCodeHandler hitHandler)
+        {
+            if (string.IsNullOrEmpty(wikicode))
+            {
+                return string.Empty;
+            }
+
+            // Find the open tag.
+            int startOffset = 0;
+            int lastIndex;
+            string contents = StringUtils.ExtractBlock(wikicode, startMarker, endMarker, ref startOffset, out lastIndex);
+            if (string.IsNullOrEmpty(contents))
+            {
+                return wikicode;
+            }
+
+            StringBuilder sb = new StringBuilder(wikicode.Length * 16);
+
+            int curWikiOffset = 0;
+            while (lastIndex < wikicode.Length)
+            {
+                string wikiChunk = wikicode.Substring(curWikiOffset, startOffset - curWikiOffset);
+                sb.Append(misHandler(wikiChunk));
+                sb.Append(hitHandler(contents));
+
+                startOffset = lastIndex;
+                curWikiOffset = lastIndex;
+                contents = StringUtils.ExtractBlock(wikicode, startMarker, endMarker, ref startOffset, out lastIndex);
+                if (string.IsNullOrEmpty(contents))
+                {
+                    if (curWikiOffset >= 0)
+                    {
+                        sb.Append(misHandler(wikicode.Substring(curWikiOffset)));
+                    }
+
+                    break;
+                }
+            }
+
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Checks if the wikicode is a redirection.
         /// If redirection is in place, it returns the new page title, otherwise null.
@@ -407,7 +462,11 @@ namespace WikiDesk.Core
             }
 
             string value = match.Groups[2].ToString();
-            return string.Format("<h{0}><span class=\"mw-headline\">{1}</span></h{0}>", left.Length, value);
+            return string.Format(
+                    "<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>",
+                    left.Length,
+                    value,
+                    Title.Normalize(value));
         }
 
         private static string BoldItalic(Match match)
@@ -433,33 +492,33 @@ namespace WikiDesk.Core
             return match.Value;
         }
 
-        private string Link(Match match)
+        private string Link(string code)
         {
-            string value = match.Groups[2].Value.Trim();
-
-            if (match.Groups[1].Value == "[" && match.Groups[3].Value == "]")
+            if (code.StartsWith("[") && code.EndsWith("]"))
             {
+                code = code.TrimStart('[').TrimEnd(']');
+
                 // [[Image:blah.jpg | options]] internal link.
                 string param;
-                value = StringUtils.BreakAt(value, '|', out param);
+                code = StringUtils.BreakAt(code, '|', out param);
 
-                string upper = value.ToUpperInvariant();
+                string upper = code.ToUpperInvariant();
                 if (upper.StartsWith("IMAGE:") || upper.StartsWith("FILE:"))
                 {
                     // Throw away the prefix.
-                    StringUtils.BreakAt(value, ':', out value);
-                    return Image(value, param);
+                    StringUtils.BreakAt(code, ':', out code);
+                    return Image(code, param);
                 }
 
                 // Internal Link. [[page_name | link_text]]
-                string url = ResolveLink(value, config_.WikiSite.Language.Code);
-                return string.Concat("<a href=\"", url, "\" title=\"", value, "\" class=\"mw-redirect\">", param, "</a>");
+                string url = ResolveLink(code, config_.WikiSite.Language.Code);
+                return string.Concat("<a href=\"", url, "\" title=\"", code, "\" class=\"mw-redirect\">", param ?? code, "</a>");
             }
             else
             {
                 // [http://www.com name] external link.
                 string text;
-                string url = StringUtils.BreakAt(value, ' ', out text);
+                string url = StringUtils.BreakAt(code, ' ', out text);
                 return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text ?? url, "</a>");
             }
         }
@@ -877,11 +936,16 @@ namespace WikiDesk.Core
             using (StringReader sr = new StringReader(wikicode))
             {
                 bool para = false;
+                int blankLines = 0;
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (line.Length == 0 ||
-                        line.StartsWith("<h") ||
+                    if (line.Trim().Length == 0)
+                    {
+                        ++blankLines;
+                    }
+                    else
+                    if (line.StartsWith("<h") ||
                         line.StartsWith("<t") ||
                         line.StartsWith("<p") ||
                         line.StartsWith("<d") ||
@@ -894,18 +958,35 @@ namespace WikiDesk.Core
                             para = false;
                         }
 
-                        sb.Append(line);
+                        if (blankLines == 1)
+                        {
+                            sb.Append("<p>");
+                            para = true;
+                            blankLines = 0;
+                        }
+                        else
+                        if (blankLines > 1)
+                        {
+                            sb.Append("<p><br /></p>");
+                            blankLines = 0;
+                        }
                     }
                     else
                     {
                         if (!para)
                         {
+                            if (blankLines > 1)
+                            {
+                                sb.Append("<p><br /></p>");
+                            }
+
                             sb.Append("<p>");
                             para = true;
+                            blankLines = 0;
                         }
-
-                        sb.Append(line);
                     }
+
+                    sb.Append(line);
                 }
 
                 if (para)
