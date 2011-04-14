@@ -150,6 +150,61 @@
             Assert.AreEqual(36, endOffset);
         }
 
+        [Test]
+        public void ExtractBlockNested()
+        {
+            const string RAW = "blik <b>something <b>b</b> else</b>";
+
+            int startOffset = 2;
+            int endOffset;
+            Assert.AreEqual("something <b>b</b> else", StringUtils.ExtractBlock(RAW, "<b>", "</b>", ref startOffset, out endOffset));
+            Assert.AreEqual(5, startOffset);
+            Assert.AreEqual(RAW.Length - 1, endOffset);
+        }
+
+        [Test]
+        public void ExtractBlockNestedChar()
+        {
+            const string RAW = "[[File:somefile.jpg|caption of [[wikilink]]]]";
+
+            int startOffset = 0;
+            int endOffset;
+            Assert.AreEqual(
+                    "[File:somefile.jpg|caption of [[wikilink]]]",
+                    StringUtils.ExtractBlock(RAW, '[', ']', ref startOffset, out endOffset));
+            Assert.AreEqual(0, startOffset);
+            Assert.AreEqual(RAW.Length - 1, endOffset);
+        }
+
+        [Test]
+        public void ExtractBlockNestedChar2()
+        {
+            const string RAW = "something [[File:somefile.jpg|caption of [[wikilink]]]] something [link]";
+
+            int startOffset = 0;
+            int endOffset;
+            Assert.AreEqual(
+                    "[File:somefile.jpg|caption of [[wikilink]]]",
+                    StringUtils.ExtractBlock(RAW, '[', ']', ref startOffset, out endOffset));
+            Assert.AreEqual(10, startOffset);
+            Assert.AreEqual(54, endOffset);
+        }
+
+
+        [Test]
+        public void ExtractBlockNestedBracket()
+        {
+            const string RAW = "[[File:somefile.jpg|caption of [[wikilink]]]]";
+
+            int startOffset = 0;
+            int endOffset;
+            Assert.AreEqual(
+                "File:somefile.jpg|caption of [[wikilink]]",
+                StringUtils.ExtractBlock(RAW, "[[", "]]", ref startOffset, out endOffset));
+            Assert.AreEqual(0, startOffset);
+            Assert.AreEqual(RAW.Length - 1, endOffset);
+        }
+
         #endregion // ExtractBlock
 
         #region ExtractTagName
@@ -255,10 +310,27 @@
         }
 
         [Test]
-        public void ExtractTagB()
+        public void ExtractTagBold()
         {
             const string RAW = "blik more text <b>bzz</b>";
             const string EXP = "bzz";
+            int startOffset = 0;
+            int endOffset;
+            string tag = null;
+            string attribs;
+            Assert.AreEqual(EXP, StringUtils.ExtractTag(RAW, ref startOffset, out endOffset, ref tag, out attribs));
+
+            Assert.AreEqual("b", tag);
+            Assert.IsEmpty(attribs);
+            Assert.AreEqual(RAW.Length - 10, startOffset);
+            Assert.AreEqual(RAW.Length - 1, endOffset);
+        }
+
+        [Test]
+        public void ExtractTagBoldItalic()
+        {
+            const string RAW = "blik more text <b><i>bzz</i></b>";
+            const string EXP = "<i>bzz</i>";
             int startOffset = 0;
             int endOffset;
             string tag = null;

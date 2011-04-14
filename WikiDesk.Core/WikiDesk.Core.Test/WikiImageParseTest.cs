@@ -65,6 +65,19 @@
         }
 
         [Test]
+        public void ImageAndText()
+        {
+            WikiParseTest.TestConvert(
+                "[[File:Face-smile.svg|18px]] '''Thank you'''",
+                "<p>" +
+                    "<a class=\"image\" href=\"/wiki/File:Face-smile.svg\">" +
+                        "<img width=\"18\" height=\"18\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/18px-Face-smile.svg.png\" alt=\"Face-smile.svg\">" +
+                    "</a>" +
+                    "<b>Thank you</b>" +
+                "</p>");
+        }
+
+        [Test]
         public void ImageCaption()
         {
 //         <p>

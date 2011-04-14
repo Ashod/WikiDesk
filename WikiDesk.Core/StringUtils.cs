@@ -450,6 +450,8 @@ namespace WikiDesk.Core
                     // Found. Extract the contents.
                     return text.Substring(openEndIndex + 1, closeIndex - openEndIndex - 1);
                 }
+
+                closeIndex = endOffset + 1;
             }
 
             endOffset = -1;
@@ -506,6 +508,6 @@ namespace WikiDesk.Core
             }
 
             return count;
-        }       
+        }
     }
 }
