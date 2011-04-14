@@ -19,9 +19,21 @@
         }
 
         [Test]
-        public void RedirectColon()
+        public void HeaderBoldItalic()
         {
             TestConvertFiles("HeaderBoldItalic");
+        }
+
+        [Test]
+        public void RefCite()
+        {
+            TestConvertFiles("RefCite");
+        }
+
+        [Test]
+        public void RefCiteReflist()
+        {
+            TestConvertFiles("RefCiteReflist");
         }
 
         #region implementation
