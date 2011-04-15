@@ -5,13 +5,9 @@ namespace WikiDesk.Core
     using System.Diagnostics;
     using System.Text;
 
-    public class MagicParser
+    public static class MagicParser
     {
-        public MagicParser(string code, Dictionary<string, string> args)
-        {
-            code_ = code;
-            args_ = args;
-        }
+        #region operations
 
         /// <summary>
         /// Returns a magic block or null if non is found.
@@ -162,43 +158,6 @@ namespace WikiDesk.Core
         }
 
         /// <summary>
-        /// Gets the index of the next param start,
-        /// the index that is both outside {} and [].
-        /// Bars in braces are the argument default.
-        /// Bars in brackets are wiki link names.
-        /// </summary>
-        /// <param name="code"></param>
-        /// <param name="startOffset"></param>
-        /// <returns></returns>
-        private static int FindParam(string code, int startOffset)
-        {
-            int nesting = 0;
-            for (int pos = startOffset; pos < code.Length; ++pos)
-            {
-                char c = code[pos];
-                if (c == '{' || c == '[')
-                {
-                    ++nesting;
-                }
-                else
-                if (c == '}' || c == ']')
-                {
-                    --nesting;
-                }
-                else
-                if (c == '|')
-                {
-                    if (nesting == 0)
-                    {
-                        return pos;
-                    }
-                }
-            }
-
-            return -1;
-        }
-
-        /// <summary>
         /// Processes the arguments to a template code.
         /// Arguments can be named or unnamed.
         /// </summary>
@@ -253,26 +212,11 @@ namespace WikiDesk.Core
             return ProcessTemplateParams(template, mapArgs, startIndex, endIndex);
         }
 
-        public static string ProcessTemplateParams(
-                                    string template,
-                                    Dictionary<string, string> args)
-        {
-            Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
+        #endregion // operations
 
+        #region implementation
 
-            // Find the first argument to process.
-            int endIndex;
-            int startIndex = StringUtils.FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
-            if (startIndex < 0)
-            {
-                return template;
-            }
-
-            // Process the params, passing the first match.
-            return ProcessTemplateParams(template, args, startIndex, endIndex);
-        }
-
-        public static string ProcessTemplateParams(
+        private static string ProcessTemplateParams(
                                     string template,
                                     Dictionary<string, string> args,
                                     int startIndex,
@@ -338,33 +282,51 @@ namespace WikiDesk.Core
             return string.Empty;
         }
 
+        private static string ProcessTemplateParams(
+                                    string template,
+                                    Dictionary<string, string> args)
+        {
+            Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
+
+
+            // Find the first argument to process.
+            int endIndex;
+            int startIndex = StringUtils.FindWrappedBlock(template, 0, out endIndex, '{', '}', 3);
+            if (startIndex < 0)
+            {
+                return template;
+            }
+
+            // Process the params, passing the first match.
+            return ProcessTemplateParams(template, args, startIndex, endIndex);
+        }
+
         /// <summary>
-        /// Find the index of the first occurrence of ch outside of the wrapper
-        /// characters open and close.
+        /// Gets the index of the next param start,
+        /// the index that is both outside {} and [].
+        /// Bars in braces are the argument default.
+        /// Bars in brackets are wiki link names.
         /// </summary>
-        /// <param name="text">The text to search within.</param>
-        /// <param name="offset">The offset where to start the search.</param>
-        /// <param name="ch">The character to find.</param>
-        /// <param name="open">The opening wrapper character.</param>
-        /// <param name="close">The closing wrapper character.</param>
-        /// <returns>The index of ch or -ve if not found.</returns>
-        private static int FindUnwrapped(string text, int offset, char ch, char open, char close)
+        /// <param name="code"></param>
+        /// <param name="startOffset"></param>
+        /// <returns></returns>
+        private static int FindParam(string code, int startOffset)
         {
             int nesting = 0;
-            for (int pos = offset; pos < text.Length; ++pos)
+            for (int pos = startOffset; pos < code.Length; ++pos)
             {
-                char c = text[pos];
-                if (c == open)
+                char c = code[pos];
+                if (c == '{' || c == '[')
                 {
                     ++nesting;
                 }
                 else
-                if (c == close)
+                if (c == '}' || c == ']')
                 {
                     --nesting;
                 }
                 else
-                if (c == ch)
+                if (c == '|')
                 {
                     if (nesting == 0)
                     {
@@ -376,11 +338,9 @@ namespace WikiDesk.Core
             return -1;
         }
 
+        #endregion // implementation
+
         #region representation
-
-        private readonly string code_;
-
-        private readonly Dictionary<string, string> args_;
 
         private static readonly char[] WhiteSpaceChars = { ' ', '\n', '\r', '\t' };
         private static readonly char[] ParamDelimChars = { ':', '|' };

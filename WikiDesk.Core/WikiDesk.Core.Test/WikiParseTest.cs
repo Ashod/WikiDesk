@@ -128,6 +128,14 @@
         }
 
         [Test]
+        public void Nested()
+        {
+            TestConvert(
+                    "'''''The '''red''' fox.'''''",
+                    "<p><i><b>The</b> red <b>fox.</b></i></p>");
+        }
+
+        [Test]
         public void BoldHeader3()
         {
             TestConvert(

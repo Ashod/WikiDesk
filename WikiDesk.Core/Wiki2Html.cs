@@ -466,8 +466,8 @@ namespace WikiDesk.Core
             return string.Format(
                     "<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>",
                     left.Length,
-                    value,
-                    Title.Normalize(value));
+                    Title.Normalize(value),
+                    value);
         }
 
         private static string BoldItalic(Match match)
