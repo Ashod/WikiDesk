@@ -52,7 +52,7 @@
             browser_.NewWindowCreated += browser__NewWindowCreated;
             browser_.Navigating += browser__Navigating;
             browser_.Navigated += browser__Navigated;
-            browser_.DecideNavigationAction += browser__DecideNavigationAction;
+            //browser_.DecideNavigationAction += browser__DecideNavigationAction;
 
             dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
             dockContent_.DockPanel = dockPanel_;
@@ -233,7 +233,14 @@
 
         private void browser__Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if ((browser_.Url != null) && (browser_.Url.ToString() != tempFileUrl_))
+            string url = browser_.Url != null ? browser_.Url.ToString(): string.Empty;
+            if (browser__DecideNavigationAction(url, string.Empty))
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            if (url != tempFileUrl_)
             {
                 currentWikiPageName_ = null;
             }

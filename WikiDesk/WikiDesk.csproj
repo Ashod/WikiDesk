@@ -50,6 +50,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdParty\Tracy\Tracy.dll</HintPath>
     </Reference>
+    <Reference Include="WebKitBrowser, Version=0.5.0.0, Culture=neutral, PublicKeyToken=b967213f6d29a3be, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\WebKit.Net\bin\Release\WebKitBrowser.dll</HintPath>
+    </Reference>
+    <Reference Include="WebKitCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b967213f6d29a3be, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\WebKit.Net\bin\Release\WebKitCore.dll</HintPath>
+    </Reference>
     <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.5.0.30626, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdParty\DockPanel\WinFormsUI\bin\Release\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
@@ -172,8 +180,9 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /E /Y "$(SolutionDir)3rdParty\WebKit.Net\bin\Release" "$(TargetDir)"
+xcopy /E /Y "$(SolutionDir)3rdParty\WebKit.Net\webkit" "$(TargetDir)"
+copy "$(SolutionDir)3rdParty\sqlite3\sqlite3.dll" "$(TargetDir)"</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
