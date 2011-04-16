@@ -55,11 +55,7 @@
             string tempPath = Path.Combine(Path.GetTempPath(), "WikiDeskPhP");
             DeleteDirectory(tempPath);
 
-            try
-            {
-                Compile(outputFolder, rootPath, tempPath, rootPathLength, rootNamespace, debug);
-            }
-            finally
+            if (Compile(outputFolder, rootPath, tempPath, rootPathLength, rootNamespace, debug))
             {
                 DeleteDirectory(tempPath);
             }
@@ -67,50 +63,7 @@
             return 0;
         }
 
-        private static bool DeleteDirectory(string path)
-        {
-            try
-            {
-                Directory.Delete(path, true);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        private static void Compile(string outputFolder, string rootPath, string tempPath, int rootPathLength, string rootNamespace, bool debug)
-        {
-            foreach (string file in
-                Directory.GetFiles(rootPath, "*.php", SearchOption.AllDirectories))
-            {
-                string relFilename = file.Substring(rootPathLength);
-                string filename = Path.Combine(tempPath, relFilename);
-                string assemblyName = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(filename));
-
-                // Check if a rebuild is necessary.
-                FileInfo phpFileInfo = new FileInfo(file);
-                FileInfo dllFileInfo = new FileInfo(assemblyName + ".dll");
-                if (dllFileInfo.Exists && dllFileInfo.Length > 0 &&
-                    dllFileInfo.LastAccessTimeUtc > phpFileInfo.LastWriteTimeUtc)
-                {
-                    continue;
-                }
-
-                Console.Write("Preprocessing " + file);
-                Directory.CreateDirectory(Path.GetDirectoryName(filename));
-                string namespaceName = rootNamespace;
-                PreprocessFile(file, filename, namespaceName);
-
-                Console.Write(". Compiling... ");
-                List<string> units = new List<string>(1) { filename };
-                if (Compile(units, assemblyName, debug))
-                {
-                    Console.WriteLine("Done.");
-                }
-            }
-        }
+        #region operations
 
         public static bool Compile(
                             IList<string> units,
@@ -262,6 +215,50 @@
             return string.Join(Environment.NewLine, lines.ToArray());
         }
 
+        #endregion // operations
+
+        #region implementation
+
+        private static bool Compile(string outputFolder, string rootPath, string tempPath, int rootPathLength, string rootNamespace, bool debug)
+        {
+            bool errors = false;
+
+            foreach (string file in
+                            Directory.GetFiles(rootPath, "*.php", SearchOption.AllDirectories))
+            {
+                string relFilename = file.Substring(rootPathLength);
+                string filename = Path.Combine(tempPath, relFilename);
+                string assemblyName = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(filename));
+
+                // Check if a rebuild is necessary.
+                FileInfo phpFileInfo = new FileInfo(file);
+                FileInfo dllFileInfo = new FileInfo(assemblyName + ".dll");
+                if (dllFileInfo.Exists && dllFileInfo.Length > 0 &&
+                    dllFileInfo.LastAccessTimeUtc > phpFileInfo.LastWriteTimeUtc)
+                {
+                    continue;
+                }
+
+                Console.Write("Preprocessing " + file);
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+                string namespaceName = rootNamespace;
+                PreprocessFile(file, filename, namespaceName);
+
+                Console.Write(". Compiling... ");
+                List<string> units = new List<string>(1) { filename };
+                if (Compile(units, assemblyName, debug))
+                {
+                    Console.WriteLine("Done.");
+                }
+                else
+                {
+                    errors = true;
+                }
+            }
+
+            return !errors;
+        }
+
         private static void String2Lines(string code, ICollection<string> lines)
         {
             lines.Clear();
@@ -310,6 +307,23 @@
             return sb.ToString();
         }
 
+        private static bool DeleteDirectory(string path)
+        {
+            try
+            {
+                Directory.Delete(path, true);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        #endregion // implementation
+
+        #region representation
+
         /// <summary>
         /// Handles a matching regex.
         /// May return null to skip conversion of the matching block.
@@ -321,5 +335,7 @@
         private static readonly Regex rexClass = new Regex(@"class\s+\w+(\s+extends\s+\w+)?\s+\{", RegexOptions.Compiled);
         private static readonly Regex rexVars = new Regex(@"(\$\w+)(\s+)?=", RegexOptions.Compiled);
         private static readonly Regex rexPregPlaceholder = new Regex(@"(\\)?(\$(\d|\W))", RegexOptions.Compiled);
+
+        #endregion // representation
     }
 }
