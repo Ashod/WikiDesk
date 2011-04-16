@@ -145,6 +145,14 @@ class Language {
 	protected static function newFromCode( $code ) {
 		#global $IP;
 		static $recursionLevel = 0;
+
+		// Protect against path traversal below
+		if ( !Language::isValidCode( $code ) 
+			|| strcspn( $code, "/\\\000" ) !== strlen( $code ) ) 
+		{
+			throw new MWException( "Invalid language code \"$code\"" );
+		}
+
 		if ( $code == 'en' ) {
 			$class = 'Language';
 		} else {
@@ -173,6 +181,14 @@ class Language {
 			$lang = new $class;
 		}
 		return $lang;
+	}
+
+	/**
+	 * Returns true if a language code string is of a valid form, whether or 
+	 * not it exists.
+	 */
+	public static function isValidCode( $code ) {
+		return strcspn( $code, "/\\\000" ) === strlen( $code );
 	}
 
 	/**
@@ -2464,6 +2480,13 @@ class Language {
 	 * @return string $prefix . $mangledCode . $suffix
 	 */
 	static function getFileName( $prefix = 'Language', $code, $suffix = '.php' ) {
+		// Protect against path traversal
+		if ( !Language::isValidCode( $code ) 
+			|| strcspn( $code, "/\\\000" ) !== strlen( $code ) ) 
+		{
+			throw new MWException( "Invalid language code \"$code\"" );
+		}
+		
 		return $prefix . str_replace( '-', '_', ucfirst( $code ) ) . $suffix;
 	}
 
