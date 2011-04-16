@@ -182,6 +182,8 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /E /Y "$(SolutionDir)3rdParty\WebKit.Net\bin\Release" "$(TargetDir)"
 xcopy /E /Y "$(SolutionDir)3rdParty\WebKit.Net\webkit" "$(TargetDir)"
+mkdir "$(TargetDir)Skins"
+xcopy /E /Y "$(ProjectDir)Resources\Skins" "$(TargetDir)Skins"
 copy "$(SolutionDir)3rdParty\sqlite3\sqlite3.dll" "$(TargetDir)"</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
