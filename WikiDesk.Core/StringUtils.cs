@@ -80,6 +80,70 @@ namespace WikiDesk.Core
         }
 
         /// <summary>
+        /// Returns the position of the first marker if found, otherwise -1.
+        /// Used with single-marker wrapping, such as quotes.
+        /// </summary>
+        /// <param name="text">A string to search within.</param>
+        /// <param name="startOffset">The offset at which to start the search.</param>
+        /// <param name="end">The end position of the block, if any. -1 if not found.</param>
+        /// <param name="marker">The marker character.</param>
+        /// <param name="repeat">The repetition count, 0 or -ve for greedy.</param>
+        /// <param name="symmetric">If true, the closing marker must repeat as many times as the opening.</param>
+        /// <returns>The position of the first open marker if found, otherwise -1.</returns>
+        public static int FindWrappedBlock(
+                                string text,
+                                int startOffset,
+                                out int end,
+                                char marker,
+                                int repeat,
+                                bool symmetric)
+        {
+            // Find start of a wrapped block.
+            int indexOfOpen = text.IndexOf(marker, startOffset);
+            while (indexOfOpen >= 0)
+            {
+                int count = CountRepetition(text, indexOfOpen);
+                if (repeat <= 0)
+                {
+                    repeat = count;
+                    break;
+                }
+
+                if (count == repeat)
+                {
+                    break;
+                }
+
+                indexOfOpen = text.IndexOf(marker, indexOfOpen + count);
+            }
+
+            if (indexOfOpen < 0)
+            {
+                // No blocks found.
+                end = -1;
+                return -1;
+            }
+
+            // Find end of the wrapped block.
+            int indexOfClose = text.IndexOf(marker, indexOfOpen + repeat);
+            while (indexOfClose >= 0)
+            {
+                int count = CountRepetition(text, indexOfClose);
+                if (!symmetric || count == repeat)
+                {
+                    end = indexOfClose + count - 1;
+                    return indexOfOpen;
+                }
+
+                indexOfClose = text.IndexOf(marker, indexOfClose + count);
+            }
+
+            // No blocks found.
+            end = -1;
+            return -1;
+        }
+
+        /// <summary>
         /// Returns the position of the first open marker if found, otherwise -1.
         /// </summary>
         /// <param name="text">A string to search within.</param>
@@ -89,13 +153,7 @@ namespace WikiDesk.Core
         /// <param name="close">The closing character.</param>
         /// <param name="repeat">The repetition count, 0 for exact match.</param>
         /// <returns>The position of the first open marker if found, otherwise -1.</returns>
-        public static int FindWrappedBlock(
-                                string text,
-                                int startOffset,
-                                out int end,
-                                char open,
-                                char close,
-                                int repeat)
+        public static int FindWrappedBlock(string text, int startOffset, out int end, char open, char close, int repeat)
         {
             // Find start of a wrapped block.
             int indexOfOpen = text.IndexOf(open, startOffset);
@@ -491,13 +549,44 @@ namespace WikiDesk.Core
             return string.Empty;
         }
 
-        private static int CountRepetition(string value, int pos)
+        /// <summary>
+        /// Counts the number of occurrences of the character at the given position in a row.
+        /// </summary>
+        /// <param name="text">The text to search within.</param>
+        /// <param name="pos">The position to start searching.</param>
+        /// <returns>The number of occurrences. A minimum of 1 is always returned.</returns>
+        public static int CountRepetition(string text, int pos)
         {
             int count = 1;
-            char ch = value[pos];
-            while (++pos < value.Length)
+            char ch = text[pos];
+            while (++pos < text.Length)
             {
-                if (value[pos] == ch)
+                if (text[pos] == ch)
+                {
+                    ++count;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Reverse counts the number of occurrences of the character at the given position in a row.
+        /// </summary>
+        /// <param name="text">The text to search within.</param>
+        /// <param name="pos">The position to start searching.</param>
+        /// <returns>The number of occurrences. A minimum of 1 is always returned.</returns>
+        public static int CountReverseRepetition(string text, int pos)
+        {
+            int count = 1;
+            char ch = text[pos];
+            while (--pos >= 0)
+            {
+                if (text[pos] == ch)
                 {
                     ++count;
                 }

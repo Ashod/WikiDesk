@@ -118,6 +118,102 @@
 
         #endregion // RemoveBlocks
 
+        #region CountRepetition
+
+        [Test]
+        public void CountRepetition()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            Assert.AreEqual(2, StringUtils.CountRepetition(RAW, 5));
+        }
+
+        [Test]
+        public void CountRepetitionNoRepeat()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            Assert.AreEqual(1, StringUtils.CountRepetition(RAW, 3));
+        }
+
+        [Test]
+        public void CountRepetitionRepeatLast()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            Assert.AreEqual(2, StringUtils.CountRepetition(RAW, RAW.Length - 2));
+        }
+
+        [Test]
+        public void CountReverseRepetitionRepeatLast()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            Assert.AreEqual(2, StringUtils.CountReverseRepetition(RAW, RAW.Length - 1));
+        }
+
+        [Test]
+        public void CountReverseRepetitionFirst()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            Assert.AreEqual(1, StringUtils.CountReverseRepetition(RAW, 0));
+        }
+
+        [Test]
+        public void CountReverseRepetition()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            Assert.AreEqual(2, StringUtils.CountReverseRepetition(RAW, 6));
+        }
+
+        #endregion // CountRepetition
+
+        #region FindWrappedBlock
+
+        [Test]
+        public void FindWrappedBlockSimple()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            int end;
+            Assert.AreEqual(5, StringUtils.FindWrappedBlock(RAW, 0, out end, '\'', 2, true));
+            Assert.AreEqual(15, end);
+        }
+
+        [Test]
+        public void FindWrappedBlockNoMatch()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            int end;
+            Assert.AreEqual(-1, StringUtils.FindWrappedBlock(RAW, 6, out end, '\'', 2, true));
+            Assert.AreEqual(-1, end);
+        }
+
+        [Test]
+        public void FindWrappedBlockGreedy()
+        {
+            const string RAW = "blik ''comment'' more text <!----> bzz";
+
+            int end;
+            Assert.AreEqual(5, StringUtils.FindWrappedBlock(RAW, 3, out end, '\'', 0, true));
+            Assert.AreEqual(15, end);
+        }
+
+        [Test]
+        public void FindWrappedBlockGreedyNonSymmetric()
+        {
+            const string RAW = "blik '''comment'' more' text <!----> bzz";
+
+            int end;
+            Assert.AreEqual(5, StringUtils.FindWrappedBlock(RAW, 3, out end, '\'', 0, false));
+            Assert.AreEqual(16, end);
+        }
+
+        #endregion // FindWrappedBlock
+
         #region ExtractBlock
 
         [Test]
