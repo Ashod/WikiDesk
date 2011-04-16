@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDesk.Data.Test", "WikiD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaWiki.Lang.Compiler", "MediaWiki.Lang.Compiler\MediaWiki.Lang.Compiler.csproj", "{5FD6A5C5-6057-441E-B428-6E3A61708D08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaWiki.Lang", "MediaWiki.Lang\MediaWiki.Lang.csproj", "{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MediaWiki.Lang.Messages", "MediaWiki.Lang.Messages\MediaWiki.Lang.Messages.vcproj", "{87AAA178-CDE5-4EC9-A297-A219B69FEF41}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5FD6A5C5-6057-441E-B428-6E3A61708D08} = {5FD6A5C5-6057-441E-B428-6E3A61708D08}
@@ -92,16 +90,6 @@ Global
 		{5FD6A5C5-6057-441E-B428-6E3A61708D08}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5FD6A5C5-6057-441E-B428-6E3A61708D08}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5FD6A5C5-6057-441E-B428-6E3A61708D08}.Release|Win32.ActiveCfg = Release|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}.Release|Win32.ActiveCfg = Release|Any CPU
 		{87AAA178-CDE5-4EC9-A297-A219B69FEF41}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{87AAA178-CDE5-4EC9-A297-A219B69FEF41}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{87AAA178-CDE5-4EC9-A297-A219B69FEF41}.Debug|Mixed Platforms.Build.0 = Debug|Win32

@@ -63,10 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MediaWiki.Lang\MediaWiki.Lang.csproj">
-      <Project>{0796F40B-81B1-40E2-BC8D-1DB19EE0943D}</Project>
-      <Name>MediaWiki.Lang</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WikiDesk.Data\WikiDesk.Data.csproj">
       <Project>{BBD52323-6CD5-45F6-84F1-C2341EF4694A}</Project>
       <Name>WikiDesk.Data</Name>
