@@ -85,6 +85,32 @@
         }
 
         /// <summary>
+        /// Converts a title such that it's a valid anchor.
+        /// </summary>
+        /// <param name="title">The anchor title to normalize.</param>
+        /// <returns>Normalized anchor title.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">Anchors can't be empty.</exception>
+        public static string NormalizeAnchor(string title)
+        {
+            if (title == null)
+            {
+                throw new ArgumentNullException("title");
+            }
+
+            title = title.Trim();
+            if (title.Length == 0)
+            {
+                throw new ArgumentException("Anchors can't be empty.");
+            }
+
+            // May contain HTML, strip them.
+            title = StringUtils.RemoveBlocks(title, "<", ">");
+            title = EncodeNonAsciiCharacters(title);
+            return Normalize(title);
+        }
+
+        /// <summary>
         /// Converts a title such that the first character is in upper-case
         /// and all underscores are converted to spaces.
         /// </summary>

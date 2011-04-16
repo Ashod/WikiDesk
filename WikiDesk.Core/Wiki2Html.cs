@@ -464,10 +464,11 @@ namespace WikiDesk.Core
 
             string value = match.Groups[2].ToString();
             return string.Format(
-                    "<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>",
+                    "<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>{3}",
                     left.Length,
-                    Title.Normalize(value),
-                    value);
+                    Title.NormalizeAnchor(value),
+                    value,
+                    Environment.NewLine);
         }
 
         private static string BoldItalic(Match match)

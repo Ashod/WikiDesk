@@ -1,5 +1,6 @@
 ﻿namespace WikiDesk.Core.Test
 {
+    using System;
     using System.IO;
     using System.Reflection;
 
@@ -24,7 +25,7 @@
         {
             TestConvert(
                     "=!=",
-                    "<h1><span class=\"mw-headline\">!</span></h1>");
+                    "<h1><span class=\"mw-headline\" id=\"!\">!</span></h1>" + Environment.NewLine);
         }
 
         [Test]
@@ -32,7 +33,7 @@
         {
             TestConvert(
                     "==!==",
-                    "<h2><span class=\"mw-headline\">!</span></h2>");
+                    "<h2><span class=\"mw-headline\" id=\"!\">!</span></h2>" + Environment.NewLine);
         }
 
         [Test]
@@ -40,7 +41,7 @@
         {
             TestConvert(
                     "===!===",
-                    "<h3><span class=\"mw-headline\">!</span></h3>");
+                    "<h3><span class=\"mw-headline\" id=\"!\">!</span></h3>" + Environment.NewLine);
         }
 
         [Test]
@@ -48,7 +49,7 @@
         {
             TestConvert(
                     "====!====",
-                    "<h4><span class=\"mw-headline\">!</span></h4>");
+                    "<h4><span class=\"mw-headline\" id=\"!\">!</span></h4>" + Environment.NewLine);
         }
 
         [Test]
@@ -56,7 +57,7 @@
         {
             TestConvert(
                     "=====!=====",
-                    "<h5><span class=\"mw-headline\">!</span></h5>");
+                    "<h5><span class=\"mw-headline\" id=\"!\">!</span></h5>" + Environment.NewLine);
         }
 
         [Test]
@@ -64,7 +65,7 @@
         {
             TestConvert(
                     "======!======",
-                    "<h6><span class=\"mw-headline\">!</span></h6>");
+                    "<h6><span class=\"mw-headline\" id=\"!\">!</span></h6>" + Environment.NewLine);
         }
 
         [Test]
@@ -80,7 +81,7 @@
         {
             TestConvert(
                     "==!==\n",
-                    "<h2><span class=\"mw-headline\">!</span></h2>");
+                    "<h2><span class=\"mw-headline\" id=\"!\">!</span></h2>" + Environment.NewLine);
         }
 
         [Test]
@@ -88,7 +89,7 @@
         {
             TestConvert(
                     "blah blha \n==!==\n",
-                    "<p>blah blha </p><h2><span class=\"mw-headline\">!</span></h2>");
+                    "<p>blah blha </p><h2><span class=\"mw-headline\" id=\"!\">!</span></h2>" + Environment.NewLine);
         }
 
         [Test]
@@ -96,7 +97,7 @@
         {
             TestConvert(
                     "blah blha \n==!==  \nThe bigest mistkae.",
-                    "<p>blah blha </p><h2><span class=\"mw-headline\">!</span></h2><p>  The bigest mistkae.</p>");
+                    "<p>blah blha </p><h2><span class=\"mw-headline\" id=\"!\">!</span></h2>\r\n  <p>The bigest mistkae.</p>");
         }
 
         #endregion // Header
@@ -128,7 +129,7 @@
         }
 
         [Test]
-        public void Nested()
+        public void Nested1()
         {
             TestConvert(
                     "'''''The '''red''' fox.'''''",
@@ -136,11 +137,19 @@
         }
 
         [Test]
+        public void Nested2()
+        {
+            TestConvert(
+                    "'''''The '''red''",
+                    "<p><i><b>The</b> red</i></p>");
+        }
+
+        [Test]
         public void BoldHeader3()
         {
             TestConvert(
                     "=='''!'''==",
-                    "<h2><span class=\"mw-headline\"><b>!</b></span></h2>");
+                    "<h2><span class=\"mw-headline\" id=\"!\"><b>!</b></span></h2>" + Environment.NewLine);
         }
 
         #endregion // Bold/Italic

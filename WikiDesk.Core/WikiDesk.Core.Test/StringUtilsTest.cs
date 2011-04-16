@@ -116,6 +116,15 @@
             Assert.AreEqual(EXP, StringUtils.RemoveBlocks(RAW, "<!--", "-->"));
         }
 
+        [Test]
+        public void RemoveTags()
+        {
+            const string RAW = "txt <b>bold</b> and some <i>italic<b>nested</b></i>";
+            const string EXP = "txt bold and some italicnested";
+            Assert.AreEqual(EXP, StringUtils.RemoveBlocks(RAW, "<", ">"));
+        }
+
+
         #endregion // RemoveBlocks
 
         #region CountRepetition
