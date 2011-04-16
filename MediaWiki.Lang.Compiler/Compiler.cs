@@ -22,7 +22,7 @@
             if (args.Length < 2)
             {
                 // Error.
-                Console.Error.WriteLine("Usage: RootPath RootNamespaceName [OutputFolder]");
+                Console.Error.WriteLine("Usage: RootPath RootNamespaceName [OutputFolder] <-Debug> <-Rebuild>");
                 return 1;
             }
 
@@ -30,46 +30,86 @@
             string rootNamespace = args[1].Replace(".", ":::");
             string outputFolder = args.Length > 2 ? args[2] : string.Empty;
 
+            bool debug = false;
+            bool rebuild = false;
+            for (int i = 2; i < args.Length; ++i)
+            {
+                if (string.Compare(args[i], "-Debug", true) == 0)
+                {
+                    debug = true;
+                }
+                else
+                if (string.Compare(args[i], "-Rebuild", true) == 0)
+                {
+                    rebuild = true;
+                }
+            }
+
+            if (rebuild)
+            {
+                Console.WriteLine("Deleting " + outputFolder);
+                DeleteDirectory(outputFolder);
+            }
+
             int rootPathLength = rootPath.Length + 1;
             string tempPath = Path.Combine(Path.GetTempPath(), "WikiDeskPhP");
+            DeleteDirectory(tempPath);
+
             try
             {
-                Directory.Delete(tempPath);
+                Compile(outputFolder, rootPath, tempPath, rootPathLength, rootNamespace, debug);
+            }
+            finally
+            {
+                DeleteDirectory(tempPath);
+            }
+
+            return 0;
+        }
+
+        private static bool DeleteDirectory(string path)
+        {
+            try
+            {
+                Directory.Delete(path, true);
+                return true;
             }
             catch
             {
+                return false;
             }
+        }
 
-            string[] filenames = Directory.GetFiles(rootPath, "*.php", SearchOption.AllDirectories);
-            //List<string> units = new List<string>(filenames.Length);
-
-            foreach (string file in filenames)
+        private static void Compile(string outputFolder, string rootPath, string tempPath, int rootPathLength, string rootNamespace, bool debug)
+        {
+            foreach (string file in
+                Directory.GetFiles(rootPath, "*.php", SearchOption.AllDirectories))
             {
                 string relFilename = file.Substring(rootPathLength);
-                string directories = Path.GetDirectoryName(relFilename);
-                string relNamespace = directories.Replace("\\", ":::");
-
                 string filename = Path.Combine(tempPath, relFilename);
-                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+                string assemblyName = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(filename));
+
+                // Check if a rebuild is necessary.
+                FileInfo phpFileInfo = new FileInfo(file);
+                FileInfo dllFileInfo = new FileInfo(assemblyName + ".dll");
+                if (dllFileInfo.Exists && dllFileInfo.Length > 0 &&
+                    dllFileInfo.LastAccessTimeUtc > phpFileInfo.LastWriteTimeUtc)
+                {
+                    continue;
+                }
 
                 Console.Write("Preprocessing " + file);
-                string namespaceName = rootNamespace; //+
-                    //(!string.IsNullOrEmpty(relNamespace) ? ":::" + relNamespace : string.Empty);
+                Directory.CreateDirectory(Path.GetDirectoryName(filename));
+                string namespaceName = rootNamespace;
                 PreprocessFile(file, filename, namespaceName);
 
-                Console.WriteLine(", Compiling...");
-                List<string> units = new List<string>(1);
-                units.Add(filename);
-                string assemblyName = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(filename));
-                int ret = Compile(units, assemblyName, true) ? 0 : 1;
-                Console.WriteLine(" Done.");
+                Console.Write(". Compiling... ");
+                List<string> units = new List<string>(1) { filename };
+                if (Compile(units, assemblyName, debug))
+                {
+                    Console.WriteLine("Done.");
+                }
             }
-
-//             Console.WriteLine("Compiling...");
-//             int ret = Compile(units, assemblyName, true) ? 0 : 1;
-//             Console.WriteLine(" Done.");
-
-            return 0;
         }
 
         public static bool Compile(
@@ -96,7 +136,6 @@
             commandLineParser.Parse(commands);
 
             TextWriter output = Console.Out;
-            TextWriter errors = Console.Error;
             TextErrorSink errorSink = new TextErrorSink(Console.Error);
 
             ApplicationContext.DefineDefaultContext(false, true, false);
@@ -111,9 +150,6 @@
 
             try
             {
-//                 // initializes log:
-//                 Debug.ConsoleInitialize(Path.GetDirectoryName(p.Parameters.OutPath));
-
                 new ApplicationCompiler().Compile(appContext, compilerConfig, errorSink, commandLineParser.Parameters);
             }
             catch (InvalidSourceException ex)
@@ -127,10 +163,16 @@
                 return false;
             }
 
-            output.WriteLine();
-            output.WriteLine("Build complete -- {0} error{1}, {2} warning{3}.",
-                errorSink.ErrorCount + errorSink.FatalErrorCount, (errorSink.ErrorCount + errorSink.FatalErrorCount == 1) ? string.Empty : "s",
-                errorSink.WarningCount, (errorSink.WarningCount == 1) ? string.Empty : "s");
+            if (errorSink.ErrorCount + errorSink.FatalErrorCount + errorSink.WarningCount > 0)
+            {
+                output.WriteLine();
+                output.WriteLine(
+                    "Build complete -- {0} error{1}, {2} warning{3}.",
+                    errorSink.ErrorCount + errorSink.FatalErrorCount,
+                    (errorSink.ErrorCount + errorSink.FatalErrorCount == 1) ? string.Empty : "s",
+                    errorSink.WarningCount,
+                    (errorSink.WarningCount == 1) ? string.Empty : "s");
+            }
 
             return !errorSink.AnyError;
         }

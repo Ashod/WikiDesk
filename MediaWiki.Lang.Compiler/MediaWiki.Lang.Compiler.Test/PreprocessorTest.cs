@@ -80,7 +80,7 @@ class LanguageConverter {
                 Assembly assembly = Assembly.LoadFrom(assemblyName);
                 Assert.NotNull(assembly);
 
-                Type globalArrayType = assembly.GetType("Test.Space.GlobalArray");
+                Type globalArrayType = assembly.GetType("Test.Space.globalarray");
                 Assert.NotNull(globalArrayType);
 
                 FieldInfo wgLanguageNamesField = globalArrayType.GetField("wgLanguageNames");

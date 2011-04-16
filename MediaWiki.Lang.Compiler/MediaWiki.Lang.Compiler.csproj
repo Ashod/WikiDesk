@@ -36,7 +36,6 @@
     <Compile Include="Compiler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CompileUnitInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

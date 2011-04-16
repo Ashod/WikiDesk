@@ -18,14 +18,14 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\bin\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)..\bin\$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="0"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)\messages MediaWiki.Lang $(OutDir)\Messages"
-				ReBuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)\messages MediaWiki.Lang $(OutDir)\Messages"
+				BuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)messages MediaWiki.Lang $(OutDir)\Messages -Debug"
+				ReBuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)messages MediaWiki.Lang $(OutDir)\Messages -Debug -Rebuild"
 				CleanCommandLine="del $(TargetPath)"
 				Output="MediaWiki.Lang.Messages.dll"
 				PreprocessorDefinitions="WIN32;_DEBUG"
@@ -38,14 +38,14 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\bin\$(ConfigurationName)"
+			OutputDirectory="$(ProjectDir)..\bin\$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="0"
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)\messages MediaWiki.Lang $(OutDir)\Messages"
-				ReBuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)\messages MediaWiki.Lang $(OutDir)\Messages"
+				BuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)messages MediaWiki.Lang $(OutDir)\Messages"
+				ReBuildCommandLine="$(ProjectDir)..\bin\Tools\MediaWiki.Lang.Compiler.exe $(ProjectDir)messages MediaWiki.Lang $(OutDir)\Messages -Rebuild"
 				CleanCommandLine="del $(TargetPath)"
 				Output="MediaWiki.Lang.Messages.dll"
 				PreprocessorDefinitions="WIN32;NDEBUG"
