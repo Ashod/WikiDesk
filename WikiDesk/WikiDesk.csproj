@@ -137,10 +137,6 @@
       <Project>{C75532C4-765B-418E-B09B-46D36B2ABDB1}</Project>
       <Name>DockPanel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebKitBrowser\WebKitBrowser.csproj">
-      <Project>{44AFE214-12C7-4280-898D-A7C4AABF1533}</Project>
-      <Name>WebKitBrowser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WikiDesk.Core\WikiDesk.Core.csproj">
       <Project>{AB5AFF4A-09DC-43E6-A9BD-E6E7F5418FB2}</Project>
       <Name>WikiDesk.Core</Name>

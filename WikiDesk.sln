@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDesk.Data", "WikiDesk.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDesk.Core.Test", "WikiDesk.Core\WikiDesk.Core.Test\WikiDesk.Core.Test.csproj", "{D54D92C0-56B1-4D15-BB16-65FF1CA2DF38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebKitBrowser", "WebKitBrowser\WebKitBrowser.csproj", "{44AFE214-12C7-4280-898D-A7C4AABF1533}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DockPanel", "DockPanel\WinFormsUI\DockPanel.csproj", "{C75532C4-765B-418E-B09B-46D36B2ABDB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WikiDesk.Data.Test", "WikiDesk.Data\WikiDesk.Data.Test\WikiDesk.Data.Test.csproj", "{E280655D-5042-40EB-9D37-71722ABC9CB8}"
@@ -76,16 +74,6 @@ Global
 		{D54D92C0-56B1-4D15-BB16-65FF1CA2DF38}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D54D92C0-56B1-4D15-BB16-65FF1CA2DF38}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D54D92C0-56B1-4D15-BB16-65FF1CA2DF38}.Release|Win32.ActiveCfg = Release|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{44AFE214-12C7-4280-898D-A7C4AABF1533}.Release|Win32.ActiveCfg = Release|Any CPU
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
