@@ -401,6 +401,7 @@
             this.Controls.Add(this.stripNavigation);
             this.Controls.Add(this.menuStrip);
             this.Controls.Add(this.statusStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "Form1";
