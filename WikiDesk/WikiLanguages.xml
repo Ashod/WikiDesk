@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <LanguageCodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Languages>
     <WikiLanguage>
@@ -7,6 +7,7 @@
       <LocalName>Qafár af</LocalName>
       <Notes>Afar</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ab</Code>
@@ -14,6 +15,7 @@
       <LocalName>Аҧсуа</LocalName>
       <Notes>Abkhaz, should possibly add ' бысжѡа'</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ace</Code>
@@ -21,6 +23,7 @@
       <LocalName>Acèh</LocalName>
       <Notes>Aceh</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>af</Code>
@@ -28,6 +31,7 @@
       <LocalName>Afrikaans</LocalName>
       <Notes>Afrikaans</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ak</Code>
@@ -35,6 +39,7 @@
       <LocalName>Akan</LocalName>
       <Notes>Akan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>aln</Code>
@@ -42,6 +47,7 @@
       <LocalName>Gegë</LocalName>
       <Notes>Gheg Albanian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>als</Code>
@@ -49,6 +55,7 @@
       <LocalName>Alemannisch</LocalName>
       <Notes>Alemannic -- not a valid code, for compatibility. See gsw.</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>am</Code>
@@ -56,6 +63,7 @@
       <LocalName>አማርኛ</LocalName>
       <Notes>Amharic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>an</Code>
@@ -63,6 +71,7 @@
       <LocalName>Aragonés</LocalName>
       <Notes>Aragonese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ang</Code>
@@ -70,6 +79,7 @@
       <LocalName>Ænglisc</LocalName>
       <Notes>Old English (Bug 23283)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ar</Code>
@@ -77,6 +87,7 @@
       <LocalName>العربية</LocalName>
       <Notes>Arabic</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>arc</Code>
@@ -84,6 +95,7 @@
       <LocalName>ܐܪܡܝܐ</LocalName>
       <Notes>Aramaic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>arn</Code>
@@ -91,6 +103,7 @@
       <LocalName>Mapudungun</LocalName>
       <Notes>Mapuche, Mapudungu, Araucanian (Araucano)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ary</Code>
@@ -98,6 +111,7 @@
       <LocalName>Maġribi</LocalName>
       <Notes>Moroccan Spoken Arabic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>arz</Code>
@@ -106,6 +120,7 @@
       <LocalName>مصرى</LocalName>
       <Notes>Egyptian Spoken Arabic</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>as</Code>
@@ -113,6 +128,7 @@
       <LocalName>অসমীয়া</LocalName>
       <Notes>Assamese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ast</Code>
@@ -120,6 +136,7 @@
       <LocalName>Asturianu</LocalName>
       <Notes>Asturian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>av</Code>
@@ -127,6 +144,7 @@
       <LocalName>Авар</LocalName>
       <Notes>Avar</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>avk</Code>
@@ -134,6 +152,7 @@
       <LocalName>Kotava</LocalName>
       <Notes>Kotava</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ay</Code>
@@ -141,6 +160,7 @@
       <LocalName>Aymar aru</LocalName>
       <Notes>Aymara</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>az</Code>
@@ -148,6 +168,7 @@
       <LocalName>Azərbaycanca</LocalName>
       <Notes>Azerbaijani</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ba</Code>
@@ -155,6 +176,7 @@
       <LocalName>Башҡорт</LocalName>
       <Notes>Bashkir</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bar</Code>
@@ -162,6 +184,7 @@
       <LocalName>Boarisch</LocalName>
       <Notes>Bavarian (Austro-Bavarian and South Tyrolean)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bat-smg</Code>
@@ -169,6 +192,7 @@
       <LocalName>Žemaitėška</LocalName>
       <Notes>Samogitian (deprecated code, 'sgs' in ISO 693-3 since 2010-06-30 )</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bcc</Code>
@@ -176,6 +200,7 @@
       <LocalName>بلوچی مکرانی</LocalName>
       <Notes>Southern Balochi</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bcl</Code>
@@ -183,6 +208,7 @@
       <LocalName>Bikol Central</LocalName>
       <Notes>Bikol: Central Bicolano language</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>be</Code>
@@ -190,6 +216,7 @@
       <LocalName>Беларуская</LocalName>
       <Notes> Belarusian normative</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>be-tarask</Code>
@@ -197,6 +224,7 @@
       <LocalName>Беларуская (тарашкевіца)</LocalName>
       <Notes>Belarusian in Taraskievica orthography</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>be-x-old</Code>
@@ -204,7 +232,7 @@
       <LocalName>Беларуская (тарашкевіца)</LocalName>
       <Notes>Belarusian in Taraskievica orthography; compat link</Notes>
       <RightToLeft>false</RightToLeft>
-	  <Disabled>true</Disabled>
+      <Disabled>true</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bg</Code>
@@ -212,6 +240,7 @@
       <LocalName>Български</LocalName>
       <Notes>Bulgarian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bh</Code>
@@ -219,6 +248,7 @@
       <LocalName>भोजपुरी</LocalName>
       <Notes>Bhojpuri</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bi</Code>
@@ -226,6 +256,7 @@
       <LocalName>Bislama</LocalName>
       <Notes>Bislama</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bjn</Code>
@@ -233,6 +264,7 @@
       <LocalName>Bahasa Banjar</LocalName>
       <Notes>Banjarese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bm</Code>
@@ -240,6 +272,7 @@
       <LocalName>Bamanankan</LocalName>
       <Notes>Bambara</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bn</Code>
@@ -247,6 +280,7 @@
       <LocalName>বাংলা</LocalName>
       <Notes>Bengali</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bo</Code>
@@ -254,6 +288,7 @@
       <LocalName>བོད་ཡིག</LocalName>
       <Notes>Tibetan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bpy</Code>
@@ -261,6 +296,7 @@
       <LocalName>ইমার ঠার/বিষ্ণুপ্রিয়া মণিপুরী</LocalName>
       <Notes>Bishnupriya Manipuri</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bqi</Code>
@@ -268,6 +304,7 @@
       <LocalName>بختياري</LocalName>
       <Notes>Bakthiari</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>br</Code>
@@ -275,6 +312,7 @@
       <LocalName>Brezhoneg</LocalName>
       <Notes>Breton</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bs</Code>
@@ -282,6 +320,7 @@
       <LocalName>Bosanski</LocalName>
       <Notes>Bosnian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bug</Code>
@@ -289,6 +328,7 @@
       <LocalName>ᨅᨔ ᨕᨘᨁᨗ</LocalName>
       <Notes>Bugis</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>bxr</Code>
@@ -296,6 +336,7 @@
       <LocalName>Буряад</LocalName>
       <Notes>Buryat (Russia)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ca</Code>
@@ -303,6 +344,7 @@
       <LocalName>Català</LocalName>
       <Notes>Catalan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cbk-zam</Code>
@@ -310,6 +352,7 @@
       <LocalName>Chavacano de Zamboanga</LocalName>
       <Notes>Zamboanga Chavacano</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cdo</Code>
@@ -317,6 +360,7 @@
       <LocalName>Mìng-dĕ̤ng-ngṳ̄</LocalName>
       <Notes>Min Dong</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ce</Code>
@@ -324,6 +368,7 @@
       <LocalName>Нохчийн</LocalName>
       <Notes>Chechen</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ceb</Code>
@@ -331,6 +376,7 @@
       <LocalName>Cebuano</LocalName>
       <Notes>Cebuano</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ch</Code>
@@ -338,6 +384,7 @@
       <LocalName>Chamoru</LocalName>
       <Notes>Chamorro</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cho</Code>
@@ -345,6 +392,7 @@
       <LocalName>Choctaw</LocalName>
       <Notes>Choctaw</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>chr</Code>
@@ -352,6 +400,7 @@
       <LocalName>ᏣᎳᎩ</LocalName>
       <Notes>Cherokee</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>chy</Code>
@@ -359,6 +408,7 @@
       <LocalName>Tsetsêhestâhese</LocalName>
       <Notes>Cheyenne</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ckb</Code>
@@ -366,6 +416,7 @@
       <LocalName>کوردی</LocalName>
       <Notes>Sorani</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>co</Code>
@@ -373,6 +424,7 @@
       <LocalName>Corsu</LocalName>
       <Notes>Corsican</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cps</Code>
@@ -380,6 +432,7 @@
       <LocalName>Capiceño</LocalName>
       <Notes>Capiznon</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cr</Code>
@@ -387,6 +440,7 @@
       <LocalName>Nēhiyawēwin / ᓀᐦᐃᔭᐍᐏᐣ</LocalName>
       <Notes>Cree</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>crh</Code>
@@ -394,18 +448,21 @@
       <LocalName>Qırımtatarca</LocalName>
       <Notes>Crimean Tatar (multiple scripts - defaults to Latin)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>crh-latn</Code>
       <LocalName>Qırımtatarca (Latin)</LocalName>
       <Notes>Crimean Tatar (Latin)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>crh-cyrl</Code>
       <LocalName>Къырымтатарджа (Кирилл)</LocalName>
       <Notes>Crimean Tatar (Cyrillic)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cs</Code>
@@ -413,6 +470,7 @@
       <LocalName>Česky</LocalName>
       <Notes>Czech</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>csb</Code>
@@ -420,6 +478,7 @@
       <LocalName>Kaszëbsczi</LocalName>
       <Notes>Cassubian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cu</Code>
@@ -427,6 +486,7 @@
       <LocalName>Словѣ́ньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ</LocalName>
       <Notes>Old Church Slavonic (ancient language)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cv</Code>
@@ -434,6 +494,7 @@
       <LocalName>Чӑвашла</LocalName>
       <Notes>Chuvash</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>cy</Code>
@@ -441,6 +502,7 @@
       <LocalName>Cymraeg</LocalName>
       <Notes>Welsh</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>da</Code>
@@ -448,6 +510,7 @@
       <LocalName>Dansk</LocalName>
       <Notes>Danish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>de</Code>
@@ -455,6 +518,7 @@
       <LocalName>Deutsch</LocalName>
       <Notes>German ("Du")</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>de-at</Code>
@@ -462,6 +526,7 @@
       <LocalName>Österreichisches Deutsch</LocalName>
       <Notes>Austrian German</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>de-ch</Code>
@@ -469,6 +534,7 @@
       <LocalName>Schweizer Hochdeutsch</LocalName>
       <Notes>Swiss Standard German</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>de-formal</Code>
@@ -476,6 +542,7 @@
       <LocalName>Deutsch (Sie-Form)</LocalName>
       <Notes>German - formal address ("Sie")</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>diq</Code>
@@ -483,6 +550,7 @@
       <LocalName>Zazaki</LocalName>
       <Notes>Zazaki</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>dsb</Code>
@@ -490,6 +558,7 @@
       <LocalName>Dolnoserbski</LocalName>
       <Notes>Lower Sorbian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>dv</Code>
@@ -497,6 +566,7 @@
       <LocalName>ދިވެހިބަސް</LocalName>
       <Notes>Dhivehi</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>dz</Code>
@@ -504,6 +574,7 @@
       <LocalName>ཇོང་ཁ</LocalName>
       <Notes>Bhutani</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ee</Code>
@@ -511,6 +582,7 @@
       <LocalName>Eʋegbe</LocalName>
       <Notes>Éwé</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>el</Code>
@@ -518,6 +590,7 @@
       <LocalName>Ελληνικά</LocalName>
       <Notes>Greek</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>eml</Code>
@@ -525,6 +598,7 @@
       <LocalName>Emiliàn e rumagnòl</LocalName>
       <Notes>Emiliano-Romagnolo / Sammarinese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>en</Code>
@@ -532,6 +606,7 @@
       <LocalName>English</LocalName>
       <Notes>English</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>en-gb</Code>
@@ -539,6 +614,7 @@
       <LocalName>British English</LocalName>
       <Notes>British English</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>eo</Code>
@@ -546,6 +622,7 @@
       <LocalName>Esperanto</LocalName>
       <Notes>Esperanto</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>es</Code>
@@ -553,6 +630,7 @@
       <LocalName>Español</LocalName>
       <Notes>Spanish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>et</Code>
@@ -560,6 +638,7 @@
       <LocalName>Eesti</LocalName>
       <Notes>Estonian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>eu</Code>
@@ -567,6 +646,7 @@
       <LocalName>Euskara</LocalName>
       <Notes>Basque</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ext</Code>
@@ -574,6 +654,7 @@
       <LocalName>Estremeñu</LocalName>
       <Notes>Extremaduran</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fa</Code>
@@ -581,6 +662,7 @@
       <LocalName>فارسی</LocalName>
       <Notes>Persian</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ff</Code>
@@ -588,6 +670,7 @@
       <LocalName>Fulfulde</LocalName>
       <Notes>Fulfulde, Maasina</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fi</Code>
@@ -595,6 +678,7 @@
       <LocalName>Suomi</LocalName>
       <Notes>Finnish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fiu-vro</Code>
@@ -602,6 +686,7 @@
       <LocalName>Võro</LocalName>
       <Notes>Võro (deprecated code, 'vro' in ISO 639-3 since 2009-01-16)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fj</Code>
@@ -609,6 +694,7 @@
       <LocalName>Na Vosa Vakaviti</LocalName>
       <Notes>Fijian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fo</Code>
@@ -616,6 +702,7 @@
       <LocalName>Føroyskt</LocalName>
       <Notes>Faroese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fr</Code>
@@ -623,6 +710,7 @@
       <LocalName>Français</LocalName>
       <Notes>French</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>frc</Code>
@@ -630,6 +718,7 @@
       <LocalName>Français cadien</LocalName>
       <Notes>Cajun French</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>frp</Code>
@@ -637,6 +726,7 @@
       <LocalName>Arpetan</LocalName>
       <Notes>Franco-Provençal/Arpitan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>frr</Code>
@@ -644,6 +734,7 @@
       <LocalName>Nordfriisk</LocalName>
       <Notes>North Frisian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fur</Code>
@@ -651,6 +742,7 @@
       <LocalName>Furlan</LocalName>
       <Notes>Friulian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>fy</Code>
@@ -658,6 +750,7 @@
       <LocalName>Frysk</LocalName>
       <Notes>Frisian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ga</Code>
@@ -665,6 +758,7 @@
       <LocalName>Gaeilge</LocalName>
       <Notes>Irish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gag</Code>
@@ -672,6 +766,7 @@
       <LocalName>Gagauz</LocalName>
       <Notes>Gagauz</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gan</Code>
@@ -679,6 +774,7 @@
       <LocalName>贛語</LocalName>
       <Notes>Gan (multiple scripts - defaults to Traditional)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gan-hans</Code>
@@ -686,6 +782,7 @@
       <LocalName>赣语(简体)</LocalName>
       <Notes>Gan (Simplified Han)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gan-hant</Code>
@@ -693,6 +790,7 @@
       <LocalName>贛語(繁體)</LocalName>
       <Notes>Gan (Traditional Han)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gd</Code>
@@ -700,6 +798,7 @@
       <LocalName>Gàidhlig</LocalName>
       <Notes>Scots Gaelic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gl</Code>
@@ -707,6 +806,7 @@
       <LocalName>Galego</LocalName>
       <Notes>Galician</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>glk</Code>
@@ -714,6 +814,7 @@
       <LocalName>گیلکی</LocalName>
       <Notes>Gilaki</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gn</Code>
@@ -721,6 +822,7 @@
       <LocalName>Avañe'ẽ</LocalName>
       <Notes>Guaraní, Paraguayan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>got</Code>
@@ -728,6 +830,7 @@
       <LocalName>𐌲𐌿𐍄𐌹𐍃𐌺</LocalName>
       <Notes>Gothic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>grc</Code>
@@ -735,6 +838,7 @@
       <LocalName>Ἀρχαία ἑλληνικὴ</LocalName>
       <Notes>Ancient Greek</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gsw</Code>
@@ -742,7 +846,7 @@
       <LocalName>Alemannisch</LocalName>
       <Notes>Alemannic</Notes>
       <RightToLeft>false</RightToLeft>
-	  <Disabled>true</Disabled>
+      <Disabled>true</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gu</Code>
@@ -750,6 +854,7 @@
       <LocalName>ગુજરાતી</LocalName>
       <Notes>Gujarati</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>gv</Code>
@@ -757,6 +862,7 @@
       <LocalName>Gaelg</LocalName>
       <Notes>Manx</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ha</Code>
@@ -764,6 +870,7 @@
       <LocalName>هَوُسَ</LocalName>
       <Notes>Hausa</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hak</Code>
@@ -771,6 +878,7 @@
       <LocalName>Hak-kâ-fa</LocalName>
       <Notes>Hakka</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>haw</Code>
@@ -778,6 +886,7 @@
       <LocalName>Hawai`i</LocalName>
       <Notes>Hawaiian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>he</Code>
@@ -785,6 +894,7 @@
       <LocalName>עברית</LocalName>
       <Notes>Hebrew</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hi</Code>
@@ -792,6 +902,7 @@
       <LocalName>हिन्दी</LocalName>
       <Notes>Hindi</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hif</Code>
@@ -799,6 +910,7 @@
       <LocalName>Fiji Hindi</LocalName>
       <Notes>Fijian Hindi (multiple scripts - defaults to Latin)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hif-latn</Code>
@@ -806,6 +918,7 @@
       <LocalName>Fiji Hindi (latin)</LocalName>
       <Notes>Fiji Hindi (latin)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hil</Code>
@@ -813,6 +926,7 @@
       <LocalName>Ilonggo</LocalName>
       <Notes>Hiligaynon</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ho</Code>
@@ -820,6 +934,7 @@
       <LocalName>Hiri Motu</LocalName>
       <Notes>Hiri Motu</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hr</Code>
@@ -827,6 +942,7 @@
       <LocalName>Hrvatski</LocalName>
       <Notes>Croatian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hsb</Code>
@@ -834,6 +950,7 @@
       <LocalName>Hornjoserbsce</LocalName>
       <Notes>Upper Sorbian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ht</Code>
@@ -841,6 +958,7 @@
       <LocalName>Kreyòl ayisyen</LocalName>
       <Notes>Haitian Creole French</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hu</Code>
@@ -848,6 +966,7 @@
       <LocalName>Magyar</LocalName>
       <Notes>Hungarian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hy</Code>
@@ -855,6 +974,7 @@
       <LocalName>Հայերեն</LocalName>
       <Notes>Armenian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>hz</Code>
@@ -862,6 +982,7 @@
       <LocalName>Otsiherero</LocalName>
       <Notes>Herero</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ia</Code>
@@ -869,6 +990,7 @@
       <LocalName>Interlingua</LocalName>
       <Notes>Interlingua (IALA)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>id</Code>
@@ -876,6 +998,7 @@
       <LocalName>Bahasa Indonesia</LocalName>
       <Notes>Indonesian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ie</Code>
@@ -883,6 +1006,7 @@
       <LocalName>Interlingue</LocalName>
       <Notes>Interlingue (Occidental)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ig</Code>
@@ -890,6 +1014,7 @@
       <LocalName>Igbo</LocalName>
       <Notes>Igbo</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ii</Code>
@@ -897,6 +1022,7 @@
       <LocalName>ꆇꉙ</LocalName>
       <Notes>Sichuan Yi</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ik</Code>
@@ -904,6 +1030,7 @@
       <LocalName>Iñupiak</LocalName>
       <Notes>Inupiak (Inupiatun, Northwest Alaska / Inupiatun, North Alaskan)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ike-cans</Code>
@@ -911,6 +1038,7 @@
       <LocalName>ᐃᓄᒃᑎᑐᑦ</LocalName>
       <Notes>Inuktitut, Eastern Canadian/Eastern Canadian "Eskimo"/"Eastern Arctic Eskimo"/Inuit (Unified Canadian Aboriginal Syllabics)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ike-latn</Code>
@@ -918,6 +1046,7 @@
       <LocalName>inuktitut</LocalName>
       <Notes>Inuktitut, Eastern Canadian (Latin script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ilo</Code>
@@ -925,6 +1054,7 @@
       <LocalName>Ilokano</LocalName>
       <Notes>Ilokano</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>inh</Code>
@@ -932,6 +1062,7 @@
       <LocalName>ГІалгІай Ğalğaj</LocalName>
       <Notes>Ingush</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>io</Code>
@@ -939,6 +1070,7 @@
       <LocalName>Ido</LocalName>
       <Notes>Ido</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>is</Code>
@@ -946,6 +1078,7 @@
       <LocalName>Íslenska</LocalName>
       <Notes>Icelandic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>it</Code>
@@ -953,6 +1086,7 @@
       <LocalName>Italiano</LocalName>
       <Notes>Italian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>iu</Code>
@@ -960,6 +1094,7 @@
       <LocalName>ᐃᓄᒃᑎᑐᑦ/inuktitut</LocalName>
       <Notes>Inuktitut (macro language - do no localise, see ike/ikt - falls back to ike-cans)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ja</Code>
@@ -967,6 +1102,7 @@
       <LocalName>日本語</LocalName>
       <Notes>Japanese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>jbo</Code>
@@ -974,6 +1110,7 @@
       <LocalName>Lojban</LocalName>
       <Notes>Lojban</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>jut</Code>
@@ -981,6 +1118,7 @@
       <LocalName>Jysk</LocalName>
       <Notes>Jutish / Jutlandic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>jv</Code>
@@ -988,6 +1126,7 @@
       <LocalName>Basa Jawa</LocalName>
       <Notes>Javanese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ka</Code>
@@ -995,6 +1134,7 @@
       <LocalName>ქართული</LocalName>
       <Notes>Georgian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kaa</Code>
@@ -1002,6 +1142,7 @@
       <LocalName>Qaraqalpaqsha</LocalName>
       <Notes>Karakalpak</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kab</Code>
@@ -1009,6 +1150,7 @@
       <LocalName>Taqbaylit</LocalName>
       <Notes>Kabyle</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kbd</Code>
@@ -1016,6 +1158,7 @@
       <LocalName>къэбэрдеибзэ/qabardjajəbza</LocalName>
       <Notes>Kabardian (multiple scripts - defaults to Cyrillic)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kbd-cyrl</Code>
@@ -1023,6 +1166,7 @@
       <LocalName>къэбэрдеибзэ</LocalName>
       <Notes>Kabardian (Cyrillic)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kg</Code>
@@ -1030,6 +1174,7 @@
       <LocalName>Kongo</LocalName>
       <Notes>Kongo, (FIXME!) should probaly be KiKongo or KiKoongo</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ki</Code>
@@ -1037,6 +1182,7 @@
       <LocalName>Gĩkũyũ</LocalName>
       <Notes>Gikuyu</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kiu</Code>
@@ -1044,6 +1190,7 @@
       <LocalName>Kırmancki</LocalName>
       <Notes>Kirmanjki</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kj</Code>
@@ -1051,6 +1198,7 @@
       <LocalName>Kwanyama</LocalName>
       <Notes>Kwanyama</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk</Code>
@@ -1058,6 +1206,7 @@
       <LocalName>Қазақша</LocalName>
       <Notes>Kazakh (multiple scripts - defaults to Cyrillic)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-arab</Code>
@@ -1065,6 +1214,7 @@
       <LocalName>قازاقشا (تٴوتە)</LocalName>
       <Notes>Kazakh Arabic</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-cyrl</Code>
@@ -1072,6 +1222,7 @@
       <LocalName>Қазақша (кирил)</LocalName>
       <Notes>Kazakh Cyrillic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-latn</Code>
@@ -1079,6 +1230,7 @@
       <LocalName>Qazaqşa (latın)</LocalName>
       <Notes>Kazakh Latin</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-cn</Code>
@@ -1086,6 +1238,7 @@
       <LocalName>قازاقشا (جۇنگو)</LocalName>
       <Notes>Kazakh (China)</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-kz</Code>
@@ -1093,6 +1246,7 @@
       <LocalName>Қазақша (Қазақстан)</LocalName>
       <Notes>Kazakh (Kazakhstan)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kk-tr</Code>
@@ -1100,6 +1254,7 @@
       <LocalName>Qazaqşa (Türkïya)</LocalName>
       <Notes>Kazakh (Turkey)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kl</Code>
@@ -1107,6 +1262,7 @@
       <LocalName>Kalaallisut</LocalName>
       <Notes>Inuktitut, Greenlandic/Greenlandic/Kalaallisut (kal)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>km</Code>
@@ -1114,6 +1270,7 @@
       <LocalName>ភាសាខ្មែរ</LocalName>
       <Notes>Khmer, Central</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kn</Code>
@@ -1121,6 +1278,7 @@
       <LocalName>ಕನ್ನಡ</LocalName>
       <Notes>Kannada</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ko</Code>
@@ -1128,6 +1286,7 @@
       <LocalName>한국어</LocalName>
       <Notes>Korean</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ko-kp</Code>
@@ -1135,6 +1294,7 @@
       <LocalName>한국어 (조선)</LocalName>
       <Notes>Korean (DPRK)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>koi</Code>
@@ -1142,6 +1302,7 @@
       <LocalName>Перем Коми</LocalName>
       <Notes>Komi-Permyak</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kr</Code>
@@ -1149,6 +1310,7 @@
       <LocalName>Kanuri</LocalName>
       <Notes>Kanuri, Central</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>krc</Code>
@@ -1156,6 +1318,7 @@
       <LocalName>Къарачай-Малкъар</LocalName>
       <Notes>Karachay-Balkar</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kri</Code>
@@ -1163,6 +1326,7 @@
       <LocalName>Krio</LocalName>
       <Notes>Krio</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>krj</Code>
@@ -1170,6 +1334,7 @@
       <LocalName>Kinaray-a</LocalName>
       <Notes>Kinaray-a</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ks</Code>
@@ -1177,6 +1342,7 @@
       <LocalName>कश्मीरी - (كشميري)</LocalName>
       <Notes>Kashmiri</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ksh</Code>
@@ -1184,12 +1350,14 @@
       <LocalName>Ripoarisch</LocalName>
       <Notes>Ripuarian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ku</Code>
       <LocalName>Kurdî</LocalName>
       <Notes>Kurdish (multiple scripts - defaults to Latin)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ku-latn</Code>
@@ -1197,6 +1365,7 @@
       <LocalName>Kurdî (latînî)</LocalName>
       <Notes>Northern Kurdish (Latin script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ku-arab</Code>
@@ -1204,6 +1373,7 @@
       <LocalName>كوردي (عەرەبی)</LocalName>
       <Notes>Northern Kurdish (Arabic script) (falls back to ckb)</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kv</Code>
@@ -1211,6 +1381,7 @@
       <LocalName>Коми</LocalName>
       <Notes>Komi-Zyrian (Cyrillic is common script but also written in Latin script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>kw</Code>
@@ -1218,6 +1389,7 @@
       <LocalName>Kernowek</LocalName>
       <Notes>Cornish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ky</Code>
@@ -1225,6 +1397,7 @@
       <LocalName>Кыргызча</LocalName>
       <Notes>Kirghiz</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>la</Code>
@@ -1232,6 +1405,7 @@
       <LocalName>Latina</LocalName>
       <Notes>Latin</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lad</Code>
@@ -1239,6 +1413,7 @@
       <LocalName>Ladino</LocalName>
       <Notes>Ladino</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lb</Code>
@@ -1246,6 +1421,7 @@
       <LocalName>Lëtzebuergesch</LocalName>
       <Notes>Luxemburguish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lbe</Code>
@@ -1253,6 +1429,7 @@
       <LocalName>Лакку</LocalName>
       <Notes>Lak</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lez</Code>
@@ -1260,6 +1437,7 @@
       <LocalName>Лезги</LocalName>
       <Notes>Lezgi</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lfn</Code>
@@ -1267,6 +1445,7 @@
       <LocalName>Lingua Franca Nova</LocalName>
       <Notes>Lingua Franca Nova</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lg</Code>
@@ -1274,6 +1453,7 @@
       <LocalName>Luganda</LocalName>
       <Notes>Ganda</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>li</Code>
@@ -1281,6 +1461,7 @@
       <LocalName>Limburgs</LocalName>
       <Notes>Limburgian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lij</Code>
@@ -1288,6 +1469,7 @@
       <LocalName>Líguru</LocalName>
       <Notes>Ligurian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lmo</Code>
@@ -1295,6 +1477,7 @@
       <LocalName>Lumbaart</LocalName>
       <Notes>Lombard</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ln</Code>
@@ -1302,6 +1485,7 @@
       <LocalName>Lingála</LocalName>
       <Notes>Lingala</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lo</Code>
@@ -1309,6 +1493,7 @@
       <LocalName>ລາວ</LocalName>
       <Notes>Laotian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>loz</Code>
@@ -1316,6 +1501,7 @@
       <LocalName>Silozi</LocalName>
       <Notes>Lozi</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lt</Code>
@@ -1323,6 +1509,7 @@
       <LocalName>Lietuvių</LocalName>
       <Notes>Lithuanian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ltg</Code>
@@ -1330,6 +1517,7 @@
       <LocalName>Latgaļu</LocalName>
       <Notes>Latgalian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lv</Code>
@@ -1337,6 +1525,7 @@
       <LocalName>Latviešu</LocalName>
       <Notes>Latvian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lzh</Code>
@@ -1344,6 +1533,7 @@
       <LocalName>文言 (new)</LocalName>
       <Notes>Literary Chinese -- (bug 8217) lzh instead of zh-classical</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>lzz</Code>
@@ -1351,6 +1541,7 @@
       <LocalName>Lazuri</LocalName>
       <Notes>Laz</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mai</Code>
@@ -1358,6 +1549,7 @@
       <LocalName>मैथिली</LocalName>
       <Notes>Maithili</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>map-bms</Code>
@@ -1365,6 +1557,7 @@
       <LocalName>Basa Banyumasan</LocalName>
       <Notes>Banyumasan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mdf</Code>
@@ -1372,6 +1565,7 @@
       <LocalName>Мокшень</LocalName>
       <Notes>Moksha</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mg</Code>
@@ -1379,6 +1573,7 @@
       <LocalName>Malagasy</LocalName>
       <Notes>Malagasy</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mh</Code>
@@ -1386,6 +1581,7 @@
       <LocalName>Ebon</LocalName>
       <Notes>Marshallese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mhr</Code>
@@ -1393,6 +1589,7 @@
       <LocalName>Олык Марий</LocalName>
       <Notes>Eastern Mari</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mi</Code>
@@ -1400,6 +1597,7 @@
       <LocalName>Māori</LocalName>
       <Notes>Maori</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>min</Code>
@@ -1407,6 +1605,7 @@
       <LocalName>Baso Minangkabau</LocalName>
       <Notes>Minangkabau</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mk</Code>
@@ -1414,6 +1613,7 @@
       <LocalName>Македонски</LocalName>
       <Notes>Macedonian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ml</Code>
@@ -1421,6 +1621,7 @@
       <LocalName>മലയാളം</LocalName>
       <Notes>Malayalam</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mn</Code>
@@ -1428,6 +1629,7 @@
       <LocalName>Монгол</LocalName>
       <Notes>Halh Mongolian (Cyrillic) (ISO 639-3: khk)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mo</Code>
@@ -1435,6 +1637,7 @@
       <LocalName>Молдовеняскэ</LocalName>
       <Notes>Moldovan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mr</Code>
@@ -1442,6 +1645,7 @@
       <LocalName>मराठी</LocalName>
       <Notes>Marathi</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mrj</Code>
@@ -1449,6 +1653,7 @@
       <LocalName>Кырык мары</LocalName>
       <Notes>Hill Mari</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ms</Code>
@@ -1456,6 +1661,7 @@
       <LocalName>Bahasa Melayu</LocalName>
       <Notes>Malay</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mt</Code>
@@ -1463,6 +1669,7 @@
       <LocalName>Malti</LocalName>
       <Notes>Maltese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mus</Code>
@@ -1470,6 +1677,7 @@
       <LocalName>Mvskoke</LocalName>
       <Notes>Muskogee/Creek</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mwl</Code>
@@ -1477,6 +1685,7 @@
       <LocalName>Mirandés</LocalName>
       <Notes>Mirandese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>my</Code>
@@ -1484,6 +1693,7 @@
       <LocalName>မြန်မာဘာသာ</LocalName>
       <Notes>Burmese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>myv</Code>
@@ -1491,6 +1701,7 @@
       <LocalName>Эрзянь</LocalName>
       <Notes>Erzya</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>mzn</Code>
@@ -1498,6 +1709,7 @@
       <LocalName>مازِرونی</LocalName>
       <Notes>Mazanderani</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>na</Code>
@@ -1505,6 +1717,7 @@
       <LocalName>Dorerin Naoero</LocalName>
       <Notes>Nauruan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nah</Code>
@@ -1512,6 +1725,7 @@
       <LocalName>Nāhuatl</LocalName>
       <Notes>Nahuatl, en:Wikipedia writes Nahuatlahtolli, while another form is Náhuatl</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nan</Code>
@@ -1519,7 +1733,7 @@
       <LocalName>Bân-lâm-gú</LocalName>
       <Notes>Min-nan -- (bug 8217) nan instead of zh-min-nan</Notes>
       <RightToLeft>false</RightToLeft>
-	  <Disabled>true</Disabled>
+      <Disabled>true</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nap</Code>
@@ -1527,6 +1741,7 @@
       <LocalName>Nnapulitano</LocalName>
       <Notes>Neapolitan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nb</Code>
@@ -1534,6 +1749,7 @@
       <LocalName>Norwegian (bokmål)</LocalName>
       <Notes>Norwegian (Bokmal)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nds</Code>
@@ -1541,6 +1757,7 @@
       <LocalName>Plattdüütsch</LocalName>
       <Notes>Low German ''or'' Low Saxon</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nds-nl</Code>
@@ -1548,6 +1765,7 @@
       <LocalName>Nedersaksisch</LocalName>
       <Notes>Dutch Low Saxon</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ne</Code>
@@ -1555,6 +1773,7 @@
       <LocalName>नेपाली</LocalName>
       <Notes>Nepali</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>new</Code>
@@ -1562,6 +1781,7 @@
       <LocalName>नेपाल भाषा</LocalName>
       <Notes>Newar / Nepal Bhasa</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ng</Code>
@@ -1569,6 +1789,7 @@
       <LocalName>Oshiwambo</LocalName>
       <Notes>Ndonga</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>niu</Code>
@@ -1576,6 +1797,7 @@
       <LocalName>Niuē</LocalName>
       <Notes>Niuean</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nl</Code>
@@ -1583,6 +1805,7 @@
       <LocalName>Nederlands</LocalName>
       <Notes>Dutch</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nl-informal</Code>
@@ -1590,6 +1813,7 @@
       <LocalName>Nederlands (informeel)</LocalName>
       <Notes>Dutch (informal address ("je"))</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nn</Code>
@@ -1597,6 +1821,7 @@
       <LocalName>Norsk (nynorsk)</LocalName>
       <Notes>Norwegian (Nynorsk)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>no</Code>
@@ -1604,6 +1829,7 @@
       <LocalName>Norsk (bokmål)</LocalName>
       <Notes>Norwegian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nov</Code>
@@ -1611,6 +1837,7 @@
       <LocalName>Novial</LocalName>
       <Notes>Novial</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nrm</Code>
@@ -1618,6 +1845,7 @@
       <LocalName>Nouormand</LocalName>
       <Notes>Norman</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nso</Code>
@@ -1625,6 +1853,7 @@
       <LocalName>Sesotho sa Leboa</LocalName>
       <Notes>Northern Sotho</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>nv</Code>
@@ -1632,6 +1861,7 @@
       <LocalName>Diné bizaad</LocalName>
       <Notes>Navajo</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ny</Code>
@@ -1639,6 +1869,7 @@
       <LocalName>Chi-Chewa</LocalName>
       <Notes>Chichewa</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>oc</Code>
@@ -1646,6 +1877,7 @@
       <LocalName>Occitan</LocalName>
       <Notes>Occitan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>om</Code>
@@ -1653,6 +1885,7 @@
       <LocalName>Oromoo</LocalName>
       <Notes>Oromo</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>or</Code>
@@ -1660,6 +1893,7 @@
       <LocalName>ଓଡ଼ିଆ</LocalName>
       <Notes>Oriya</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>os</Code>
@@ -1667,6 +1901,7 @@
       <LocalName>Иронау</LocalName>
       <Notes>Ossetic</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pa</Code>
@@ -1674,6 +1909,7 @@
       <LocalName>ਪੰਜਾਬੀ</LocalName>
       <Notes>Eastern Punjabi (Gurmukhi script) (pan)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pag</Code>
@@ -1681,6 +1917,7 @@
       <LocalName>Pangasinan</LocalName>
       <Notes>Pangasinan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pam</Code>
@@ -1688,6 +1925,7 @@
       <LocalName>Kapampangan</LocalName>
       <Notes>Pampanga</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pap</Code>
@@ -1695,6 +1933,7 @@
       <LocalName>Papiamentu</LocalName>
       <Notes>Papiamentu</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pcd</Code>
@@ -1702,6 +1941,7 @@
       <LocalName>Picard</LocalName>
       <Notes>Picard</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pdc</Code>
@@ -1709,6 +1949,7 @@
       <LocalName>Deitsch</LocalName>
       <Notes>Pennsylvania German</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pdt</Code>
@@ -1716,6 +1957,7 @@
       <LocalName>Plautdietsch</LocalName>
       <Notes>Plautdietsch/Mennonite Low German</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pfl</Code>
@@ -1723,6 +1965,7 @@
       <LocalName>Pälzisch</LocalName>
       <Notes>Palatinate German</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pi</Code>
@@ -1730,6 +1973,7 @@
       <LocalName>पािऴ</LocalName>
       <Notes>Pali</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pih</Code>
@@ -1737,6 +1981,7 @@
       <LocalName>Norfuk / Pitkern</LocalName>
       <Notes>Norfuk/Pitcairn/Norfolk</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pl</Code>
@@ -1744,6 +1989,7 @@
       <LocalName>Polski</LocalName>
       <Notes>Polish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pms</Code>
@@ -1751,6 +1997,7 @@
       <LocalName>Piemontèis</LocalName>
       <Notes>Piedmontese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pnb</Code>
@@ -1758,6 +2005,7 @@
       <LocalName>پنجابی</LocalName>
       <Notes>Western Punjabi</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pnt</Code>
@@ -1765,6 +2013,7 @@
       <LocalName>Ποντιακά</LocalName>
       <Notes>Pontic/Pontic Greek</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>prg</Code>
@@ -1772,6 +2021,7 @@
       <LocalName>Prūsiskan</LocalName>
       <Notes>Prussian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ps</Code>
@@ -1779,6 +2029,7 @@
       <LocalName>پښتو</LocalName>
       <Notes>Pashto, Northern/Paktu/Pakhtu/Pakhtoo/Afghan/Pakhto/Pashtu/Pushto/Yusufzai Pashto</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pt</Code>
@@ -1786,6 +2037,7 @@
       <LocalName>Português</LocalName>
       <Notes>Portuguese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>pt-br</Code>
@@ -1793,6 +2045,7 @@
       <LocalName>Português do Brasil</LocalName>
       <Notes>Brazilian Portuguese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>qu</Code>
@@ -1800,6 +2053,7 @@
       <LocalName>Runa Simi</LocalName>
       <Notes>Quechua</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rgn</Code>
@@ -1807,6 +2061,7 @@
       <LocalName>Rumagnôl</LocalName>
       <Notes>Romagnol</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rif</Code>
@@ -1814,6 +2069,7 @@
       <LocalName>Tarifit</LocalName>
       <Notes>Tarifit</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rm</Code>
@@ -1821,6 +2077,7 @@
       <LocalName>Rumantsch</LocalName>
       <Notes>Raeto-Romance</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rmy</Code>
@@ -1828,6 +2085,7 @@
       <LocalName>Romani</LocalName>
       <Notes>Vlax Romany</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rn</Code>
@@ -1835,6 +2093,7 @@
       <LocalName>Kirundi</LocalName>
       <Notes>Rundi/Kirundi/Urundi</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ro</Code>
@@ -1842,6 +2101,7 @@
       <LocalName>Română</LocalName>
       <Notes>Romanian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>roa-rup</Code>
@@ -1849,6 +2109,7 @@
       <LocalName>Armãneashce</LocalName>
       <Notes>Aromanian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>roa-tara</Code>
@@ -1856,6 +2117,7 @@
       <LocalName>Tarandíne</LocalName>
       <Notes>Tarantino</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ru</Code>
@@ -1863,6 +2125,7 @@
       <LocalName>Русский</LocalName>
       <Notes>Russian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rue</Code>
@@ -1870,6 +2133,7 @@
       <LocalName>Русиньскый</LocalName>
       <Notes>Rusyn</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ruq</Code>
@@ -1877,6 +2141,7 @@
       <LocalName>Vlăheşte</LocalName>
       <Notes>Megleno-Romanian (multiple scripts - defaults to Latin)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ruq-cyrl</Code>
@@ -1884,6 +2149,7 @@
       <LocalName>Влахесте</LocalName>
       <Notes>Megleno-Romanian (Cyrillic script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ruq-grek</Code>
@@ -1891,6 +2157,7 @@
       <LocalName>Βλαεστε</LocalName>
       <Notes>Megleno-Romanian (Greek script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ruq-latn</Code>
@@ -1898,6 +2165,7 @@
       <LocalName>Vlăheşte (Latin script)</LocalName>
       <Notes>Megleno-Romanian (Latin script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>rw</Code>
@@ -1905,6 +2173,7 @@
       <LocalName>Kinyarwanda</LocalName>
       <Notes>Kinyarwanda, should possibly be Kinyarwandi</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sa</Code>
@@ -1912,6 +2181,7 @@
       <LocalName>संस्कृत</LocalName>
       <Notes>Sanskrit</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sah</Code>
@@ -1919,6 +2189,7 @@
       <LocalName>Саха тыла</LocalName>
       <Notes>Sakha</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sc</Code>
@@ -1926,6 +2197,7 @@
       <LocalName>Sardu</LocalName>
       <Notes>Sardinian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>scn</Code>
@@ -1933,6 +2205,7 @@
       <LocalName>Sicilianu</LocalName>
       <Notes>Sicilian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sco</Code>
@@ -1940,6 +2213,7 @@
       <LocalName>Scots</LocalName>
       <Notes>Scots</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sd</Code>
@@ -1947,6 +2221,7 @@
       <LocalName>سنڌي</LocalName>
       <Notes>Sindhi</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sdc</Code>
@@ -1954,6 +2229,7 @@
       <LocalName>Sassaresu</LocalName>
       <Notes>Sassarese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>se</Code>
@@ -1961,6 +2237,7 @@
       <LocalName>Sámegiella</LocalName>
       <Notes>Northern Sami</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sei</Code>
@@ -1968,6 +2245,7 @@
       <LocalName>Cmique Itom</LocalName>
       <Notes>Seri</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sg</Code>
@@ -1975,6 +2253,7 @@
       <LocalName>Sängö</LocalName>
       <Notes>Sango/Sangho</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sgs</Code>
@@ -1982,6 +2261,7 @@
       <LocalName>Žemaitėška (new)</LocalName>
       <Notes>Samogitian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sh</Code>
@@ -1989,6 +2269,7 @@
       <LocalName>Srpskohrvatski / Српскохрватски</LocalName>
       <Notes>Serbocroatian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>shi</Code>
@@ -1996,6 +2277,7 @@
       <LocalName>Tašlḥiyt</LocalName>
       <Notes>Tachelhit</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>si</Code>
@@ -2003,6 +2285,7 @@
       <LocalName>සිංහල</LocalName>
       <Notes>Sinhalese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>simple</Code>
@@ -2011,6 +2294,7 @@
       <LocalName>Simple English</LocalName>
       <Notes>Simple English</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sk</Code>
@@ -2018,6 +2302,7 @@
       <LocalName>Slovenčina</LocalName>
       <Notes>Slovak</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sl</Code>
@@ -2025,6 +2310,7 @@
       <LocalName>Slovenščina</LocalName>
       <Notes>Slovenian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sli</Code>
@@ -2032,6 +2318,7 @@
       <LocalName>Schläsch</LocalName>
       <Notes>Lower Selisian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sm</Code>
@@ -2039,6 +2326,7 @@
       <LocalName>Gagana Samoa</LocalName>
       <Notes>Samoan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sma</Code>
@@ -2046,6 +2334,7 @@
       <LocalName>Åarjelsaemien</LocalName>
       <Notes>Southern Sami</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sn</Code>
@@ -2053,6 +2342,7 @@
       <LocalName>chiShona</LocalName>
       <Notes>Shona</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>so</Code>
@@ -2060,6 +2350,7 @@
       <LocalName>Soomaaliga</LocalName>
       <Notes>Somali</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sq</Code>
@@ -2067,6 +2358,7 @@
       <LocalName>Shqip</LocalName>
       <Notes>Albanian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sr</Code>
@@ -2074,6 +2366,7 @@
       <LocalName>Српски / Srpski</LocalName>
       <Notes>Serbian (multiple scripts - defaults to Cyrillic)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sr-ec</Code>
@@ -2081,6 +2374,7 @@
       <LocalName>Српски (ћирилица)</LocalName>
       <Notes>Serbian Cyrillic ekavian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sr-el</Code>
@@ -2088,6 +2382,7 @@
       <LocalName>Srpski (latinica)</LocalName>
       <Notes>Serbian Latin ekavian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>srn</Code>
@@ -2095,6 +2390,7 @@
       <LocalName>Sranantongo</LocalName>
       <Notes>Sranan Tongo</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ss</Code>
@@ -2102,6 +2398,7 @@
       <LocalName>SiSwati</LocalName>
       <Notes>Swati</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>st</Code>
@@ -2109,6 +2406,7 @@
       <LocalName>Sesotho</LocalName>
       <Notes>Southern Sotho</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>stq</Code>
@@ -2116,6 +2414,7 @@
       <LocalName>Seeltersk</LocalName>
       <Notes>Saterland Frisian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>su</Code>
@@ -2123,6 +2422,7 @@
       <LocalName>Basa Sunda</LocalName>
       <Notes>Sundanese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sv</Code>
@@ -2130,6 +2430,7 @@
       <LocalName>Svenska</LocalName>
       <Notes>Swedish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>sw</Code>
@@ -2137,6 +2438,7 @@
       <LocalName>Kiswahili</LocalName>
       <Notes>Swahili</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>szl</Code>
@@ -2144,6 +2446,7 @@
       <LocalName>Ślůnski</LocalName>
       <Notes>Silesian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ta</Code>
@@ -2151,6 +2454,7 @@
       <LocalName>தமிழ்</LocalName>
       <Notes>Tamil</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tcy</Code>
@@ -2158,6 +2462,7 @@
       <LocalName>ತುಳು</LocalName>
       <Notes>Tulu</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>te</Code>
@@ -2165,6 +2470,7 @@
       <LocalName>తెలుగు</LocalName>
       <Notes>Telugu</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tet</Code>
@@ -2172,6 +2478,7 @@
       <LocalName>Tetun</LocalName>
       <Notes>Tetun</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tg</Code>
@@ -2179,6 +2486,7 @@
       <LocalName>Тоҷикӣ</LocalName>
       <Notes>Tajiki (falls back to tg-cyrl)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tg-cyrl</Code>
@@ -2186,6 +2494,7 @@
       <LocalName>Тоҷикӣ (Cyrllic script)</LocalName>
       <Notes>Tajiki (Cyrllic script) (default)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tg-latn</Code>
@@ -2193,6 +2502,7 @@
       <LocalName>tojikī</LocalName>
       <Notes>Tajiki (Latin script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>th</Code>
@@ -2200,6 +2510,7 @@
       <LocalName>ไทย</LocalName>
       <Notes>Thai</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ti</Code>
@@ -2207,6 +2518,7 @@
       <LocalName>ትግርኛ</LocalName>
       <Notes>Tigrinya</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tk</Code>
@@ -2214,6 +2526,7 @@
       <LocalName>Türkmençe</LocalName>
       <Notes>Turkmen</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tl</Code>
@@ -2221,6 +2534,7 @@
       <LocalName>Tagalog</LocalName>
       <Notes>Tagalog</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tn</Code>
@@ -2228,6 +2542,7 @@
       <LocalName>Setswana</LocalName>
       <Notes>Setswana</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>to</Code>
@@ -2235,6 +2550,7 @@
       <LocalName>lea faka-Tonga</LocalName>
       <Notes>Tonga (Tonga Islands)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tokipona</Code>
@@ -2242,6 +2558,7 @@
       <LocalName>Toki Pona</LocalName>
       <Notes>Toki Pona</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tp</Code>
@@ -2249,6 +2566,7 @@
       <LocalName>Toki Pona (deprecated:tokipona)</LocalName>
       <Notes>Toki Pona - non-standard language code</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tpi</Code>
@@ -2256,6 +2574,7 @@
       <LocalName>Tok Pisin</LocalName>
       <Notes>Tok Pisin</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tr</Code>
@@ -2263,6 +2582,7 @@
       <LocalName>Türkçe</LocalName>
       <Notes>Turkish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ts</Code>
@@ -2270,6 +2590,7 @@
       <LocalName>Xitsonga</LocalName>
       <Notes>Tsonga</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tt</Code>
@@ -2277,6 +2598,7 @@
       <LocalName>Татарча/Tatarça</LocalName>
       <Notes>Tatar (multiple scripts - defaults to Cyrillic)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tt-cyrl</Code>
@@ -2284,6 +2606,7 @@
       <LocalName>Татарча</LocalName>
       <Notes>Tatar (Cyrillic script) (default)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tt-latn</Code>
@@ -2291,6 +2614,7 @@
       <LocalName>Tatarça</LocalName>
       <Notes>Tatar (Latin script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tum</Code>
@@ -2298,6 +2622,7 @@
       <LocalName>chiTumbuka</LocalName>
       <Notes>Tumbuka</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tw</Code>
@@ -2305,6 +2630,7 @@
       <LocalName>Twi</LocalName>
       <Notes>Twi, (FIXME!)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ty</Code>
@@ -2312,6 +2638,7 @@
       <LocalName>Reo Mā`ohi</LocalName>
       <Notes>Tahitian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>tyv</Code>
@@ -2319,6 +2646,7 @@
       <LocalName>Тыва дыл</LocalName>
       <Notes>Tyvan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>udm</Code>
@@ -2326,6 +2654,7 @@
       <LocalName>Удмурт</LocalName>
       <Notes>Udmurt</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ug</Code>
@@ -2333,6 +2662,7 @@
       <LocalName>ئۇيغۇرچە / Uyghurche‎</LocalName>
       <Notes>Uyghur (multiple scripts - defaults to Arabic)</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ug-arab</Code>
@@ -2340,6 +2670,7 @@
       <LocalName>ئۇيغۇرچە</LocalName>
       <Notes>Uyghur (Arabic script) (default)</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ug-latn</Code>
@@ -2347,6 +2678,7 @@
       <LocalName>Uyghurche‎</LocalName>
       <Notes>Uyghur (Latin script)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>uk</Code>
@@ -2354,6 +2686,7 @@
       <LocalName>Українська</LocalName>
       <Notes>Ukrainian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ur</Code>
@@ -2361,6 +2694,7 @@
       <LocalName>اردو</LocalName>
       <Notes>Urdu</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>uz</Code>
@@ -2368,6 +2702,7 @@
       <LocalName>O'zbek</LocalName>
       <Notes>Uzbek</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>ve</Code>
@@ -2375,6 +2710,7 @@
       <LocalName>Tshivenda</LocalName>
       <Notes>Venda</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vec</Code>
@@ -2382,6 +2718,7 @@
       <LocalName>Vèneto</LocalName>
       <Notes>Venetian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vep</Code>
@@ -2389,6 +2726,7 @@
       <LocalName>Vepsan kel'</LocalName>
       <Notes>Veps</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vi</Code>
@@ -2396,6 +2734,7 @@
       <LocalName>Tiếng Việt</LocalName>
       <Notes>Vietnamese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vls</Code>
@@ -2403,6 +2742,7 @@
       <LocalName>West-Vlams</LocalName>
       <Notes>West Flemish</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vmf</Code>
@@ -2410,6 +2750,7 @@
       <LocalName>Mainfränkisch</LocalName>
       <Notes>Upper Franconian, Main-Franconian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vo</Code>
@@ -2417,6 +2758,7 @@
       <LocalName>Volapük</LocalName>
       <Notes>Volapük</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vot</Code>
@@ -2424,6 +2766,7 @@
       <LocalName>Vaďďa</LocalName>
       <Notes>Vod/Votian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>vro</Code>
@@ -2431,6 +2774,7 @@
       <LocalName>Võro (new)</LocalName>
       <Notes>Võro</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>wa</Code>
@@ -2438,6 +2782,7 @@
       <LocalName>Walon</LocalName>
       <Notes>Walloon</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>war</Code>
@@ -2445,6 +2790,7 @@
       <LocalName>Winaray</LocalName>
       <Notes>Waray-Waray</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>wo</Code>
@@ -2452,6 +2798,7 @@
       <LocalName>Wolof</LocalName>
       <Notes>Wolof</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>wuu</Code>
@@ -2459,6 +2806,7 @@
       <LocalName>吴语</LocalName>
       <Notes>Wu Chinese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>xal</Code>
@@ -2466,6 +2814,7 @@
       <LocalName>Хальмг</LocalName>
       <Notes>Kalmyk-Oirat (Kalmuk, Kalmuck, Kalmack, Qalmaq, Kalmytskii Jazyk, Khal:mag, Oirat, Volga Oirat, European Oirat, Western Mongolian)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>xh</Code>
@@ -2473,6 +2822,7 @@
       <LocalName>isiXhosa</LocalName>
       <Notes>Xhosan</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>xmf</Code>
@@ -2480,6 +2830,7 @@
       <LocalName>მარგალური</LocalName>
       <Notes>Mingrelian</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>yi</Code>
@@ -2487,6 +2838,7 @@
       <LocalName>ייִדיש</LocalName>
       <Notes>Yiddish</Notes>
       <RightToLeft>true</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>yo</Code>
@@ -2494,6 +2846,7 @@
       <LocalName>Yorùbá</LocalName>
       <Notes>Yoruba</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>yue</Code>
@@ -2501,6 +2854,7 @@
       <LocalName>粵語 (new)</LocalName>
       <Notes>Cantonese -- (bug 8217) yue instead of zh-yue</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>za</Code>
@@ -2508,6 +2862,7 @@
       <LocalName>Vahcuengh</LocalName>
       <Notes>Zhuang</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zea</Code>
@@ -2515,6 +2870,7 @@
       <LocalName>Zeêuws</LocalName>
       <Notes>Zeeuws/Zeaws</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh</Code>
@@ -2522,6 +2878,7 @@
       <LocalName>中文</LocalName>
       <Notes>(Zhōng Wén) - Chinese</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-classical</Code>
@@ -2529,6 +2886,7 @@
       <LocalName>文言 (Classical)</LocalName>
       <Notes>Classical Chinese/Literary Chinese -- (see bug 8217)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-cn</Code>
@@ -2536,6 +2894,7 @@
       <LocalName>中文(中国大陆)</LocalName>
       <Notes>Chinese (PRC)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hans</Code>
@@ -2543,6 +2902,7 @@
       <LocalName>中文(简体)</LocalName>
       <Notes>Mandarin Chinese (Simplified Chinese script) (cmn-hans)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hant</Code>
@@ -2550,6 +2910,7 @@
       <LocalName>中文(繁體)</LocalName>
       <Notes>Mandarin Chinese (Traditional Chinese script) (cmn-hant)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-hk</Code>
@@ -2557,6 +2918,7 @@
       <LocalName>中文(香港)</LocalName>
       <Notes>Chinese (Hong Kong)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-min-nan</Code>
@@ -2564,6 +2926,7 @@
       <LocalName>Bân-lâm-gú</LocalName>
       <Notes>Min-nan -- (see bug 8217)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-mo</Code>
@@ -2571,6 +2934,7 @@
       <LocalName>中文(澳門)</LocalName>
       <Notes>Chinese (Macau)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-my</Code>
@@ -2578,6 +2942,7 @@
       <LocalName>中文(马来西亚)</LocalName>
       <Notes>Chinese (Malaysia)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-sg</Code>
@@ -2585,6 +2950,7 @@
       <LocalName>中文(新加坡)</LocalName>
       <Notes>Chinese (Singapore)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-tw</Code>
@@ -2592,6 +2958,7 @@
       <LocalName>中文(台灣)</LocalName>
       <Notes>Chinese (Taiwan)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zh-yue</Code>
@@ -2599,6 +2966,7 @@
       <LocalName>粵語</LocalName>
       <Notes>Cantonese -- (see bug 8217)</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
     <WikiLanguage>
       <Code>zu</Code>
@@ -2606,6 +2974,7 @@
       <LocalName>isiZulu</LocalName>
       <Notes>Zulu</Notes>
       <RightToLeft>false</RightToLeft>
+      <Disabled>false</Disabled>
     </WikiLanguage>
   </Languages>
 </LanguageCodes>

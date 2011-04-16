@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <AutoUpdate>true</AutoUpdate>
+  <AutoUpdateDays>7</AutoUpdateDays>
   <AutoRetrieveMissing>true</AutoRetrieveMissing>
+  <InstallationFolder>C:\prj\WikiDesk\WikiDesk\bin\Debug</InstallationFolder>
   <DomainsFilename>WikiDomains.xml</DomainsFilename>
   <CurrentDomainName>Wikipedia</CurrentDomainName>
   <DefaultDomainName>Wikipedia</DefaultDomainName>
   <LanguagesFilename>WikiLanguages.xml</LanguagesFilename>
-  <CurrentLanguageCode>en</CurrentLanguageCode>
+  <CurrentLanguageCode>simple</CurrentLanguageCode>
   <DefaultLanguageCode>en</DefaultLanguageCode>
-  <CssFilename>css\default.css</CssFilename>
+  <SkinName>simple</SkinName>
   <ThumbnailWidthPixels>220</ThumbnailWidthPixels>
   <FileCacheFolder>Z:\wikidesk_cache\</FileCacheFolder>
   <DefaultDatabaseFilename>Z:\wikidesk.db</DefaultDatabaseFilename>

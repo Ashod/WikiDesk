@@ -3,13 +3,15 @@
   <Domains>
     <WikiDomain>
       <Name>Wikipedia</Name>
-      <BaseUrl>.wikipedia.org/wiki/</BaseUrl>
-      <ExportUrl>.wikipedia.org/wiki/Special:Export/</ExportUrl>
+      <Domain>wikipedia.org</Domain>
+      <FullPath>/w/index.php?title=</FullPath>
+      <FiendlyPath>/wiki/</FiendlyPath>
     </WikiDomain>
     <WikiDomain>
       <Name>Wiktionary</Name>
-      <BaseUrl>.wiktionary.org/wiki/</BaseUrl>
-      <ExportUrl>.wiktionary.org/wiki/Special:Export/</ExportUrl>
+      <Domain>wiktionary.org</Domain>
+      <FullPath>/w/index.php?title=</FullPath>
+      <FiendlyPath>/wiki/</FiendlyPath>
     </WikiDomain>
   </Domains>
 </WikiDomains>
