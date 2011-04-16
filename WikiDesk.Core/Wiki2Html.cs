@@ -540,20 +540,28 @@ namespace WikiDesk.Core
 
             if (string.IsNullOrEmpty(imageSrcUrl))
             {
-                string imagePage = Download.DownloadPage(imagePageUrl);
-                Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
-                if (!imageSourceMatch.Success ||
-                    (imageSourceMatch.Groups[1].Value != imageFileName))
+                try
                 {
-                    // File not found?
-                    return string.Empty;
+                    string imagePage = Download.DownloadPage(imagePageUrl);
+                    Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
+                    if (!imageSourceMatch.Success ||
+                        (imageSourceMatch.Groups[1].Value != imageFileName))
+                    {
+                        // File not found?
+                        return string.Empty;
+                    }
+
+                    imageSrcUrl = imageSourceMatch.Groups[2].Value;
+
+                    if (fileCache_ != null)
+                    {
+                        fileCache_.CacheMedia(imageFileName, config_.WikiSite.Language.Code, imageSrcUrl);
+                    }
                 }
-
-                imageSrcUrl = imageSourceMatch.Groups[2].Value;
-
-                if (fileCache_ != null)
+                catch (Exception ex)
                 {
-                    fileCache_.CacheMedia(imageFileName, config_.WikiSite.Language.Code, imageSrcUrl);
+                    logger_.Log(Levels.Error, "Failed to download image '{0}'. Error: {1}.", imagePageUrl, ex.Message);
+                    imageSrcUrl = imagePageUrl;
                 }
             }
 
