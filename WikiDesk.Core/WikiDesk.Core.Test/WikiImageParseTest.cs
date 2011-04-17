@@ -70,10 +70,10 @@
             WikiParseTest.TestConvert(
                 "[[File:Face-smile.svg|18px]] '''Thank you'''",
                 "<p>" +
-                    "<a class=\"image\" href=\"/wiki/File:Face-smile.svg\">" +
-                        "<img width=\"18\" height=\"18\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/18px-Face-smile.svg.png\" alt=\"Face-smile.svg\">" +
+                    "<a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\">" +
+                        "<img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\">" +
                     "</a>" +
-                    "<b>Thank you</b>" +
+                    " <b>Thank you</b>" +
                 "</p>");
         }
 

@@ -106,8 +106,10 @@
 
             // May contain HTML, strip them.
             title = StringUtils.RemoveBlocks(title, "<", ">");
+            title = title.Replace(' ', '_');
             title = AnchorEncode(title);
-            return Normalize(title);
+
+            return title.Normalize();
         }
 
         /// <summary>
