@@ -938,7 +938,7 @@
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (OptionsForm frmOptions = new OptionsForm())
+            using (OptionsForm frmOptions = new OptionsForm(settings_))
             {
                 frmOptions.ShowDialog(this);
             }

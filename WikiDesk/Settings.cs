@@ -41,8 +41,35 @@ namespace WikiDesk
             }
         }
 
+        #region General
+
         public int AutoUpdateDays = 7;
         public bool AutoRetrieveMissing = true;
+        public bool TrackBrowseHistory;
+
+        #endregion // General
+
+        #region Cache
+
+        public bool EnableCaching;
+        public string FileCacheFolder = "Z:\\wikidesk_cache\\";
+        public long FileCacheSizeMB = 128;
+        public bool ClearFileCacheOnExit;
+
+        #endregion // Cache
+
+        #region Wiki
+
+        public int ThumbnailWidthPixels = 220;
+        public string SkinName = "simple";
+        public string CustomCss;
+
+        #endregion // Wiki
+
+        /// <summary>
+        /// The default database filename. Loaded at startup.
+        /// </summary>
+        public string DefaultDatabaseFilename = "Z:\\wikidesk.db";
 
         public string InstallationFolder;
 
@@ -83,16 +110,5 @@ namespace WikiDesk
         public string DefaultLanguageCode = "en";
 
         #endregion // language
-
-        public string SkinName = "simple";
-
-        public int ThumbnailWidthPixels = 220;
-
-        public string FileCacheFolder = "Z:\\wikidesk_cache\\";
-
-        /// <summary>
-        /// The default database filename. Loaded at startup.
-        /// </summary>
-        public string DefaultDatabaseFilename = "Z:\\wikidesk.db";
     }
 }
