@@ -128,9 +128,7 @@ namespace WikiDesk.Core
             nameSpace_ = nameSpace;
             pageTitle_ = pageTitle;
 
-            wikicode = ConvertBinaryCode(wikicode, x => x, BoldItalicRegex, BoldItalic);
             wikicode = ConvertBinaryCode(wikicode, ConvertWikiCode, HeaderRegex, Header);
-            //wikicode = ProcessWikiCode(wikicode);
 
             return wikicode;
         }
@@ -187,11 +185,15 @@ namespace WikiDesk.Core
         {
             wikicode = ProcessMagicWords(wikicode);
 
-            wikicode = ConvertBinaryCode(wikicode, x => x, BoldItalicRegex, BoldItalic);
-            wikicode = ConvertBinaryCode(wikicode, x => x, '[', ']', Link);
-
             wikicode = ConvertListCode(wikicode);
             wikicode = ConvertParagraphs(wikicode);
+            return wikicode;
+        }
+
+        private string ConvertInlineCodes(string wikicode)
+        {
+            wikicode = ConvertBinaryCode(wikicode, x => x, BoldItalicRegex, BoldItalic);
+            wikicode = ConvertBinaryCode(wikicode, x => x, '[', ']', Link);
             return wikicode;
         }
 
@@ -452,17 +454,18 @@ namespace WikiDesk.Core
         /// </summary>
         /// <param name="match">The regex match.</param>
         /// <returns>HTML processed header tag.</returns>
-        private static string Header(Match match)
+        private string Header(Match match)
         {
             string left = match.Groups[1].ToString();
             string right = match.Groups[3].ToString();
             if (left != right)
             {
                 // The number of '=' chars mismatch. Not a valid header.
-                return match.Value;
+                return ConvertInlineCodes(match.Value);
             }
 
             string value = match.Groups[2].ToString();
+            value = ConvertInlineCodes(value);
             return string.Format(
                     "<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>{3}",
                     left.Length,
@@ -729,7 +732,7 @@ namespace WikiDesk.Core
             int startIndex = MagicParser.FindMagicBlock(wikicode, out endIndex);
             if (startIndex < 0)
             {
-                return wikicode;
+                return ConvertInlineCodes(wikicode);
             }
 
             logger_.Log(Levels.Debug, "Processing Magic:{0}{1}", Environment.NewLine, wikicode);
@@ -740,7 +743,8 @@ namespace WikiDesk.Core
             while (startIndex >= 0 && lastIndex < wikicode.Length)
             {
                 // Copy the skipped part.
-                sb.Append(wikicode.Substring(lastIndex, startIndex - lastIndex));
+                string text = wikicode.Substring(lastIndex, startIndex - lastIndex);
+                sb.Append(ConvertInlineCodes(text));
 
                 // Handle the match.
                 string magic = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
