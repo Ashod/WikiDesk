@@ -830,68 +830,80 @@
                 return;
             }
 
-            try
+            using (ProgressForm progForm = new ProgressForm())
             {
                 Enabled = false;
-
-                Domain domain = db_.GetDomain(frmImport_.DomainName);
-                Language language = db_.GetLanguageByName(frmImport_.LanguageName);
-
-                Stream sourceStream;
-                long length;
-                if (frmImport_.LocalDump)
+                try
                 {
-                    sourceStream = new FileStream(
-                        frmImport_.DumpFileSource, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024);
-                    length = sourceStream.Length;
-                }
-                else
-                {
-                    // Open a connection
-                    WebRequest webRequest = WebRequest.Create(frmImport_.DumpFileSource);
-                    WebResponse response = webRequest.GetResponse();
-                    length = response.ContentLength;
-                    sourceStream = response.GetResponseStream();
-                }
+                    string dumpFilename = Path.GetFileName(frmImport_.DumpFileSource);
 
-                string dumpFilename = Path.GetFileName(frmImport_.DumpFileSource);
-                bool bz2 = dumpFilename.ToUpperInvariant().EndsWith("BZ2");
-                ImportProgress(
-                    dumpFilename,
-                    sourceStream,
-                    bz2 ? new BZip2InputStream(sourceStream) : sourceStream,
-                    length,
-                    domain,
-                    language);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    string.Format("Failed to import dump source:{0}{0}{1}", Environment.NewLine, ex.Message),
-                    "Import Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-            }
-            finally
-            {
-                ReloadDatabase();
-                Enabled = true;
+                    progForm.Text = "Import Progress";
+                    progForm.txtInfo.Text = string.Format("Importing Wiki dump file {0}...", dumpFilename);
+                    progForm.prgProgress.Value = 0;
+                    progForm.Show(this);
+
+                    Stream sourceStream;
+                    if (frmImport_.LocalDump)
+                    {
+                        // Local Dump.
+                        sourceStream = new FileStream(
+                            frmImport_.DumpFileSource, FileMode.Open, FileAccess.Read, FileShare.Read, 64 * 1024);
+                        sourceStream.Seek(frmImport_.ResumePosition, SeekOrigin.Begin);
+                    }
+                    else
+                    {
+                        // Web Download.
+                        sourceStream = new WebStream(frmImport_.DumpFileSource, frmImport_.ResumePosition);
+                    }
+
+                    using (sourceStream)
+                    {
+                        bool bz2 = dumpFilename.ToUpperInvariant().EndsWith("BZ2");
+                        using (Stream inputStream = bz2 ? new BZip2InputStream(sourceStream) : sourceStream)
+                        {
+                            Domain domain = db_.GetDomain(frmImport_.DomainName);
+                            Language language = db_.GetLanguageByName(frmImport_.LanguageName);
+                            ImportProgress(
+                                progForm,
+                                dumpFilename,
+                                inputStream,
+                                domain,
+                                language);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        string.Format("Failed to import dump source:{0}{0}{1}", Environment.NewLine, ex.Message),
+                        "Import Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                }
+                finally
+                {
+                    progForm.txtInfo.Text = "Reloading database...";
+                    ReloadDatabase();
+                    Enabled = true;
+                }
             }
         }
 
         delegate void exec();
         private void ImportProgress(
+                        ProgressForm progForm,
                         string sourceName,
-                        Stream sourceStream,
                         Stream inputStream,
-                        long length,
                         Domain domain,
                         Language language)
         {
             DateTime startTime = DateTime.UtcNow;
 
+            progForm.prgProgress.Minimum = 0;
+            progForm.prgProgress.Maximum = (int)(inputStream.Length / 1024 / 1024);
+
             bool cancel = false;
-            int pages = 0;
+            int entries = 0;
             exec d =
                 () =>
                 DumpParser.ImportFromXml(
@@ -902,51 +914,58 @@
                     domain.Id,
                     language.Id,
                     ref cancel,
-                    ref pages);
+                    ref entries);
 
             IAsyncResult asyncResult = d.BeginInvoke(null, null);
 
             try
             {
-                using (ProgressForm progForm = new ProgressForm())
+                int lastEntryCount = 0;
+                double entryRate = 0.0;
+                DateTime lastRefreshTime = startTime;
+                while (!asyncResult.IsCompleted)
                 {
-                    progForm.Text = "Import Progress";
-                    progForm.txtInfo.Text = string.Format("Importing Wiki dump file {0}...", sourceName);
-                    progForm.prgProgress.Minimum = 0;
-                    progForm.prgProgress.Maximum = (int)(length / 1024 / 1024);
-                    Enabled = false;
-                    progForm.Show(this);
-                    while (!asyncResult.IsCompleted)
+                    try
+                    {
+                        progForm.prgProgress.Value = (int)(inputStream.Position / 1024 / 1024);
+                    }
+                    catch (Exception)
+                    {
+                        // When the user cancels, the stream is closed and Position throws.
+                    }
+
+                    progForm.txtInfo.Text = string.Format(
+                            "Importing Wiki dump {0}...{1}Imported {2} entries. ({3} / {4} MBytes.){1}Rate: {5} entries / sec.",
+                            sourceName,
+                            Environment.NewLine,
+                            entries,
+                            progForm.prgProgress.Value,
+                            progForm.prgProgress.Maximum,
+                            (int)entryRate);
+
+                    double pcnt = 100.0 * progForm.prgProgress.Value / progForm.prgProgress.Maximum;
+                    if (pcnt > 0.02)
+                    {
+                        TimeSpan elapsed = DateTime.UtcNow - startTime;
+                        double remSeconds = (100.0 - pcnt) * elapsed.TotalSeconds / pcnt;
+                        TimeSpan remaining = TimeSpan.FromSeconds(remSeconds + 0.5);
+                        progForm.lblRemainingTimeValue_.Text =
+                            string.Format("{0,2}h : {1,2}m : {2,2}s", remaining.Hours, remaining.Minutes, remaining.Seconds);
+
+                        entryRate = (entries - lastEntryCount) / (DateTime.UtcNow - lastRefreshTime).TotalSeconds;
+                        lastEntryCount = entries;
+                        lastRefreshTime = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        progForm.lblRemainingTimeValue_.Text = "Estimating...";
+                    }
+
+                    for (int i = 0; i < 10 && !cancel; ++i)
                     {
                         cancel = progForm.DialogResult == DialogResult.Cancel;
-                        try
-                        {
-                            progForm.txtInfo.Text = string.Format(
-                                    "Importing Wiki dump file {0}...{1}Imported {2} articles.",
-                                    sourceName,
-                                    Environment.NewLine,
-                                    pages);
-                            progForm.prgProgress.Value = (int)inputStream.Position / 1024 / 1024;
-                        }
-                        catch (Exception)
-                        {
-                            // When the user cancels, the stream is closed and Position throws.
-                        }
-
-                        double pcnt = 100.0 * progForm.prgProgress.Value / progForm.prgProgress.Maximum;
-                        if (pcnt > 0.02)
-                        {
-                            TimeSpan elapsed = DateTime.UtcNow - startTime;
-                            double remSeconds = (100.0 - pcnt) * elapsed.TotalSeconds / pcnt;
-                            progForm.lblRemainingTimeValue_.Text = TimeSpan.FromSeconds(remSeconds + 0.5).ToString();
-                        }
-                        else
-                        {
-                            progForm.lblRemainingTimeValue_.Text = "Estimating...";
-                        }
-
                         Application.DoEvents();
-                        Thread.Sleep(266);
+                        Thread.Sleep(133);
                     }
                 }
             }
@@ -954,8 +973,6 @@
             {
                 cancel = true;
                 d.EndInvoke(asyncResult);
-                inputStream.Dispose();
-                sourceStream.Dispose();
             }
         }
 

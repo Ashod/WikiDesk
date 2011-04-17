@@ -67,14 +67,14 @@
             this.lblRemainingTimeName_.AutoSize = true;
             this.lblRemainingTimeName_.Location = new System.Drawing.Point(9, 113);
             this.lblRemainingTimeName_.Name = "lblRemainingTimeName_";
-            this.lblRemainingTimeName_.Size = new System.Drawing.Size(86, 13);
+            this.lblRemainingTimeName_.Size = new System.Drawing.Size(135, 13);
             this.lblRemainingTimeName_.TabIndex = 3;
-            this.lblRemainingTimeName_.Text = "Remaining Time:";
+            this.lblRemainingTimeName_.Text = "Estimated Remaining Time:";
             //
             // lblRemainingTimeValue_
             //
             this.lblRemainingTimeValue_.AutoSize = true;
-            this.lblRemainingTimeValue_.Location = new System.Drawing.Point(104, 113);
+            this.lblRemainingTimeValue_.Location = new System.Drawing.Point(150, 113);
             this.lblRemainingTimeValue_.Name = "lblRemainingTimeValue_";
             this.lblRemainingTimeValue_.Size = new System.Drawing.Size(83, 13);
             this.lblRemainingTimeValue_.TabIndex = 3;
@@ -93,6 +93,7 @@
             this.Controls.Add(this.txtInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ProgressForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ProgressForm";
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
-
+﻿
 namespace WikiDesk
 {
+    using System;
+    using System.Windows.Forms;
+
     public partial class ProgressForm : Form
     {
         public ProgressForm()

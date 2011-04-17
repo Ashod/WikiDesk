@@ -67,6 +67,11 @@
             get { return chkIndexOnly_.Checked; }
         }
 
+        public long ResumePosition
+        {
+            get { return (long)(numResumePosKbytes_.Value * 1024); }
+        }
+
         #endregion // properties
 
         private void rdFileDump_CheckedChanged(object sender, EventArgs e)

@@ -53,13 +53,13 @@
             this.cboDomains_ = new System.Windows.Forms.ComboBox();
             this.gbImportOptions_ = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.numDumpOffsetKbytes_ = new System.Windows.Forms.NumericUpDown();
+            this.numResumePosKbytes_ = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.gbSourceType_.SuspendLayout();
             this.gbDumpInfo_.SuspendLayout();
             this.gbImportOptions_.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDumpOffsetKbytes_)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numResumePosKbytes_)).BeginInit();
             this.SuspendLayout();
             //
             // btnImport_
@@ -321,7 +321,7 @@
             this.gbImportOptions_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.gbImportOptions_.Controls.Add(this.checkBox1);
-            this.gbImportOptions_.Controls.Add(this.numDumpOffsetKbytes_);
+            this.gbImportOptions_.Controls.Add(this.numResumePosKbytes_);
             this.gbImportOptions_.Controls.Add(this.label8);
             this.gbImportOptions_.Controls.Add(this.label7);
             this.gbImportOptions_.Controls.Add(this.chkIndexOnly_);
@@ -345,18 +345,18 @@
             this.checkBox1.Text = "Import latest revision (ignoring revision hisotry)";
             this.checkBox1.UseVisualStyleBackColor = true;
             //
-            // numDumpOffsetKbytes_
+            // numResumePosKbytes_
             //
-            this.numDumpOffsetKbytes_.Location = new System.Drawing.Point(105, 23);
-            this.numDumpOffsetKbytes_.Maximum = new decimal(new int[] {
+            this.numResumePosKbytes_.Location = new System.Drawing.Point(105, 23);
+            this.numResumePosKbytes_.Maximum = new decimal(new int[] {
             512000000,
             0,
             0,
             0});
-            this.numDumpOffsetKbytes_.Name = "numDumpOffsetKbytes_";
-            this.numDumpOffsetKbytes_.Size = new System.Drawing.Size(120, 20);
-            this.numDumpOffsetKbytes_.TabIndex = 12;
-            this.numDumpOffsetKbytes_.ThousandsSeparator = true;
+            this.numResumePosKbytes_.Name = "numResumePosKbytes_";
+            this.numResumePosKbytes_.Size = new System.Drawing.Size(120, 20);
+            this.numResumePosKbytes_.TabIndex = 12;
+            this.numResumePosKbytes_.ThousandsSeparator = true;
             //
             // label8
             //
@@ -399,7 +399,7 @@
             this.gbDumpInfo_.PerformLayout();
             this.gbImportOptions_.ResumeLayout(false);
             this.gbImportOptions_.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDumpOffsetKbytes_)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numResumePosKbytes_)).EndInit();
             this.ResumeLayout(false);
         }
 
@@ -429,7 +429,7 @@
         private System.Windows.Forms.ComboBox cboLanguages_;
         private System.Windows.Forms.ComboBox cboDomains_;
         private System.Windows.Forms.GroupBox gbImportOptions_;
-        private System.Windows.Forms.NumericUpDown numDumpOffsetKbytes_;
+        private System.Windows.Forms.NumericUpDown numResumePosKbytes_;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox checkBox1;

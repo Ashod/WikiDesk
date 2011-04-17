@@ -4,7 +4,7 @@
     {
         public static string DownloadPage(string url)
         {
-            return WebStream.ReadToEnd(url, "WebDesk", string.Empty);
+            return WebStream.ReadToEnd(url, "WikiDesk", string.Empty);
         }
     }
 }
