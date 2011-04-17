@@ -11,6 +11,8 @@
 * Splash Screen.
 * Compressed Database.
 * Import from the web.
+* Link to source page at the buttom of each generated page.
+* Add copyright at the bottom.
 
 Wiki2Html:
 

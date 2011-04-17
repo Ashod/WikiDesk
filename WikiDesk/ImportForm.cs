@@ -32,14 +32,14 @@
             //TODO: Automatically select the default or current language.
             cboLanguages_.SelectedIndex = (cboLanguages_.Items.Count > 0) ? 0 : -1;
 
-            btnImport_.Enabled = false;
+            UpdateDumpInfo();
         }
 
         #region properties
 
         public string DumpFilename
         {
-            get { return txtFilepath_.Text; }
+            get { return txtFileDumpPath_.Text; }
         }
 
         public string DomainName
@@ -64,6 +64,24 @@
 
         #endregion // properties
 
+        private void rdFileDump_CheckedChanged(object sender, EventArgs e)
+        {
+            txtFileDumpPath_.Enabled = rdFileDump_.Checked;
+            btnBrowse_.Enabled = rdFileDump_.Checked;
+            UpdateDumpInfo();
+        }
+
+        private void rdWebDump_CheckedChanged(object sender, EventArgs e)
+        {
+            txtWebDumpUrl_.Enabled = rdWebDump_.Checked;
+            UpdateDumpInfo();
+        }
+
+        private void txtWebDumpUrl__TextChanged(object sender, EventArgs e)
+        {
+            UpdateDumpInfo();
+        }
+
         private void btnBrowse__Click(object sender, EventArgs e)
         {
             openFileDialog_.CheckFileExists = true;
@@ -71,25 +89,32 @@
             openFileDialog_.Filter = "Compressed XML files (*.xml.bz2)|*.xml.bz2|XML files (*.xml)|*.xml|All files (*.*)|*.*";
             if (openFileDialog_.ShowDialog(this) == DialogResult.OK)
             {
-                string domainName;
-                string languageCode;
-                DateTime date;
-                ParseDumpFileName(Path.GetFileName(openFileDialog_.FileName), out domainName, out languageCode, out date);
-
-                // In dumps, Wikipedia is shortened to Wiki.
-                if (string.Compare(domainName, "wiki", true) == 0)
-                {
-                    domainName = "Wikipedia";
-                }
-
-                cboLanguages_.SelectedIndex = languages_.Languages.FindIndex(lang => lang.Code == languageCode);
-                cboDomains_.SelectedIndex = domains_.Domains.FindIndex(domain => string.Compare(domain.Name, domainName, true) == 0);
-                dateTimePicker_.Value = date;
-
-                txtFilepath_.Text = openFileDialog_.FileName;
+                txtFileDumpPath_.Text = openFileDialog_.FileName;
             }
 
-            UpdateImportButton();
+            UpdateDumpInfo();
+        }
+
+        private void UpdateDumpInfo()
+        {
+            string source = rdFileDump_.Checked ? txtFileDumpPath_.Text : txtWebDumpUrl_.Text;
+
+            string domainName;
+            string languageCode;
+            DateTime date;
+            bool validDumpFileName = ParseDumpFileName(source, out domainName, out languageCode, out date);
+
+            // In dumps, Wikipedia is shortened to Wiki.
+            if (string.Compare(domainName, "wiki", true) == 0)
+            {
+                domainName = "Wikipedia";
+            }
+
+            cboLanguages_.SelectedIndex = languages_.Languages.FindIndex(lang => lang.Code == languageCode);
+            cboDomains_.SelectedIndex = domains_.Domains.FindIndex(domain => string.Compare(domain.Name, domainName, true) == 0);
+            dateTimePicker_.Value = date;
+
+            UpdateImportButton(validDumpFileName);
         }
 
         private void cboDomains__SelectedIndexChanged(object sender, EventArgs e)
@@ -109,37 +134,41 @@
 
         private void UpdateImportButton()
         {
-            bool exists = File.Exists(txtFilepath_.Text);
-            cboDomains_.Enabled = exists;
-            cboLanguages_.Enabled = exists;
-            cboDomains_.Enabled = exists;
-            dateTimePicker_.Enabled = exists;
-            chkIndexOnly_.Enabled = exists;
-            btnImport_.Enabled = exists &&
-                                 cboDomains_.SelectedIndex >= 0 &&
-                                 cboLanguages_.SelectedIndex >= 0 &&
-                                 dateTimePicker_.Value != DateTime.MinValue;
+            UpdateImportButton(true);
         }
 
-        private void ParseDumpFileName(string filename, out string domain, out string lang, out DateTime date)
+        private void UpdateImportButton(bool validDumpFileName)
         {
-            Match match = rexWikiDumpFilename_.Match(filename);
+            gbDumpInfo_.Enabled = validDumpFileName;
+            gbImportOptions_.Enabled = validDumpFileName;
+
+            btnImport_.Enabled = validDumpFileName &&
+                                 cboDomains_.SelectedIndex >= 0 &&
+                                 cboLanguages_.SelectedIndex >= 0 &&
+                                 dateTimePicker_.Value.Year > 1990;
+        }
+
+        private bool ParseDumpFileName(string source, out string domain, out string lang, out DateTime date)
+        {
+            string fileName = Path.GetFileName(source);
+            Match match = rexWikiDumpFilename_.Match(fileName);
             if (match.Success)
             {
                 lang = match.Groups[1].Value;
                 domain = match.Groups[2].Value;
                 date = DateTime.ParseExact(match.Groups[3].Value, "yyyyMMdd", CultureInfo.InvariantCulture);
-                return;
+                return true;
             }
 
             domain = string.Empty;
             lang = string.Empty;
-            date = DateTime.MinValue;
+            date = DateTimePicker.MinDateTime;
+            return false;
         }
 
         private void btnImport__Click(object sender, EventArgs e)
         {
-            if (!File.Exists(txtFilepath_.Text))
+            if (!File.Exists(txtFileDumpPath_.Text))
             {
                 MessageBox.Show(
                         "Please select a valid dump file to import from.",
