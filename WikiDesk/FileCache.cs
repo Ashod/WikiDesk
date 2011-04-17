@@ -4,7 +4,6 @@ namespace WikiDesk
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Net;
 
     using WikiDesk.Core;
 
@@ -12,6 +11,7 @@ namespace WikiDesk
     {
         private class State
         {
+            public long Size;
             public bool Cached;
         }
 
@@ -30,7 +30,7 @@ namespace WikiDesk
             }
 
             cacheFolder_ = cacheFolder;
-            cacheFolderUrl_ = "file:///" + cacheFolder; //.Replace('\\', '/');
+            cacheFolderUrl_ = "file:///" + cacheFolder;
             cache_ = new Dictionary<string, State>(1024);
 
             Refresh();
@@ -96,13 +96,25 @@ namespace WikiDesk
                 string filename = Path.GetFileName(fullname);
                 if (!string.IsNullOrEmpty(filename))
                 {
-                    filename = filename.ToUpperInvariant();
-                    State state = new State();
-                    state.Cached = true;
-
-                    lock (guard_)
+                    FileInfo fi = new FileInfo(fullname);
+                    if (fi.Exists)
                     {
-                        cache_.Add(filename, state);
+                        if (fi.Length > 0)
+                        {
+                            filename = filename.ToUpperInvariant();
+                            State state = new State();
+                            state.Cached = true;
+                            state.Size = fi.Length;
+
+                            lock (guard_)
+                            {
+                                cache_.Add(filename, state);
+                            }
+                        }
+                        else
+                        {
+                            File.Delete(fullname);
+                        }
                     }
                 }
             }
@@ -116,7 +128,8 @@ namespace WikiDesk
         /// <returns>True if the file is cached, False otherwise.</returns>
         public bool IsSourceCached(string mediaName, string languageCode)
         {
-            mediaName = mediaName.ToUpperInvariant();
+            mediaName = FixupMediaName(mediaName).ToUpperInvariant();
+
             bool hasFile;
             lock (guard_)
             {
@@ -148,11 +161,7 @@ namespace WikiDesk
         /// <returns></returns>
         public string ResolveSourceUrl(string mediaName, string languageCode)
         {
-            string url = cacheFolderUrl_ + mediaName;
-            if (mediaName.ToUpperInvariant().EndsWith(".SVG"))
-            {
-                url += "/400px-" + mediaName + ".png";
-            }
+            string url = cacheFolderUrl_ + FixupMediaName(mediaName);
 
             return url.Replace('\\', '/');
         }
@@ -166,50 +175,39 @@ namespace WikiDesk
         /// <param name="url">The url of the media file to cache.</param>
         public void CacheMedia(string mediaName, string languageCode, string url)
         {
+            mediaName = FixupMediaName(mediaName);
+
+            string filename = Path.Combine(cacheFolder_, mediaName);
+            using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
+            {
+                WebStream.WriteToStream(url, "WikiDesk", string.Empty, fs);
+            }
+
+            FileInfo fi = new FileInfo(filename);
+            if (fi.Exists && fi.Length > 0)
+            {
+                mediaName = mediaName.ToUpperInvariant();
+                State state = new State { Cached = true, Size = fi.Length };
+                cache_[mediaName] = state;
+                totalSize_ += state.Size;
+            }
+        }
+
+        #endregion
+
+        #region implementation
+
+        private static string FixupMediaName(string mediaName)
+        {
             if (mediaName.ToUpperInvariant().EndsWith(".SVG"))
             {
                 mediaName = "400px-" + mediaName + ".png";
             }
 
-            // Open a connection
-            HttpWebRequest webRequestObject = (HttpWebRequest)WebRequest.Create(url);
-
-//             // You can also specify additional header values like
-//             // the user agent or the referrer:
-             webRequestObject.UserAgent = ".NET Framework/2.0";
-//             webRequestObject.Referer = "http://www.example.com/";
-
-            // Request response:
-            using (WebResponse response = webRequestObject.GetResponse())
-            {
-                using (Stream webStream = response.GetResponseStream())
-                {
-                    if (webStream == null)
-                    {
-                        return;
-                    }
-
-                    string filename = Path.Combine(cacheFolder_, mediaName);
-                    using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite, FileShare.Read))
-                    {
-                        byte[] buffer = new byte[64 * 1024];
-                        int read = webStream.Read(buffer, 0, buffer.Length);
-                        while (read > 0)
-                        {
-                            fs.Write(buffer, 0, read);
-                            read = webStream.Read(buffer, 0, buffer.Length);
-                        }
-                    }
-                }
-            }
-
-            mediaName = mediaName.ToUpperInvariant();
-            State state = new State();
-            state.Cached = true;
-            cache_[mediaName] = state;
+            return mediaName;
         }
 
-        #endregion
+        #endregion // implementation
 
         #region representation
 

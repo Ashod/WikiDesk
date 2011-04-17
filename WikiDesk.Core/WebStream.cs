@@ -11,7 +11,12 @@ namespace WikiDesk.Core
     /// </summary>
     public class WebStream : Stream
 	{
-		public WebStream(string uri, long position)
+		public WebStream(string uri)
+            : this(uri, 0)
+		{
+		}
+
+        public WebStream(string uri, long position)
 		{
 			Uri = uri;
 			position_ = position;
@@ -194,8 +199,8 @@ namespace WikiDesk.Core
             {
                 ws.UserAgent = userAgent;
                 ws.Referer = referer;
-
                 ws.Connect();
+
                 using (StreamReader reader = new StreamReader(ws.stream_))
                 {
                     return reader.ReadToEnd();
@@ -213,6 +218,7 @@ namespace WikiDesk.Core
             {
                 ws.UserAgent = userAgent;
                 ws.Referer = referer;
+                ws.Connect();
 
                 long total = 0;
                 byte[] buffer = new byte[64 * 1024];

@@ -545,7 +545,7 @@ namespace WikiDesk.Core
                     string imagePage = Download.DownloadPage(imagePageUrl);
                     Match imageSourceMatch = ImageSourceRegex.Match(imagePage);
                     if (!imageSourceMatch.Success ||
-                        (imageSourceMatch.Groups[1].Value != imageFileName))
+                        (string.Compare(imageSourceMatch.Groups[1].Value, imageFileName, true) != 0))
                     {
                         // File not found?
                         return string.Empty;
