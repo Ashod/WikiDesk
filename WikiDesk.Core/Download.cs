@@ -6,20 +6,27 @@
     public class Download
     {
         public static string DownloadPage(string url)
-        { 
+        {
             // Open a connection
-            HttpWebRequest webRequestObject = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest webRequest = WebRequest.Create(url) as HttpWebRequest;
+            if (webRequest == null)
+            {
+                return null;
+            }
 
-//             // You can also specify additional header values like
-//             // the user agent or the referrer:
-             webRequestObject.UserAgent	= ".NET Framework/2.0";
-//             webRequestObject.Referer	= "http://www.example.com/";
+            webRequest.UserAgent = "WebDesk";
+            //webRequest.Referer = "http://www.example.com/";
 
             // Request response:
-            using (WebResponse response = webRequestObject.GetResponse())
+            using (WebResponse response = webRequest.GetResponse())
             {
                 using (Stream webStream = response.GetResponseStream())
                 {
+                    if (webStream == null)
+                    {
+                        return null;
+                    }
+
                     using (StreamReader reader = new StreamReader(webStream))
                     {
                         return reader.ReadToEnd();
