@@ -883,6 +883,8 @@
                 finally
                 {
                     progForm.txtInfo.Text = "Reloading database...";
+                    Application.DoEvents();
+
                     ReloadDatabase();
                     Enabled = true;
                 }
@@ -952,25 +954,35 @@
                         progForm.lblRemainingTimeValue_.Text =
                             string.Format("{0,2}h : {1,2}m : {2,2}s", remaining.Hours, remaining.Minutes, remaining.Seconds);
 
-                        entryRate = (entries - lastEntryCount) / (DateTime.UtcNow - lastRefreshTime).TotalSeconds;
-                        lastEntryCount = entries;
-                        lastRefreshTime = DateTime.UtcNow;
+                        double entryRateElapsedSecs = (DateTime.UtcNow - lastRefreshTime).TotalSeconds;
+                        int newEntries = entries - lastEntryCount;
+                        if (entryRate == 0 ||
+                            (entryRateElapsedSecs >= 5 && newEntries > 0))
+                        {
+                            double newEntryRate = newEntries / entryRateElapsedSecs;
+                            entryRate = (entryRate + 3 * newEntryRate) / 4;
+                            lastEntryCount = entries;
+                            lastRefreshTime = DateTime.UtcNow;
+                        }
                     }
                     else
                     {
                         progForm.lblRemainingTimeValue_.Text = "Estimating...";
                     }
 
-                    for (int i = 0; i < 10 && !cancel; ++i)
+                    for (int i = 0; i < 9 && !cancel; ++i)
                     {
-                        cancel = progForm.DialogResult == DialogResult.Cancel;
+                        cancel = progForm.Cancelled;
                         Application.DoEvents();
-                        Thread.Sleep(133);
+                        Thread.Sleep(166);
                     }
                 }
             }
             finally
             {
+                progForm.txtInfo.Text = "Cancelling...";
+                Application.DoEvents();
+
                 cancel = true;
                 d.EndInvoke(asyncResult);
             }

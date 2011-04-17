@@ -11,10 +11,12 @@ namespace WikiDesk
             InitializeComponent();
         }
 
+        public bool Cancelled { get; private set; }
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
-            Close();
+            btnCancel.Enabled = false;
+            Cancelled = true;
         }
     }
 }

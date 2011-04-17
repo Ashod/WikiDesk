@@ -91,7 +91,8 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.prgProgress);
             this.Controls.Add(this.txtInfo);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "ProgressForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ProgressForm";
