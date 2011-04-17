@@ -106,7 +106,7 @@
 
             // May contain HTML, strip them.
             title = StringUtils.RemoveBlocks(title, "<", ">");
-            title = EncodeNonAsciiCharacters(title);
+            title = AnchorEncode(title);
             return Normalize(title);
         }
 
@@ -151,12 +151,12 @@
         {
             title = Normalize(title);
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(title.Length * 2);
             foreach (char c in title)
             {
                 if (c > 127)
                 {
-                    // This character is too big for ASCII
+                    // This character is too big for ASCII.
                     string encodedValue = "\\u" + ((int)c).ToString("x4");
                     sb.Append(encodedValue);
                 }
@@ -185,5 +185,34 @@
             return Denormalize(decoded);
         }
 
+        /// <summary>
+        /// Encodes a title for in-page anchor ID. Not reversible.
+        /// This name must be unique in a document.
+        /// ID token must begin with a letter ([A-Za-z]) and may be followed by
+        /// any number of letters, digits ([0-9]), hyphens ("-"),
+        /// underscores ("_"), colons (":"), and periods (".").
+        /// </summary>
+        /// <param name="title">The title to encode.</param>
+        /// <returns>Encoded title.</returns>
+        private static string AnchorEncode(string title)
+        {
+            StringBuilder sb = new StringBuilder(title.Length * 2);
+            sb.Append("a_");
+            foreach (char ch in title)
+            {
+                char c = Char.ToLowerInvariant(ch);
+                if (c >= 'a' && c <= 'z')
+                {
+                    sb.Append(c);
+                }
+                else
+                {
+                    sb.Append(".");
+                    sb.Append(((int)c).ToString("x"));
+                }
+            }
+
+            return sb.ToString();
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace WikiDesk.Core
             RegisterHandler("language",          DoNothing);
             RegisterHandler("padleft",           DoNothing);
             RegisterHandler("padright",          DoNothing);
-            RegisterHandler("anchorencode",      DoNothing);
+            RegisterHandler("anchorencode",      AnchorEncode);
             RegisterHandler("#special",          DoNothing);
             RegisterHandler("defaultsort",       DoNothing);
             RegisterHandler("filepath",          DoNothing);
@@ -335,6 +335,23 @@ namespace WikiDesk.Core
                 output = wikiSite_.GetViewUrl(pageName);
             }
 
+            return Result.Found;
+        }
+
+        private static Result AnchorEncode(List<KeyValuePair<string, string>> args, out string output)
+        {
+            if (args != null && args.Count > 0)
+            {
+                string arg = args[0].Value;
+                if (!string.IsNullOrEmpty(arg))
+                {
+                    arg = arg.Trim(WhiteSpaceChars);
+                    output = Title.NormalizeAnchor(arg);
+                    return Result.Found;
+                }
+            }
+
+            output = string.Empty;
             return Result.Found;
         }
 

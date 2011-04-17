@@ -744,15 +744,20 @@ namespace WikiDesk.Core
 
                 // Handle the match.
                 string magic = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
-                string output;
-                if (MagicWord(magic, out output) == VariableProcessor.Result.Found &&
-                    !string.IsNullOrEmpty(output))
+                if (magic.Length > 0)
                 {
-                    // Recursively process.
-                    output = ProcessMagicWords(output);
-                }
+                    magic = ProcessMagicWords(magic);
 
-                sb.Append(output);
+                    string output;
+                    if (MagicWord(magic, out output) == VariableProcessor.Result.Found &&
+                        !string.IsNullOrEmpty(output))
+                    {
+                        // Recursively process.
+                        output = ProcessMagicWords(output);
+                    }
+
+                    sb.Append(output);
+                }
 
                 lastIndex = startIndex + (endIndex - startIndex + 1);
                 startIndex = MagicParser.FindMagicBlock(wikicode, lastIndex, out endIndex);
@@ -854,7 +859,7 @@ namespace WikiDesk.Core
             if (template == null)
             {
                 logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", name);
-                output = "~" + name + "~";
+                output = name; // Leave it as-is. Might be meaningful in a larger context.
                 return VariableProcessor.Result.Html;
             }
 
@@ -869,7 +874,7 @@ namespace WikiDesk.Core
                 if (template == null)
                 {
                     logger_.Log(Levels.Debug, "Template [{0}] didn't resolve.", newName);
-                    output = "~" + name + "~";
+                    output = name; // Leave it as-is. Might be meaningful in a larger context.
                     return VariableProcessor.Result.Html;
                 }
 

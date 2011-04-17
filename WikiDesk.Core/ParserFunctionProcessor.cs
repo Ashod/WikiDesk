@@ -26,7 +26,7 @@ namespace WikiDesk.Core
             RegisterHandler("#ifeq:", IfEq);
             RegisterHandler("#iferror:", IfError);
             RegisterHandler("#ifexpr:", IfExpr);
-            RegisterHandler("#ifexists:", IfExists);
+            RegisterHandler("#ifexist:", IfExist);
             RegisterHandler("#rel2abs:", Rel2Abs);
             RegisterHandler("#switch:", Switch);
             RegisterHandler("#time:", Time);
@@ -188,16 +188,17 @@ namespace WikiDesk.Core
 
         private Result IfExpr(List<KeyValuePair<string, string>> args, out string output)
         {
-            /// {{#ifexpr:12345678901234567=12345678901234568|1|0}} gives 1
-            /// because MediaWiki converts literal numbers in expressions to type float,
-            /// which, for large integers like these, involves rounding.
+            // {{#ifexpr:12345678901234567=12345678901234568|1|0}} gives 1
+            // because MediaWiki converts literal numbers in expressions to type float,
+            // which, for large integers like these, involves rounding.
             output = "<strong style=\"color: red;\">#ifexpr</strong>";
             return Result.Found;
         }
 
-        private Result IfExists(List<KeyValuePair<string, string>> args, out string output)
+        private Result IfExist(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = "<strong style=\"color: red;\">#iIfexists</strong>";
+            //TODO: Evaluate. For now we assume it always exists.
+            output = args.Count > 1 ? args[1].Value : string.Empty;
             return Result.Found;
         }
 
