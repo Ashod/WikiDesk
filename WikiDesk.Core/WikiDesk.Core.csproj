@@ -37,6 +37,7 @@
     <Compile Include="MagicParser.cs" />
     <Compile Include="MagicWordProcessor.cs" />
     <Compile Include="ParserFunctionProcessor.cs" />
+    <Compile Include="WebStream.cs" />
     <Compile Include="WikiDomain.cs" />
     <Compile Include="WikiLanguage.cs" />
     <Compile Include="WikiMessages.cs" />
