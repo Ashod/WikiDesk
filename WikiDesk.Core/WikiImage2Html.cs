@@ -33,12 +33,7 @@ namespace WikiDesk.Core
         {
             StringBuilder sb = new StringBuilder(256);
 
-            if ((location == null) &&
-                (type == null || type == Type.Frameless))
-            {
-                sb.Append("<p>");
-            }
-            else
+            if ((location != null) || (type != null && type != Type.Frameless))
             {
                 if (location == Location.Center)
                 {
@@ -52,13 +47,15 @@ namespace WikiDesk.Core
                         sb.Append("<div class=\"floatright\">");
                     }
                     else
-                    if (location == Location.Left)
                     {
-                        sb.Append("<div class=\"floatleft\">");
-                    }
-                    else
-                    {
-                        sb.Append("<div class=\"floatnone\">");
+                        if (location == Location.Left)
+                        {
+                            sb.Append("<div class=\"floatleft\">");
+                        }
+                        else
+                        {
+                            sb.Append("<div class=\"floatnone\">");
+                        }
                     }
                 }
                 else
@@ -69,13 +66,15 @@ namespace WikiDesk.Core
                         sb.Append(" tright\">");
                     }
                     else
-                    if (location == Location.Left)
                     {
-                        sb.Append(" tleft\">");
-                    }
-                    else
-                    {
-                        sb.Append(" tnone\">");
+                        if (location == Location.Left)
+                        {
+                            sb.Append(" tleft\">");
+                        }
+                        else
+                        {
+                            sb.Append(" tnone\">");
+                        }
                     }
 
                     sb.Append("<div class=\"thumbinner\" style=\"width:");
@@ -143,12 +142,7 @@ namespace WikiDesk.Core
                 sb.Append("</div>");
             }
 
-            if ((location == null) &&
-                (type == null || type == Type.Frameless))
-            {
-                sb.Append("</p>");
-            }
-            else
+            if ((location != null) || (type != null && type != Type.Frameless))
             {
                 if (location == Location.Center)
                 {

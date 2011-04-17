@@ -25,7 +25,7 @@
         {
             TestConvert(
                     "=!=",
-                    "<h1><span class=\"mw-headline\" id=\"!\">!</span></h1>" + Environment.NewLine);
+                    "<h1><span class=\"mw-headline\" id=\"a_.21\">!</span></h1>" + Environment.NewLine);
         }
 
         [Test]
@@ -33,7 +33,7 @@
         {
             TestConvert(
                     "==!==",
-                    "<h2><span class=\"mw-headline\" id=\"!\">!</span></h2>" + Environment.NewLine);
+                    "<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>" + Environment.NewLine);
         }
 
         [Test]
@@ -41,7 +41,7 @@
         {
             TestConvert(
                     "===!===",
-                    "<h3><span class=\"mw-headline\" id=\"!\">!</span></h3>" + Environment.NewLine);
+                    "<h3><span class=\"mw-headline\" id=\"a_.21\">!</span></h3>" + Environment.NewLine);
         }
 
         [Test]
@@ -49,7 +49,7 @@
         {
             TestConvert(
                     "====!====",
-                    "<h4><span class=\"mw-headline\" id=\"!\">!</span></h4>" + Environment.NewLine);
+                    "<h4><span class=\"mw-headline\" id=\"a_.21\">!</span></h4>" + Environment.NewLine);
         }
 
         [Test]
@@ -57,7 +57,7 @@
         {
             TestConvert(
                     "=====!=====",
-                    "<h5><span class=\"mw-headline\" id=\"!\">!</span></h5>" + Environment.NewLine);
+                    "<h5><span class=\"mw-headline\" id=\"a_.21\">!</span></h5>" + Environment.NewLine);
         }
 
         [Test]
@@ -65,7 +65,7 @@
         {
             TestConvert(
                     "======!======",
-                    "<h6><span class=\"mw-headline\" id=\"!\">!</span></h6>" + Environment.NewLine);
+                    "<h6><span class=\"mw-headline\" id=\"a_.21\">!</span></h6>" + Environment.NewLine);
         }
 
         [Test]
@@ -81,7 +81,7 @@
         {
             TestConvert(
                     "==!==\n",
-                    "<h2><span class=\"mw-headline\" id=\"!\">!</span></h2>" + Environment.NewLine);
+                    "<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>" + Environment.NewLine);
         }
 
         [Test]
@@ -89,7 +89,7 @@
         {
             TestConvert(
                     "blah blha \n==!==\n",
-                    "<p>blah blha </p><h2><span class=\"mw-headline\" id=\"!\">!</span></h2>" + Environment.NewLine);
+                    "<p>blah blha </p><h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>" + Environment.NewLine);
         }
 
         [Test]
@@ -97,7 +97,7 @@
         {
             TestConvert(
                     "blah blha \n==!==  \nThe bigest mistkae.",
-                    "<p>blah blha </p><h2><span class=\"mw-headline\" id=\"!\">!</span></h2>\r\n  <p>The bigest mistkae.</p>");
+                    "<p>blah blha </p><h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>\r\n  <p>The bigest mistkae.</p>");
         }
 
         #endregion // Header
@@ -149,7 +149,7 @@
         {
             TestConvert(
                     "=='''!'''==",
-                    "<h2><span class=\"mw-headline\" id=\"!\"><b>!</b></span></h2>" + Environment.NewLine);
+                    "<h2><span class=\"mw-headline\" id=\"a_.21\"><b>!</b></span></h2>" + Environment.NewLine);
         }
 
         #endregion // Bold/Italic
