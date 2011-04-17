@@ -37,9 +37,14 @@
 
         #region properties
 
-        public string DumpFilename
+        public bool LocalDump
         {
-            get { return txtFileDumpPath_.Text; }
+            get { return rdFileDump_.Checked; }
+        }
+
+        public string DumpFileSource
+        {
+            get { return rdFileDump_.Checked ? txtFileDumpPath_.Text : txtWebDumpUrl_.Text; }
         }
 
         public string DomainName
@@ -97,12 +102,10 @@
 
         private void UpdateDumpInfo()
         {
-            string source = rdFileDump_.Checked ? txtFileDumpPath_.Text : txtWebDumpUrl_.Text;
-
             string domainName;
             string languageCode;
             DateTime date;
-            bool validDumpFileName = ParseDumpFileName(source, out domainName, out languageCode, out date);
+            bool validDumpFileName = ParseDumpFileName(DumpFileSource, out domainName, out languageCode, out date);
 
             // In dumps, Wikipedia is shortened to Wiki.
             if (string.Compare(domainName, "wiki", true) == 0)
@@ -110,8 +113,8 @@
                 domainName = "Wikipedia";
             }
 
-            cboLanguages_.SelectedIndex = languages_.Languages.FindIndex(lang => lang.Code == languageCode);
             cboDomains_.SelectedIndex = domains_.Domains.FindIndex(domain => string.Compare(domain.Name, domainName, true) == 0);
+            cboLanguages_.SelectedIndex = languages_.Languages.FindIndex(lang => lang.Code == languageCode);
             dateTimePicker_.Value = date;
 
             UpdateImportButton(validDumpFileName);
@@ -168,7 +171,7 @@
 
         private void btnImport__Click(object sender, EventArgs e)
         {
-            if (!File.Exists(txtFileDumpPath_.Text))
+            if (LocalDump && !File.Exists(DumpFileSource))
             {
                 MessageBox.Show(
                         "Please select a valid dump file to import from.",
