@@ -124,6 +124,7 @@ namespace WikiDesk.Core
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether the current stream supports reading.
+        /// Always returns true.
         /// </summary>
         /// <returns>
         /// true if the stream supports reading; otherwise, false.
@@ -136,6 +137,7 @@ namespace WikiDesk.Core
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether the current stream supports seeking.
+        /// Always returns false.
         /// </summary>
         /// <returns>
         /// true if the stream supports seeking; otherwise, false.
@@ -148,6 +150,7 @@ namespace WikiDesk.Core
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether the current stream supports writing.
+        /// Always returns false.
         /// </summary>
         /// <returns>
         /// true if the stream supports writing; otherwise, false.
@@ -269,11 +272,21 @@ namespace WikiDesk.Core
             stream_ = webResponse_.GetResponseStream();
         }
 
+        /// <summary>
+        /// Sets an inclusive range of bytes to download.
+        /// </summary>
+        /// <param name="request">The request to set the range to.</param>
+        /// <param name="from">The first byte offset, -ve to omit.</param>
+        /// <param name="to">The last byte offset, less-than from to omit.</param>
         private static void SetWebRequestRange(HttpWebRequest request, long from, long to)
         {
-            MethodInfo method = typeof(WebHeaderCollection).GetMethod("AddWithoutValidate", BindingFlags.Instance | BindingFlags.NonPublic);
+            string first = from >= 0 ? from.ToString() : string.Empty;
+            string last = to >= from ? to.ToString() : string.Empty;
 
-            string val = string.Format("bytes={0}-{1}", from, to < from ? string.Empty : to.ToString());
+            string val = string.Format("bytes={0}-{1}", first, last);
+
+            Type type = typeof(WebHeaderCollection);
+            MethodInfo method = type.GetMethod("AddWithoutValidate", BindingFlags.Instance | BindingFlags.NonPublic);
             method.Invoke(request.Headers, new object[] { "Range", val });
         }
 
