@@ -186,6 +186,7 @@ namespace WikiDesk.Core
             wikicode = ProcessMagicWords(wikicode);
 
             wikicode = ConvertListCode(wikicode);
+            wikicode = ConvertTables(wikicode);
             wikicode = ConvertParagraphs(wikicode);
             return wikicode;
         }
@@ -312,6 +313,121 @@ namespace WikiDesk.Core
             }
 
             return wikicode;
+        }
+
+        private static string ConvertTables(string wikicode)
+        {
+            StringBuilder sb = new StringBuilder(wikicode.Length * 2);
+            using (StringReader sr = new StringReader(wikicode))
+            {
+                string line;
+                List<string> tableLines = new List<string>(32);
+                bool table = false;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (table || line.Trim().StartsWith("{|"))
+                    {
+                        // This is the start of a table.
+                        // Get all the table lines and pass to the generator.
+                        tableLines.Add(line);
+                        table = true;
+
+                        if (line.Trim().StartsWith("|}"))
+                        {
+                            table = false;
+                            GenerateTable(tableLines, sb);
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(line);
+                    }
+                }
+
+                if (table)
+                {
+                    GenerateTable(tableLines, sb);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private static void GenerateTable(List<string> tableLines, StringBuilder sb)
+        {
+            string line = tableLines[0].Trim();
+            if (line == "{|")
+            {
+                sb.AppendLine("<table>");
+            }
+            else
+            {
+                sb.Append("<table ");
+                int indexOf = line.IndexOf("{|");
+                if (indexOf < 0)
+                {
+                    // Invalid, and should never happen.
+                    return;
+                }
+
+                sb.Append(line.Substring(indexOf + 2));
+                sb.AppendLine(">");
+            }
+
+            int idx = 1;
+            line = tableLines[idx].Trim();
+            if (line.StartsWith("|+"))
+            {
+                sb.AppendLine("<caption>");
+                sb.AppendLine(line.Substring(2));
+                sb.AppendLine("</caption>");
+                ++idx;
+            }
+
+            sb.AppendLine("<tbody>");
+
+            bool row = false;
+            for (; idx < tableLines.Count; ++idx)
+            {
+                line = tableLines[idx].Trim();
+                if (line.StartsWith("|-"))
+                {
+                    if (row)
+                    {
+                        sb.AppendLine("</tr>");
+                    }
+
+                    sb.AppendLine("<tr>");
+                    row = true;
+                }
+                else
+                if (line.StartsWith("|}"))
+                {
+                    break;
+                }
+                else
+                {
+                    // Cell.
+                    if (!row)
+                    {
+                        // Start a new row if it's missing.
+                        sb.AppendLine("<tr>");
+                        row = true;
+                    }
+
+                    sb.Append("<td>");
+                    sb.Append(line.Substring(1).TrimStart());
+                    sb.Append("</td>");
+                }
+            }
+
+            if (row)
+            {
+                sb.AppendLine("</tr>");
+            }
+
+            sb.AppendLine("</tbody>");
+            sb.AppendLine("</table>");
         }
 
         private static string ConvertUnaryCode(Regex regex, MatchedRegexHandler handler, string wikicode)
@@ -474,13 +590,14 @@ namespace WikiDesk.Core
                     Environment.NewLine);
         }
 
-        private static string BoldItalic(Match match)
+        private string BoldItalic(Match match)
         {
             string left = match.Groups[1].ToString();
             string right = match.Groups[3].ToString();
             if (left == right)
             {
                 string value = match.Groups[2].ToString();
+                value = ConvertInlineCodes(value);
                 switch (left.Length)
                 {
                     case 2:
@@ -502,10 +619,15 @@ namespace WikiDesk.Core
             if (code.StartsWith("[") && code.EndsWith("]"))
             {
                 code = code.TrimStart('[').TrimEnd(']');
+                code = ConvertInlineCodes(code);
 
                 // [[Image:blah.jpg | options]] internal link.
                 string param;
                 code = StringUtils.BreakAt(code, '|', out param);
+                if (code.Length == 0)
+                {
+                    return string.Empty;
+                }
 
                 string upper = code.ToUpperInvariant();
                 if (upper.StartsWith("IMAGE:") || upper.StartsWith("FILE:"))
@@ -969,7 +1091,8 @@ namespace WikiDesk.Core
                         line.StartsWith("<p") ||
                         line.StartsWith("<d") ||
                         line.StartsWith("<u") ||
-                        line.StartsWith("<l"))
+                        line.StartsWith("<l") ||
+                        line.StartsWith("</"))
                     {
                         if (para)
                         {
