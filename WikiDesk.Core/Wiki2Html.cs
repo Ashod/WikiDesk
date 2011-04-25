@@ -185,6 +185,8 @@ namespace WikiDesk.Core
         {
             wikicode = ProcessMagicWords(wikicode);
 
+            wikicode = ConvertInlineCodes(wikicode);
+
             wikicode = ConvertListCode(wikicode);
             wikicode = ConvertTables(wikicode);
             wikicode = ConvertParagraphs(wikicode);
@@ -193,8 +195,12 @@ namespace WikiDesk.Core
 
         private string ConvertInlineCodes(string wikicode)
         {
-            wikicode = ConvertBinaryCode(wikicode, x => x, BoldItalicRegex, BoldItalic);
-            wikicode = ConvertBinaryCode(wikicode, x => x, '[', ']', Link);
+            if (!string.IsNullOrEmpty(wikicode))
+            {
+                wikicode = ConvertBinaryCode(wikicode, x => x, BoldItalicRegex, BoldItalic);
+                wikicode = ConvertBinaryCode(wikicode, x => x, '[', ']', Link);
+            }
+
             return wikicode;
         }
 
@@ -335,7 +341,7 @@ namespace WikiDesk.Core
                         if (line.Trim().StartsWith("|}"))
                         {
                             table = false;
-                            GenerateTable(tableLines, sb);
+                            ConvertTable(tableLines, sb);
                         }
                     }
                     else
@@ -346,16 +352,16 @@ namespace WikiDesk.Core
 
                 if (table)
                 {
-                    GenerateTable(tableLines, sb);
+                    ConvertTable(tableLines, sb);
                 }
             }
 
             return sb.ToString();
         }
 
-        private static void GenerateTable(List<string> tableLines, StringBuilder sb)
+        private static void ConvertTable(List<string> lines, StringBuilder sb)
         {
-            string line = tableLines[0].Trim();
+            string line = lines[0].Trim();
             if (line == "{|")
             {
                 sb.AppendLine("<table>");
@@ -370,16 +376,16 @@ namespace WikiDesk.Core
                     return;
                 }
 
-                sb.Append(line.Substring(indexOf + 2));
+                sb.Append(line.Substring(indexOf + 2).Trim());
                 sb.AppendLine(">");
             }
 
             int idx = 1;
-            line = tableLines[idx].Trim();
+            line = lines[idx].Trim();
             if (line.StartsWith("|+"))
             {
-                sb.AppendLine("<caption>");
-                sb.AppendLine(line.Substring(2));
+                sb.Append("<caption>");
+                sb.Append(line.Substring(2).TrimStart());
                 sb.AppendLine("</caption>");
                 ++idx;
             }
@@ -387,9 +393,9 @@ namespace WikiDesk.Core
             sb.AppendLine("<tbody>");
 
             bool row = false;
-            for (; idx < tableLines.Count; ++idx)
+            for (; idx < lines.Count; ++idx)
             {
-                line = tableLines[idx].Trim();
+                line = lines[idx].Trim();
                 if (line.StartsWith("|-"))
                 {
                     if (row)
@@ -407,7 +413,7 @@ namespace WikiDesk.Core
                 }
                 else
                 {
-                    // Cell.
+                    // Cell(s).
                     if (!row)
                     {
                         // Start a new row if it's missing.
@@ -415,9 +421,31 @@ namespace WikiDesk.Core
                         row = true;
                     }
 
-                    sb.Append("<td>");
-                    sb.Append(line.Substring(1).TrimStart());
-                    sb.Append("</td>");
+                    line = line.Substring(1);
+                    foreach (string cell in line.Split(new[]{ "||" }, StringSplitOptions.None))
+                    {
+                        string text;
+                        string formatModifier = StringUtils.BreakAt(cell, '|', out text);
+                        if (text == null)
+                        {
+                            text = formatModifier;
+                            formatModifier = string.Empty;
+                        }
+
+                        if (formatModifier.IndexOf('=') < 0)
+                        {
+                            sb.Append("<td>");
+                        }
+                        else
+                        {
+                            sb.Append("<td ");
+                            sb.Append(formatModifier.Trim());
+                            sb.Append('>');
+                        }
+
+                        sb.Append(text.Trim());
+                        sb.AppendLine("</td>");
+                    }
                 }
             }
 
@@ -426,7 +454,7 @@ namespace WikiDesk.Core
                 sb.AppendLine("</tr>");
             }
 
-            sb.AppendLine("</tbody>");
+            sb.Append("</tbody>");
             sb.AppendLine("</table>");
         }
 
@@ -854,7 +882,7 @@ namespace WikiDesk.Core
             int startIndex = MagicParser.FindMagicBlock(wikicode, out endIndex);
             if (startIndex < 0)
             {
-                return ConvertInlineCodes(wikicode);
+                return wikicode;
             }
 
             logger_.Log(Levels.Debug, "Processing Magic:{0}{1}", Environment.NewLine, wikicode);
@@ -872,17 +900,30 @@ namespace WikiDesk.Core
                 string magic = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
                 if (magic.Length > 0)
                 {
-                    magic = ProcessMagicWords(magic);
-
-                    string output;
-                    if (MagicWord(magic, out output) == VariableProcessor.Result.Found &&
-                        !string.IsNullOrEmpty(output))
+                    // Embedded links are processed as-is.
+                    if (magic.StartsWith("["))
                     {
-                        // Recursively process.
-                        output = ProcessMagicWords(output);
+                        return ConvertInlineCodes(wikicode);
                     }
 
-                    sb.Append(output);
+                    if (magic.StartsWith("<"))
+                    {
+                        sb.Append("{{").Append(magic).Append("}}");
+                    }
+                    else
+                    {
+                        magic = ProcessMagicWords(magic);
+
+                        string output;
+                        if (MagicWord(magic, out output) == VariableProcessor.Result.Found &&
+                            !string.IsNullOrEmpty(output))
+                        {
+                            // Recursively process.
+                            output = ProcessMagicWords(output);
+                        }
+
+                        sb.Append(output);
+                    }
                 }
 
                 lastIndex = startIndex + (endIndex - startIndex + 1);
@@ -1092,24 +1133,25 @@ namespace WikiDesk.Core
                         line.StartsWith("<d") ||
                         line.StartsWith("<u") ||
                         line.StartsWith("<l") ||
-                        line.StartsWith("</"))
+                        line.StartsWith("</") ||
+                        line.StartsWith("<c"))
                     {
                         if (para)
                         {
-                            sb.Append("</p>");
+                            sb.AppendLine("</p>");
                             para = false;
                         }
 
                         if (blankLines == 1)
                         {
-                            sb.Append("<p>");
+                            sb.AppendLine("<p>");
                             para = true;
                             blankLines = 0;
                         }
                         else
                         if (blankLines > 1)
                         {
-                            sb.Append("<p><br /></p>");
+                            sb.AppendLine("<p><br /></p>");
                             blankLines = 0;
                         }
                     }
@@ -1119,21 +1161,21 @@ namespace WikiDesk.Core
                         {
                             if (blankLines > 1)
                             {
-                                sb.Append("<p><br /></p>");
+                                sb.AppendLine("<p><br /></p>");
                             }
 
-                            sb.Append("<p>");
+                            sb.AppendLine("<p>");
                             para = true;
                             blankLines = 0;
                         }
                     }
 
-                    sb.Append(line);
+                    sb.AppendLine(line);
                 }
 
                 if (para)
                 {
-                    sb.Append("</p>");
+                    sb.AppendLine("</p>");
                 }
             }
 
