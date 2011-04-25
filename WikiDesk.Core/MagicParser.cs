@@ -199,12 +199,21 @@ namespace WikiDesk.Core
 
             // Convert args to a map for faster query.
             Dictionary<string, string> mapArgs = null;
+            int unnamedArgId = 1;
             if (args != null && args.Count > 0)
             {
                 mapArgs = new Dictionary<string, string>(args.Count);
                 foreach (KeyValuePair<string, string> pair in args)
                 {
-                    mapArgs[pair.Key] = pair.Value;
+                    if (pair.Key.Length == 0)
+                    {
+                        mapArgs[unnamedArgId.ToString()] = pair.Value;
+                        ++unnamedArgId;
+                    }
+                    else
+                    {
+                        mapArgs[pair.Key] = pair.Value;
+                    }
                 }
             }
 

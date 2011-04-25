@@ -24,6 +24,8 @@
 
             string id;
 
+            //TODO: Should we really trim the colon at the end?
+
             // Assume case-sensitive.
             if (caseSensitiveWordsMap_.TryGetValue(word, out id) ||
                 caseSensitiveWordsMap_.TryGetValue(word.TrimEnd(':'), out id))
@@ -32,7 +34,9 @@
             }
 
             // Try case-insensitive.
-            if (caseInsensitiveWordsMap_.TryGetValue(word.ToUpperInvariant(), out id))
+            word = word.ToUpperInvariant();
+            if (caseInsensitiveWordsMap_.TryGetValue(word, out id) ||
+                caseInsensitiveWordsMap_.TryGetValue(word.TrimEnd(':'), out id))
             {
                 return id;
             }
