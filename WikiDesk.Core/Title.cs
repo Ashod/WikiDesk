@@ -77,7 +77,7 @@
             }
 
             // Spaces and underscores are interchangeable.
-            title = title.Replace(' ', '_');
+            title = StringUtils.CollapseReplace(title, ' ', '_');
 
             // Always make the first character upper for proper comparison.
             title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);

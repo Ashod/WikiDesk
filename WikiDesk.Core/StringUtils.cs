@@ -598,5 +598,33 @@ namespace WikiDesk.Core
 
             return count;
         }
+
+        /// <summary>
+        /// Replaces a given character with another removing duplicates.
+        /// </summary>
+        /// <param name="text">The text to process.</param>
+        /// <param name="bad">The character to replace.</param>
+        /// <param name="good">The character to replace with.</param>
+        /// <returns>The resulting text.</returns>
+        public static string CollapseReplace(string text, char bad, char good)
+        {
+            StringBuilder sb = new StringBuilder(text.Length);
+            int index = 0;
+            while (index < text.Length)
+            {
+                if (text[index] == bad)
+                {
+                    sb.Append(good);
+                    while (++index < text.Length && text[index] == bad)
+                        ;
+                }
+                else
+                {
+                    sb.Append(text[index++]);
+                }
+            }
+
+            return sb.ToString();
+        }
     }
 }
