@@ -371,6 +371,18 @@ Hayastani Hanrapetutyun |
         }
 
         [Test]
+        public void ProcessTemplateUnnamedParam()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>(string.Empty, "a")
+                };
+
+            string value = MagicParser.ProcessTemplateParams("start-{{{1|pqr}}}-end", args);
+            Assert.AreEqual("start-a-end", value);
+        }
+
+        [Test]
         public void ProcessTemplateParamsSpace()
         {
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
@@ -443,34 +455,38 @@ Hayastani Hanrapetutyun |
         public void TemplateA()
         {
             TestConvert("{{!}}",
-                "<p>|</p>");
+                "<p>\r\n|\r\n</p>\r\n");
         }
 
         [Test]
         public void TemplateExclaimExplicit()
         {
             TestConvert("{{Template:!}}",
-                "<p>|</p>");
+                "<p>\r\n|\r\n</p>\r\n");
         }
-
 
         [Test]
         public void TemplateThankYou()
         {
             TestConvert("{{ThankYou}}",
-                "<p><a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\"><img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\"></a> <b>Thank you</b></p>");
+                "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\"><img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\"></a> <b>Thank you</b>\r\n</p>\r\n");
         }
 
         [Test]
-        [Ignore]
         public void TemplateLang()
         {
             TestConvert("{{lang-ka|kikos}}",
-                "<p><span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
+                "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Georgian_language\" title=\"Georgian language\" class=\"mw-redirect\">Georgian</a>: <span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
         }
 
         [Test]
-        [Ignore]
+        public void TemplateCitationError()
+        {
+            TestConvert("{{Citation error|no <code>&#124;title&#61;</code> specified|Cite web}}",
+                "<p>\r\n<span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"http://en.wikipedia.org/wiki/Template:Cite_web\" title=\"Template:Cite web\" class=\"mw-redirect\">Cite web</a>}}</span>\r\n</p>\r\n");
+        }
+
+        [Test]
         public void TemplateMain()
         {
             TestConvert("{{Main|History of Tbilisi}}",
@@ -478,7 +494,6 @@ Hayastani Hanrapetutyun |
         }
 
         [Test]
-        [Ignore]
         public void TemplateOCLC()
         {
             TestConvert("{{OCLC|224781861}}",

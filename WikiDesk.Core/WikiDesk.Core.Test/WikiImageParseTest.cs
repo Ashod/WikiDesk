@@ -14,7 +14,7 @@
                 "* second.\n" +
                 "* last.\n" +
                 "Other text.",
-                "<p>Blah blah List</p><ul><li>first.</li><li>second.</li><li>last.</li></ul><p>Other text.</p>");
+                "<p>\r\nBlah blah List</p><ul><li>first.</li><li>second.</li><li>last.</li></ul><p>Other text.\r\n</p>\r\n");
         }
 
         [Test]
@@ -30,7 +30,7 @@
                 "***2.\n" +
                 "* last.\n" +
                 "Other text.",
-                "<p>Blah blah List</p><ul><li>first.</li><ul><li>one.</li><li>two.</li></ul><li>second.</li><ul><li>1.</li><ul><li>2.</li></ul></ul><li>last.</li></ul><p>Other text.</p>");
+                "<p>\r\nBlah blah List</p><ul><li>first.</li><ul><li>one.</li><li>two.</li></ul><li>second.</li><ul><li>1.</li><ul><li>2.</li></ul></ul><li>last.</li></ul><p>Other text.\r\n</p>\r\n");
         }
 
         [Test]
@@ -43,7 +43,7 @@
                 "*** third.\n" +
                 "**** fourth.\n" +
                 "***** fifth.",
-                "<p>Blah blah List</p><ul><li>first.</li><ul><li>second.</li><ul><li>third.</li><ul><li>fourth.</li><ul><li>fifth.</li></ul></ul></ul></ul></ul>");
+                "<p>\r\nBlah blah List\r\n</p><ul><li>first.</li><ul><li>second.</li><ul><li>third.</li><ul><li>fourth.</li><ul><li>fifth.</li></ul></ul></ul></ul></ul>");
         }
 
         [Test]
@@ -57,11 +57,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -69,12 +69,12 @@
         {
             WikiParseTest.TestConvert(
                 "[[File:Face-smile.svg|18px]] '''Thank you'''",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\">" +
                         "<img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\">" +
                     "</a>" +
                     " <b>Thank you</b>" +
-                "</p>");
+                "\r\n</p>\r\n");
         }
 
         [Test]
@@ -88,11 +88,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|captione texte]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\" title=\"captione texte\">" +
                         "<img alt=\"captione texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -100,11 +100,11 @@
         {
             WikiParseTest.TestConvert(
                 "Hi [[Image:Westminstpalace.jpg|alt=alternate texte]] Bye",
-                "<p>Hi " +
+                "<p>\r\nHi " +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"alternate texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\">" +
                     "</a>" +
-                " Bye</p>");
+                " Bye\r\n</p>\r\n");
         }
 
         [Test]
@@ -119,11 +119,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|alt=alternate texte]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"alternate texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -138,11 +138,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|alt=alternate text|captione texte]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\" title=\"captione texte\">" +
                         "<img alt=\"alternate text\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -156,11 +156,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|border]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" class=\"thumbborder\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -174,11 +174,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|border|alt=alternate text]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"alternate text\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" class=\"thumbborder\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -192,11 +192,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|border|captione texte]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\" title=\"captione texte\">" +
                         "<img alt=\"captione texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" class=\"thumbborder\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -210,11 +210,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|frameless]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -232,7 +232,7 @@
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
                     "</a>" +
-                "</div>");
+                "</div>\r\n");
         }
 
         [Test]
@@ -250,7 +250,7 @@
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
                     "</a>" +
-                "</div>");
+                "</div>\r\n");
         }
 
         [Test]
@@ -268,7 +268,7 @@
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
                     "</a>" +
-                "</div>");
+                "</div>\r\n");
         }
 
         [Test]
@@ -290,7 +290,7 @@
                             "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
                         "</a>" +
                     "</div>" +
-                "</div>");
+                "</div>\r\n");
         }
 
         [Test]
@@ -304,11 +304,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|frameless|alt=alternate texte]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"alternate texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -322,11 +322,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|frameless|captione texte]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\" title=\"captione texte\">" +
                         "<img alt=\"captione texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -340,11 +340,11 @@
 
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|frameless|alt=alternate texte|captione texte]]",
-                "<p>" +
+                "<p>\r\n" +
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\" title=\"captione texte\">" +
                         "<img alt=\"alternate texte\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"220\">" +
-                    "</a>" +
-                "</p>");
+                    "</a>\r\n" +
+                "</p>\r\n");
         }
 
         [Test]
@@ -362,7 +362,7 @@
                     "<a href=\"http://en.wikipedia.org/wiki/File:Westminstpalace.jpg\" class=\"image\">" +
                         "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\">" +
                     "</a>" +
-                "</div>");
+                "</div>\r\n");
         }
 
         [Test]
@@ -391,7 +391,7 @@
                         "<img alt=\"Westminstpalace.jpg\" src=\"http://upload.wikimedia.org/wikipedia/commons/3/39/Westminstpalace.jpg\" width=\"170\" class=\"thumbimage\">" +
                     "</a>" +
                 "</div>" +
-                "</div>");
+                "</div>\r\n");
         }
 
         [Test]
@@ -415,7 +415,7 @@
         {
             WikiParseTest.TestConvert(
                 "[[Image:Westminstpalace.jpg|frame|none|alt=alt text|caption text]]",
-                "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">kiko</a>");
+                "<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">kiko</a>\r\n");
 
 //             [[Image:Westminstpalace.jpg|frame|none|alt=alt text|caption text]]
 //             <div class="thumb tnone">

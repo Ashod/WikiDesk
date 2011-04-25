@@ -89,7 +89,7 @@
         {
             TestConvert(
                     "blah blha \n==!==\n",
-                    "<p>blah blha </p><h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>" + Environment.NewLine);
+                    "<p>\r\nblah blha \r\n</p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>" + Environment.NewLine);
         }
 
         [Test]
@@ -97,7 +97,7 @@
         {
             TestConvert(
                     "blah blha \n==!==  \nThe bigest mistkae.",
-                    "<p>blah blha </p><h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>\r\n  <p>The bigest mistkae.</p>");
+                    "<p>\r\nblah blha \r\n</p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>\r\n<p>\r\n  The bigest mistkae.\r\n</p>\r\n");
         }
 
         #endregion // Header
@@ -109,7 +109,7 @@
         {
             TestConvert(
                     "''!''",
-                    "<p><i>!</i></p>");
+                    "<p>\r\n<i>!</i>\r\n</p>\r\n");
         }
 
         [Test]
@@ -117,7 +117,7 @@
         {
             TestConvert(
                     "'''''!'''''",
-                    "<p><i><b>!</b></i></p>");
+                    "<p>\r\n<i><b>!</b></i>\r\n</p>\r\n");
         }
 
         [Test]
@@ -125,7 +125,7 @@
         {
             TestConvert(
                     "'''!'''",
-                    "<p><b>!</b></p>");
+                    "<p>\r\n<b>!</b>\r\n</p>\r\n");
         }
 
         [Test]
@@ -133,7 +133,7 @@
         {
             TestConvert(
                     "'''''The '''red''' fox.'''''",
-                    "<p><i><b>The</b> red <b>fox.</b></i></p>");
+                    "<p>\r\n<i><b>The</b> red <b>fox.</b></i>\r\n</p>\r\n");
         }
 
         [Test]
@@ -141,7 +141,7 @@
         {
             TestConvert(
                     "'''''The '''red''",
-                    "<p><i><b>The</b> red</i></p>");
+                    "<p>\r\n<i><b>The</b> red</i>\r\n</p>\r\n");
         }
 
         [Test]
@@ -193,7 +193,7 @@
                     "#: Previous item continues" +
                     "A new line marks the end of the list." +
                     "# New numbering starts with 1.",
-                    "<ul><li><i>Unordered lists</i> are easy to do:<ul><li>Start every line with a star.<ul><li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul><li>A new line</li></ul></li><li>in a list</li></ul><p>marks the end of the list.</p><ul><li>Of course you can start again.</li></ul>");
+                    "<ul><li><i>Unordered lists</i> are easy to do:<ul><li>Start every line with a star.<ul><li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul><li>A new line</li></ul></li><li>in a list</li></ul><p>\r\nmarks the end of the list.</p><ul><li>Of course you can start again.</li></ul>");
         }
 
         #endregion // Unordered Lists
@@ -239,7 +239,7 @@
                     "* in a list" +
                     "marks the end of the list." +
                     "* Of course you can start again.",
-                    "<ul><li><i>Unordered lists</i> are easy to do:<ul><li>Start every line with a star.<ul><li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul><li>A new line</li></ul></li><li>in a list</li></ul><p>marks the end of the list.</p><ul><li>Of course you can start again.</li></ul>");
+                    "<ul><li><i>Unordered lists</i> are easy to do:<ul><li>Start every line with a star.<ul><li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul><li>A new line</li></ul></li><li>in a list</li></ul><p>\r\nmarks the end of the list.</p><ul><li>Of course you can start again.</li></ul>");
         }
 
         #endregion // Ordered Lists
@@ -248,14 +248,14 @@
         public void ExtLink()
         {
             TestConvert("[http://www.wikipedia.org WikiPipi]",
-                "<p><a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a></p>");
+                "<p>\r\n<a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a>\r\n</p>\r\n");
         }
 
         [Test]
         public void ParserFunctionSimple()
         {
             TestConvert("{{lc:KIKOS}}",
-                "<p>kikos</p>");
+                "<p>\r\nkikos\r\n</p>\r\n");
         }
 
         [Test]
@@ -263,7 +263,7 @@
         {
             TestConvert(
                     "[[Brazil|kiko]]",
-                    "<p><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a></p>");
+                    "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a>\r\n</p>\r\n");
         }
 
         [Test]
