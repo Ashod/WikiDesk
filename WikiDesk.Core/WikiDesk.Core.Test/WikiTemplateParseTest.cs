@@ -518,30 +518,7 @@ Hayastani Hanrapetutyun |
             string url = string.Concat("http://", config_.WikiSite.Language.Code, config_.WikiSite.ExportUrl, title);
             string xmlText = Download.DownloadPage(url);
             Page page = DumpParser.PageFromXml(xmlText);
-            if (page == null)
-            {
-                return string.Empty;
-            }
-
-            string text = page.Text;
-            while (true)
-            {
-                int start = text.IndexOf("<noinclude>");
-                if (start < 0)
-                {
-                    break;
-                }
-
-                int end = text.IndexOf("</noinclude>", start);
-                if (end < 0)
-                {
-                    break;
-                }
-
-                text = text.Remove(start, end - start + "</noinclude>".Length);
-            }
-
-            return text;
+            return page != null ? page.Text : string.Empty;
         }
 
         #region representation

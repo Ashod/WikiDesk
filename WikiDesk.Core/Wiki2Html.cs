@@ -912,7 +912,7 @@ namespace WikiDesk.Core
                     }
                     else
                     {
-                        magic = ProcessMagicWords(magic);
+                        //magic = ProcessMagicWords(magic);
 
                         string output;
                         if (MagicWord(magic, out output) == VariableProcessor.Result.Found &&

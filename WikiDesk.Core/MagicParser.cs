@@ -286,9 +286,13 @@ namespace WikiDesk.Core
                     // Process the default value.
                     return ProcessTemplateParams(def, args);
                 }
+
+                // Empty default value.
+                return string.Empty;
             }
 
-            return string.Empty;
+            // Leave the param as-is, we couldn't evaluate it.
+            return arg;
         }
 
         private static string ProcessTemplateParams(
