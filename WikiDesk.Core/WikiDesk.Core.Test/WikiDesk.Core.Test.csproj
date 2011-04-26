@@ -60,6 +60,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TestFiles\Cite.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\HeaderBoldItalic.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -71,6 +74,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="TestFiles\Cite.wiki">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestFiles\HeaderBoldItalic.wiki">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

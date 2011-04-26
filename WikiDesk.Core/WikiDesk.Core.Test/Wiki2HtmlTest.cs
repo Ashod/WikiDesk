@@ -5,6 +5,8 @@
 
     using NUnit.Framework;
 
+    using WikiDesk.Data;
+
     [TestFixture]
     public class Wiki2HtmlTest
     {
@@ -31,6 +33,12 @@
         }
 
         [Test]
+        public void Cite()
+        {
+            TestConvertFiles("Cite");
+        }
+
+        [Test]
         public void RefCiteReflist()
         {
             TestConvertFiles("RefCiteReflist");
@@ -49,13 +57,24 @@
 
         private static void TestConvertFiles(string baseFilename)
         {
-            Wiki2Html converter = new Wiki2Html(Config);
+            Wiki2Html converter = new Wiki2Html(Config, null, OnResolveTemplate, null);
             string nameSpace = string.Empty;
             string title = "TestPage";
             string wikicode = File.ReadAllText(Path.Combine(RootPath, baseFilename + ".wiki"));
             string html = converter.Convert(ref nameSpace, ref title, wikicode);
             string expected = File.ReadAllText(Path.Combine(RootPath, baseFilename + ".html"));
             Assert.AreEqual(expected, html);
+        }
+
+        private static string OnResolveTemplate(string word, string lanugageCode)
+        {
+            string title = !word.StartsWith("Template:") ? "Template:" + word : word;
+
+            title = Title.Normalize(title);
+            string url = string.Concat("http://", Config.WikiSite.Language.Code, Config.WikiSite.ExportUrl, title);
+            string xmlText = Download.DownloadPage(url);
+            Page page = DumpParser.PageFromXml(xmlText);
+            return page != null ? page.Text : string.Empty;
         }
 
         #endregion // implementation
