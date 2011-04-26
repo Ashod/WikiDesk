@@ -214,7 +214,7 @@
         {
             if (url.StartsWith(WIKI_PROTOCOL_STRING))
             {
-                string title = url.Substring(WIKI_PROTOCOL_STRING.Length);
+                string title = url.Substring(WIKI_PROTOCOL_STRING.Length).TrimEnd('/');
                 title = title.Replace('/', '\\');
                 title = Title.DecodeEncodedNonAsciiCharacters(title);
 
@@ -234,8 +234,8 @@
 
         private void browser__Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            string url = browser_.Url != null ? browser_.Url.ToString(): string.Empty;
-            if (browser__DecideNavigationAction(url, string.Empty))
+            string url = e.Url != null ? e.Url.ToString() : string.Empty;
+            if (!browser__DecideNavigationAction(url, string.Empty))
             {
                 e.Cancel = true;
                 return;
