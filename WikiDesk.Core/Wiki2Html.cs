@@ -666,15 +666,17 @@ namespace WikiDesk.Core
                 }
 
                 // Internal Link. [[page_name | link_text]]
+                // class=\"mw-redirect\"
                 string url = ResolveLink(code, config_.WikiSite.Language.Code);
-                return string.Concat("<a href=\"", url, "\" title=\"", code, "\" class=\"mw-redirect\">", param ?? code, "</a>");
+                return string.Concat("<a href=\"", url, "\" title=\"", code, "\">", param ?? code, "</a>");
             }
             else
             {
-                // [http://www.com name] external link.
+                // [http://www.bigcompany.com text] external link.
                 string text;
                 string url = StringUtils.BreakAt(code, ' ', out text);
-                return string.Concat("<a href=\"", url, "\" title=\"", url, "\">", text ?? url, "</a>");
+                text = !string.IsNullOrEmpty(text) ? text : url;
+                return string.Concat("<a href=\"", url, "\" class=\"external text\" rel=\"nofollow\">", text, "</a>");
             }
         }
 
@@ -894,7 +896,7 @@ namespace WikiDesk.Core
             {
                 // Copy the skipped part.
                 string text = wikicode.Substring(lastIndex, startIndex - lastIndex);
-                sb.Append(ConvertInlineCodes(text));
+                sb.Append(text);
 
                 // Handle the match.
                 string magic = wikicode.Substring(startIndex + 2, endIndex - startIndex - 4 + 1);
@@ -912,8 +914,6 @@ namespace WikiDesk.Core
                     }
                     else
                     {
-                        //magic = ProcessMagicWords(magic);
-
                         string output;
                         if (MagicWord(magic, out output) == VariableProcessor.Result.Found &&
                             !string.IsNullOrEmpty(output))
@@ -1058,7 +1058,7 @@ namespace WikiDesk.Core
 
             logger_.Log(
                 Levels.Debug,
-                "Processing template params for:{0}{1}",
+                "Processing template params for:{0}[{0}{1}{0}]",
                 Environment.NewLine,
                 template);
 

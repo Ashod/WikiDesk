@@ -321,6 +321,12 @@
 
         #endregion // UcFirst
 
+        [Test]
+        public void Namespaces()
+        {
+            TestProcessor("TALKSPACE", string.Empty);
+        }
+
         #endregion // tests
 
         public void TestProcessor(string input, string expected)

@@ -187,7 +187,10 @@ namespace WikiDesk.Core
         /// <returns>The processed result.</returns>
         public static string ProcessTemplateParams(string template, List<KeyValuePair<string, string>> args)
         {
-            Debug.Assert(!string.IsNullOrEmpty(template), "Invalid template.");
+            if (string.IsNullOrEmpty(template))
+            {
+                return template;
+            }
 
             // Find the first argument to process.
             int endIndex;

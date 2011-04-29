@@ -483,7 +483,7 @@ Hayastani Hanrapetutyun |
         public void TemplateCitationError()
         {
             TestConvert("{{Citation error|no <code>&#124;title&#61;</code> specified|Cite web}}",
-                "<p>\r\n<span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"http://en.wikipedia.org/wiki/Template:Cite_web\" title=\"Template:Cite web\" class=\"mw-redirect\">Cite web</a>}}</span>\r\n</p>\r\n");
+                "<p>\r\n<span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"http://en.wikipedia.org/wiki/Template:Cite_web\" title=\"Template:Cite web\">Cite web</a>}}</span>\r\n</p>\r\n");
         }
 
         [Test]
@@ -497,8 +497,8 @@ Hayastani Hanrapetutyun |
         public void TemplateOCLC()
         {
             TestConvert("{{OCLC|224781861}}",
-                "<p><a href=\"http://en.wikipedia.org/wiki/Online_Computer_Library_Center\" title=\"Online Computer Library Center\">OCLC</a>" +
-                "&nbsp;<a href=\"http://www.worldcat.org/oclc/224781861\" class=\"external text\" rel=\"nofollow\">224781861</a></p>");
+                "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Online_Computer_Library_Center\" title=\"Online Computer Library Center\">OCLC</a>" +
+                "&nbsp;<a href=\"http://www.worldcat.org/oclc/224781861\" class=\"external text\" rel=\"nofollow\">224781861</a>\r\n</p>\r\n");
         }
 
         internal static void TestConvert(string wikicode, string expected)

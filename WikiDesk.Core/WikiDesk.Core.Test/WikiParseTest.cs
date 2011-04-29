@@ -248,7 +248,7 @@
         public void ExtLink()
         {
             TestConvert("[http://www.wikipedia.org WikiPipi]",
-                "<p>\r\n<a href=\"http://www.wikipedia.org\" title=\"http://www.wikipedia.org\">WikiPipi</a>\r\n</p>\r\n");
+                "<p>\r\n<a href=\"http://www.wikipedia.org\" class=\"external text\" rel=\"nofollow\">WikiPipi</a>\r\n</p>\r\n");
         }
 
         [Test]
@@ -263,7 +263,7 @@
         {
             TestConvert(
                     "[[Brazil|kiko]]",
-                    "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\" class=\"mw-redirect\">kiko</a>\r\n</p>\r\n");
+                    "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">kiko</a>\r\n</p>\r\n");
         }
 
         [Test]

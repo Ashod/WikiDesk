@@ -777,7 +777,7 @@
             sb.Append("<div id=\"content\">");
 
             sb.Append("<h1 id=\"firstHeading\" class=\"firstHeading\">");
-            sb.Append(title);
+            sb.Append(Title.Denormalize(title));
             sb.Append("</h1>");
     		sb.Append("<div id=\"bodyContent\">");
             sb.Append("<div id=\"siteSub\">From Wikipedia, the free encyclopedia</div>");
