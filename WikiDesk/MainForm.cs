@@ -360,13 +360,13 @@
         private void LoadDatabase(Database db)
         {
             Enabled = false;
-            LoadDatabaseForm openDatabaseForm = null;
+            LoadDatabaseForm loadDatabaseForm = null;
             try
             {
-                long entriesCount = 0;
-                openDatabaseForm = new LoadDatabaseForm(ref entriesCount, db.CountPages(0, 0));
-                openDatabaseForm.Show(this);
-                var x = new EventHandler(delegate { LoadDatabaseEntries(db, entriesMap_, ref entriesCount); });
+                SharedReference<long> entriesCount = new SharedReference<long>();
+                loadDatabaseForm = new LoadDatabaseForm(db.DatabasePath, entriesCount, db.CountPages(0, 0));
+                loadDatabaseForm.Show(this);
+                var x = new EventHandler(delegate { LoadDatabaseEntries(loadDatabaseForm, db, entriesMap_, entriesCount); });
                 IAsyncResult asyncResult = x.BeginInvoke(null, null, null, null);
                 do
                 {
@@ -380,9 +380,9 @@
             finally
             {
                 Enabled = true;
-                if (openDatabaseForm != null)
+                if (loadDatabaseForm != null)
                 {
-                    openDatabaseForm.Dispose();
+                    loadDatabaseForm.Dispose();
                 }
             }
 
@@ -401,17 +401,28 @@
         }
 
         private static void LoadDatabaseEntries(
+                        LoadDatabaseForm loadDatabaseForm,
                         Database db,
                         Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
-                        ref long entriesCount)
+                        SharedReference<long> entriesCount)
         {
             entriesMap.Clear();
             foreach (Domain domain in db.GetDomains())
             {
+                if (loadDatabaseForm.Cancel)
+                {
+                    break;
+                }
+
                 Dictionary<string, PrefixMatchContainer<string>> langTitlesMap = new Dictionary<string, PrefixMatchContainer<string>>(8);
 
                 foreach (Language language in db.GetLanguages())
                 {
+                    if (loadDatabaseForm.Cancel)
+                    {
+                        break;
+                    }
+
                     IEnumerator<string> pageTitles = db.SelectPageTitles(domain.Id, language.Id);
                     if (pageTitles != null && pageTitles.MoveNext())
                     {
@@ -421,9 +432,10 @@
                         {
                             string title = Title.Denormalize(pageTitles.Current);
                             titles.Add(title, title);
-                            ++entriesCount;
+
+                            entriesCount.Reference++;
                         }
-                        while (pageTitles.MoveNext());
+                        while (pageTitles.MoveNext() && !loadDatabaseForm.Cancel);
 
                         langTitlesMap.Add(language.Name, titles);
                     }

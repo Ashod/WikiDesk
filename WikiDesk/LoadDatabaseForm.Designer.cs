@@ -62,6 +62,7 @@
             this.btnCancel_.TabIndex = 5;
             this.btnCancel_.Text = "Cancel";
             this.btnCancel_.UseVisualStyleBackColor = true;
+            this.btnCancel_.Click += new System.EventHandler(this.btnCancel__Click);
             //
             // lblDatabasePathValue_
             //
@@ -116,11 +117,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "LoadDatabaseForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Loading WikiDesk Database";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
         #endregion
