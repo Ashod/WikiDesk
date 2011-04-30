@@ -10,19 +10,19 @@
 * Page view progresss.
 * Splash Screen.
 * Compressed Database.
-* Import from the web.
 * Link to source page at the buttom of each generated page.
 * Add copyright at the bottom.
+* Language message must cascade based on default lang.
 
 Wiki2Html:
 
-* Tables.
+* Tables. (Partially done.)
 * References.
 * TOC.
 * Unordered Lists.
 * Ordered Lists.
-* Variables and Templates.
-* Parser Functions.
+* Variables and Templates. (Partially done.)
+* Parser Functions. (Partially done.)
 * Audio/Video.
 * Annotated images.
 * Magnifying glass on images.
@@ -38,3 +38,4 @@ Done:
 * Full-text search.
 * Include WebKit and misc data files under SVN.
 * Auto-copy required files to Bin upon build.
+* Import from the web.

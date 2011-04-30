@@ -62,6 +62,11 @@ namespace WikiDesk
 
         public int ThumbnailWidthPixels = 220;
         public string SkinName = "simple";
+
+        /// <summary>
+        /// Valid CSS inserted right after all css inclusions. Optional.
+        /// Typically contains customization and overrides to the skin CSS.
+        /// </summary>
         public string CustomCss;
 
         #endregion // Wiki

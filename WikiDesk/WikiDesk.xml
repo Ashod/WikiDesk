@@ -2,15 +2,73 @@
 <Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <AutoUpdateDays>7</AutoUpdateDays>
   <AutoRetrieveMissing>true</AutoRetrieveMissing>
+  <TrackBrowseHistory>false</TrackBrowseHistory>
+  <EnableCaching>false</EnableCaching>
+  <FileCacheFolder>Z:\wikidesk_cache\</FileCacheFolder>
+  <FileCacheSizeMB>128</FileCacheSizeMB>
+  <ClearFileCacheOnExit>false</ClearFileCacheOnExit>
+  <ThumbnailWidthPixels>220</ThumbnailWidthPixels>
+  <SkinName>vector</SkinName>
+  <CustomCss>
+	#mw-page-base {
+		height: 0em;
+	}
+	
+	#mw-head-base {
+		margin-top: 0em;
+		margin-left: 0em;
+		height: 0em;
+	}
+	
+	#footer {
+	    display: block;
+		margin-left: 0em;
+		margin-top: 0;
+		padding: 0.75em;
+		padding-left: 5em;
+		background-position: top left;
+		background-repeat: repeat-x;
+	}
+
+	#column-content {
+	  width: 100%;
+	  float: right;
+	  margin: 0 0 0.6em 0em;
+	  padding:0;
+	}
+
+	#content {
+		margin: 0em 0 0 0em;
+		padding: 0em 1em 1.5em 1em;
+		border-right: 1px solid #959595;
+		line-height: 1.5em;
+		width: 80%;
+		margin: 0 auto !important;
+	}
+
+	body {
+		font-size:1.35em;
+		margin: 10;
+	}
+
+	h1 { font-size: 2em; }
+	h2 { font-size: 1.5em; }
+	h3 { font-size: 1.17em; }
+	h5 { font-size: .83em; }
+	h6 { font-size: .75em; }
+	h1, h2, h3, h4, h5, h6 {
+		font-weight: bolder;
+		text-shadow: 0.1em 0.1em 0.2em #AAA; /*0 0 0.2em #8F7;*/
+	}
+	
+	h1.firstHeading { border-bottom: solid 1px red; }
+  </CustomCss>
+  <DefaultDatabaseFilename>Z:\wikidesk.db</DefaultDatabaseFilename>
   <InstallationFolder>C:\prj\WikiDesk\WikiDesk\bin\Debug</InstallationFolder>
   <DomainsFilename>WikiDomains.xml</DomainsFilename>
   <CurrentDomainName>Wikipedia</CurrentDomainName>
-  <DefaultDomainName>Wikipedia</DefaultDomainName>
+  <DefaultDomainName>wikipedia</DefaultDomainName>
   <LanguagesFilename>WikiLanguages.xml</LanguagesFilename>
   <CurrentLanguageCode>simple</CurrentLanguageCode>
   <DefaultLanguageCode>en</DefaultLanguageCode>
-  <SkinName>simple</SkinName>
-  <ThumbnailWidthPixels>220</ThumbnailWidthPixels>
-  <FileCacheFolder>Z:\wikidesk_cache\</FileCacheFolder>
-  <DefaultDatabaseFilename>Z:\wikidesk.db</DefaultDatabaseFilename>
 </Settings>
