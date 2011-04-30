@@ -783,13 +783,13 @@
 
             sb.Append("</div></div>");
 
-            sb.Append(GetHtmlFooter(lastUpdateDateUtc, sw));
+            sb.Append(GetHtmlFooter(title, lastUpdateDateUtc, sw));
             sb.Append("</body></html>");
 
             return sb.ToString();
         }
 
-        private string GetHtmlFooter(DateTime lastUpdateDateUtc, Stopwatch sw)
+        private string GetHtmlFooter(string title, DateTime lastUpdateDateUtc, Stopwatch sw)
         {
             StringBuilder sb = new StringBuilder(1024);
             sb.AppendLine("<div id=\"footer\">");
@@ -802,6 +802,11 @@
             sb.Append(" in ");
             sb.AppendFormat("{0:0.000}", sw.ElapsedMilliseconds / 1000.0);
             sb.Append(" seconds.");
+            sb.Append(" <a href=\"");
+            sb.Append(currentSite_.GetViewUrl(title));
+            sb.Append("\" title=\"");
+            sb.Append(title);
+            sb.Append("\">Online version</a>.");
             sb.AppendLine("</li>");
 
             DateTime lastUpdateDateLocal = lastUpdateDateUtc.ToLocalTime();
