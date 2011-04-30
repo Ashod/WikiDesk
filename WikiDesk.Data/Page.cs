@@ -196,6 +196,20 @@
                     select s).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Count the number of pages by domain and/or language, both optional.
+        /// </summary>
+        /// <param name="domainId">ID of a domain or 0 for all.</param>
+        /// <param name="languageId">ID of a language or 0 for all.</param>
+        /// <returns>The number of pages found.</returns>
+        public long CountPages(long domainId, long languageId)
+        {
+            return (from s in Table<Page>()
+                    where (domainId <= 0 || s.Domain == domainId) &&
+                          (languageId <= 0 || s.Language == languageId)
+                    select s).Count();
+        }
+
         public IList<string> SearchPages(long domainId, long languageId, string text)
         {
             return (from s in Table<Page>()

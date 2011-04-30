@@ -116,6 +116,11 @@
             dockContent_.Show(dockPanel_);
         }
 
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            LoadDatabase(db_);
+        }
+
         private void ShowAllLanguages()
         {
             cboLanguage.BeginUpdate();
@@ -348,36 +353,36 @@
 
         private void OpenDatabase(string dbPath)
         {
+            entriesMap_.Clear();
             db_ = new Database(dbPath);
-
-            ReloadDatabase();
         }
 
-        private void ReloadDatabase()
+        private void LoadDatabase(Database db)
         {
-            entriesMap_.Clear();
-            foreach (Domain domain in db_.GetDomains())
+            Enabled = false;
+            LoadDatabaseForm openDatabaseForm = null;
+            try
             {
-                Dictionary<string, PrefixMatchContainer<string>> langTitlesMap = new Dictionary<string, PrefixMatchContainer<string>>(8);
-
-                foreach (Language language in db_.GetLanguages())
+                openDatabaseForm = new LoadDatabaseForm(entriesMap_, db.CountPages(0, 0));
+                openDatabaseForm.Show(this);
+                var x = new EventHandler(delegate { LoadDatabaseEntries(db, entriesMap_); });
+                IAsyncResult asyncResult = x.BeginInvoke(null, null, null, null);
+                do
                 {
-                    IList<string> pageTitles = db_.SelectPageTitles(domain.Id, language.Id);
-                    if (pageTitles != null && pageTitles.Count > 0)
-                    {
-                        PrefixMatchContainer<string> titles = new PrefixMatchContainer<string>();
-
-                        foreach (string pageTitle in pageTitles)
-                        {
-                            string title = Title.Denormalize(pageTitle);
-                            titles.Add(title, title);
-                        }
-
-                        langTitlesMap.Add(language.Name, titles);
-                    }
+                    Application.DoEvents();
+                    Thread.Sleep(30);
                 }
+                while (!asyncResult.IsCompleted);
 
-                entriesMap_.Add(domain.Name, langTitlesMap);
+                x.EndInvoke(asyncResult);
+            }
+            finally
+            {
+                Enabled = true;
+                if (openDatabaseForm != null)
+                {
+                    openDatabaseForm.Dispose();
+                }
             }
 
             //TODO: How should auto-complete work? Should we add a domain selector?
@@ -394,6 +399,36 @@
             }
         }
 
+        private static void LoadDatabaseEntries(
+                        Database db,
+                        Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap)
+        {
+            entriesMap.Clear();
+            foreach (Domain domain in db.GetDomains())
+            {
+                Dictionary<string, PrefixMatchContainer<string>> langTitlesMap = new Dictionary<string, PrefixMatchContainer<string>>(8);
+
+                foreach (Language language in db.GetLanguages())
+                {
+                    IList<string> pageTitles = db.SelectPageTitles(domain.Id, language.Id);
+                    if (pageTitles != null && pageTitles.Count > 0)
+                    {
+                        PrefixMatchContainer<string> titles = new PrefixMatchContainer<string>();
+
+                        foreach (string pageTitle in pageTitles)
+                        {
+                            string title = Title.Denormalize(pageTitle);
+                            titles.Add(title, title);
+                        }
+
+                        langTitlesMap.Add(language.Name, titles);
+                    }
+                }
+
+                entriesMap.Add(domain.Name, langTitlesMap);
+            }
+        }
+
         private void OpenClick(object sender, EventArgs e)
         {
             openFileDialog.CheckFileExists = true;
@@ -405,6 +440,7 @@
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 OpenDatabase(openFileDialog.FileName);
+                LoadDatabase(db_);
             }
         }
 
@@ -959,7 +995,7 @@
                     progForm.txtInfo.Text = "Reloading database...";
                     Application.DoEvents();
 
-                    ReloadDatabase();
+                    LoadDatabase(db_);
                     Enabled = true;
                 }
             }

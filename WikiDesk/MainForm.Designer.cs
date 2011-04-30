@@ -87,9 +87,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus,
             this.status_});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 401);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 495);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(779, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(792, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             //
@@ -112,7 +112,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(779, 24);
+            this.menuStrip.Size = new System.Drawing.Size(792, 24);
             this.menuStrip.TabIndex = 3;
             this.menuStrip.Text = "menuStrip1";
             //
@@ -221,7 +221,7 @@
             this.cboLanguage});
             this.stripNavigation.Location = new System.Drawing.Point(0, 24);
             this.stripNavigation.Name = "stripNavigation";
-            this.stripNavigation.Size = new System.Drawing.Size(779, 25);
+            this.stripNavigation.Size = new System.Drawing.Size(792, 25);
             this.stripNavigation.TabIndex = 4;
             this.stripNavigation.Resize += new System.EventHandler(this.stripNavigation_Resize);
             //
@@ -328,7 +328,7 @@
             this.dockPanel_.Location = new System.Drawing.Point(0, 49);
             this.dockPanel_.Name = "dockPanel_";
             this.dockPanel_.RightToLeftLayout = true;
-            this.dockPanel_.Size = new System.Drawing.Size(779, 352);
+            this.dockPanel_.Size = new System.Drawing.Size(792, 446);
             dockPanelGradient1.EndColor = System.Drawing.SystemColors.ControlLight;
             dockPanelGradient1.StartColor = System.Drawing.SystemColors.ControlLight;
             autoHideStripSkin1.DockStripGradient = dockPanelGradient1;
@@ -396,7 +396,7 @@
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(779, 423);
+            this.ClientSize = new System.Drawing.Size(792, 517);
             this.Controls.Add(this.dockPanel_);
             this.Controls.Add(this.stripNavigation);
             this.Controls.Add(this.menuStrip);
@@ -405,6 +405,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
