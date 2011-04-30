@@ -4,15 +4,14 @@ using System.Windows.Forms;
 namespace WikiDesk
 {
     using System;
-    using System.Collections.Generic;
 
     public partial class LoadDatabaseForm : Form
     {
         public LoadDatabaseForm(
-                Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
+                ref long entries,
                 long totalEntires)
         {
-            entriesMap_ = entriesMap;
+            entries_ = entries;
             totalEntires_ = totalEntires;
 
             InitializeComponent();
@@ -26,19 +25,13 @@ namespace WikiDesk
 
         private void OnTimer(object sender, EventArgs e)
         {
-            long total = 0;
-            foreach (var pair in entriesMap_)
-            {
-                total += pair.Value.Count;
-            }
-
-            lblEntriesLoadedValue_.Text = string.Format("{0} / {1}", total, totalEntires_);
-            prgProgress_.Value = (int)(total / 1024);
+            lblEntriesLoadedValue_.Text = string.Format("{0} / {1}", entries_, totalEntires_);
+            prgProgress_.Value = (int)(entries_ / 1024);
         }
 
         #region representation
 
-        private readonly Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap_;
+        private readonly long entries_;
 
         private readonly long totalEntires_;
 

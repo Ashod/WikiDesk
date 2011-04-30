@@ -179,12 +179,12 @@
 
     public partial class Database
     {
-        public IList<string> SelectPageTitles(long domainId, long languageId)
+        public IEnumerator<string> SelectPageTitles(long domainId, long languageId)
         {
             return (from s in Table<Page>()
                     where s.Domain == domainId &&
                           s.Language == languageId
-                    select s.Title).ToList();
+                    select s.Title).GetEnumerator();
         }
 
         public Page SelectPage(long domainId, long languageId, string title)

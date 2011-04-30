@@ -363,9 +363,10 @@
             LoadDatabaseForm openDatabaseForm = null;
             try
             {
-                openDatabaseForm = new LoadDatabaseForm(entriesMap_, db.CountPages(0, 0));
+                long entriesCount = 0;
+                openDatabaseForm = new LoadDatabaseForm(ref entriesCount, db.CountPages(0, 0));
                 openDatabaseForm.Show(this);
-                var x = new EventHandler(delegate { LoadDatabaseEntries(db, entriesMap_); });
+                var x = new EventHandler(delegate { LoadDatabaseEntries(db, entriesMap_, ref entriesCount); });
                 IAsyncResult asyncResult = x.BeginInvoke(null, null, null, null);
                 do
                 {
@@ -401,7 +402,8 @@
 
         private static void LoadDatabaseEntries(
                         Database db,
-                        Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap)
+                        Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
+                        ref long entriesCount)
         {
             entriesMap.Clear();
             foreach (Domain domain in db.GetDomains())
@@ -410,16 +412,18 @@
 
                 foreach (Language language in db.GetLanguages())
                 {
-                    IList<string> pageTitles = db.SelectPageTitles(domain.Id, language.Id);
-                    if (pageTitles != null && pageTitles.Count > 0)
+                    IEnumerator<string> pageTitles = db.SelectPageTitles(domain.Id, language.Id);
+                    if (pageTitles != null && pageTitles.MoveNext())
                     {
                         PrefixMatchContainer<string> titles = new PrefixMatchContainer<string>();
 
-                        foreach (string pageTitle in pageTitles)
+                        do
                         {
-                            string title = Title.Denormalize(pageTitle);
+                            string title = Title.Denormalize(pageTitles.Current);
                             titles.Add(title, title);
+                            ++entriesCount;
                         }
+                        while (pageTitles.MoveNext());
 
                         langTitlesMap.Add(language.Name, titles);
                     }

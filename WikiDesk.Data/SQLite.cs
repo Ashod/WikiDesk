@@ -976,12 +976,49 @@ namespace SQLite
 			}
 		}
 
+        public IEnumerable<T> ExecuteQueryX<T>() where T : new()
+        {
+            if (_conn.Trace)
+            {
+                Console.WriteLine("Executing Query: " + this);
+            }
+
+            TableMapping map = _conn.GetMapping(typeof(T));
+
+            var stmt = Prepare();
+
+            var cols = new TableMapping.Column[SQLite3.ColumnCount(stmt)];
+
+            for (int i = 0; i < cols.Length; i++)
+            {
+                var name = Marshal.PtrToStringUni(SQLite3.ColumnName16(stmt, i));
+                cols[i] = map.FindColumn(name);
+            }
+
+            while (SQLite3.Step(stmt) == SQLite3.Result.Row)
+            {
+                var obj = Activator.CreateInstance(map.MappedType);
+                for (int i = 0; i < cols.Length; i++)
+                {
+                    if (cols[i] == null)
+                        continue;
+                    var colType = SQLite3.ColumnType(stmt, i);
+                    var val = ReadCol(stmt, i, colType, cols[i].ColumnType);
+                    cols[i].SetValue(obj, val);
+                }
+
+                yield return (T)obj;
+            }
+
+            Finalize(stmt);
+        }
+
 		public List<T> ExecuteQuery<T> () where T : new()
 		{
 			return ExecuteQuery<T> (_conn.GetMapping (typeof(T)));
 		}
 
-		public List<T> ExecuteQuery<T> (TableMapping map)
+        public List<T> ExecuteQuery<T>(TableMapping map)
 		{
 			if (_conn.Trace) {
 				Console.WriteLine ("Executing Query: " + this);
@@ -1561,7 +1598,8 @@ namespace SQLite
 
 		public IEnumerator<T> GetEnumerator ()
 		{
-			return GenerateCommand ("*").ExecuteQuery<T> ().GetEnumerator ();
+		    return GenerateCommand("*").ExecuteQueryX<T>().GetEnumerator();
+		    //ExecuteQuery<T> ().GetEnumerator ();
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator ()
