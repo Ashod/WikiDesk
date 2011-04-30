@@ -47,6 +47,11 @@ namespace WikiDesk
         public bool AutoRetrieveMissing = true;
         public bool TrackBrowseHistory;
 
+        /// <summary>
+        /// WikiDesk layout settings.
+        /// </summary>
+        public string Layout;
+
         #endregion // General
 
         #region Cache

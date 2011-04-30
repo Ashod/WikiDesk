@@ -3,6 +3,62 @@
   <AutoUpdateDays>7</AutoUpdateDays>
   <AutoRetrieveMissing>true</AutoRetrieveMissing>
   <TrackBrowseHistory>false</TrackBrowseHistory>
+  <Layout>﻿&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;!--DockPanel configuration file. Author: Weifen Luo, all rights reserved.--&gt;
+&lt;!--!!! AUTOMATICALLY GENERATED FILE. DO NOT MODIFY !!!--&gt;
+&lt;DockPanel FormatVersion="1.0" DockLeftPortion="200" DockRightPortion="322" DockTopPortion="150" DockBottomPortion="150" ActiveDocumentPane="2" ActivePane="2"&gt;
+  &lt;Contents Count="3"&gt;
+    &lt;Content ID="0" PersistString="WikiDesk.SearchControl" AutoHidePortion="0.25" IsHidden="False" IsFloat="False" /&gt;
+    &lt;Content ID="1" PersistString="WikiDesk.IndexControl" AutoHidePortion="0.25" IsHidden="False" IsFloat="False" /&gt;
+    &lt;Content ID="2" PersistString="WeifenLuo.WinFormsUI.Docking.DockContent" AutoHidePortion="0.25" IsHidden="False" IsFloat="False" /&gt;
+  &lt;/Contents&gt;
+  &lt;Panes Count="3"&gt;
+    &lt;Pane ID="0" DockState="DockRightAutoHide" ActiveContent="1"&gt;
+      &lt;Contents Count="2"&gt;
+        &lt;Content ID="0" RefID="0" /&gt;
+        &lt;Content ID="1" RefID="1" /&gt;
+      &lt;/Contents&gt;
+    &lt;/Pane&gt;
+    &lt;Pane ID="1" DockState="Float" ActiveContent="-1"&gt;
+      &lt;Contents Count="1"&gt;
+        &lt;Content ID="0" RefID="1" /&gt;
+      &lt;/Contents&gt;
+    &lt;/Pane&gt;
+    &lt;Pane ID="2" DockState="Document" ActiveContent="2"&gt;
+      &lt;Contents Count="1"&gt;
+        &lt;Content ID="0" RefID="2" /&gt;
+      &lt;/Contents&gt;
+    &lt;/Pane&gt;
+  &lt;/Panes&gt;
+  &lt;DockWindows&gt;
+    &lt;DockWindow ID="0" DockState="Document" ZOrderIndex="1"&gt;
+      &lt;NestedPanes Count="1"&gt;
+        &lt;Pane ID="0" RefID="2" PrevPane="-1" Alignment="Right" Proportion="0.5" /&gt;
+      &lt;/NestedPanes&gt;
+    &lt;/DockWindow&gt;
+    &lt;DockWindow ID="1" DockState="DockLeft" ZOrderIndex="3"&gt;
+      &lt;NestedPanes Count="0" /&gt;
+    &lt;/DockWindow&gt;
+    &lt;DockWindow ID="2" DockState="DockRight" ZOrderIndex="2"&gt;
+      &lt;NestedPanes Count="1"&gt;
+        &lt;Pane ID="0" RefID="0" PrevPane="-1" Alignment="Bottom" Proportion="0.5" /&gt;
+      &lt;/NestedPanes&gt;
+    &lt;/DockWindow&gt;
+    &lt;DockWindow ID="3" DockState="DockTop" ZOrderIndex="5"&gt;
+      &lt;NestedPanes Count="0" /&gt;
+    &lt;/DockWindow&gt;
+    &lt;DockWindow ID="4" DockState="DockBottom" ZOrderIndex="4"&gt;
+      &lt;NestedPanes Count="0" /&gt;
+    &lt;/DockWindow&gt;
+  &lt;/DockWindows&gt;
+  &lt;FloatWindows Count="1"&gt;
+    &lt;FloatWindow ID="0" Bounds="1701, 457, 300, 300" ZOrderIndex="0"&gt;
+      &lt;NestedPanes Count="1"&gt;
+        &lt;Pane ID="0" RefID="1" PrevPane="-1" Alignment="Right" Proportion="0.5" /&gt;
+      &lt;/NestedPanes&gt;
+    &lt;/FloatWindow&gt;
+  &lt;/FloatWindows&gt;
+&lt;/DockPanel&gt;</Layout>
   <EnableCaching>false</EnableCaching>
   <FileCacheFolder>Z:\wikidesk_cache\</FileCacheFolder>
   <FileCacheSizeMB>128</FileCacheSizeMB>
@@ -58,7 +114,7 @@
 	h6 { font-size: .75em; }
 	h1, h2, h3, h4, h5, h6 {
 		font-weight: bolder;
-		text-shadow: 0.1em 0.1em 0.2em #AAA; /*0 0 0.2em #8F7;*/
+		text-shadow: 0.1em 0.1em 0.2em #AAA;
 	}
 	
 	h1.firstHeading { border-bottom: solid 1px red; }

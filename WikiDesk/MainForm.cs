@@ -5,7 +5,6 @@
     using System.Diagnostics;
     using System.Drawing;
     using System.IO;
-    using System.Net;
     using System.Reflection;
     using System.Text;
     using System.Threading;
@@ -28,6 +27,8 @@
         {
             InitializeComponent();
 
+            logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
+
             // For now the user's data are kept next to the executable.
             //TODO: Move to user-specific data folder.
             userDataFolderPath_ = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -36,8 +37,10 @@
                 throw new ApplicationException("Invalid or missing user-data folder.");
             }
 
-            logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
+            settings_ = Settings.Deserialize(Path.Combine(userDataFolderPath_, CONFIG_FILENAME));
+            settings_.InstallationFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+            // WebKit.
             browser_.Visible = true;
             browser_.Dock = DockStyle.Fill;
             browser_.Name = "browser";
@@ -53,13 +56,6 @@
             browser_.NewWindowCreated += browser__NewWindowCreated;
             browser_.Navigating += browser__Navigating;
             browser_.Navigated += browser__Navigated;
-            //browser_.DecideNavigationAction += browser__DecideNavigationAction;
-
-            dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
-            dockContent_.DockPanel = dockPanel_;
-            dockContent_.DockState = DockState.Document;
-            dockContent_.Controls.Add(browser_);
-            dockContent_.Show(dockPanel_);
 
             entriesMap_ = new Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>>();
 
@@ -71,9 +67,6 @@
 
             tempFilename_ = Path.GetTempFileName().Replace(".tmp", ".html");
             tempFileUrl_ = "file:///" + tempFilename_.Replace('\\', '/');
-
-            settings_ = Settings.Deserialize(Path.Combine(userDataFolderPath_, CONFIG_FILENAME));
-            settings_.InstallationFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             fileCache_ = new FileCache(settings_.FileCacheFolder);
 
@@ -105,14 +98,22 @@
 
             ShowAllLanguages();
 
-            //TODO: Persist the location and settings.
             searchControl_ = new SearchControl(db_, entriesMap_, BrowseWikiArticle);
             searchControl_.HideOnClose = true;
-            searchControl_.Show(dockPanel_, DockState.DockRightAutoHide);
 
             indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
             indexControl_.HideOnClose = true;
-            indexControl_.Show(dockPanel_, DockState.DockRightAutoHide);
+
+            dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
+            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(settings_.Layout)))
+            {
+                dockPanel_.LoadFromXml(ms, GetDockContentPersistString);
+            }
+
+            dockContent_.DockPanel = dockPanel_;
+            dockContent_.DockState = DockState.Document;
+            dockContent_.Controls.Add(browser_);
+            dockContent_.Show(dockPanel_);
         }
 
         private void ShowAllLanguages()
@@ -1089,7 +1090,29 @@
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            using (MemoryStream ms = new MemoryStream(1024))
+            {
+                dockPanel_.SaveAsXml(ms, Encoding.UTF8);
+                ms.Flush();
+                settings_.Layout = Encoding.UTF8.GetString(ms.ToArray());
+            }
+
             settings_.Serialize(Path.Combine(userDataFolderPath_, CONFIG_FILENAME));
+        }
+
+        private IDockContent GetDockContentPersistString(string persistString)
+        {
+            if (persistString == typeof(IndexControl).ToString())
+            {
+                return indexControl_;
+            }
+
+            if (persistString == typeof(SearchControl).ToString())
+            {
+                return searchControl_;
+            }
+
+            return null;
         }
 
         #region representation
