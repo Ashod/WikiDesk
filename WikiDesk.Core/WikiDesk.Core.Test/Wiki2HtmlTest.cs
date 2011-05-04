@@ -44,6 +44,12 @@
             TestConvertFiles("RefCiteReflist");
         }
 
+        [Test]
+        public void TableWithImages()
+        {
+            TestConvertFiles("TableWithImages");
+        }
+
         #region implementation
 
         private static void TestConvert(string wikicode, string expected)

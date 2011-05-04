@@ -1,0 +1,11 @@
+{| cellpadding="2" style="border: 1px solid darkgray;"
+! width="140" | Left
+! width="150" | Middle
+! width="130" | Right
+|- border="0"
+| [[File:StarIconBronze.png|120px]]
+| [[File:StarIconGold.png|120px|Caption when mouse-over image]]
+| [[File:StarIconGreen.png|120px|Green stellar icon]]
+|- align="center"
+| Bronze star || Gold star || Green star
+|}

@@ -71,6 +71,33 @@ namespace WikiDesk.Core
 
         #endregion // construction
 
+        #region delegates
+
+        /// <summary>
+        /// Handles conversion of a matching regex into HTML.
+        /// May return null to skip conversion of the matching block.
+        /// </summary>
+        /// <param name="match">The regex match instance.</param>
+        /// <returns>A replacement string, or null to skip.</returns>
+        private delegate string MatchedRegexHandler(Match match);
+
+        /// <summary>
+        /// Handles conversion of a matching binary markers into HTML.
+        /// May return null to skip conversion of the matching block.
+        /// </summary>
+        /// <param name="code">The code that is bound by the matched markers.</param>
+        /// <returns>A replacement string, or null to skip.</returns>
+        private delegate string MatchedCodeHandler(string code);
+
+        /// <summary>
+        /// Handles text that didn't match the current Regex.
+        /// </summary>
+        /// <param name="code">The code that didn't match.</param>
+        /// <returns>A replacement string, or null to skip.</returns>
+        private delegate string MismatchedCodeHandler(string code);
+
+        #endregion // delegates
+
         #region properties
 
         private int ThumbnailWidthPixels
@@ -240,29 +267,6 @@ namespace WikiDesk.Core
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Handles conversion of a matching regex into HTML.
-        /// May return null to skip conversion of the matching block.
-        /// </summary>
-        /// <param name="match">The regex match instance.</param>
-        /// <returns>A replacement string, or null to skip.</returns>
-        private delegate string MatchedRegexHandler(Match match);
-
-        /// <summary>
-        /// Handles conversion of a matching binary markers into HTML.
-        /// May return null to skip conversion of the matching block.
-        /// </summary>
-        /// <param name="code">The code that is bound by the matched markers.</param>
-        /// <returns>A replacement string, or null to skip.</returns>
-        private delegate string MatchedCodeHandler(string code);
-
-        /// <summary>
-        /// Handles text that didn't match the current Regex.
-        /// </summary>
-        /// <param name="code">The code that didn't match.</param>
-        /// <returns>A replacement string, or null to skip.</returns>
-        private delegate string MismatchedCodeHandler(string code);
-
         private static string ConvertListCode(string wikicode)
         {
             Match match = ListRegex.Match(wikicode);
@@ -385,12 +389,12 @@ namespace WikiDesk.Core
             if (line.StartsWith("|+"))
             {
                 sb.Append("<caption>");
-                sb.Append(line.Substring(2).TrimStart());
+                sb.Append(line.Substring(2).Trim());
                 sb.AppendLine("</caption>");
                 ++idx;
             }
 
-            sb.AppendLine("<tbody>");
+            sb.Append("<tbody>");
 
             bool row = false;
             for (; idx < lines.Count; ++idx)
@@ -403,7 +407,19 @@ namespace WikiDesk.Core
                         sb.AppendLine("</tr>");
                     }
 
-                    sb.AppendLine("<tr>");
+                    // Get any styling.
+                    line = line.Substring(2).Trim();
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        sb.AppendLine("<tr>");
+                    }
+                    else
+                    {
+                        sb.Append("<tr ");
+                        sb.Append(line);
+                        sb.AppendLine(">");
+                    }
+
                     row = true;
                 }
                 else
@@ -421,31 +437,32 @@ namespace WikiDesk.Core
                         row = true;
                     }
 
-                    line = line.Substring(1);
-                    foreach (string cell in line.Split(new[]{ "||" }, StringSplitOptions.None))
+                    if (line.StartsWith("!"))
                     {
-                        string text;
-                        string formatModifier = StringUtils.BreakAt(cell, '|', out text);
-                        if (text == null)
+                        string content;
+                        string attrib = StringUtils.BreakAt(line.Substring(1), '|', out content);
+                        if (string.IsNullOrEmpty(attrib))
                         {
-                            text = formatModifier;
-                            formatModifier = string.Empty;
-                        }
-
-                        if (formatModifier.IndexOf('=') < 0)
-                        {
-                            sb.Append("<td>");
+                            sb.Append("<th>");
                         }
                         else
                         {
-                            sb.Append("<td ");
-                            sb.Append(formatModifier.Trim());
-                            sb.Append('>');
+                            sb.Append("<th ");
+                            sb.Append(attrib.Trim());
+                            sb.Append(">");
                         }
 
-                        sb.Append(text.Trim());
-                        sb.AppendLine("</td>");
+                        if (!string.IsNullOrEmpty(content))
+                        {
+                            sb.Append(content.Trim());
+                        }
+
+                        sb.AppendLine("</th>");
+                        continue;
                     }
+
+                    line = line.Substring(1);
+                    ConvertTableLine(line, "td", sb);
                 }
             }
 
@@ -456,6 +473,35 @@ namespace WikiDesk.Core
 
             sb.Append("</tbody>");
             sb.AppendLine("</table>");
+        }
+
+        private static void ConvertTableLine(string line, string type, StringBuilder sb)
+        {
+            foreach (string cell in line.Split(new[] { "||", "!!" }, StringSplitOptions.None))
+            {
+                string text;
+                string formatModifier = StringUtils.BreakAt(cell, '|', out text);
+                if (text == null)
+                {
+                    text = formatModifier;
+                    formatModifier = string.Empty;
+                }
+
+                sb.Append("<");
+                sb.Append(type);
+                if (formatModifier.IndexOf('=') >= 0)
+                {
+                    sb.Append(' ');
+                    sb.Append(formatModifier.Trim());
+                }
+
+                sb.Append('>');
+                sb.Append(text.Trim());
+
+                sb.Append("</");
+                sb.Append(type);
+                sb.AppendLine(">");
+            }
         }
 
         private static string ConvertUnaryCode(Regex regex, MatchedRegexHandler handler, string wikicode)
