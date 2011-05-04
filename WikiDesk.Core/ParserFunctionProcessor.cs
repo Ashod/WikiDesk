@@ -37,7 +37,7 @@ namespace WikiDesk.Core
 
         private Result Expr(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = "<strong style=\"color: red;\">#expr</strong>";
+            output = "0"; //"<strong style=\"color: red;\">#expr</strong>";
             return Result.Found;
         }
 
@@ -311,7 +311,7 @@ namespace WikiDesk.Core
 
             for (int i = 1; i < args.Count; ++i)
             {
-                if (args[i].Key == key)
+                if (!string.IsNullOrEmpty(key) && key == args[i].Key)
                 {
                     output = args[i].Value;
                     return Result.Found;

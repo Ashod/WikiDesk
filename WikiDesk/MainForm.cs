@@ -714,7 +714,7 @@
 
             html = WrapInHtmlBody(pageName, html, lastUpdateDateUtc, sw);
 
-            logger_.Log(Levels.Info, "Generated Html for {0}.", pageName);
+            logger_.Log(Levels.Info, "Generated Html for {0}:{1}{2}", pageName, Environment.NewLine, html);
 
             using (FileStream fs = new FileStream(tempFilename_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
             {

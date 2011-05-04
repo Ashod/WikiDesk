@@ -1058,7 +1058,7 @@ namespace WikiDesk.Core
 
             logger_.Log(
                 Levels.Debug,
-                "Processing template params for:{0}[{0}{1}{0}]",
+                "Processing template params for:{0}{1}",
                 Environment.NewLine,
                 template);
 

@@ -51,6 +51,7 @@ namespace WikiDesk
 
                 if (codes.Languages != null && codes.Languages.Count > 0)
                 {
+                    codes.Languages.Sort();
                     return codes;
                 }
             }

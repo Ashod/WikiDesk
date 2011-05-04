@@ -186,9 +186,15 @@
         }
 
         [Test]
-        public void SwitchEmpty()
+        public void SwitchNewLine()
         {
             TestFunction("#switch: \n| \n=\n Nothing | foo = Foo\n | Something", "Nothing");
+        }
+
+        [Test]
+        public void SwitchEmpty()
+        {
+            TestFunction("#switch:|subgroup|child=</div>|none=|#default=Nothing", "Nothing");
         }
 
         [Test]

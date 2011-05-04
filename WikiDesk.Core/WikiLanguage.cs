@@ -72,25 +72,25 @@ namespace WikiDesk.Core
         /// </returns>
         public int CompareTo(WikiLanguage other)
         {
-            int val = Code.CompareTo(other.Code);
+            int val = string.Compare(LocalName, other.LocalName);
             if (val != 0)
             {
                 return val;
             }
 
-            val = Name.CompareTo(other.Name);
+            val = string.Compare(Name, other.Name);
             if (val != 0)
             {
                 return val;
             }
 
-            val = LocalName.CompareTo(other.LocalName);
+            val = string.Compare(Code, other.Code);
             if (val != 0)
             {
                 return val;
             }
 
-            val = Notes.CompareTo(other.Notes);
+            val = string.Compare(Notes, other.Notes);
             return val;
         }
 
