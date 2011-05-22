@@ -11,33 +11,145 @@ namespace WikiDesk.Core
         /// Breaks a string into two parts at the first point the at param appears.
         /// Returns the first part, the second part is in
         /// </summary>
-        /// <param name="text">The text to break.</param>
+        /// <param name="raw">The text to break.</param>
         /// <param name="at">The character to break at.</param>
         /// <param name="second">The part after the break character, exclusive.</param>
         /// <returns>The part before the break character, exclusive.</returns>
-        public static string BreakAt(string text, char at, out string second)
+        public static string BreakAt(string raw, char at, out string second)
         {
-            if (text == null)
+            if (raw == null)
             {
                 second = null;
                 return null;
             }
 
-            if (text.Length == 0)
+            if (raw.Length == 0)
             {
                 second = null;
                 return string.Empty;
             }
 
-            int index = text.IndexOf(at);
+            int index = raw.IndexOf(at);
             if (index >= 0)
             {
-                second = text.Substring(index + 1);
-                return text.Substring(0, index);
+                second = raw.Substring(index + 1);
+                return raw.Substring(0, index);
             }
 
             second = null;
-            return text;
+            return raw;
+        }
+
+        /// <summary>
+        /// Parses the string enclosed between two characters.
+        /// </summary>
+        /// <param name="raw">The source string.</param>
+        /// <param name="leftChar">The left character.</param>
+        /// <param name="rightChar">The right character.</param>
+        /// <returns>The enclosed string if found, otherwise string.Empty.</returns>
+        public static string ParseEnclosedString(string raw, char leftChar, char rightChar)
+        {
+            int first = raw.IndexOf(leftChar);
+            if ((first >= 0) && ((first + 1) < raw.Length))
+            {
+                int second = raw.IndexOf(rightChar, first + 1);
+                if (second >= 0)
+                {
+                    return raw.Substring(first + 1, second - first - 1);
+                }
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Parses the string enclosed between two same-characters.
+        /// </summary>
+        /// <param name="raw">The source string.</param>
+        /// <param name="ch">The delimiting character.</param>
+        /// <returns>The enclosed string if found, otherwise string.Empty.</returns>
+        public static string ParseEnclosedString(string raw, char ch)
+        {
+            return ParseEnclosedString(raw, ch, ch);
+        }
+
+        /// <summary>
+        /// Same as string.IndexOf() but skips the contents of
+        /// within some bounding chars, such as double-quotes.
+        /// </summary>
+        /// <returns>The index of the char in question, -1 if not found.</returns>
+        public static int UnboundIndexOf(string raw, char ch, char leftCh, char rightCh)
+        {
+            char[] chars = { ch, leftCh };
+            int len = raw.Length;
+
+            int idx = raw.IndexOfAny(chars);
+            while (idx >= 0)
+            {
+                // We found the target before the bounder, no chance of being nested.
+                if (raw[idx] != leftCh)
+                {
+                    return idx;
+                }
+
+                if ((idx + 1) >= len)
+                {
+                    return -1; // Can't find it.
+                }
+
+                // May be quoted 'ch', try to find the second quote.
+                idx = raw.IndexOf(rightCh, idx + 1);
+                if ((idx + 1) < len)
+                {
+                    idx = raw.IndexOfAny(chars, idx + 1);
+                }
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Same as string.IndexOfAny() but skips the contents of
+        /// within some bounding chars, such as double-quotes.
+        /// </summary>
+        /// <returns>The index of the char in question, -1 if not found.</returns>
+        public static int UnboundIndexOfAny(string raw, char[] ch, char leftCh, char rightCh)
+        {
+            char[] chars = new char[ch.Length + 1];
+            ch.CopyTo(chars, 0);
+            chars[ch.Length] = leftCh;
+
+            int len = raw.Length;
+
+            int idx = raw.IndexOfAny(chars);
+            while (idx >= 0)
+            {
+                // We found the target before the bounder, no chance of being nested.
+                if (raw[idx] != leftCh)
+                {
+                    return idx;
+                }
+
+                if ((idx + 1) >= len)
+                {
+                    return -1; // Can't find it.
+                }
+
+                // May be bounded 'ch', try to find the second quote.
+                idx = raw.IndexOf(rightCh, idx + 1);
+                if (idx < 0)
+                {
+                    // No closing char.
+                    break;
+                }
+
+                if ((idx + 1) < len)
+                {
+                    idx = raw.IndexOfAny(chars, idx + 1);
+                }
+            }
+
+            return -1;
         }
 
         /// <summary>

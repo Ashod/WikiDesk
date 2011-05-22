@@ -137,7 +137,7 @@ namespace WikiDesk.Core
                 }
 
                 // Avoid finding nested magic params.
-                int indexOfAssignment = parameter.IndexOfAny(new[] { '{', '|', '=' });
+                int indexOfAssignment = StringUtils.UnboundIndexOfAny(parameter, new[] { '{', '|', '=' }, '<', '>');
                 if (indexOfAssignment >= 0 && parameter[indexOfAssignment] == '=')
                 {
                     name = parameter.Substring(0, indexOfAssignment);
