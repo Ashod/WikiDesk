@@ -400,6 +400,11 @@ namespace WikiDesk.Core
             for (; idx < lines.Count; ++idx)
             {
                 line = lines[idx].Trim();
+                if (line.Length == 0)
+                {
+                    continue;
+                }
+
                 if (line.StartsWith("|-"))
                 {
                     if (row)
@@ -1129,8 +1134,11 @@ namespace WikiDesk.Core
 
             //FIXME: These can be nested!
             // <noinclude>: the content will not be rendered there. These tags have no effect here.
+            //              the text between the noinclude tags will not be included when the template is transcluded (substituted)
             // <includeonly>: the content will render only there, and will not render here (like invisible ink made visible by means of transclusion).
+            //                the text between the includeonly tags will be transcluded (substituted), but will not be processed on the template's own page
             // <onlyinclude>: the content will render here and will render there, but it will only render there what is between these tags.
+            //                (not often used) – specifies that nothing on the page except what appears betweeen the onlyinclude tags will be transcluded (substituted)
             // There can be several such section "elements". Also, they can be nested. All possible renderings are achievable. For example, to render there one or more sections of the page here use <onlyinclude> tags. To append text there, wrap the addition in <includeonly> tags above, within, or below the section. To omit portions of the section, nest <noinclude> tags within it.
 
             // Find an include block, if any.
@@ -1140,12 +1148,9 @@ namespace WikiDesk.Core
                 return template;
             }
 
-            // Find an includeonly block, if any.
-            template = StringUtils.ExtractBlock(text, "<includeonly>", "</includeonly>");
-            if (template != null)
-            {
-                return template;
-            }
+            // Find an includeonly block, if any., and remove the tags.
+            text = text.Replace("<includeonly>", null);
+            text = text.Replace("</includeonly>", null);
 
             // Whatever is left after the noinclude is all there is.
             return text;
