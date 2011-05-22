@@ -476,7 +476,7 @@ Hayastani Hanrapetutyun |
         public void TemplateLang()
         {
             TestConvert("{{lang-ka|kikos}}",
-                "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Georgian_language\" title=\"Georgian language\" class=\"mw-redirect\">Georgian</a>: <span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
+                "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Georgian_language\" title=\"Georgian language\">Georgian</a>: <span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
         }
 
         [Test]

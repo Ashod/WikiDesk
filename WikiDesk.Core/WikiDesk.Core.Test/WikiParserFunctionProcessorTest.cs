@@ -328,6 +328,32 @@
             TestFunction("#ifeq: autocollapse|plain|yes", string.Empty);
         }
 
+        [Test]
+        public void IfEqComplex1()
+        {
+            TestFunction(
+@"#if:''<nowiki/>Wiktionary<nowiki/>''|<caption class="""" style="""">Wiktionary</caption>",
+@"<caption class="""" style="""">Wiktionary</caption>");
+        }
+
+        [Test]
+        public void IfEqComplex2()
+        {
+            TestFunction(
+                @"#if:|<tr><th colspan=""2"" class="""" style=""text-align:center; font-size:125%; font-weight:bold; "">{{{above}}}</th></tr>",
+                string.Empty);
+        }
+
+        [Test]
+        public void IfEqComplex3()
+        {
+            TestFunction(
+@"#ifeq:|yes||<table class=""infobox"" cellspacing=""5"" style=""width:22em;"">
+<caption class="""" style="""">Wiktionary</caption>",
+@"<table class=""infobox"" cellspacing=""5"" style=""width:22em;"">
+<caption class="""" style="""">Wiktionary</caption>");
+        }
+
         #endregion // #ifeq
 
         #region implementation

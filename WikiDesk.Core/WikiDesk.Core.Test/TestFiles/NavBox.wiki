@@ -1,0 +1,5 @@
+{{Navbox
+|title = Projects of the [[Wikimedia Foundation]]
+|name = Wikimedia Foundation
+|list1= {{nowrap|[[Wikibooks]]}}{{·}} [[Wikimedia Commons]]{{·}} [[Wikinews]]{{·}} [[Wikipedia]]{{·}} [[Wikiquote]]{{·}} [[Wikisource]]{{·}} [[Wikispecies]]{{·}} [[Wikiversity]]{{·}} [[Wiktionary]]{{·}} [[Meta-Wiki]]
+}}

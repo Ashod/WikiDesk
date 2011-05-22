@@ -1,0 +1,16 @@
+{{Infobox Website
+| name = Wiktionary
+| favicon = 
+| logo = [[File:Wiktionary-logo-en.png|128px|Wiktionary logo in regular English]] [[File:WiktionaryEn.svg|128px|Wiktionary logo in Simple English]]
+| screenshot = [[File:Www.wiktionary.org screenshot.png|256px]]
+| caption = 
+| url = [http://www.wiktionary.org/ http://www.wiktionary.org/]
+| earns_money = No
+| type = Online dictionary
+| account = Not needed, though can be used
+| owner = [[Wikimedia Foundation]]
+| author = [[Jimmy Wales]]
+| starting date = 
+| current status = 
+| money earned = 
+}}

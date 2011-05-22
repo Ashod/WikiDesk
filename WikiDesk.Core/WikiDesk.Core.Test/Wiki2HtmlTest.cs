@@ -50,6 +50,18 @@
             TestConvertFiles("TableWithImages");
         }
 
+        [Test]
+        public void NavBox()
+        {
+            TestConvertFiles("NavBox");
+        }
+
+        [Test]
+        public void InfoBox()
+        {
+            TestConvertFiles("InfoBox");
+        }
+
         #region implementation
 
         private static void TestConvert(string wikicode, string expected)

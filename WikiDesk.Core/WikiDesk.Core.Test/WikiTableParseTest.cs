@@ -433,5 +433,33 @@
 </tbody></table>
 ");
         }
+
+        [Test]
+        [Ignore]
+        public void InfoBox()
+        {
+            WikiParseTest.TestConvert(
+@"{| class=""infobox"" style=\""font-size: 85%; text-align: left; width: 300px;"" summary=""Template:Infobox Website""
+|+ style=""padding:7px; font-size: 1.5em; vertical-align: middle;"" | <b>Wiktionary</b>
+""2"" style=""text-align: center;""><a href=""http://simple.wikipedia.org/wiki/File:Wiktionary-logo-en.png"" class=""image"" title=""Wiktionary logo in regular English""><img alt=""Wiktionary logo in regular English"" src=""file:///Z:/wikidesk_cache/Wiktionary-logo-en.png"" width=""128""></a> <a href=""http://simple.wikipedia.org/wiki/File:WiktionaryEn.svg"" class=""image"" title=""Wiktionary logo in Simple English""><img alt=""Wiktionary logo in Simple English"" src=""file:///Z:/wikidesk_cache/400px-WiktionaryEn.svg.png"" width=""128""></a></td></tr><tr>
+| colspan=""2"" align=""center"" | <a href=""http://simple.wikipedia.org/wiki/File:Www.wiktionary.org_screenshot.png"" class=""image""><img alt=""Www.wiktionary.org screenshot.png"" src=""file:///Z:/wikidesk_cache/Www.wiktionary.org screenshot.png"" width=""256""></a>
+
+|-
+! <a href=""wiki://Uniform_Resource_Locator"" title=""Uniform Resource Locator"">URL</a>
+| <a href=""http://www.wiktionary.org/"" class=""external text"" rel=""nofollow"">http://www.wiktionary.org/</a>
+|-
+! Type of site
+| Online dictionary<tr><th>Need an account?</th><td>Not needed, though can be used</td></tr>
+|- style=""vertical-align: top;""
+! Owned by
+| <a href=""wiki://Wikimedia_Foundation"" title=""Wikimedia Foundation"">Wikimedia Foundation</a>
+|-
+! Created by
+| <a href=""wiki://Jimmy_Wales"" title=""Jimmy Wales"">Jimmy Wales</a>
+|}
+",
+@"
+");
+        }
     }
 }
