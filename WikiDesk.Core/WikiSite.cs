@@ -229,7 +229,7 @@ namespace WikiDesk.Core
 
             foreach (KeyValuePair<string, string[]> pair in mapMagicWords)
             {
-                if (pair.Value != null && pair.Value.Length >= 2)
+                if (pair.Value != null && pair.Value.Length >= 1)
                 {
                     // The format of the value is: ['?', "name1", "name2", ..., "nameN" ]
                     // Where '?' is either 1 (case-sensitive) or 2 (case-insensitive).
@@ -244,6 +244,10 @@ namespace WikiDesk.Core
                         continue;
                     }
 
+                    // The Key can be used directly.
+                    magicWords_.RegisterWord(pair.Key, pair.Key, caseSensitive);
+
+                    // Add aliases as well, if any.
                     for (int i = 1; i < pair.Value.Length; ++i)
                     {
                         string word = pair.Value[i];
