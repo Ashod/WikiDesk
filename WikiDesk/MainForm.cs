@@ -565,13 +565,22 @@
 
         private void BrowseWikiArticle(string title)
         {
-            Dictionary<string, PrefixMatchContainer<string>> langEntries =
-                                        entriesMap_[currentSite_.Domain.Name];
+            Dictionary<string, PrefixMatchContainer<string>> langEntries;
+            if (!entriesMap_.TryGetValue(currentSite_.Domain.Name, out langEntries))
+            {
+                logger_.Log(Levels.Warn, "Failed to find Domain [{0}].", currentSite_.Domain.Name);
+                return;
+            }
+
+            PrefixMatchContainer<string> titles;
+            if (!langEntries.TryGetValue(currentSite_.Language.LocalName, out titles))
+            {
+                titles = new PrefixMatchContainer<string>();
+                langEntries[currentSite_.Language.LocalName] = titles;
+            }
+
             int languageEntriesCount = langEntries.Count;
-
-            PrefixMatchContainer<string> titles = langEntries[currentSite_.Language.LocalName];
             int titlesCount = titles.Count;
-
             try
             {
                 currentWikiPageName_ = null;

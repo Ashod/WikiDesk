@@ -1,18 +1,18 @@
 * I18n.
 * Multi-language Wiki support.
 * Navigation bar is broken.
-* Skins. (Partially done.)
 * Navigation History.
+* Skins. (Partially done.)
 * Favs.
 * Media Cache. (Partially done.)
 * Editable settings.
 * Load from web backups. (Partially done.)
 * Page view progresss.
 * Splash Screen.
-* Compressed Database.
 * Link to source page at the buttom of each generated page.
 * Add copyright at the bottom.
 * Language message must cascade based on default lang.
+* Compressed Database.
 
 Wiki2Html:
 

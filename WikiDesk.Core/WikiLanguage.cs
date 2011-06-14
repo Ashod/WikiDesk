@@ -7,10 +7,7 @@ namespace WikiDesk.Core
     [Serializable]
     public class WikiLanguage : IComparer<WikiLanguage>, IComparable<WikiLanguage>
     {
-        public WikiLanguage()
-        {
-
-        }
+        #region construction
 
         public WikiLanguage(string name, string code)
         {
@@ -20,6 +17,12 @@ namespace WikiDesk.Core
             RightToLeft = false;
             Disabled = false;
         }
+
+        private WikiLanguage()
+        {
+        }
+
+        #endregion // construction
 
         public string Code { get; set; }
 
