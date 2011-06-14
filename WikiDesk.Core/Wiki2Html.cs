@@ -156,8 +156,7 @@ namespace WikiDesk.Core
             pageTitle_ = pageTitle;
 
             wikicode = ConvertBinaryCode(wikicode, ConvertWikiCode, HeaderRegex, Header);
-
-            return wikicode;
+            return wikicode.Trim(new[] { '\r', '\n' });
         }
 
         #endregion // operations
@@ -270,59 +269,93 @@ namespace WikiDesk.Core
         private static string ConvertListCode(string wikicode)
         {
             Match match = ListRegex.Match(wikicode);
-            if (match.Success)
+            if (!match.Success)
             {
-                StringBuilder sb = new StringBuilder(wikicode.Length);
-                sb.Append(wikicode.Substring(0, match.Index));
-                sb.Append("<ul>");
-
-                int pos = 0;
-                string curDepth = match.Groups[1].Value;
-
-                do
-                {
-                    string newDepth = match.Groups[1].Value;
-                    if (newDepth.Length == 0)
-                    {
-                        break;
-                    }
-
-                    if (newDepth.Length > curDepth.Length)
-                    {
-                        sb.Append("<ul>");
-                    }
-                    else
-                    if (newDepth.Length < curDepth.Length)
-                    {
-                        int close = curDepth.Length - newDepth.Length;
-                        while (close-- > 0)
-                        {
-                            sb.Append("</ul>");
-                        }
-                    }
-
-                    curDepth = newDepth;
-
-                    sb.Append("<li>");
-                    sb.Append(match.Groups[2].Value);
-                    sb.Append("</li>");
-
-                    pos = match.Index + match.Length;
-                    match = ListRegex.Match(wikicode, pos);
-                }
-                while (match.Success);
-
-                int depth = curDepth.Length;
-                while (depth-- > 0)
-                {
-                    sb.Append("</ul>");
-                }
-
-                sb.Append(wikicode.Substring(pos));
-                wikicode = sb.ToString();
+                return wikicode;
             }
 
-            return wikicode;
+            StringBuilder sb = new StringBuilder(wikicode.Length * 2);
+            int pos = match.Index;
+            sb.Append(wikicode.Substring(0, pos));
+            pos = ConvertUnorderedList(wikicode, sb, ref match, 0);
+            if (pos > 0)
+            {
+                sb.Append(wikicode.Substring(pos));
+            }
+
+            return sb.ToString();
+        }
+
+        private static int ConvertUnorderedList(string wikicode, StringBuilder sb, ref Match match, int depth)
+        {
+            int newDepth = match.Groups[1].Value.Length;
+            if (newDepth == 0)
+            {
+                return -1;
+            }
+
+            int pos = -1;
+            if (depth < newDepth)
+            {
+                sb.AppendLine().Append("<ul>");
+                if (depth + 1 < newDepth)
+                {
+                    sb.AppendLine().Append("<li>");
+                }
+
+                pos = ConvertUnorderedList(wikicode, sb, ref match, depth + 1);
+
+                if (depth + 1 < newDepth)
+                {
+                    sb.AppendLine().Append("</li>");
+                }
+
+                sb.AppendLine().Append("</ul>");
+            }
+            else
+            if (depth == newDepth)
+            {
+                pos = ConvertListItem(wikicode, sb, ref match, newDepth);
+            }
+
+            return pos;
+        }
+
+        private static int ConvertListItem(string wikicode, StringBuilder sb, ref Match match, int depth)
+        {
+            int pos = -1;
+            while (match.Success)
+            {
+                sb.AppendLine().Append("<li>");
+                sb.Append(match.Groups[2].Value);
+
+                pos = match.Index + match.Length;
+                match = ListRegex.Match(wikicode, pos);
+                if (!match.Success)
+                {
+                    // No more matches, close the list item and return.
+                    sb.Append("</li>");
+                    return pos;
+                }
+
+                int newDepth = match.Groups[1].Value.Length;
+                if (newDepth > depth)
+                {
+                    // Sublist.
+                    pos = ConvertUnorderedList(wikicode, sb, ref match, depth);
+                    sb.AppendLine();
+                }
+
+                sb.Append("</li>");
+
+                newDepth = match.Groups[1].Value.Length;
+                if (newDepth < depth)
+                {
+                    return pos;
+                }
+            }
+
+            return pos;
         }
 
         private static string ConvertTables(string wikicode)
@@ -350,7 +383,7 @@ namespace WikiDesk.Core
                     }
                     else
                     {
-                        sb.Append(line);
+                        sb.AppendLine(line);
                     }
                 }
 
@@ -662,7 +695,7 @@ namespace WikiDesk.Core
             string value = match.Groups[2].ToString();
             value = ConvertInlineCodes(value);
             return string.Format(
-                    "<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>{3}",
+                    "{3}<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>{3}",
                     left.Length,
                     Title.NormalizeAnchor(value),
                     value,
@@ -1189,44 +1222,46 @@ namespace WikiDesk.Core
                     {
                         if (para)
                         {
-                            sb.AppendLine("</p>");
+                            sb.Append("</p>");
                             para = false;
                         }
 
-                        if (blankLines == 1)
-                        {
-                            sb.AppendLine("<p>");
-                            para = true;
-                            blankLines = 0;
-                        }
-                        else
+                        sb.AppendLine();
+
+                        //TODO: Any case where we should create a paragraph for 1 blank line?
                         if (blankLines > 1)
                         {
-                            sb.AppendLine("<p><br /></p>");
+                            sb.Append("<p>");
+                            para = (blankLines == 1) ? true : false;
                             blankLines = 0;
+
+                            if (blankLines > 1)
+                            {
+                                sb.Append("<br /></p>");
+                            }
                         }
                     }
                     else
                     {
                         if (!para)
                         {
-                            if (blankLines > 1)
-                            {
-                                sb.AppendLine("<p><br /></p>");
-                            }
-
-                            sb.AppendLine("<p>");
+                            sb.AppendLine().Append("<p>");
                             para = true;
                             blankLines = 0;
+
+                            if (blankLines > 1)
+                            {
+                                sb.Append("<br /></p>");
+                            }
                         }
                     }
 
-                    sb.AppendLine(line);
+                    sb.Append(line);
                 }
 
                 if (para)
                 {
-                    sb.AppendLine("</p>");
+                    sb.Append("</p>");
                 }
             }
 

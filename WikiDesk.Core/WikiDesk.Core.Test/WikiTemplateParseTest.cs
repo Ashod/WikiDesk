@@ -455,35 +455,35 @@ Hayastani Hanrapetutyun |
         public void TemplateA()
         {
             TestConvert("{{!}}",
-                "<p>\r\n|\r\n</p>\r\n");
+                "<p>|</p>");
         }
 
         [Test]
         public void TemplateExclaimExplicit()
         {
             TestConvert("{{Template:!}}",
-                "<p>\r\n|\r\n</p>\r\n");
+                "<p>|</p>");
         }
 
         [Test]
         public void TemplateThankYou()
         {
             TestConvert("{{ThankYou}}",
-                "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\"><img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\"></a> <b>Thank you</b>\r\n</p>\r\n");
+                "<p><a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\"><img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\"></a> <b>Thank you</b></p>");
         }
 
         [Test]
         public void TemplateLang()
         {
             TestConvert("{{lang-ka|kikos}}",
-                "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Georgian_language\" title=\"Georgian language\">Georgian</a>: <span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
+                "<p><a href=\"http://en.wikipedia.org/wiki/Georgian_language\" title=\"Georgian language\">Georgian</a>: <span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
         }
 
         [Test]
         public void TemplateCitationError()
         {
             TestConvert("{{Citation error|no <code>&#124;title&#61;</code> specified|Cite web}}",
-                "<p>\r\n<span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"http://en.wikipedia.org/wiki/Template:Cite_web\" title=\"Template:Cite web\">Cite web</a>}}</span>\r\n</p>\r\n");
+                "<p><span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"http://en.wikipedia.org/wiki/Template:Cite_web\" title=\"Template:Cite web\">Cite web</a>}}</span></p>");
         }
 
         [Test]
@@ -497,8 +497,8 @@ Hayastani Hanrapetutyun |
         public void TemplateOCLC()
         {
             TestConvert("{{OCLC|224781861}}",
-                "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Online_Computer_Library_Center\" title=\"Online Computer Library Center\">OCLC</a>" +
-                "&nbsp;<a href=\"http://www.worldcat.org/oclc/224781861\" class=\"external text\" rel=\"nofollow\">224781861</a>\r\n</p>\r\n");
+                "<p><a href=\"http://en.wikipedia.org/wiki/Online_Computer_Library_Center\" title=\"Online Computer Library Center\">OCLC</a>" +
+                "&nbsp;<a href=\"http://www.worldcat.org/oclc/224781861\" class=\"external text\" rel=\"nofollow\">224781861</a></p>");
         }
 
         internal static void TestConvert(string wikicode, string expected)

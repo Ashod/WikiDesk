@@ -1,6 +1,5 @@
 ﻿namespace WikiDesk.Core.Test
 {
-    using System;
     using System.IO;
     using System.Reflection;
 
@@ -25,7 +24,7 @@
         {
             TestConvert(
                     "=!=",
-                    "<h1><span class=\"mw-headline\" id=\"a_.21\">!</span></h1>" + Environment.NewLine);
+                    "<h1><span class=\"mw-headline\" id=\"a_.21\">!</span></h1>");
         }
 
         [Test]
@@ -33,7 +32,7 @@
         {
             TestConvert(
                     "==!==",
-                    "<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>" + Environment.NewLine);
+                    "<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>");
         }
 
         [Test]
@@ -41,7 +40,7 @@
         {
             TestConvert(
                     "===!===",
-                    "<h3><span class=\"mw-headline\" id=\"a_.21\">!</span></h3>" + Environment.NewLine);
+                    "<h3><span class=\"mw-headline\" id=\"a_.21\">!</span></h3>");
         }
 
         [Test]
@@ -49,7 +48,7 @@
         {
             TestConvert(
                     "====!====",
-                    "<h4><span class=\"mw-headline\" id=\"a_.21\">!</span></h4>" + Environment.NewLine);
+                    "<h4><span class=\"mw-headline\" id=\"a_.21\">!</span></h4>");
         }
 
         [Test]
@@ -57,7 +56,7 @@
         {
             TestConvert(
                     "=====!=====",
-                    "<h5><span class=\"mw-headline\" id=\"a_.21\">!</span></h5>" + Environment.NewLine);
+                    "<h5><span class=\"mw-headline\" id=\"a_.21\">!</span></h5>");
         }
 
         [Test]
@@ -65,7 +64,7 @@
         {
             TestConvert(
                     "======!======",
-                    "<h6><span class=\"mw-headline\" id=\"a_.21\">!</span></h6>" + Environment.NewLine);
+                    "<h6><span class=\"mw-headline\" id=\"a_.21\">!</span></h6>");
         }
 
         [Test]
@@ -81,7 +80,7 @@
         {
             TestConvert(
                     "==!==\n",
-                    "<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>" + Environment.NewLine);
+                    "<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>");
         }
 
         [Test]
@@ -89,7 +88,7 @@
         {
             TestConvert(
                     "blah blha \n==!==\n",
-                    "<p>\r\nblah blha \r\n</p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>" + Environment.NewLine);
+                    "<p>blah blha </p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>");
         }
 
         [Test]
@@ -97,7 +96,7 @@
         {
             TestConvert(
                     "blah blha \n==!==  \nThe bigest mistkae.",
-                    "<p>\r\nblah blha \r\n</p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>\r\n<p>\r\n  The bigest mistkae.\r\n</p>\r\n");
+                    "<p>blah blha </p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>\r\n<p>The bigest mistkae.</p>");
         }
 
         #endregion // Header
@@ -109,7 +108,7 @@
         {
             TestConvert(
                     "''!''",
-                    "<p>\r\n<i>!</i>\r\n</p>\r\n");
+                    "<p><i>!</i></p>");
         }
 
         [Test]
@@ -117,7 +116,7 @@
         {
             TestConvert(
                     "'''''!'''''",
-                    "<p>\r\n<i><b>!</b></i>\r\n</p>\r\n");
+                    "<p><i><b>!</b></i></p>");
         }
 
         [Test]
@@ -125,7 +124,7 @@
         {
             TestConvert(
                     "'''!'''",
-                    "<p>\r\n<b>!</b>\r\n</p>\r\n");
+                    "<p><b>!</b></p>");
         }
 
         [Test]
@@ -133,7 +132,7 @@
         {
             TestConvert(
                     "'''''The '''red''' fox.'''''",
-                    "<p>\r\n<i><b>The</b> red <b>fox.</b></i>\r\n</p>\r\n");
+                    "<p><i><b>The</b> red <b>fox.</b></i></p>");
         }
 
         [Test]
@@ -141,7 +140,7 @@
         {
             TestConvert(
                     "'''''The '''red''",
-                    "<p>\r\n<i><b>The</b> red</i>\r\n</p>\r\n");
+                    "<p><i><b>The</b> red</i></p>");
         }
 
         [Test]
@@ -149,7 +148,7 @@
         {
             TestConvert(
                     "=='''!'''==",
-                    "<h2><span class=\"mw-headline\" id=\"a_.21\"><b>!</b></span></h2>" + Environment.NewLine);
+                    "<h2><span class=\"mw-headline\" id=\"a_.21\"><b>!</b></span></h2>");
         }
 
         #endregion // Bold/Italic
@@ -161,7 +160,7 @@
         {
             TestConvert(
                     "* One list entry.",
-                    "<ul><li>One list entry.</li></ul>");
+                    "<ul>\r\n<li>One list entry.</li>\r\n</ul>");
         }
 
         [Test]
@@ -170,7 +169,20 @@
             TestConvert(
                     "* Two list entries.\n" +
                     "* Another One.",
-                    "<ul><li>Two list entries.</li><li>Another One.</li></ul>");
+                    "<ul>\r\n<li>Two list entries.</li>\r\n<li>Another One.</li>\r\n</ul>");
+        }
+
+        [Test]
+        public void UnorderedListSimple3()
+        {
+            // As Wikipedia.
+            TestConvert(
+                "Blah blah List\n" +
+                "* first.\n" +
+                "* second.\n" +
+                "* last.\n" +
+                "Other text.",
+                "<p>Blah blah List</p>\r\n<ul>\r\n<li>first.</li>\r\n<li>second.</li>\r\n<li>last.</li>\r\n</ul>\r\n<p>Other text.</p>");
         }
 
         [Test]
@@ -178,27 +190,169 @@
         {
             TestConvert(
                     "* One list entry.\n" +
-                    "** With one sublist." +
+                    "** With one sublist.\n" +
                     "** Make that two.",
-                    "<ul><li>One list entry.</li><ul><li>With one sublist.</li><li>Make that two.</li></ul></ul>");
+@"<ul>
+<li>One list entry.
+<ul>
+<li>With one sublist.</li>
+<li>Make that two.</li>
+</ul>
+</li>
+</ul>");
+        }
+
+        [Test]
+        public void UnorderedListBad()
+        {
+            TestConvert(
+                    "** one\n" +
+                    "**two",
+                    "<ul>\r\n<li>\r\n<ul>\r\n<li>one</li>\r\n<li>two</li>\r\n</ul>\r\n</li>\r\n</ul>");
+        }
+
+        [Test]
+        public void UnorderedListBad2()
+        {
+            TestConvert(
+                    "**** Four.\n" +
+                    "* One.\n" +
+                    "**** 4.",
+@"<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>Four.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>One.
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li>4.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>");
+        }
+
+        [Test]
+        public void UnorderedListMultiple()
+        {
+            // As Wikipedia.
+            TestConvert(
+                "Blah blah List\n" +
+                "* first.\n" +
+                "** one.\n" +
+                "**two.\n" +
+                "* second.\n" +
+                "** 1.\n" +
+                "***2.\n" +
+                "* last.\n" +
+                "Other text.",
+@"<p>Blah blah List</p>
+<ul>
+<li>first.
+<ul>
+<li>one.</li>
+<li>two.</li>
+</ul>
+</li>
+<li>second.
+<ul>
+<li>1.
+<ul>
+<li>2.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>last.</li>
+</ul>
+<p>Other text.</p>");
+        }
+
+        [Test]
+        public void UnorderedListSkewed()
+        {
+            // As Wikipedia.
+            TestConvert(
+                "Blah blah List\n" +
+                "* first.\n" +
+                "** second.\n" +
+                "*** third.\n" +
+                "**** fourth.\n" +
+                "***** fifth.",
+@"<p>Blah blah List</p>
+<ul>
+<li>first.
+<ul>
+<li>second.
+<ul>
+<li>third.
+<ul>
+<li>fourth.
+<ul>
+<li>fifth.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>");
         }
 
         [Test]
         public void UnorderedListsComplex()
         {
             TestConvert(
-                    "# Numbered lists are:" +
-                    "## Very organized" +
-                    "## Easy to follow" +
-                    "#: Previous item continues" +
-                    "A new line marks the end of the list." +
-                    "# New numbering starts with 1.",
-                    "<ul><li><i>Unordered lists</i> are easy to do:<ul><li>Start every line with a star.<ul><li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul><li>A new line</li></ul></li><li>in a list</li></ul><p>\r\nmarks the end of the list.</p><ul><li>Of course you can start again.</li></ul>");
+                "* ''Unordered lists'' are easy to do:\n" +
+                "** Start every line with a star.\n" +
+                "*** More stars indicate a deeper level.\n" +
+                "*: Previous item continues.\n" +
+                "** A new line\n" +
+                "* in a list\n" +
+                "marks the end of the list.\n" +
+                "* Of course you can start again.",
+@"<ul>
+<li><i>Unordered lists</i> are easy to do:
+<ul>
+<li>Start every line with a star.
+<ul>
+<li>More stars indicate a deeper level.</li>
+</ul>
+</li>
+</ul>
+<dl>
+<dd>Previous item continues.</dd>
+</dl>
+<ul>
+<li>A new line</li>
+</ul>
+</li>
+<li>in a list</li>
+</ul>
+<p>marks the end of the list.</p>");
         }
 
         #endregion // Unordered Lists
 
-        #region Unordered Lists
+        #region Ordered Lists
 
         [Test]
         public void OrderedListSimple()
@@ -231,15 +385,13 @@
         public void OrderedListsComplex()
         {
             TestConvert(
-                    "* ''Unordered lists'' are easy to do:" +
-                    "** Start every line with a star." +
-                    "*** More stars indicate a deeper level." +
-                    "*: Previous item continues." +
-                    "** A new line" +
-                    "* in a list" +
-                    "marks the end of the list." +
-                    "* Of course you can start again.",
-                    "<ul><li><i>Unordered lists</i> are easy to do:<ul><li>Start every line with a star.<ul><li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul><li>A new line</li></ul></li><li>in a list</li></ul><p>\r\nmarks the end of the list.</p><ul><li>Of course you can start again.</li></ul>");
+                    "# Numbered lists are:" +
+                    "## Very organized" +
+                    "## Easy to follow" +
+                    "#: Previous item continues" +
+                    "A new line marks the end of the list." +
+                    "# New numbering starts with 1.",
+                    "<ul>\r\n<li><i>Unordered lists</i> are easy to do:<ul>\r\n<li>Start every line with a star.<ul>\r\n<li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul>\r\n<li>A new line</li></ul></li>\r\n<li>in a list</li></ul><p>marks the end of the list.</p><ul>\r\n<li>Of course you can start again.</li></ul>");
         }
 
         #endregion // Ordered Lists
@@ -248,14 +400,14 @@
         public void ExtLink()
         {
             TestConvert("[http://www.wikipedia.org WikiPipi]",
-                "<p>\r\n<a href=\"http://www.wikipedia.org\" class=\"external text\" rel=\"nofollow\">WikiPipi</a>\r\n</p>\r\n");
+                "<p><a href=\"http://www.wikipedia.org\" class=\"external text\" rel=\"nofollow\">WikiPipi</a></p>");
         }
 
         [Test]
         public void ParserFunctionSimple()
         {
             TestConvert("{{lc:KIKOS}}",
-                "<p>\r\nkikos\r\n</p>\r\n");
+                "<p>kikos</p>");
         }
 
         [Test]
@@ -263,7 +415,7 @@
         {
             TestConvert(
                     "[[Brazil|kiko]]",
-                    "<p>\r\n<a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">kiko</a>\r\n</p>\r\n");
+                    "<p><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">kiko</a></p>");
         }
 
         [Test]

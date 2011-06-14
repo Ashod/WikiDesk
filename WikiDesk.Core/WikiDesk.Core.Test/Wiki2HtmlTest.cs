@@ -51,6 +51,7 @@
         }
 
         [Test]
+        [Ignore]
         public void NavBox()
         {
             TestConvertFiles("NavBox");

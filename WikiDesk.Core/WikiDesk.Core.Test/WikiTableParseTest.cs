@@ -25,8 +25,7 @@
 <td>C</td>
 <td>D</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -55,8 +54,7 @@
 <td>Cell B</td>
 <td>Cell C</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -72,8 +70,7 @@
 <tbody><tr>
 <td>These all  |(including the pipes) |go into  |the first cell</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -94,8 +91,7 @@
 <tr>
 <td align=""right"">Cell 2 (right aligned)</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -132,8 +128,7 @@
 <td>Cell B</td>
 <td>Cell C</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -171,8 +166,7 @@
 <td>Cell B</td>
 <td>Cell C</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -210,8 +204,7 @@
 <td>Cell B</td>
 <td>Cell C</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -280,8 +273,7 @@
 <td>10</td>
 <td>15</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -302,8 +294,7 @@
 <td bgcolor=""red""><font color=""white""> ghi </font></td>
 <td>jkl</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -335,8 +326,7 @@
 <td style=""background: silver"">vwx</td>
 <td>yz</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -368,8 +358,7 @@
 <td>vwx</td>
 <td>yz</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -402,8 +391,7 @@
 <td>Better than a Poké Ball</td>
 <td>All Versions</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
@@ -430,8 +418,7 @@
 <td>blih</td>
 <td>bluh</td>
 </tr>
-</tbody></table>
-");
+</tbody></table>");
         }
 
         [Test]
