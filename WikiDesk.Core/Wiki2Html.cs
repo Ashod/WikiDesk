@@ -304,10 +304,18 @@ namespace WikiDesk.Core
                 }
 
                 pos = ConvertUnorderedList(wikicode, sb, ref match, depth + 1);
-
                 if (depth + 1 < newDepth)
                 {
                     sb.AppendLine().Append("</li>");
+                }
+
+                if (match.Success)
+                {
+                    newDepth = match.Groups[1].Value.Length;
+                    if (newDepth > 0 && depth == newDepth - 1)
+                    {
+                        pos = ConvertListItem(wikicode, sb, ref match, newDepth);
+                    }
                 }
 
                 sb.AppendLine().Append("</ul>");
