@@ -1056,7 +1056,7 @@ namespace WikiDesk.Core
             logger_.Log(logEntry);
 
             // If it's an explicit template, process now.
-            if (command.TrimEnd(':') == config_.WikiSite.GetNamespace(WikiSite.Namespace.Tempalate))
+            if (command.TrimEnd(':') == config_.WikiSite.GetNamespaceName(WikiSite.Namespace.Tempalate))
             {
                 if (args != null && args.Count > 0)
                 {
@@ -1110,7 +1110,7 @@ namespace WikiDesk.Core
             if (string.IsNullOrEmpty(nameSpace))
             {
                 // Missing or invalid namespace, assume "Template".
-                nameSpace = config_.WikiSite.GetNamespace(WikiSite.Namespace.Tempalate);
+                nameSpace = config_.WikiSite.GetNamespaceName(WikiSite.Namespace.Tempalate);
                 name = Title.FullPageName(nameSpace, title);
             }
 

@@ -29,8 +29,8 @@ namespace WikiDesk.Core
         private void RegisterHandlers()
         {
             RegisterHandler("int",               DoNothing);
-            RegisterHandler("ns",                DoNothing);
-            RegisterHandler("nse",               DoNothing);
+            RegisterHandler("ns",                Namespace);
+            RegisterHandler("nse",               Namespace);
             RegisterHandler("urlencode",         UrlEncode);
             RegisterHandler("lcfirst",           LcFirst);
             RegisterHandler("ucfirst",           UcFirst);
@@ -83,6 +83,28 @@ namespace WikiDesk.Core
             RegisterHandler("subjectpagenamee",  SubjectPageName);
             RegisterHandler("#formatdate",       FormatDate);
         }
+
+        /// <summary>
+        /// Resolves the namespace given the namespace-key.
+        /// </summary>
+        /// <param name="args">The argument. Must be exactly one integer.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        protected Result Namespace(List<KeyValuePair<string, string>> args, out string output)
+        {
+            output = string.Empty;
+            if (args.Count == 1)
+            {
+                int key;
+                if (int.TryParse(args[0].Value, out key))
+                {
+                    output = wikiSite_.GetNamespaceName(key);
+                }
+            }
+
+            return Result.Found;
+        }
+
 
         /// <summary>
         /// Returns the page title.

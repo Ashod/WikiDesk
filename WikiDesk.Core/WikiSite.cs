@@ -66,7 +66,7 @@ namespace WikiDesk.Core
             {
                 string[] aliases = GetSpecialPageAliases("Export");
                 string export = aliases != null ? aliases[0] : "Export";
-                return string.Format("{0}{1}:{2}/", BaseFullUrl, GetNamespace(Namespace.Special), export);
+                return string.Format("{0}{1}:{2}/", BaseFullUrl, GetNamespaceName(Namespace.Special), export);
             }
         }
 
@@ -117,6 +117,8 @@ namespace WikiDesk.Core
             Talk,
             User,
             User_Talk,
+            Wikipedia,
+            Wikipedia_Talk,
             Project_Talk,
             File,
             File_Talk,
@@ -127,15 +129,48 @@ namespace WikiDesk.Core
             Help,
             Help_Talk,
             Category,
-            Category_Talk
+            Category_Talk,
+            Portal,
+            Portal_Talk,
+            Book,
+            Book_Talk
+        }
+
+        /// <summary>
+        /// Returns the namespace for the given key.
+        /// </summary>
+        /// <param name="key">The namespace key to lookup.</param>
+        /// <returns>The namespace.</returns>
+        /// <exception cref="ApplicationException">Can't find Namespace with key: {0}.</exception>
+        public Namespace GetNamespace(int key)
+        {
+            Namespace ns;
+            if (NamespaceKeys_.TryGetValue(key, out ns))
+            {
+                return ns;
+            }
+
+            throw new ApplicationException("Can't find Namespace with key: " + key);
+        }
+
+        /// <summary>
+        /// Returns the namespace name for the given key.
+        /// </summary>
+        /// <param name="key">The namespace key to lookup its name.</param>
+        /// <returns>The site-specific name of the namespace.</returns>
+        /// <exception cref="ApplicationException">Can't find Namespace with key: {0}.</exception>
+        public string GetNamespaceName(int key)
+        {
+            return GetNamespaceName(GetNamespace(key));
         }
 
         /// <summary>
         /// Returns the namespace name for this site.
+        /// Will return string.Empty if not found.
         /// </summary>
         /// <param name="ns">The namespace to lookup its name.</param>
         /// <returns>The site-specific name of the namespace.</returns>
-        public string GetNamespace(Namespace ns)
+        public string GetNamespaceName(Namespace ns)
         {
             string value;
             switch (ns)
@@ -162,6 +197,14 @@ namespace WikiDesk.Core
 
                 case Namespace.User_Talk:
                     namespaces_.TryGetValue("NS_USER_TALK", out value);
+                    break;
+
+                case Namespace.Wikipedia:
+                    namespaces_.TryGetValue("NS_WIKIPEDIA", out value);
+                    break;
+
+                case Namespace.Wikipedia_Talk:
+                    namespaces_.TryGetValue("NS_WIKIPEDIA_TALK", out value);
                     break;
 
                 case Namespace.Project_Talk:
@@ -206,6 +249,22 @@ namespace WikiDesk.Core
 
                 case Namespace.Category_Talk:
                     namespaces_.TryGetValue("NS_CATEGORY_TALK", out value);
+                    break;
+
+                case Namespace.Portal:
+                    namespaces_.TryGetValue("NS_PORTAL", out value);
+                    break;
+
+                case Namespace.Portal_Talk:
+                    namespaces_.TryGetValue("NS_PORTAL_TALK", out value);
+                    break;
+
+                case Namespace.Book:
+                    namespaces_.TryGetValue("NS_BOOK", out value);
+                    break;
+
+                case Namespace.Book_Talk:
+                    namespaces_.TryGetValue("NS_BOOK_TALK", out value);
                     break;
 
                 default:
@@ -280,6 +339,32 @@ namespace WikiDesk.Core
         private readonly WikiDomain domain_;
 
         private WikiMagicWords magicWords_;
+
+        private static Dictionary<int, Namespace> NamespaceKeys_ = new Dictionary<int, Namespace>()
+            {
+                { -2, Namespace.Media },
+                { -1, Namespace.Special },
+                { 0, Namespace.Main },
+                { 1, Namespace.Talk },
+                { 2, Namespace.User },
+                { 3, Namespace.User_Talk },
+                { 4, Namespace.Wikipedia },
+                { 5, Namespace.Wikipedia_Talk },
+                { 6, Namespace.File },
+                { 7, Namespace.File_Talk },
+                { 8, Namespace.MediaWiki },
+                { 9, Namespace.MediaWiki_Talk },
+                { 10, Namespace.Tempalate },
+                { 11, Namespace.Template_Talk },
+                { 12, Namespace.Help },
+                { 13, Namespace.Help_Talk },
+                { 14, Namespace.Category },
+                { 15, Namespace.Category_Talk },
+                { 100, Namespace.Portal },
+                { 101, Namespace.Portal_Talk },
+                { 108, Namespace.Book },
+                { 109, Namespace.Book_Talk }
+            };
 
         #endregion // representation
     }

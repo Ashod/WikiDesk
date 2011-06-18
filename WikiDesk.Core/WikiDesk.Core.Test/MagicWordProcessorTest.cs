@@ -326,7 +326,41 @@
         {
             TestProcessor("TALKSPACE", string.Empty);
             TestProcessor("NAMESPACE", string.Empty);
+
+            TestProcessor("ns:-2", "Media");
+            TestProcessor("ns:-1", "Special");
             TestProcessor("ns:0", string.Empty);
+            TestProcessor("ns:1", "Talk");
+            TestProcessor("ns:2", "User");
+            TestProcessor("ns:3", "User_talk");
+
+            // Unsupported, since they aren't included in the published language messages PHPs.
+            // TestProcessor("ns:4", "Wikipedia");
+            // TestProcessor("ns:5", "Wikipedia_talk");
+
+            TestProcessor("ns:6", "File");
+            TestProcessor("ns:7", "File_talk");
+            TestProcessor("ns:8", "MediaWiki");
+            TestProcessor("ns:9", "MediaWiki_talk");
+            TestProcessor("ns:10", "Template");
+            TestProcessor("ns:11", "Template_talk");
+            TestProcessor("ns:12", "Help");
+            TestProcessor("ns:13", "Help_talk");
+            TestProcessor("ns:14", "Category");
+            TestProcessor("ns:15", "Category_talk");
+
+            // Unsupported, since they aren't included in the published language messages PHPs.
+            // TestProcessor("ns:100", "Portal");
+            // TestProcessor("ns:101", "Portal_talk");
+            // TestProcessor("ns:108", "Book");
+            // TestProcessor("ns:109", "Book_talk");
+        }
+
+        [Test]
+        [ExpectedException(typeof(System.ApplicationException))]
+        public void InvalidNamespaces()
+        {
+            TestProcessor("ns:55", null);
         }
 
         #endregion // tests
