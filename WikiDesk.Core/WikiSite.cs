@@ -32,6 +32,8 @@ namespace WikiDesk.Core
             namespaces_ = module_.GetString2StringMapField("namespaceNames");
             specialPageAliases_ = module_.GetString2StringsMapField("specialPageAliases");
             GenerateMagicWords(module_.GetString2StringsMapField("magicWords"));
+
+            CurrentNamespace = Namespace.Main;
         }
 
         #endregion // construction
@@ -78,6 +80,8 @@ namespace WikiDesk.Core
             get { return magicWords_; }
         }
 
+        public Namespace CurrentNamespace { get; set; }
+
         #endregion // properties
 
         public string GetViewUrl(string title)
@@ -109,6 +113,7 @@ namespace WikiDesk.Core
         {
             Media,
             Special,
+            Main,
             Talk,
             User,
             User_Talk,
@@ -141,6 +146,10 @@ namespace WikiDesk.Core
 
                 case Namespace.Special:
                     namespaces_.TryGetValue("NS_SPECIAL", out value);
+                    break;
+
+                case Namespace.Main:
+                    namespaces_.TryGetValue("NS_MAIN", out value);
                     break;
 
                 case Namespace.Talk:

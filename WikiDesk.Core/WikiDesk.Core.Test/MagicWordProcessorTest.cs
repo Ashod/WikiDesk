@@ -325,6 +325,8 @@
         public void Namespaces()
         {
             TestProcessor("TALKSPACE", string.Empty);
+            TestProcessor("NAMESPACE", string.Empty);
+            TestProcessor("ns:0", string.Empty);
         }
 
         #endregion // tests
