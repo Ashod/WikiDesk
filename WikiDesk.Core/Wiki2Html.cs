@@ -1046,9 +1046,9 @@ namespace WikiDesk.Core
             {
                 foreach (KeyValuePair<string, string> pair in args)
                 {
-                    if (pair.Key != null)
+                    if (!string.IsNullOrEmpty(pair.Key))
                     {
-                        logEntry.Properties[pair.Key] = pair.Value ?? string.Empty;
+                        logEntry.Properties[pair.Key] = pair.Value;
                     }
                 }
             }
