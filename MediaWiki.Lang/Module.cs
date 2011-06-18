@@ -1,16 +1,12 @@
 ﻿
 namespace MediaWiki.Lang
 {
-    #region using
-
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Reflection;
 
     using PHP.Core;
-
-    #endregion // using
 
     public class Module
     {
@@ -32,10 +28,11 @@ namespace MediaWiki.Lang
 
         public Dictionary<string, string> GetString2StringMapField(string name)
         {
-            FieldInfo fieldInfo = type_.GetField(name);
-            object value = fieldInfo.GetValue(instance_);
-
-            PhpArray array = (PhpArray)((PhpReference)value).value;
+            PhpArray array = GetPhpArrayField(name);
+            if (array == null)
+            {
+                return new Dictionary<string, string>(0);
+            }
 
             Dictionary<string, string> map = new Dictionary<string, string>(array.Count);
 
@@ -55,16 +52,31 @@ namespace MediaWiki.Lang
             return map;
         }
 
-        public Dictionary<string, string[]> GetString2StringsMapField(string name)
+        public object GetField(string name)
         {
             FieldInfo fieldInfo = type_.GetField(name);
             if (fieldInfo == null)
             {
-                return new Dictionary<string, string[]>(0);
+                return null;
             }
 
-            object value = fieldInfo.GetValue(instance_);
-            PhpArray array = (PhpArray)((PhpReference)value).value;
+            PhpReference value = fieldInfo.GetValue(instance_) as PhpReference;
+            return value == null ? null : value.value;
+        }
+
+        public string GetStringField(string name)
+        {
+            string value = GetField(name) as string;
+            return value;
+        }
+
+        public Dictionary<string, string[]> GetString2StringsMapField(string name)
+        {
+            PhpArray array = GetPhpArrayField(name);
+            if (array == null)
+            {
+                return new Dictionary<string, string[]>(0);
+            }
 
             Dictionary<string, string[]> map = new Dictionary<string, string[]>(array.Count);
 
@@ -96,6 +108,16 @@ namespace MediaWiki.Lang
         }
 
         #endregion // operations
+
+        #region implementation
+
+        private PhpArray GetPhpArrayField(string name)
+        {
+            PhpArray array = GetField(name) as PhpArray;
+            return array;
+        }
+
+        #endregion // implementation
 
         #region representation
 

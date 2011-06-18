@@ -25,13 +25,29 @@ namespace WikiDesk.Core
             language_ = language;
 
             string langCode = language_.MimeCode ?? language_.Code;
-            string moduleFilePath = Path.Combine(folder, "Messages");
-            moduleFilePath = Path.Combine(moduleFilePath, "Messages" + langCode + ".dll");
+            string moduleFilePath = Path.Combine(folder, MESSAGES);
+            string modulefullPath = Path.Combine(moduleFilePath, MESSAGES + langCode + DLL_EXTENTION);
+            module_ = new Module(modulefullPath);
 
-            module_ = new Module(moduleFilePath);
-            namespaces_ = module_.GetString2StringMapField("namespaceNames");
-            specialPageAliases_ = module_.GetString2StringsMapField("specialPageAliases");
-            GenerateMagicWords(module_.GetString2StringsMapField("magicWords"));
+            // Languages may fall-back on others. The only Exception is the default language.
+            if (string.Compare(language.Code, DEF_LANG_CODE, StringComparison.InvariantCultureIgnoreCase) != 0)
+            {
+                string fallbackLangCode = module_.GetStringField(FIELD_FALLBACK);
+                if (string.IsNullOrEmpty(fallbackLangCode))
+                {
+                    fallbackLangCode = DEF_LANG_CODE;
+                }
+
+                modulefullPath = Path.Combine(moduleFilePath, MESSAGES + fallbackLangCode + DLL_EXTENTION);
+                Module fallbackModule = new Module(modulefullPath);
+                MergeNamespaces(fallbackModule.GetString2StringMapField(FIELD_NAMESPACE_NAMES));
+                MergeSpecialPageAliases(fallbackModule.GetString2StringsMapField(FIELD_SPECIAL_PAGE_ALIASES));
+                MergeMagicWords(fallbackModule.GetString2StringsMapField(FIELD_MAGIC_WORDS));
+            }
+
+            MergeNamespaces(module_.GetString2StringMapField(FIELD_NAMESPACE_NAMES));
+            MergeSpecialPageAliases(module_.GetString2StringsMapField(FIELD_SPECIAL_PAGE_ALIASES));
+            MergeMagicWords(module_.GetString2StringsMapField(FIELD_MAGIC_WORDS));
 
             CurrentNamespace = Namespace.Main;
         }
@@ -64,8 +80,8 @@ namespace WikiDesk.Core
         {
             get
             {
-                string[] aliases = GetSpecialPageAliases("Export");
-                string export = aliases != null ? aliases[0] : "Export";
+                string[] aliases = GetSpecialPageAliases(EXPORT);
+                string export = aliases != null ? aliases[0] : EXPORT;
                 return string.Format("{0}{1}:{2}/", BaseFullUrl, GetNamespaceName(Namespace.Special), export);
             }
         }
@@ -287,14 +303,28 @@ namespace WikiDesk.Core
 
         #region implementation
 
+        private void MergeNamespaces(Dictionary<string, string> namespaces)
+        {
+            foreach (KeyValuePair<string, string> pair in namespaces)
+            {
+                namespaces_[pair.Key] = pair.Value;
+            }
+        }
+
+        private void MergeSpecialPageAliases(Dictionary<string, string[]> specialPageAliases)
+        {
+            foreach (KeyValuePair<string, string[]> pair in specialPageAliases)
+            {
+                specialPageAliases_[pair.Key] = pair.Value;
+            }
+        }
+
         /// <summary>
         /// Populate the MagicWords instance from the map provided by the MessagesXX.php.
         /// </summary>
         /// <param name="mapMagicWords"></param>
-        private void GenerateMagicWords(Dictionary<string, string[]> mapMagicWords)
+        private void MergeMagicWords(Dictionary<string, string[]> mapMagicWords)
         {
-            magicWords_ = new WikiMagicWords();
-
             foreach (KeyValuePair<string, string[]> pair in mapMagicWords)
             {
                 if (pair.Value != null && pair.Value.Length >= 1)
@@ -330,15 +360,12 @@ namespace WikiDesk.Core
         #region representation
 
         private readonly Module module_;
-
-        private readonly Dictionary<string, string> namespaces_;
-        private readonly Dictionary<string, string[]> specialPageAliases_;
-
         private readonly WikiLanguage language_;
-
         private readonly WikiDomain domain_;
 
-        private WikiMagicWords magicWords_;
+        private readonly Dictionary<string, string> namespaces_ = new Dictionary<string, string>(32);
+        private readonly Dictionary<string, string[]> specialPageAliases_ = new Dictionary<string, string[]>(64);
+        private readonly WikiMagicWords magicWords_ = new WikiMagicWords();
 
         private static Dictionary<int, Namespace> NamespaceKeys_ = new Dictionary<int, Namespace>()
             {
@@ -367,5 +394,26 @@ namespace WikiDesk.Core
             };
 
         #endregion // representation
+
+        #region constants
+
+        private const string DEF_LANG_CODE = "en";
+
+        private const string DLL_EXTENTION = ".dll";
+
+        private const string EXPORT = "Export";
+
+        private const string MESSAGES = "Messages";
+
+        private const string FIELD_FALLBACK = "fallback";
+
+        private const string FIELD_NAMESPACE_NAMES = "namespaceNames";
+
+        private const string FIELD_SPECIAL_PAGE_ALIASES = "specialPageAliases";
+
+        private const string FIELD_MAGIC_WORDS = "magicWords";
+
+        #endregion // constants
+
     }
 }

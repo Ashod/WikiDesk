@@ -21,6 +21,15 @@
         }
 
         [Test]
+        public void Modules()
+        {
+            WikiDomain wikiDomain = new WikiDomain("wikipedia");
+            WikiLanguage wikiLanguage = new WikiLanguage("Aymara", "ay");
+            string folder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            WikiSite wikiSite = new WikiSite(wikiDomain, wikiLanguage, folder + "\\..\\");
+        }
+
+        [Test]
         public void HeaderBoldItalic()
         {
             TestConvertFiles("HeaderBoldItalic");
