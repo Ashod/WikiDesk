@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Web;
 
     public class Title
     {
@@ -62,7 +63,6 @@
         /// <param name="title">The title to normalize.</param>
         /// <returns>Normalized title.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Page titles can't be empty.</exception>
         public static string Normalize(string title)
         {
             if (title == null)
@@ -73,7 +73,7 @@
             title = title.Trim();
             if (title.Length == 0)
             {
-                throw new ArgumentException("Page titles can't be empty.");
+                return string.Empty;
             }
 
             // Spaces and underscores are interchangeable.
@@ -82,6 +82,54 @@
             // Always make the first character upper for proper comparison.
             title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
             return title.Normalize();
+        }
+
+        /// <summary>
+        /// Converts a title such that the first character is in upper-case
+        /// and all underscores are converted to spaces.
+        /// </summary>
+        /// <param name="title">The title to denormalize.</param>
+        /// <returns>Denormalized title.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
+        public static string Denormalize(string title)
+        {
+            if (title == null)
+            {
+                throw new ArgumentNullException("title");
+            }
+
+            title = title.Trim();
+            if (title.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            // Spaces and underscores are interchangeable.
+            title = title.Replace('_', ' ');
+
+            // Always make the first character upper for proper comparison.
+            title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
+            return title.Normalize();
+        }
+
+        /// <summary>
+        /// Encodes a title to be valid URL.
+        /// </summary>
+        /// <param name="title">The title to Encode.</param>
+        /// <returns>Encoded title.</returns>
+        public static string UrlEncode(string title)
+        {
+            return HttpUtility.UrlEncode(title);
+        }
+
+        /// <summary>
+        /// Decodes a URL-encoded title to be human-readable.
+        /// </summary>
+        /// <param name="title">The title to decode.</param>
+        /// <returns>Decoded title.</returns>
+        public static string UrlDecode(string title)
+        {
+            return HttpUtility.UrlDecode(title);
         }
 
         /// <summary>
@@ -109,35 +157,6 @@
             title = title.Replace(' ', '_');
             title = AnchorEncode(title);
 
-            return title.Normalize();
-        }
-
-        /// <summary>
-        /// Converts a title such that the first character is in upper-case
-        /// and all underscores are converted to spaces.
-        /// </summary>
-        /// <param name="title">The title to denormalize.</param>
-        /// <returns>Denormalized title.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">Page titles can't be empty.</exception>
-        public static string Denormalize(string title)
-        {
-            if (title == null)
-            {
-                throw new ArgumentNullException("title");
-            }
-
-            title = title.Trim();
-            if (title.Length == 0)
-            {
-                throw new ArgumentException("Page titles can't be empty.");
-            }
-
-            // Spaces and underscores are interchangeable.
-            title = title.Replace('_', ' ');
-
-            // Always make the first character upper for proper comparison.
-            title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
             return title.Normalize();
         }
 
@@ -202,7 +221,7 @@
             sb.Append("a_");
             foreach (char ch in title)
             {
-                char c = Char.ToLowerInvariant(ch);
+                char c = char.ToLowerInvariant(ch);
                 if (c >= 'a' && c <= 'z')
                 {
                     sb.Append(c);
