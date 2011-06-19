@@ -114,9 +114,10 @@ namespace WikiDesk.Core
         {
             logger_.Log(
                     Levels.Debug,
-                    "Converting - NameSpace = {0}, PageTitle = {1}, WikiText = {2}.",
+                    "Converting - NameSpace = {0}, PageTitle = {1}, WikiText = {2}{3}.",
                     nameSpace,
                     pageTitle,
+                    Environment.NewLine,
                     wikicode);
 
             // Process redirections first.
@@ -1029,6 +1030,8 @@ namespace WikiDesk.Core
 
         private VariableProcessor.Result MagicWord(string magic, out string output)
         {
+            logger_.Log(Levels.Debug, "Magic:{0}{1}", Environment.NewLine, magic);
+
             VariableProcessor.Result result = VariableProcessor.Result.Unknown;
 
             List<KeyValuePair<string, string>> args;
@@ -1061,7 +1064,9 @@ namespace WikiDesk.Core
                 {
                     command = args[0].Value;
                     args.RemoveAt(0);
-                    return Template(command, args, out output);
+                    result = Template(command, args, out output);
+                    logger_.Log(Levels.Debug, "Magic result for [{0}]:{1}{2}", magic, Environment.NewLine, output);
+                    return result;
                 }
             }
 
@@ -1074,7 +1079,7 @@ namespace WikiDesk.Core
                 result = magicWordProcessor_.Execute(magicWordId, args, out output);
                 if (result != VariableProcessor.Result.Unknown)
                 {
-                    logger_.Log(Levels.Debug, "MagicWord result for [{0}]:{1}[{2}]", command, Environment.NewLine, output);
+                    logger_.Log(Levels.Debug, "Magic result for [{0}]:{1}{2}", magic, Environment.NewLine, output);
                     return result;
                 }
             }
@@ -1083,12 +1088,14 @@ namespace WikiDesk.Core
             result = parserFunctionsProcessor_.Execute(command, args, out output);
             if (result != VariableProcessor.Result.Unknown)
             {
-                logger_.Log(Levels.Debug, "ParserFunction result for [{0}]:{1}[{2}]", command, Environment.NewLine, output);
+                logger_.Log(Levels.Debug, "Magic result for [{0}]:{1}{2}", magic, Environment.NewLine, output);
                 return result;
             }
 
             // Assume it's a template.
-            return Template(command, args, out output);
+            result = Template(command, args, out output);
+            logger_.Log(Levels.Debug, "Magic result for [{0}]:{1}{2}", magic, Environment.NewLine, output);
+            return result;
         }
 
         private VariableProcessor.Result Template(
@@ -1159,7 +1166,7 @@ namespace WikiDesk.Core
         {
             Debug.Assert(retrievePageDel_ != null, "No RetrievePage delegate defined.");
 
-            logger_.Log(Levels.Debug, "Resolving template [{0}].", name);
+            logger_.Log(Levels.Debug, "Retrieving template [{0}].", name);
 
             string text = retrievePageDel_(name, config_.WikiSite.Language.Code);
             if (string.IsNullOrEmpty(text))
@@ -1211,7 +1218,8 @@ namespace WikiDesk.Core
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (line.Trim().Length == 0)
+                    line = line.Trim();
+                    if (line.Length == 0)
                     {
                         ++blankLines;
                     }
