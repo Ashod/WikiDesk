@@ -1,7 +1,6 @@
 ﻿
 namespace WikiDesk.Core
 {
-    using System;
     using System.Collections.Generic;
     using System.Web;
 
@@ -30,8 +29,8 @@ namespace WikiDesk.Core
         private void RegisterHandlers()
         {
             RegisterHandler("int",               DoNothing);
-            RegisterHandler("ns",                Namespace);
-            RegisterHandler("nse",               Namespace);
+            RegisterHandler("ns",                Ns);
+            RegisterHandler("nse",               Nse);
             RegisterHandler("urlencode",         UrlEncode);
             RegisterHandler("lcfirst",           LcFirst);
             RegisterHandler("ucfirst",           UcFirst);
@@ -62,26 +61,26 @@ namespace WikiDesk.Core
             RegisterHandler("defaultsort",       DoNothing);
             RegisterHandler("filepath",          DoNothing);
             RegisterHandler("pagesincategory",   DoNothing);
-            RegisterHandler("pagesize",          DoNothing);
+            RegisterHandler("pagesize",          BogusNumber);
             RegisterHandler("protectionlevel",   DoNothing);
             RegisterHandler("namespace",         Namespace);
-            RegisterHandler("namespacee",        Namespace);
-            RegisterHandler("talkspace",         DoNothing);
-            RegisterHandler("talkspacee",        DoNothing);
-            RegisterHandler("subjectspace",      DoNothing);
-            RegisterHandler("subjectspacee",     DoNothing);
+            RegisterHandler("namespacee",        Namespacee);
+            RegisterHandler("talkspace",         Talkspace);
+            RegisterHandler("talkspacee",        Talkspacee);
+            RegisterHandler("subjectspace",      Subjectspace);
+            RegisterHandler("subjectspacee",     Subjectspacee);
             RegisterHandler("pagename",          PageName);
-            RegisterHandler("pagenamee",         PageName);
+            RegisterHandler("pagenamee",         PageNamee);
             RegisterHandler("fullpagename",      FullPageName);
-            RegisterHandler("fullpagenamee",     FullPageName);
+            RegisterHandler("fullpagenamee",     FullPageNamee);
             RegisterHandler("basepagename",      BasePageName);
-            RegisterHandler("basepagenamee",     BasePageName);
+            RegisterHandler("basepagenamee",     BasePageNamee);
             RegisterHandler("subpagename",       SubPageName);
-            RegisterHandler("subpagenamee",      SubPageName);
+            RegisterHandler("subpagenamee",      SubPageNamee);
             RegisterHandler("talkpagename",      TalkPageName);
-            RegisterHandler("talkpagenamee",     TalkPageName);
+            RegisterHandler("talkpagenamee",     TalkPageNamee);
             RegisterHandler("subjectpagename",   SubjectPageName);
-            RegisterHandler("subjectpagenamee",  SubjectPageName);
+            RegisterHandler("subjectpagenamee",  SubjectPageNamee);
             RegisterHandler("#formatdate",       FormatDate);
         }
 
@@ -92,7 +91,50 @@ namespace WikiDesk.Core
         }
 
         /// <summary>
-        /// Resolves the namespace given the namespace-key.
+        /// Resolves the namespace denormalized given the namespace-key.
+        /// </summary>
+        /// <example>
+        /// ns:-1 -> Special
+        /// ns:3 -> User talk
+        /// </example>
+        /// <param name="args">The argument. Must be exactly one integer.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        protected Result Ns(List<KeyValuePair<string, string>> args, out string output)
+        {
+            output = string.Empty;
+            if (args != null && args.Count > 1)
+            {
+                int key;
+                if (int.TryParse(args[0].Value, out key))
+                {
+                    output = wikiSite_.GetNamespaceName(key);
+                    output = Title.Denormalize(output);
+                }
+            }
+
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Resolves the namespace normalized given the namespace-key.
+        /// </summary>
+        /// <example>
+        /// ns:-1 -> Special
+        /// ns:3 -> User_talk
+        /// </example>
+        /// <param name="args">The argument. Must be exactly one integer.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        protected Result Nse(List<KeyValuePair<string, string>> args, out string output)
+        {
+            Ns(args, out output);
+            output = Title.Normalize(output);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Resolves the namespace denormalized given the namespace-key.
         /// </summary>
         /// <param name="args">The argument. Must be exactly one integer.</param>
         /// <param name="output">The output text.</param>
@@ -102,41 +144,115 @@ namespace WikiDesk.Core
             output = string.Empty;
             if (args != null && args.Count > 1)
             {
-                int key;
-                if (int.TryParse(args[0].Value, out key))
-                {
-                    output = wikiSite_.GetNamespaceName(key);
-                }
+                // TODO: Support any page.
             }
             else
             {
                 output = nameSpace_;
             }
 
+            output = Title.Denormalize(output);
             return Result.Found;
         }
 
+        /// <summary>
+        /// Resolves the namespace normalized given the namespace-key.
+        /// </summary>
+        /// <param name="args">The argument. Must be exactly one integer.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        protected Result Namespacee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            Namespace(args, out output);
+            output = Title.Normalize(output);
+            return Result.Found;
+        }
 
         /// <summary>
-        /// Returns the page title.
+        /// Resolves the talkspace denormalized given the namespace-key.
+        /// </summary>
+        /// <param name="args">The argument. Must be exactly one integer.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        protected Result Talkspace(List<KeyValuePair<string, string>> args, out string output)
+        {
+            Namespace(args, out output);
+            output = Title.Denormalize(output + " talk");
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Resolves the namespace normalized given the namespace-key.
+        /// </summary>
+        /// <param name="args">The argument. Must be exactly one integer.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        protected Result Talkspacee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            Namespace(args, out output);
+            output = Title.Normalize(output + " talk");
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Resolves the talkspace denormalized given the namespace-key.
+        /// </summary>
+        /// <param name="args">The argument. Must be exactly one integer.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        protected Result Subjectspace(List<KeyValuePair<string, string>> args, out string output)
+        {
+            Namespace(args, out output);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Resolves the namespace normalized given the namespace-key.
+        /// </summary>
+        /// <param name="args">The argument. Must be exactly one integer.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        protected Result Subjectspacee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            Namespacee(args, out output);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Returns the page title denormalized.
         /// </summary>
         /// <example>
-        /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Magic words.
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
         /// <param name="output">The output text.</param>
         /// <returns>A Result type.</returns>
         private Result PageName(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = pageTitle_;
+            output = Title.Denormalize(pageTitle_);
             return Result.Found;
         }
 
         /// <summary>
-        /// Returns the full page title, including namespace.
+        /// Returns the page title normalized.
         /// </summary>
         /// <example>
-        /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Help:Magic words.
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Magic_words.
+        /// </example>
+        /// <param name="args">The arguments, if any.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        private Result PageNamee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            output = Title.Normalize(pageTitle_);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Returns the full page title denormalized, including namespace.
+        /// </summary>
+        /// <example>
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Help:Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
         /// <param name="output">The output text.</param>
@@ -144,15 +260,32 @@ namespace WikiDesk.Core
         private Result FullPageName(List<KeyValuePair<string, string>> args, out string output)
         {
             output = Title.FullPageName(nameSpace_, pageTitle_);
+            output = Title.Denormalize(output);
             return Result.Found;
         }
 
         /// <summary>
-        /// Returns the page title excluding the current subpage and
+        /// Returns the full page title normalized, including namespace.
+        /// </summary>
+        /// <example>
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Help:Magic_words.
+        /// </example>
+        /// <param name="args">The arguments, if any.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        private Result FullPageNamee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            FullPageName(args, out output);
+            output = Title.Normalize(output);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Returns the page title denormalized excluding the current subpage and
         /// namespace ("Title/foo" on "Title/foo/bar").
         /// </summary>
         /// <example>
-        /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Magic words.
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Magic words.
         /// </example>
         /// <remarks>
         /// For more complex splitting, use {{#titleparts:}} from ParserFunctions extension.
@@ -163,14 +296,35 @@ namespace WikiDesk.Core
         private Result BasePageName(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
+            output = Title.Denormalize(output);
             return Result.Found;
         }
 
         /// <summary>
-        /// Returns the subpage title ("foo" on "Title/foo").
+        /// Returns the page title normalized excluding the current subpage and
+        /// namespace ("Title/foo" on "Title/foo/bar").
         /// </summary>
         /// <example>
-        /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Magic words.
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Magic_words.
+        /// </example>
+        /// <remarks>
+        /// For more complex splitting, use {{#titleparts:}} from ParserFunctions extension.
+        /// </remarks>
+        /// <param name="args">The arguments, if any.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        private Result BasePageNamee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            output = pageTitle_;
+            output = Title.Normalize(output);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Returns the subpage title denormalized ("foo" on "Title/foo").
+        /// </summary>
+        /// <example>
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
         /// <param name="output">The output text.</param>
@@ -178,14 +332,31 @@ namespace WikiDesk.Core
         private Result SubPageName(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
+            output = Title.Denormalize(output);
             return Result.Found;
         }
 
         /// <summary>
-        /// Returns namespace and title of the associated talk page.
+        /// Returns the subpage title normalized ("foo" on "Title/foo").
         /// </summary>
         /// <example>
-        /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Help talk:Magic words.
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Magic_words.
+        /// </example>
+        /// <param name="args">The arguments, if any.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        private Result SubPageNamee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            output = pageTitle_;
+            output = Title.Normalize(output);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Returns namespace and title denormalized of the associated talk page.
+        /// </summary>
+        /// <example>
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Help talk:Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
         /// <param name="output">The output text.</param>
@@ -193,14 +364,31 @@ namespace WikiDesk.Core
         private Result TalkPageName(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
+            output = Title.Denormalize(output);
             return Result.Found;
         }
 
         /// <summary>
-        /// Returns the namespace and title of the associated content page.
+        /// Returns namespace and title normalized of the associated talk page.
         /// </summary>
         /// <example>
-        /// http://www.mediawiki.org/wiki/Help:Magic_words	-> Help:Magic words.
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Help talk:Magic_words.
+        /// </example>
+        /// <param name="args">The arguments, if any.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        private Result TalkPageNamee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            output = pageTitle_;
+            output = Title.Normalize(output);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Returns the namespace and title denormalized of the associated content page.
+        /// </summary>
+        /// <example>
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Help:Magic words.
         /// </example>
         /// <param name="args">The arguments, if any.</param>
         /// <param name="output">The output text.</param>
@@ -208,6 +396,23 @@ namespace WikiDesk.Core
         private Result SubjectPageName(List<KeyValuePair<string, string>> args, out string output)
         {
             output = Title.FullPageName(nameSpace_, pageTitle_);
+            output = Title.Denormalize(output);
+            return Result.Found;
+        }
+
+        /// <summary>
+        /// Returns the namespace and title normalized of the associated content page.
+        /// </summary>
+        /// <example>
+        /// http://www.mediawiki.org/wiki/Help:Magic_words -> Help:Magic_words.
+        /// </example>
+        /// <param name="args">The arguments, if any.</param>
+        /// <param name="output">The output text.</param>
+        /// <returns>A Result type.</returns>
+        private Result SubjectPageNamee(List<KeyValuePair<string, string>> args, out string output)
+        {
+            SubjectPageName(args, out output);
+            output = Title.Normalize(output);
             return Result.Found;
         }
 
