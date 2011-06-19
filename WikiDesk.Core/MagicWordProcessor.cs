@@ -1,6 +1,7 @@
 ﻿
 namespace WikiDesk.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Web;
 
@@ -44,15 +45,15 @@ namespace WikiDesk.Core
             RegisterHandler("grammar",           DoNothing);
             RegisterHandler("gender",            DoNothing);
             RegisterHandler("plural",            DoNothing);
-            RegisterHandler("numberofpages",     DoNothing);
-            RegisterHandler("numberofusers",     DoNothing);
-            RegisterHandler("numberofactiveusers", DoNothing);
-            RegisterHandler("numberofarticles",  DoNothing);
-            RegisterHandler("numberoffiles",     DoNothing);
-            RegisterHandler("numberofadmins",    DoNothing);
-            RegisterHandler("numberingroup",     DoNothing);
-            RegisterHandler("numberofedits",     DoNothing);
-            RegisterHandler("numberofviews",     DoNothing);
+            RegisterHandler("numberofpages",     BogusNumber);
+            RegisterHandler("numberofusers",     BogusNumber);
+            RegisterHandler("numberofactiveusers", BogusNumber);
+            RegisterHandler("numberofarticles",  BogusNumber);
+            RegisterHandler("numberoffiles",     BogusNumber);
+            RegisterHandler("numberofadmins",    BogusNumber);
+            RegisterHandler("numberingroup",     BogusNumber);
+            RegisterHandler("numberofedits",     BogusNumber);
+            RegisterHandler("numberofviews",     BogusNumber);
             RegisterHandler("language",          DoNothing);
             RegisterHandler("padleft",           DoNothing);
             RegisterHandler("padright",          DoNothing);
@@ -63,8 +64,8 @@ namespace WikiDesk.Core
             RegisterHandler("pagesincategory",   DoNothing);
             RegisterHandler("pagesize",          DoNothing);
             RegisterHandler("protectionlevel",   DoNothing);
-            RegisterHandler("namespace",         DoNothing);
-            RegisterHandler("namespacee",        DoNothing);
+            RegisterHandler("namespace",         Namespace);
+            RegisterHandler("namespacee",        Namespace);
             RegisterHandler("talkspace",         DoNothing);
             RegisterHandler("talkspacee",        DoNothing);
             RegisterHandler("subjectspace",      DoNothing);
@@ -84,6 +85,12 @@ namespace WikiDesk.Core
             RegisterHandler("#formatdate",       FormatDate);
         }
 
+        private Result BogusNumber(List<KeyValuePair<string, string>> args, out string output)
+        {
+            output = "1";
+            return Result.Found;
+        }
+
         /// <summary>
         /// Resolves the namespace given the namespace-key.
         /// </summary>
@@ -93,13 +100,17 @@ namespace WikiDesk.Core
         protected Result Namespace(List<KeyValuePair<string, string>> args, out string output)
         {
             output = string.Empty;
-            if (args.Count == 1)
+            if (args != null && args.Count > 1)
             {
                 int key;
                 if (int.TryParse(args[0].Value, out key))
                 {
                     output = wikiSite_.GetNamespaceName(key);
                 }
+            }
+            else
+            {
+                output = nameSpace_;
             }
 
             return Result.Found;

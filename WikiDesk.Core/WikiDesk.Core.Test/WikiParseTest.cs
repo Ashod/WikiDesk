@@ -434,6 +434,30 @@
                     "Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></span>");
         }
 
+        [Test]
+        public void DefaultNamespace()
+        {
+            TestConvert(
+                    "{{NAMESPACE}}",
+                    string.Empty);
+        }
+
+        [Test]
+        public void Namespace0()
+        {
+            TestConvert(
+                    "{{ns:0}}",
+                    string.Empty);
+        }
+
+        [Test]
+        public void Magic()
+        {
+            TestConvert(
+                    "{{#ifeq:{{NAMESPACE}}|{{ns:0}}|article|page}}",
+                    "<p>article</p>");
+        }
+
         internal static void TestConvert(string wikicode, string expected)
         {
             Wiki2Html converter = new Wiki2Html(config_);

@@ -67,6 +67,7 @@ namespace WikiDesk.Core
             parserFunctionsProcessor_ = new ParserFunctionProcessor(ProcessMagicWords);
 
             logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
+            logger_.Trace = true;
         }
 
         #endregion // construction
@@ -1028,8 +1029,6 @@ namespace WikiDesk.Core
 
         private VariableProcessor.Result MagicWord(string magic, out string output)
         {
-            logger_.Log(Levels.Debug, "Magic:{0}{1}", Environment.NewLine, magic);
-
             VariableProcessor.Result result = VariableProcessor.Result.Unknown;
 
             List<KeyValuePair<string, string>> args;
@@ -1041,7 +1040,7 @@ namespace WikiDesk.Core
                 return result;
             }
 
-            LogEntry logEntry = logger_.CreateEntry(Levels.Debug, "Magic Variable: [{0}].", command);
+            LogEntry logEntry = logger_.CreateEntry(Levels.Debug, "Magic Variable:{0}[{1}]", Environment.NewLine, command);
             if (args != null)
             {
                 foreach (KeyValuePair<string, string> pair in args)
@@ -1070,14 +1069,12 @@ namespace WikiDesk.Core
             string magicWordId = config_.WikiSite.MagicWords.FindId(command);
             if (!string.IsNullOrEmpty(magicWordId))
             {
-                logger_.Log(Levels.Debug, "MagicWord ID for [{0}] is [{1}].", command, magicWordId);
-
                 // Try processing.
                 magicWordProcessor_.SetContext(config_.WikiSite, nameSpace_, pageTitle_);
                 result = magicWordProcessor_.Execute(magicWordId, args, out output);
                 if (result != VariableProcessor.Result.Unknown)
                 {
-                    logger_.Log(Levels.Debug, "MagicWord result [{0}]:{1}{2}.", command, Environment.NewLine, output);
+                    logger_.Log(Levels.Debug, "MagicWord result for [{0}]:{1}[{2}]", command, Environment.NewLine, output);
                     return result;
                 }
             }
@@ -1086,7 +1083,7 @@ namespace WikiDesk.Core
             result = parserFunctionsProcessor_.Execute(command, args, out output);
             if (result != VariableProcessor.Result.Unknown)
             {
-                logger_.Log(Levels.Debug, "ParserFunction result [{0}]:{1}{2}.", command, Environment.NewLine, output);
+                logger_.Log(Levels.Debug, "ParserFunction result for [{0}]:{1}[{2}]", command, Environment.NewLine, output);
                 return result;
             }
 
@@ -1122,7 +1119,7 @@ namespace WikiDesk.Core
                 return VariableProcessor.Result.Html;
             }
 
-            logger_.Log(Levels.Debug, "Template for [{0}]:{1}{2}.", name, Environment.NewLine, template);
+            logger_.Log(Levels.Debug, "Template [{0}]:{1}{2}.", name, Environment.NewLine, template);
 
             // Redirection?
             string newName = Redirection(template);
