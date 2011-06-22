@@ -117,9 +117,9 @@
         /// </summary>
         /// <param name="title">The title to Encode.</param>
         /// <returns>Encoded title.</returns>
-        public static string UrlEncode(string title)
+        public static string UrlNormalize(string title)
         {
-            return HttpUtility.UrlEncode(title);
+            return HttpUtility.UrlEncode(Normalize(title));
         }
 
         /// <summary>
@@ -127,9 +127,9 @@
         /// </summary>
         /// <param name="title">The title to decode.</param>
         /// <returns>Decoded title.</returns>
-        public static string UrlDecode(string title)
+        public static string UrlDenormalize(string title)
         {
-            return HttpUtility.UrlDecode(title);
+            return Denormalize(HttpUtility.UrlDecode(title));
         }
 
         /// <summary>

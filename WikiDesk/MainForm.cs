@@ -738,7 +738,7 @@
         private static string OnResolveWikiLinks(string title, string languageCode)
         {
             //TODO: take the language code into consideration.
-            return WIKI_PROTOCOL_STRING + Title.UrlEncode(title);
+            return WIKI_PROTOCOL_STRING + Title.UrlNormalize(title);
         }
 
         private string OnRetrievePage(string pageName, string lanugageCode)
