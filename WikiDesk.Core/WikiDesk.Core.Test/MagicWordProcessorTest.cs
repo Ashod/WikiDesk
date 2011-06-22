@@ -324,7 +324,7 @@
         [Test]
         public void Namespaces()
         {
-            TestProcessor("TALKSPACE", string.Empty);
+            TestProcessor("TALKSPACE", "Talk");
             TestProcessor("NAMESPACE", string.Empty);
 
             TestProcessor("ns:-2", "Media");
@@ -332,22 +332,28 @@
             TestProcessor("ns:0", string.Empty);
             TestProcessor("ns:1", "Talk");
             TestProcessor("ns:2", "User");
-            TestProcessor("ns:3", "User_talk");
+            TestProcessor("ns:3", "User talk");
+            TestProcessor("nse:3", "User_talk");
 
             // Unsupported, since they aren't included in the published language messages PHPs.
             // TestProcessor("ns:4", "Wikipedia");
             // TestProcessor("ns:5", "Wikipedia_talk");
 
             TestProcessor("ns:6", "File");
-            TestProcessor("ns:7", "File_talk");
+            TestProcessor("ns:7", "File talk");
+            TestProcessor("nse:7", "File_talk");
             TestProcessor("ns:8", "MediaWiki");
-            TestProcessor("ns:9", "MediaWiki_talk");
+            TestProcessor("ns:9", "MediaWiki talk");
+            TestProcessor("nse:9", "MediaWiki_talk");
             TestProcessor("ns:10", "Template");
-            TestProcessor("ns:11", "Template_talk");
+            TestProcessor("ns:11", "Template talk");
+            TestProcessor("nse:11", "Template_talk");
             TestProcessor("ns:12", "Help");
-            TestProcessor("ns:13", "Help_talk");
+            TestProcessor("ns:13", "Help talk");
+            TestProcessor("nse:13", "Help_talk");
             TestProcessor("ns:14", "Category");
-            TestProcessor("ns:15", "Category_talk");
+            TestProcessor("ns:15", "Category talk");
+            TestProcessor("nse:15", "Category_talk");
 
             // Unsupported, since they aren't included in the published language messages PHPs.
             // TestProcessor("ns:100", "Portal");
@@ -360,7 +366,7 @@
         [ExpectedException(typeof(System.ApplicationException))]
         public void InvalidNamespaces()
         {
-            TestProcessor("ns:55", null);
+            TestProcessor("ns:55", string.Empty);
         }
 
         #endregion // tests

@@ -103,7 +103,7 @@ namespace WikiDesk.Core
         protected Result Ns(List<KeyValuePair<string, string>> args, out string output)
         {
             output = string.Empty;
-            if (args != null && args.Count > 1)
+            if (args != null && args.Count > 0)
             {
                 int key;
                 if (int.TryParse(args[0].Value, out key))
@@ -142,7 +142,7 @@ namespace WikiDesk.Core
         protected Result Namespace(List<KeyValuePair<string, string>> args, out string output)
         {
             output = string.Empty;
-            if (args != null && args.Count > 1)
+            if (args != null && args.Count > 0)
             {
                 // TODO: Support any page.
             }
