@@ -88,7 +88,7 @@
         {
             TestConvert(
                     "blah blha \n==!==\n",
-                    "<p>blah blha </p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>");
+                    "<p>blah blha</p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>");
         }
 
         [Test]
@@ -96,7 +96,7 @@
         {
             TestConvert(
                     "blah blha \n==!==  \nThe bigest mistkae.",
-                    "<p>blah blha </p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>\r\n<p>The bigest mistkae.</p>");
+                    "<p>blah blha</p>\r\n<h2><span class=\"mw-headline\" id=\"a_.21\">!</span></h2>\r\n<p>The bigest mistkae.</p>");
         }
 
         #endregion // Header

@@ -476,14 +476,14 @@ Hayastani Hanrapetutyun |
         public void TemplateLang()
         {
             TestConvert("{{lang-ka|kikos}}",
-                "<p><a href=\"http://en.wikipedia.org/wiki/Georgian_language\" title=\"Georgian language\">Georgian</a>: <span lang=\"ka\" xml:lang=\"ka\">kikos</span></p>");
+                "<p><a href=\"Georgian_language\" title=\"Georgian language\">Georgian</a>: <span lang=\"ka\" xml:lang=\"ka\">kikos</span><a href=\"Category%3aArticles_containing_Georgian_language_text\" title=\"Category:Articles containing Georgian language text\">Category:Articles containing Georgian language text</a></p>");
         }
 
         [Test]
         public void TemplateCitationError()
         {
             TestConvert("{{Citation error|no <code>&#124;title&#61;</code> specified|Cite web}}",
-                "<p><span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"http://en.wikipedia.org/wiki/Template:Cite_web\" title=\"Template:Cite web\">Cite web</a>}}</span></p>");
+                "<p><span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"Template%3aCite_web\" title=\"Template:Cite web\">Cite web</a>}}</span></p>");
         }
 
         [Test]
@@ -497,17 +497,30 @@ Hayastani Hanrapetutyun |
         public void TemplateOCLC()
         {
             TestConvert("{{OCLC|224781861}}",
-                "<p><a href=\"http://en.wikipedia.org/wiki/Online_Computer_Library_Center\" title=\"Online Computer Library Center\">OCLC</a>" +
+                "<p><a href=\"Online_Computer_Library_Center\" title=\"Online Computer Library Center\">OCLC</a>" +
                 "&nbsp;<a href=\"http://www.worldcat.org/oclc/224781861\" class=\"external text\" rel=\"nofollow\">224781861</a></p>");
+        }
+
+        [Test]
+        public void TwoOtherUses()
+        {
+            TestConvert(
+                    "{{Two other uses|the Male sex|the city|Malé}}",
+                    @"<div class=""dablink"">This article is about the Male sex.&#32;&#32;For the city, see <a href=""Mal%c3%a9"" title=""Malé"">Malé</a>.&#32;&#32;For other uses, see <a href=""TestPage_(disambiguation)"" title=""TestPage (disambiguation)"">TestPage (disambiguation)</a>.</div>");
         }
 
         internal static void TestConvert(string wikicode, string expected)
         {
-            Wiki2Html converter = new Wiki2Html(config_, null, OnResolveTemplate, null);
+            Wiki2Html converter = new Wiki2Html(config_, OnResolveWikiLinks, OnResolveTemplate, null);
             string nameSpace = string.Empty;
             string title = "TestPage";
             string html = converter.Convert(ref nameSpace, ref title, wikicode);
             Assert.AreEqual(expected, html);
+        }
+
+        private static string OnResolveWikiLinks(string title, string languageCode)
+        {
+            return Title.UrlNormalize(title);
         }
 
         private static string OnResolveTemplate(string word, string lanugageCode)

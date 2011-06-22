@@ -705,7 +705,7 @@ namespace WikiDesk.Core
             string value = match.Groups[2].ToString();
             value = ConvertInlineCodes(value);
             return string.Format(
-                    "{3}<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>{3}",
+                    "{3}<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>",
                     left.Length,
                     Title.NormalizeAnchor(value),
                     value,
@@ -1246,11 +1246,11 @@ namespace WikiDesk.Core
                         {
                             sb.Append("<p>");
                             para = (blankLines == 1) ? true : false;
-                            blankLines = 0;
 
                             if (blankLines > 1)
                             {
                                 sb.Append("<br /></p>");
+                                blankLines = 0;
                             }
                         }
                     }
@@ -1260,11 +1260,11 @@ namespace WikiDesk.Core
                         {
                             sb.AppendLine().Append("<p>");
                             para = true;
-                            blankLines = 0;
 
                             if (blankLines > 1)
                             {
                                 sb.Append("<br /></p>");
+                                blankLines = 0;
                             }
                         }
                     }

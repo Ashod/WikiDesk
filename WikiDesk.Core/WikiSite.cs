@@ -414,6 +414,5 @@ namespace WikiDesk.Core
         private const string FIELD_MAGIC_WORDS = "magicWords";
 
         #endregion // constants
-
     }
 }
