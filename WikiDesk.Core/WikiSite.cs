@@ -89,6 +89,11 @@ namespace WikiDesk.Core
             MergeSpecialPageAliases(module_.GetString2StringsMapField(FIELD_SPECIAL_PAGE_ALIASES));
             MergeMagicWords(module_.GetString2StringsMapField(FIELD_MAGIC_WORDS));
 
+            if (!namespaces_.ContainsKey("NS_WIKIPEDIA"))
+            {
+                namespaces_["NS_WIKIPEDIA"] = "Wikipedia";
+            }
+
             CurrentNamespace = Namespace.Main;
         }
 

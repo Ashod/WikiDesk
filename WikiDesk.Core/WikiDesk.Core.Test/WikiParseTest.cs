@@ -479,11 +479,14 @@ namespace WikiDesk.Core.Test
         }
 
         [Test]
-        public void Namespace0()
+        public void Ns()
         {
             TestConvert(
                     "{{ns:0}}",
                     string.Empty);
+            TestConvert(
+                    "{{ns:4}}",
+                    "<p>Wikipedia</p>");
         }
 
         [Test]
