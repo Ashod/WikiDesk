@@ -1187,13 +1187,14 @@ namespace WikiDesk.Core
 
             template = RemoveComments(template);
 
+            output = MagicParser.ProcessTemplateParams(template, args);
             logger_.Log(
                 Levels.Debug,
-                "Processing template params for:{0}{1}",
+                "Processed template params for:{0}{1}{0}{0}{2}",
                 Environment.NewLine,
-                template);
+                template,
+                output);
 
-            output = MagicParser.ProcessTemplateParams(template, args);
             return VariableProcessor.Result.Found;
         }
 
