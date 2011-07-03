@@ -108,6 +108,18 @@ namespace WikiDesk.Core.Test
             TestConvertFiles("InfoBox");
         }
 
+        [Test]
+        public void TaxoBox()
+        {
+            TestConvertFiles("TaxoBox");
+        }
+
+        [Test]
+        public void TaxoBoxCore()
+        {
+            TestConvertFiles("TaxoBoxCore");
+        }
+
         #region implementation
 
         private static void TestConvert(string wikicode, string expected)

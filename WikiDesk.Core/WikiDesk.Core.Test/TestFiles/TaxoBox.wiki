@@ -1,0 +1,18 @@
+{{Taxobox 
+| color = pink
+|name = Human
+|image = Human-gender-neutral.svg
+|image_width = 220px
+|fossil_range = [[Pleistocene]] &ndash; Recent
+|scientific cassification
+|regnum = [[Animal]]ia
+|phylum = [[Chordate|Chordata]]
+|classis = [[Mammal]]ia
+|ordo = [[Primate]]s
+|familia = [[Hominidae]]
+|genus = ''[[Homo (genus)|Homo]]''
+|species = '''''H. sapiens'''''
+|subspecies = '''''H. s. sapiens''''' 
+|trinomial = ''Homo sapiens sapiens''
+|trinomial_authority = [[Carolus Linnaeus|Linnaeus]], 1758
+}}
