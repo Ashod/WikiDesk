@@ -189,6 +189,50 @@ namespace WikiDesk.Core.Test
 
         #endregion // Bold/Italic
 
+        #region Indent
+
+        [Test]
+        public void IndentSingle()
+        {
+            TestConvert(
+                    ":blo",
+                    "<dl>\r\n<dd>blo</dd>\r\n</dl>");
+        }
+
+        [Test]
+        public void IndentDouble()
+        {
+            TestConvert(
+                    "::blo",
+                    "<dl>\r\n<dd>\r\n<dl>\r\n<dd>blo</dd>\r\n</dl>\r\n</dd>\r\n</dl>");
+        }
+
+        [Test]
+        public void IndentTripple()
+        {
+            TestConvert(
+                    ":::blo",
+                    "<dl>\r\n<dd>\r\n<dl>\r\n<dd>\r\n<dl>\r\n<dd>blo</dd>\r\n</dl>\r\n</dd>\r\n</dl>\r\n</dd>\r\n</dl>");
+        }
+
+        [Test]
+        public void IndentQuad()
+        {
+            TestConvert(
+                    "::::blo",
+                    "<dl>\r\n<dd>\r\n<dl>\r\n<dd>\r\n<dl>\r\n<dd>\r\n<dl>\r\n<dd>blo</dd>\r\n</dl>\r\n</dd>\r\n</dl>\r\n</dd>\r\n</dl>\r\n</dd>\r\n</dl>");
+        }
+
+        [Test]
+        public void IndentKlongon()
+        {
+            TestConvert(
+                    @":''This article is about the Klingon ""race"". For the ""language"" see [[Klingon language]].''",
+                    @"<dl>\r\n<dd><i>This article is about the Klingon ""race"". For the ""language"" see <a href=""/wiki/Klingon_language"" style=""cursor: help; "">Klingon language</a>.</i></dd>\r\n</dl>");
+        }
+
+        #endregion // Indent
+
         #region Unordered Lists
 
         [Test]
@@ -431,6 +475,14 @@ namespace WikiDesk.Core.Test
         }
 
         #endregion // Ordered Lists
+
+        [Test]
+        public void Pre()
+        {
+            TestConvert(
+                " h\r\n y\r\n  z",
+                "<pre>h\r\ny\r\n z\r\n</pre>");
+        }
 
         [Test]
         public void ExtLink()

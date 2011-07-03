@@ -250,10 +250,60 @@ namespace WikiDesk.Core
 
             wikicode = ConvertInlineCodes(wikicode);
 
+//            wikicode = ConvertPreCode(wikicode);
             wikicode = ConvertListCode(wikicode);
             wikicode = ConvertTables(wikicode);
             wikicode = ConvertParagraphs(wikicode);
             return wikicode;
+        }
+
+        private string ConvertPreCode(string wikicode)
+        {
+            StringBuilder sb = new StringBuilder(wikicode.Length * 2);
+            using (StringReader sr = new StringReader(wikicode))
+            {
+                bool pre = false;
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (line.Length == 0)
+                    {
+                        if (pre)
+                        {
+                            sb.Append("</pre>");
+                            pre = false;
+                        }
+                    }
+                    else
+                    if (line.StartsWith(" "))
+                    {
+                        // Trim the first space, which is a wikicode.
+                        line = line.Substring(1);
+                        if (!pre)
+                        {
+                            sb.Append("<pre>");
+                            pre = true;
+                        }
+                    }
+                    else
+                    {
+                        if (pre)
+                        {
+                            sb.Append("</pre>");
+                            pre = false;
+                        }
+                    }
+
+                    sb.AppendLine(line);
+                }
+
+                if (pre)
+                {
+                    sb.Append("</pre>");
+                }
+            }
+
+            return sb.ToString();
         }
 
         private string ConvertInlineCodes(string wikicode)
@@ -1269,6 +1319,27 @@ namespace WikiDesk.Core
                         line.StartsWith("</") ||
                         line.StartsWith("<c"))
                     {
+                        // If we're in a pre-formated block, skip it completely.
+                        if (line.StartsWith("<pre>"))
+                        {
+                            sb.AppendLine(line);
+                            while ((line = sr.ReadLine()) != null)
+                            {
+                                sb.AppendLine(line);
+                                if (line.StartsWith("</pre>"))
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (line == null)
+                            {
+                                return sb.ToString();
+                            }
+
+                            continue;
+                        }
+
                         if (para)
                         {
                             sb.Append("</p>");
