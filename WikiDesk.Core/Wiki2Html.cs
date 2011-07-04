@@ -149,7 +149,7 @@ namespace WikiDesk.Core
         {
             logger_.Log(
                     Levels.Debug,
-                    "Converting - NameSpace = {0}, PageTitle = {1}, WikiText = {2}{3}.",
+                    "Converting - NameSpace = {0}, PageTitle = {1}, WikiText =>{2}{3}",
                     nameSpace,
                     pageTitle,
                     Environment.NewLine,
@@ -192,11 +192,155 @@ namespace WikiDesk.Core
             nameSpace_ = nameSpace;
             pageTitle_ = pageTitle;
 
-            wikicode = ConvertBinaryCode(wikicode, ConvertWikiCode, HeaderRegex, Header);
+            //wikicode = ConvertBinaryCode(wikicode, ConvertWikiCode, HeaderRegex, Header);
+            wikicode = ConvertSimple(wikicode);
             return wikicode.Trim(new[] { '\r', '\n' });
         }
 
         #endregion // operations
+
+        #region implementation
+
+        private string ConvertWikiCode(string wikicode)
+        {
+            return ConvertComplex(wikicode);
+        }
+
+        /// <summary>
+        /// Main Conversion engine.
+        /// </summary>
+        /// <param name="wikicode">The Wikicode to convert.</param>
+        /// <returns>HTML converted Wikicode.</returns>
+        private string ConvertSimple(string wikicode)
+        {
+            // Process beginning-of-line markers.
+            // Two types: Single-line and Multi-line.
+            // Use single-line code to split the text.
+            // Header, Indent and Hr.
+            StringBuilder html = new StringBuilder(wikicode.Length * 16);
+            using (StringReader sr = new StringReader(wikicode))
+            {
+                StringBuilder wiki = new StringBuilder(wikicode.Length * 16);
+
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (line.Length == 0)
+                    {
+                        wiki.AppendLine();
+                        continue;
+                    }
+                    
+                    char firstChar = line[0];
+                    switch (firstChar)
+                    {
+                        case '=':
+                            if (wiki.Length > 0)
+                            {
+                                html.Append(ConvertComplex(wiki.ToString()));
+                                wiki.Remove(0, wiki.Length);
+                            }
+
+                            line = line.TrimEnd();
+                            int left = StringUtils.CountRepetition(line, 0);
+                            int right = StringUtils.CountReverseRepetition(line, line.Length - 1);
+                            if (left != right || line[line.Length - 1] != '=')
+                            {
+                                // The number of '=' chars mismatch. Not a valid header.
+                                line = ConvertInlineCodes(line);
+                                html.Append(line);
+                                continue;
+                            }
+
+                            string value = line.Substring(left, line.Length - left - right);
+                            value = ConvertInlineCodes(value);
+                            line = string.Format(
+                                    "{3}<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>",
+                                    left,
+                                    Title.NormalizeAnchor(value),
+                                    value,
+                                    Environment.NewLine);
+                            html.Append(line);
+                            continue;
+
+                        case ':':
+                            if (wiki.Length > 0)
+                            {
+                                html.Append(ConvertComplex(wiki.ToString()));
+                                wiki.Remove(0, wiki.Length);
+                            }
+
+                            int indent = StringUtils.CountRepetition(line, 0);
+                            line = line.Substring(indent).TrimEnd();
+                            if (line.Length == 0)
+                            {
+                                continue;
+                            }
+
+                            --indent;
+                            html.Append("<dl>");
+                            for (int i = 0; i < indent; ++i)
+                            {
+                                html.Append("\r\n<dd>\r\n<dl>");
+                            }
+
+                            html.Append("\r\n<dd>");
+                            html.Append(line);
+                            html.Append("</dd>");
+
+                            for (int i = 0; i < indent; ++i)
+                            {
+                                html.Append("\r\n</dl>\r\n</dd>");
+                            }
+
+                            html.Append("\r\n</dl>");
+                            continue;
+
+                        case '-':
+                            if (wiki.Length > 0)
+                            {
+                                html.Append(ConvertComplex(wiki.ToString()));
+                                wiki.Remove(0, wiki.Length);
+                            }
+
+                            int dashes = StringUtils.CountRepetition(line, 0);
+                            if (dashes >= 4)
+                            {
+                                html.Append("<hr>");
+                                line = line.Substring(dashes).TrimEnd();
+                            }
+
+                            if (line.Length > 0)
+                            {
+                                html.Append(ConvertComplex(line));
+                            }
+
+                            continue;
+
+                        default:
+                            break;
+                    }
+
+                    wiki.AppendLine(line);
+                }
+
+                html.Append(ConvertComplex(wiki.ToString()));
+            }
+
+            return html.ToString();
+        }
+
+        private string ConvertComplex(string wikicode)
+        {
+            wikicode = ProcessMagicWords(wikicode);
+
+            wikicode = ConvertInlineCodes(wikicode);
+
+            wikicode = ConvertListCode(wikicode);
+            wikicode = ConvertTables(wikicode);
+            wikicode = ConvertParagraphs(wikicode);
+            return wikicode;
+        }
 
         private static string ProcessWikiCode(string wikicode)
         {
@@ -242,19 +386,6 @@ namespace WikiDesk.Core
             }
 
             return sb.ToString();
-        }
-
-        private string ConvertWikiCode(string wikicode)
-        {
-            wikicode = ProcessMagicWords(wikicode);
-
-            wikicode = ConvertInlineCodes(wikicode);
-
-//            wikicode = ConvertPreCode(wikicode);
-            wikicode = ConvertListCode(wikicode);
-            wikicode = ConvertTables(wikicode);
-            wikicode = ConvertParagraphs(wikicode);
-            return wikicode;
         }
 
         private string ConvertPreCode(string wikicode)
@@ -306,6 +437,11 @@ namespace WikiDesk.Core
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Converts inline wikicodes such as links, bold and italic.
+        /// </summary>
+        /// <param name="wikicode">The wikicode to convert.</param>
+        /// <returns>HTML converted wikicode.</returns>
         private string ConvertInlineCodes(string wikicode)
         {
             if (!string.IsNullOrEmpty(wikicode))
@@ -334,23 +470,6 @@ namespace WikiDesk.Core
                 sb.Append("</").Append(tag).Append(">");
                 return sb.ToString();
             }
-        }
-
-        private string Redirect(string newTitle)
-        {
-            //TODO: Consider language codes.
-            string url = ResolveLink(newTitle, config_.WikiSite.Language.Code);
-
-            StringBuilder sb = new StringBuilder(128);
-            sb.Append("Redirected to <span class=\"redirectText\"><a href=\"");
-            sb.Append(url);
-            sb.Append("\" title=\"");
-            sb.Append(newTitle);
-            sb.Append("\">");
-            sb.Append(newTitle);
-            sb.Append("</a></span>");
-
-            return sb.ToString();
         }
 
         private static string ConvertListCode(string wikicode)
@@ -770,6 +889,23 @@ namespace WikiDesk.Core
             }
 
             return null;
+        }
+
+        private string Redirect(string newTitle)
+        {
+            //TODO: Consider language codes.
+            string url = ResolveLink(newTitle, config_.WikiSite.Language.Code);
+
+            StringBuilder sb = new StringBuilder(128);
+            sb.Append("Redirected to <span class=\"redirectText\"><a href=\"");
+            sb.Append(url);
+            sb.Append("\" title=\"");
+            sb.Append(newTitle);
+            sb.Append("\">");
+            sb.Append(newTitle);
+            sb.Append("</a></span>");
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -1483,8 +1619,6 @@ namespace WikiDesk.Core
             wikiText = sb.ToString();
             return languages;
         }
-
-        #region implementation
 
         private string ResolveLink(string title, string languageCode)
         {
