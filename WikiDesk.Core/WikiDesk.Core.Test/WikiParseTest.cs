@@ -484,6 +484,34 @@ namespace WikiDesk.Core.Test
                 "<pre>h\r\ny\r\n z\r\n</pre>");
         }
 
+        #region Hr
+
+        [Test]
+        public void Hr()
+        {
+            TestConvert(
+                "----",
+                "<hr>");
+        }
+
+        [Test]
+        public void HrLong()
+        {
+            TestConvert(
+                "---------------------",
+                "<hr>");
+        }
+
+        [Test]
+        public void HrText()
+        {
+            TestConvert(
+                "---------------------hi",
+                "<hr>\r\n<p>hi</p>");
+        }
+
+        #endregion // Hr
+
         [Test]
         public void ExtLink()
         {
