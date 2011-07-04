@@ -476,13 +476,25 @@ namespace WikiDesk.Core.Test
 
         #endregion // Ordered Lists
 
+        #region Pre
+
         [Test]
-        public void Pre()
+        public void PreSingle()
+        {
+            TestConvert(
+                " h",
+                "<pre>h\r\n</pre>");
+        }
+
+        [Test]
+        public void PreMulti()
         {
             TestConvert(
                 " h\r\n y\r\n  z",
                 "<pre>h\r\ny\r\n z\r\n</pre>");
         }
+
+        #endregion // Pre
 
         #region Hr
 

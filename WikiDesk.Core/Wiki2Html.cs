@@ -192,7 +192,6 @@ namespace WikiDesk.Core
             nameSpace_ = nameSpace;
             pageTitle_ = pageTitle;
 
-            //wikicode = ConvertBinaryCode(wikicode, ConvertWikiCode, HeaderRegex, Header);
             wikicode = ConvertSimple(wikicode);
             return wikicode.Trim(new[] { '\r', '\n' });
         }
@@ -234,6 +233,7 @@ namespace WikiDesk.Core
                     char firstChar = line[0];
                     switch (firstChar)
                     {
+                            // Header.
                         case '=':
                             if (wiki.Length > 0)
                             {
@@ -263,6 +263,7 @@ namespace WikiDesk.Core
                             html.Append(line);
                             continue;
 
+                            // Indent.
                         case ':':
                             if (wiki.Length > 0)
                             {
@@ -296,6 +297,7 @@ namespace WikiDesk.Core
                             html.Append("\r\n</dl>");
                             continue;
 
+                            // Hr.
                         case '-':
                             if (wiki.Length > 0)
                             {
@@ -315,6 +317,11 @@ namespace WikiDesk.Core
                                 html.Append(ConvertComplex(line));
                             }
 
+                            continue;
+
+                            // Pre.
+                        case ' ':
+                            html.Append(ConvertPreCode(line, sr));
                             continue;
 
                         default:
@@ -434,6 +441,36 @@ namespace WikiDesk.Core
                 }
             }
 
+            return sb.ToString();
+        }
+
+        private string ConvertPreCode(string line, StringReader sr)
+        {
+            StringBuilder sb = new StringBuilder(512);
+
+            bool pre = false;
+            do
+            {
+                Debug.Assert(line.StartsWith(" "), "Pre text must start with a space.");
+                
+                // Trim the first space, which is a wikicode.
+                line = line.Substring(1);
+                if (!pre)
+                {
+                    sb.Append("<pre>");
+                    pre = true;
+                }
+
+                sb.AppendLine(line);
+
+                if (sr.Peek() != ' ' || (line = sr.ReadLine()) == null)
+                {
+                    break;
+                }
+            }
+            while (true);
+
+            sb.Append("</pre>");
             return sb.ToString();
         }
 
