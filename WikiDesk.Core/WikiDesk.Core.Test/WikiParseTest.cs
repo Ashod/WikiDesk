@@ -255,6 +255,15 @@ namespace WikiDesk.Core.Test
         [Test]
         public void UnorderedListSimple3()
         {
+            TestConvert(
+                    "* Two list entries.\n" +
+                    "** Another One.",
+                    "<ul>\r\n<li>Two list entries.\r\n<ul>\r\n<li>Another One.</li>\r\n</ul>\r\n</li>\r\n</ul>");
+        }
+
+        [Test]
+        public void UnorderedListSimple4()
+        {
             // As Wikipedia.
             TestConvert(
                 "Blah blah List\n" +

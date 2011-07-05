@@ -229,7 +229,7 @@ namespace WikiDesk.Core
                         wiki.AppendLine();
                         continue;
                     }
-                    
+
                     char firstChar = line[0];
                     switch (firstChar)
                     {
@@ -321,7 +321,24 @@ namespace WikiDesk.Core
 
                             // Pre.
                         case ' ':
+                            if (wiki.Length > 0)
+                            {
+                                html.Append(ConvertComplex(wiki.ToString()));
+                                wiki.Remove(0, wiki.Length);
+                            }
+
                             html.Append(ConvertPreCode(line, sr));
+                            continue;
+
+                        // Unordered List.
+                        case '*':
+                            if (wiki.Length > 0)
+                            {
+                                html.Append(ConvertComplex(wiki.ToString()));
+                                wiki.Remove(0, wiki.Length);
+                            }
+
+                            html.Append(ConvertListCode(line, sr));
                             continue;
 
                         default:
@@ -447,21 +464,14 @@ namespace WikiDesk.Core
         private string ConvertPreCode(string line, StringReader sr)
         {
             StringBuilder sb = new StringBuilder(512);
+            sb.Append("<pre>");
 
-            bool pre = false;
             do
             {
                 Debug.Assert(line.StartsWith(" "), "Pre text must start with a space.");
-                
-                // Trim the first space, which is a wikicode.
-                line = line.Substring(1);
-                if (!pre)
-                {
-                    sb.Append("<pre>");
-                    pre = true;
-                }
 
-                sb.AppendLine(line);
+                // Trim the first space, which is a wikicode.
+                sb.AppendLine(line.Substring(1));
 
                 if (sr.Peek() != ' ' || (line = sr.ReadLine()) == null)
                 {
@@ -472,6 +482,89 @@ namespace WikiDesk.Core
 
             sb.Append("</pre>");
             return sb.ToString();
+        }
+
+        private static string ConvertListCode(string line, StringReader sr)
+        {
+            Debug.Assert(line.StartsWith("*"), "List must start with '*'.");
+
+            StringBuilder sb = new StringBuilder(512);
+            sb.AppendLine().Append("<ul>");
+
+            int curDepth = ConvertListCode(line, sb, sr, 1);
+            for (int i = 0; i < curDepth - 1; ++i)
+            {
+                sb.AppendLine().Append("</ul>");
+                sb.AppendLine().Append("</li>");
+            }
+
+            sb.AppendLine().Append("</ul>");
+            return sb.ToString();
+        }
+
+        private static int ConvertListCode(string line, StringBuilder sb, StringReader sr, int prevDepth)
+        {
+            int curDepth = prevDepth;
+            int depth = StringUtils.CountRepetition(line, 0);
+
+            for (int i = 0; i < prevDepth - depth; ++i)
+            {
+                sb.AppendLine().Append("</ul>");
+                sb.AppendLine().Append("</li>");
+                --curDepth;
+            }
+
+            for (int i = 0; i < depth - prevDepth; ++i)
+            {
+                sb.AppendLine().Append("<li>");
+                sb.AppendLine().Append("<ul>");
+                ++curDepth;
+            }
+
+            // Current Node.
+            sb.AppendLine().Append("<li>");
+            sb.Append(line.TrimStart('*').Trim());
+
+            // Get next line.
+            int newDepth;
+            if (sr.Peek() == '*' && (line = sr.ReadLine()) != null)
+            {
+                newDepth = StringUtils.CountRepetition(line, 0);
+            }
+            else
+            {
+                sb.Append("</li>");
+                return curDepth;
+            }
+
+            if (newDepth == depth)
+            {
+                sb.Append("</li>");
+                return ConvertListCode(line, sb, sr, depth);
+            }
+
+            if (newDepth > depth)
+            {
+                // Sublist.
+                sb.AppendLine().Append("<ul>");
+                curDepth = ConvertListCode(line, sb, sr, depth + 1) - 1;
+                if (curDepth <= 0)
+                {
+                    return 0;
+                }
+
+                sb.AppendLine().Append("</ul>");
+                sb.AppendLine();
+            }
+
+            sb.Append("</li>");
+
+            if (newDepth > 0 && newDepth <= depth)
+            {
+                return ConvertListCode(line, sb, sr, curDepth);
+            }
+
+            return curDepth;
         }
 
         /// <summary>
