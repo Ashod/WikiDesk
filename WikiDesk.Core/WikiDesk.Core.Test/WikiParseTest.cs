@@ -448,7 +448,7 @@ namespace WikiDesk.Core.Test
         {
             TestConvert(
                     "# One list entry.",
-                    "<ol><li>One list entry.</li></ol>");
+                    "<ol>\r\n<li>One list entry.</li>\r\n</ol>");
         }
 
         [Test]
@@ -457,7 +457,7 @@ namespace WikiDesk.Core.Test
             TestConvert(
                     "# Two list entries.\n" +
                     "# Another One.",
-                    "<ol><li>Two list entries.</li><li>Another One.</li></ol>");
+                    "<ol>\r\n<li>Two list entries.</li>\r\n<li>Another One.</li>\r\n</ol>");
         }
 
         [Test]
@@ -465,22 +465,22 @@ namespace WikiDesk.Core.Test
         {
             TestConvert(
                     "# One list entry.\n" +
-                    "## With one sublist." +
+                    "## With one sublist.\n" +
                     "## Make that two.",
-                    "<ol><li>One list entry.</li><ol><li>With one sublist.</li><li>Make that two.</li></ol></ol>");
+                    "<ol>\r\n<li>One list entry.\r\n<ol>\r\n<li>With one sublist.</li>\r\n<li>Make that two.</li>\r\n</ol>\r\n</li>\r\n</ol>");
         }
 
         [Test]
         public void OrderedListsComplex()
         {
             TestConvert(
-                    "# Numbered lists are:" +
-                    "## Very organized" +
-                    "## Easy to follow" +
-                    "#: Previous item continues" +
-                    "A new line marks the end of the list." +
+                    "# Numbered lists are:\n" +
+                    "## Very organized\n" +
+                    "## Easy to follow\n" +
+                    "#: Previous item continues\n" +
+                    "A new line marks the end of the list.\n" +
                     "# New numbering starts with 1.",
-                    "<ul>\r\n<li><i>Unordered lists</i> are easy to do:<ul>\r\n<li>Start every line with a star.<ul>\r\n<li>More stars indicate a deeper level.</li></ul></li></ul><dl><dd>Previous item continues.</dd></dl><ul>\r\n<li>A new line</li></ul></li>\r\n<li>in a list</li></ul><p>marks the end of the list.</p><ul>\r\n<li>Of course you can start again.</li></ul>");
+                    "<ol>\r\n<li>Numbered lists are:\r\n<ol>\r\n<li>Very organized</li>\r\n<li>Easy to follow</li>\r\n</ol>\r\n<dl>\r\n<dd>Previous item continues</dd>\r\n</dl>\r\n</li>\r\n</ol>\r\n<p>A new line marks the end of the list.</p>\r\n<ol>\r\n<li>New numbering starts with 1.</li>\r\n</ol>");
         }
 
         #endregion // Ordered Lists

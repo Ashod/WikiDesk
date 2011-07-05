@@ -338,7 +338,20 @@ namespace WikiDesk.Core
                                 wiki.Remove(0, wiki.Length);
                             }
 
-                            html.Append(ConvertListCode(line, sr));
+                            WikiList2Html list2Html = new WikiList2Html('*', "ul", "li");
+                            html.Append(list2Html.ConvertListCode(line, sr));
+                            continue;
+
+                        // Ordered List.
+                        case '#':
+                            if (wiki.Length > 0)
+                            {
+                                html.Append(ConvertComplex(wiki.ToString()));
+                                wiki.Remove(0, wiki.Length);
+                            }
+
+                            WikiList2Html olist2Html = new WikiList2Html('#', "ol", "li");
+                            html.Append(olist2Html.ConvertListCode(line, sr));
                             continue;
 
                         default:
