@@ -200,11 +200,6 @@ namespace WikiDesk.Core
 
         #region implementation
 
-        private string ConvertWikiCode(string wikicode)
-        {
-            return ConvertComplex(wikicode);
-        }
-
         /// <summary>
         /// Main Conversion engine.
         /// </summary>
@@ -373,7 +368,6 @@ namespace WikiDesk.Core
 
             wikicode = ConvertInlineCodes(wikicode);
 
-            wikicode = ConvertListCode(wikicode);
             wikicode = ConvertTables(wikicode);
             wikicode = ConvertParagraphs(wikicode);
             return wikicode;
@@ -425,55 +419,6 @@ namespace WikiDesk.Core
             return sb.ToString();
         }
 
-        private string ConvertPreCode(string wikicode)
-        {
-            StringBuilder sb = new StringBuilder(wikicode.Length * 2);
-            using (StringReader sr = new StringReader(wikicode))
-            {
-                bool pre = false;
-                string line;
-                while ((line = sr.ReadLine()) != null)
-                {
-                    if (line.Length == 0)
-                    {
-                        if (pre)
-                        {
-                            sb.Append("</pre>");
-                            pre = false;
-                        }
-                    }
-                    else
-                    if (line.StartsWith(" "))
-                    {
-                        // Trim the first space, which is a wikicode.
-                        line = line.Substring(1);
-                        if (!pre)
-                        {
-                            sb.Append("<pre>");
-                            pre = true;
-                        }
-                    }
-                    else
-                    {
-                        if (pre)
-                        {
-                            sb.Append("</pre>");
-                            pre = false;
-                        }
-                    }
-
-                    sb.AppendLine(line);
-                }
-
-                if (pre)
-                {
-                    sb.Append("</pre>");
-                }
-            }
-
-            return sb.ToString();
-        }
-
         private string ConvertPreCode(string line, StringReader sr)
         {
             StringBuilder sb = new StringBuilder(512);
@@ -495,89 +440,6 @@ namespace WikiDesk.Core
 
             sb.Append("</pre>");
             return sb.ToString();
-        }
-
-        private static string ConvertListCode(string line, StringReader sr)
-        {
-            Debug.Assert(line.StartsWith("*"), "List must start with '*'.");
-
-            StringBuilder sb = new StringBuilder(512);
-            sb.AppendLine().Append("<ul>");
-
-            int curDepth = ConvertListCode(line, sb, sr, 1);
-            for (int i = 0; i < curDepth - 1; ++i)
-            {
-                sb.AppendLine().Append("</ul>");
-                sb.AppendLine().Append("</li>");
-            }
-
-            sb.AppendLine().Append("</ul>");
-            return sb.ToString();
-        }
-
-        private static int ConvertListCode(string line, StringBuilder sb, StringReader sr, int prevDepth)
-        {
-            int curDepth = prevDepth;
-            int depth = StringUtils.CountRepetition(line, 0);
-
-            for (int i = 0; i < prevDepth - depth; ++i)
-            {
-                sb.AppendLine().Append("</ul>");
-                sb.AppendLine().Append("</li>");
-                --curDepth;
-            }
-
-            for (int i = 0; i < depth - prevDepth; ++i)
-            {
-                sb.AppendLine().Append("<li>");
-                sb.AppendLine().Append("<ul>");
-                ++curDepth;
-            }
-
-            // Current Node.
-            sb.AppendLine().Append("<li>");
-            sb.Append(line.TrimStart('*').Trim());
-
-            // Get next line.
-            int newDepth;
-            if (sr.Peek() == '*' && (line = sr.ReadLine()) != null)
-            {
-                newDepth = StringUtils.CountRepetition(line, 0);
-            }
-            else
-            {
-                sb.Append("</li>");
-                return curDepth;
-            }
-
-            if (newDepth == depth)
-            {
-                sb.Append("</li>");
-                return ConvertListCode(line, sb, sr, depth);
-            }
-
-            if (newDepth > depth)
-            {
-                // Sublist.
-                sb.AppendLine().Append("<ul>");
-                curDepth = ConvertListCode(line, sb, sr, depth + 1) - 1;
-                if (curDepth <= 0)
-                {
-                    return 0;
-                }
-
-                sb.AppendLine().Append("</ul>");
-                sb.AppendLine();
-            }
-
-            sb.Append("</li>");
-
-            if (newDepth > 0 && newDepth <= depth)
-            {
-                return ConvertListCode(line, sb, sr, curDepth);
-            }
-
-            return curDepth;
         }
 
         /// <summary>
@@ -613,106 +475,6 @@ namespace WikiDesk.Core
                 sb.Append("</").Append(tag).Append(">");
                 return sb.ToString();
             }
-        }
-
-        private static string ConvertListCode(string wikicode)
-        {
-            Match match = ListRegex.Match(wikicode);
-            if (!match.Success)
-            {
-                return wikicode;
-            }
-
-            StringBuilder sb = new StringBuilder(wikicode.Length * 2);
-            int pos = match.Index;
-            sb.Append(wikicode.Substring(0, pos));
-            pos = ConvertUnorderedList(wikicode, sb, ref match, 0);
-            if (pos > 0)
-            {
-                sb.Append(wikicode.Substring(pos));
-            }
-
-            return sb.ToString();
-        }
-
-        private static int ConvertUnorderedList(string wikicode, StringBuilder sb, ref Match match, int depth)
-        {
-            int newDepth = match.Groups[1].Value.Length;
-            if (newDepth == 0)
-            {
-                return -1;
-            }
-
-            int pos = -1;
-            if (depth < newDepth)
-            {
-                sb.AppendLine().Append("<ul>");
-                if (depth + 1 < newDepth)
-                {
-                    sb.AppendLine().Append("<li>");
-                }
-
-                pos = ConvertUnorderedList(wikicode, sb, ref match, depth + 1);
-                if (depth + 1 < newDepth)
-                {
-                    sb.AppendLine().Append("</li>");
-                }
-
-                if (match.Success)
-                {
-                    newDepth = match.Groups[1].Value.Length;
-                    if (newDepth > 0 && depth == newDepth - 1)
-                    {
-                        pos = ConvertListItem(wikicode, sb, ref match, newDepth);
-                    }
-                }
-
-                sb.AppendLine().Append("</ul>");
-            }
-            else
-            if (depth == newDepth)
-            {
-                pos = ConvertListItem(wikicode, sb, ref match, newDepth);
-            }
-
-            return pos;
-        }
-
-        private static int ConvertListItem(string wikicode, StringBuilder sb, ref Match match, int depth)
-        {
-            int pos = -1;
-            while (match.Success)
-            {
-                sb.AppendLine().Append("<li>");
-                sb.Append(match.Groups[2].Value);
-
-                pos = match.Index + match.Length;
-                match = ListRegex.Match(wikicode, pos);
-                if (!match.Success)
-                {
-                    // No more matches, close the list item and return.
-                    sb.Append("</li>");
-                    return pos;
-                }
-
-                int newDepth = match.Groups[1].Value.Length;
-                if (newDepth > depth)
-                {
-                    // Sublist.
-                    pos = ConvertUnorderedList(wikicode, sb, ref match, depth);
-                    sb.AppendLine();
-                }
-
-                sb.Append("</li>");
-
-                newDepth = match.Groups[1].Value.Length;
-                if (newDepth < depth)
-                {
-                    return pos;
-                }
-            }
-
-            return pos;
         }
 
         private static string ConvertTables(string wikicode)
@@ -1049,31 +811,6 @@ namespace WikiDesk.Core
             sb.Append("</a></span>");
 
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// Processes Header codes.
-        /// </summary>
-        /// <param name="match">The regex match.</param>
-        /// <returns>HTML processed header tag.</returns>
-        private string Header(Match match)
-        {
-            string left = match.Groups[1].ToString();
-            string right = match.Groups[3].ToString();
-            if (left != right)
-            {
-                // The number of '=' chars mismatch. Not a valid header.
-                return ConvertInlineCodes(match.Value);
-            }
-
-            string value = match.Groups[2].ToString();
-            value = ConvertInlineCodes(value);
-            return string.Format(
-                    "{3}<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>",
-                    left.Length,
-                    Title.NormalizeAnchor(value),
-                    value,
-                    Environment.NewLine);
         }
 
         private string BoldItalic(Match match)
@@ -1679,27 +1416,6 @@ namespace WikiDesk.Core
             }
         }
 
-//         /// <summary>
-//         /// Computes the positions of all NOWIKI tags.
-//         /// </summary>
-//         /// <param name="text">The input text.</param>
-//         /// <param name="noWikiBegin">The output list of begin indexes of NOWIKI tags.</param>
-//         /// <param name="noWikiEnd">The output list of end indexes of NOWIKI tags.</param>
-//         private static void ComputeNoWiki(string text, ref List<int> noWikiBegin, ref List<int> noWikiEnd)
-//         {
-//             Match match;
-//             noWikiBegin.Clear();
-//             noWikiEnd.Clear();
-//
-//             match = NoWikiRegex.Match(text);
-//             while (match.Success)
-//             {
-//                 noWikiBegin.Add(match.Index);
-//                 noWikiEnd.Add(match.Index + match.Length);
-//                 match = NoWikiRegex.Match(text, match.Index + match.Length);
-//             }
-//         }
-
         /// <summary>
         /// Extracts all the alternative articles in other languages.
         /// These are typically listed at the end of the wiki text.
@@ -1803,22 +1519,11 @@ namespace WikiDesk.Core
         // Unary Operators
         //
         private static readonly Regex RedirectRegex = new Regex(@"^#REDIRECT(\:?)\s*\[\[(.+?)\]\]", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Multiline);
-        private static readonly Regex ListRegex = new Regex(@"^(\*+)\s*(.+?)$", RegexOptions.Compiled | RegexOptions.Multiline);
-
-        /// <summary>
-        /// Headers (Can appear only at the start of a line.)
-        /// </summary>
-        private static readonly Regex HeaderRegex = new Regex(@"^(={1,6})(.+?)(={1,6})", RegexOptions.Compiled | RegexOptions.Multiline);
 
         /// <summary>
         /// Bold/Italic (Can appear anywhere in a line.)
         /// </summary>
         private static readonly Regex BoldItalicRegex = new Regex(@"('{2,5})(.+?)('{2,5})", RegexOptions.Compiled | RegexOptions.Multiline);
-
-        /// <summary>
-        /// Links: internal, external and image. (Can appear anywhere in a line.)
-        /// </summary>
-        private static readonly Regex LinkRegex = new Regex(@"\[(\[)?(.+?)(\])?\]", RegexOptions.Compiled | RegexOptions.Singleline);
 
         private static readonly Regex NoWikiRegex = new Regex(@"\<nowiki\>(.|\n|\r)+?\<\/nowiki\>", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
