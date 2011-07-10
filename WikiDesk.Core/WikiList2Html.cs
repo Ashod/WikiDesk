@@ -20,8 +20,16 @@ namespace WikiDesk.Core
         {
             Debug.Assert(line.StartsWith(marker.ToString()), "List must start with " + marker + '.');
 
-            StringBuilder sb = new StringBuilder(512);
+            StringBuilder sb = new StringBuilder(1024);
             int curDepth = ConvertListCode(line, sb, sr, 0);
+            if (insideContinuation)
+            {
+                // End a previous Continuation.
+                insideContinuation = false;
+                sb.AppendLine().Append("</dl>");
+                sb.AppendLine();
+            }
+            
             sb.Append(nodeTagClose);
             while (--curDepth > 0)
             {
@@ -37,29 +45,82 @@ namespace WikiDesk.Core
         {
             int curDepth = prevDepth;
             int depth = StringUtils.CountRepetition(line, 0);
-            if (depth <= curDepth)
+            
+            bool continuation = false;
+            if (line[depth] == ':')
             {
-                sb.Append(nodeTagClose);
-                while (curDepth > depth)
+                continuation = true;
+                depth++;
+                if (!insideContinuation)
                 {
-                    sb.AppendLine().Append(listTagClose);
-                    sb.AppendLine().Append(nodeTagClose);
-                    --curDepth;
+                    while (curDepth < depth - 1)
+                    {
+                        sb.AppendLine().Append(listTagOpen);
+                        sb.AppendLine().Append(nodeTagOpen);
+                        ++curDepth;
+                    }
                 }
             }
             else
+            if (insideContinuation)
             {
-                sb.AppendLine().Append(listTagOpen);
-                while (++curDepth < depth)
+                // End a previous Continuation.
+                insideContinuation = false;
+                sb.AppendLine().Append("</dl>");
+                if (depth <= curDepth)
                 {
-                    sb.AppendLine().Append(nodeTagOpen);
+                    sb.AppendLine();
+                }
+            }
+
+            if (!insideContinuation)
+            {
+                if (depth <= curDepth)
+                {
+                    sb.Append(nodeTagClose);
+                    while (curDepth > depth)
+                    {
+                        sb.AppendLine().Append(listTagClose);
+                        sb.AppendLine().Append(nodeTagClose);
+                        --curDepth;
+                    }
+                }
+                else
+                if (!continuation)
+                {
                     sb.AppendLine().Append(listTagOpen);
+                    while (++curDepth < depth)
+                    {
+                        sb.AppendLine().Append(nodeTagOpen);
+                        sb.AppendLine().Append(listTagOpen);
+                    }
                 }
             }
 
             // Current Node.
-            sb.AppendLine().Append(nodeTagOpen);
-            sb.Append(line.TrimStart(marker).Trim());
+            if (continuation)
+            {
+                if (!insideContinuation)
+                {
+                    insideContinuation = true;
+                    if (depth == curDepth)
+                    {
+                        --curDepth;
+                        sb.AppendLine().Append(listTagClose);
+                    }
+
+                    sb.AppendLine().Append("<dl>");
+                }
+
+                sb.AppendLine().Append("<dd>");
+                sb.Append(line.Substring(depth).Trim());
+                sb.Append("</dd>");
+            }
+            else
+            {
+                sb.AppendLine().Append(nodeTagOpen);
+                sb.Append(line.TrimStart(marker).Trim());
+            }
 
             // Get next line.
             if (sr.Peek() != marker || (line = sr.ReadLine()) == null)
@@ -77,6 +138,8 @@ namespace WikiDesk.Core
         private readonly string listTagClose;
         private readonly string nodeTagOpen;
         private readonly string nodeTagClose;
+
+        private bool insideContinuation;
 
         #endregion // representation
     }
