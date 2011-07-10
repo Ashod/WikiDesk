@@ -58,17 +58,13 @@ namespace WikiDesk.Core
             sb.Append(line.TrimStart(marker).Trim());
 
             // Get next line.
-            int newDepth;
-            if (sr.Peek() == marker && (line = sr.ReadLine()) != null)
-            {
-                newDepth = StringUtils.CountRepetition(line, 0);
-            }
-            else
+            if (sr.Peek() != marker || (line = sr.ReadLine()) == null)
             {
                 sb.Append(nodeTagClose);
                 return curDepth;
             }
 
+            int newDepth = StringUtils.CountRepetition(line, 0);
             if (newDepth == depth)
             {
                 sb.Append(nodeTagClose);
