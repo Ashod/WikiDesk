@@ -21,9 +21,7 @@ namespace WikiDesk.Core
             Debug.Assert(line.StartsWith(marker.ToString()), "List must start with " + marker + '.');
 
             StringBuilder sb = new StringBuilder(512);
-            sb.AppendLine().Append(listTagOpen);
-
-            int curDepth = ConvertListCode(line, sb, sr, 1);
+            int curDepth = ConvertListCode(line, sb, sr, 0);
             for (int i = 0; i < curDepth - 1; ++i)
             {
                 sb.AppendLine().Append(listTagClose);
@@ -38,15 +36,24 @@ namespace WikiDesk.Core
         {
             int curDepth = prevDepth;
             int depth = StringUtils.CountRepetition(line, 0);
+            if (depth <= curDepth)
+            {
+                sb.Append(nodeTagClose);
+            }
+            else
+            {
+                sb.AppendLine().Append(listTagOpen);
+                ++curDepth;
+            }
 
-            for (int i = 0; i < prevDepth - depth; ++i)
+            while (curDepth > depth)
             {
                 sb.AppendLine().Append(listTagClose);
                 sb.AppendLine().Append(nodeTagClose);
                 --curDepth;
             }
 
-            for (int i = 0; i < depth - prevDepth; ++i)
+            while (curDepth < depth)
             {
                 sb.AppendLine().Append(nodeTagOpen);
                 sb.AppendLine().Append(listTagOpen);
@@ -64,27 +71,8 @@ namespace WikiDesk.Core
                 return curDepth;
             }
 
-            int newDepth = StringUtils.CountRepetition(line, 0);
-            Debug.Assert(newDepth > 0, "newDepth must be > 0.");
-            if (newDepth > 0 && newDepth <= depth)
-            {
-                sb.Append(nodeTagClose);
-                return ConvertListCode(line, sb, sr, depth);
-            }
-
-            // Sublist.
-            Debug.Assert(newDepth > depth, "newDepth must be > depth.");
-            sb.AppendLine().Append(listTagOpen);
-            curDepth = ConvertListCode(line, sb, sr, depth + 1) - 1;
-            if (curDepth <= 0)
-            {
-                return 0;
-            }
-
-            sb.AppendLine().Append(listTagClose);
-            sb.AppendLine();
-            sb.Append(nodeTagClose);
-            return curDepth;
+            Debug.Assert(curDepth == depth);
+            return ConvertListCode(line, sb, sr, curDepth);
         }
 
         #region representation
