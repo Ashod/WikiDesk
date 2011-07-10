@@ -252,7 +252,7 @@ namespace WikiDesk.Core
                             line = string.Format(
                                     "{3}<h{0}><span class=\"mw-headline\" id=\"{1}\">{2}</span></h{0}>",
                                     left,
-                                    Title.NormalizeAnchor(value),
+                                    Title.CanonicalizeAnchor(value),
                                     value,
                                     Environment.NewLine);
                             html.Append(line);
@@ -1211,12 +1211,12 @@ namespace WikiDesk.Core
             }
 
             string nameSpace;
-            string title = Title.ParseFullPageName(name, out nameSpace);
+            string title = Title.ParseFullTitle(name, out nameSpace);
             if (string.IsNullOrEmpty(nameSpace))
             {
                 // Missing or invalid namespace, assume "Template".
                 nameSpace = config_.WikiSite.GetNamespaceName(WikiSite.Namespace.Tempalate);
-                name = Title.FullPageName(nameSpace, title);
+                name = Title.FullTitleName(nameSpace, title);
             }
 
             string template = RetrieveTemplate(name);

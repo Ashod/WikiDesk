@@ -42,54 +42,56 @@ namespace WikiDesk.Core
     using System.Text.RegularExpressions;
     using System.Web;
 
-    public class Title
+    /// <summary>
+    /// Title canonicalization and related utilities.
+    /// </summary>
+    public static class Title
     {
         /// <summary>
         /// Given a full page name, parses the namespace and page title.
         /// </summary>
-        /// <param name="pageName">The full page name to parse.</param>
-        /// <param name="nameSpace">The namespace, if any. Empty if not found.</param>
+        /// <param name="title">The full page name to parse.</param>
+        /// <param name="ns">The namespace, if any. Empty if not found.</param>
         /// <returns>The page title.</returns>
-        public static string ParseFullPageName(string pageName, out string nameSpace)
+        public static string ParseFullTitle(string title, out string ns)
         {
-            if (pageName == null)
+            if (string.IsNullOrEmpty(title))
             {
-                nameSpace = string.Empty;
+                ns = string.Empty;
                 return string.Empty;
             }
 
-            pageName = pageName.Trim();
-            int index = pageName.IndexOf(':');
-            if (index >= 0)
+            int index = title.IndexOf(':');
+            if (index < 0)
             {
-                nameSpace = pageName.Substring(0, index);
-                return pageName.Substring(index + 1);
+                ns = string.Empty;
+                return title;
             }
 
-            nameSpace = string.Empty;
-            return pageName;
+            ns = title.Substring(0, index).Trim();
+            return title.Substring(index + 1).Trim();
         }
 
         /// <summary>
         /// Given a namespace and page title, return a full page name.
         /// </summary>
-        /// <param name="nameSpace">An optional namespace.</param>
-        /// <param name="pageTitle">The page title.</param>
+        /// <param name="ns">An optional namespace.</param>
+        /// <param name="title">The page title.</param>
         /// <returns>Full page name.</returns>
-        public static string FullPageName(string nameSpace, string pageTitle)
+        public static string FullTitleName(string ns, string title)
         {
-            pageTitle = Normalize(pageTitle ?? string.Empty);
+            title = Canonicalize(title ?? string.Empty);
 
-            if (nameSpace != null)
+            if (ns != null)
             {
-                nameSpace = nameSpace.Trim();
-                if (nameSpace.Length > 0)
+                ns = ns.Trim();
+                if (ns.Length > 0)
                 {
-                    return nameSpace + ':' + pageTitle;
+                    return ns + ':' + title;
                 }
             }
 
-            return pageTitle;
+            return title;
         }
 
         /// <summary>
@@ -99,14 +101,15 @@ namespace WikiDesk.Core
         /// <param name="title">The title to normalize.</param>
         /// <returns>Normalized title.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
-        public static string Normalize(string title)
+        public static string Canonicalize(string title)
         {
             if (title == null)
             {
                 throw new ArgumentNullException("title");
             }
 
-            title = title.Trim();
+            // Spaces and underscores are superfluous if at either end.
+            title = title.Trim(new[] { ' ', '_' });
             if (title.Length == 0)
             {
                 return string.Empty;
@@ -114,20 +117,41 @@ namespace WikiDesk.Core
 
             // Spaces and underscores are interchangeable.
             title = StringUtils.CollapseReplace(title, ' ', '_');
+            title = StringUtils.CollapseReplace(title, '_', '_');
+
+            string ns;
+            title = ParseFullTitle(title, out ns);
+
+            // Spaces and underscores are superfluous if at either end.
+            title = title.Trim(new[] { ' ', '_' });
 
             // Always make the first character upper for proper comparison.
             title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
-            return title.Normalize();
+            title = title.Normalize();
+
+            if (ns.Length == 0)
+            {
+                return title;
+            }
+
+            // Spaces and underscores are superfluous if at either end.
+            ns = ns.Trim(new[] { ' ', '_' });
+
+            // Namespaces are case insensitive. We capitalize it for readability.
+            ns = ns.Substring(0, 1).ToUpperInvariant() + ns.Substring(1).ToLowerInvariant();
+            ns = ns.Normalize();
+
+            return FullTitleName(ns, title);
         }
 
         /// <summary>
         /// Converts a title such that the first character is in upper-case
         /// and all underscores are converted to spaces.
         /// </summary>
-        /// <param name="title">The title to denormalize.</param>
-        /// <returns>Denormalized title.</returns>
+        /// <param name="title">The title to decanonicalize.</param>
+        /// <returns>Decanonicalized title.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
-        public static string Denormalize(string title)
+        public static string Decanonicalize(string title)
         {
             if (title == null)
             {
@@ -153,9 +177,9 @@ namespace WikiDesk.Core
         /// </summary>
         /// <param name="title">The title to Encode.</param>
         /// <returns>Encoded title.</returns>
-        public static string UrlNormalize(string title)
+        public static string UrlCanonicalize(string title)
         {
-            return HttpUtility.UrlEncode(Normalize(title));
+            return HttpUtility.UrlEncode(Canonicalize(title));
         }
 
         /// <summary>
@@ -163,9 +187,9 @@ namespace WikiDesk.Core
         /// </summary>
         /// <param name="title">The title to decode.</param>
         /// <returns>Decoded title.</returns>
-        public static string UrlDenormalize(string title)
+        public static string UrlDecanonicalize(string title)
         {
-            return Denormalize(HttpUtility.UrlDecode(title));
+            return Decanonicalize(HttpUtility.UrlDecode(title));
         }
 
         /// <summary>
@@ -175,7 +199,7 @@ namespace WikiDesk.Core
         /// <returns>Normalized anchor title.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Anchors can't be empty.</exception>
-        public static string NormalizeAnchor(string title)
+        public static string CanonicalizeAnchor(string title)
         {
             if (title == null)
             {
@@ -206,7 +230,7 @@ namespace WikiDesk.Core
         /// <exception cref="System.ArgumentException">Page titles can't be empty.</exception>
         public static string EncodeNonAsciiCharacters(string title)
         {
-            title = Normalize(title);
+            title = Canonicalize(title);
 
             StringBuilder sb = new StringBuilder(title.Length * 2);
             foreach (char c in title)
@@ -239,7 +263,7 @@ namespace WikiDesk.Core
                 @"\\u([a-zA-Z0-9]{4})",
                 m => ((char)int.Parse(m.Groups[1].Value, NumberStyles.HexNumber)).ToString());
 
-            return Denormalize(decoded);
+            return Decanonicalize(decoded);
         }
 
         /// <summary>

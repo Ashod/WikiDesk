@@ -172,7 +172,7 @@ namespace WikiDesk.Core
                         continue;
 
                     case "title":
-                        page.Title = Title.Normalize(reader.ReadString());
+                        page.Title = Title.Canonicalize(reader.ReadString());
                         break;
 
                     case TAG_REVISION:

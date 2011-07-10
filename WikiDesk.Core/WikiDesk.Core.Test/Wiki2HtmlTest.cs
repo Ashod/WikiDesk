@@ -44,6 +44,7 @@ namespace WikiDesk.Core.Test
     using WikiDesk.Data;
 
     [TestFixture]
+    [Ignore]
     public class Wiki2HtmlTest
     {
         static Wiki2HtmlTest()
@@ -146,7 +147,7 @@ namespace WikiDesk.Core.Test
         {
             string title = !word.StartsWith("Template:") ? "Template:" + word : word;
 
-            title = Title.Normalize(title);
+            title = Title.Canonicalize(title);
             string url = string.Concat("http://", Config.WikiSite.Language.Code, Config.WikiSite.ExportUrl, title);
             string xmlText = Download.DownloadPage(url);
             Page page = DumpParser.PageFromXml(xmlText);

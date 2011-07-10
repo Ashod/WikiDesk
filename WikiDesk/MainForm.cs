@@ -338,7 +338,7 @@ namespace WikiDesk
             string url;
             if (currentWikiPageName_ != null)
             {
-                url = Title.Denormalize(currentWikiPageName_);
+                url = Title.Decanonicalize(currentWikiPageName_);
             }
             else
             {
@@ -466,7 +466,7 @@ namespace WikiDesk
 
                         do
                         {
-                            string title = Title.Denormalize(pageTitles.Current);
+                            string title = Title.Decanonicalize(pageTitles.Current);
                             titles.Add(title, title);
 
                             entriesCount.Reference++;
@@ -644,7 +644,7 @@ namespace WikiDesk
         /// <returns></returns>
         private Page RetrievePage(string title)
         {
-            title = Title.Normalize(title);
+            title = Title.Canonicalize(title);
 
             int domainId = db_.GetDomain(currentSite_.Domain.Name).Id;
             Language language = db_.GetLanguageByCode(currentSite_.Language.Code);
@@ -675,7 +675,7 @@ namespace WikiDesk
 
         private Page ImportLivePage(string title, WikiDomain domain, int domainId, Language language)
         {
-            title = Title.Normalize(title);
+            title = Title.Canonicalize(title);
             string url = currentSite_.GetExportUrl(title);
             string pageXml = Download.DownloadPage(url);
             if (pageXml.ToUpperInvariant().StartsWith("<!DOCTYPE HTML PUBLIC") ||
@@ -727,7 +727,7 @@ namespace WikiDesk
                 langEntries.Add(languageName, titles);
             }
 
-            string titleDenorm = Title.Denormalize(title);
+            string titleDenorm = Title.Decanonicalize(title);
             if (titles.Find(titleDenorm, false, true) < 0)
             {
                 titles.Add(titleDenorm, titleDenorm);
@@ -740,7 +740,7 @@ namespace WikiDesk
 
             logger_.Log(Levels.Info, "Generating Html for {0}.", pageName);
 
-            pageName = Title.Denormalize(pageName);
+            pageName = Title.Decanonicalize(pageName);
             currentWikiPageName_ = pageName;
 
             ShowArticleLanguages(pageName, Wiki2Html.ExtractLanguages(ref wikiText));
@@ -751,10 +751,10 @@ namespace WikiDesk
             Wiki2Html wiki2Html = new Wiki2Html(config, OnResolveWikiLinks, OnRetrievePage, fileCache_);
 
             string nameSpace;
-            string pageTitle = Title.ParseFullPageName(pageName, out nameSpace);
+            string pageTitle = Title.ParseFullTitle(pageName, out nameSpace);
             string html = wiki2Html.Convert(ref nameSpace, ref pageTitle, wikiText);
 
-            pageName = Title.FullPageName(nameSpace, pageTitle);
+            pageName = Title.FullTitleName(nameSpace, pageTitle);
             currentWikiPageName_ = pageName;
 
             html = WrapInHtmlBody(pageName, html, lastUpdateDateUtc, sw);
@@ -774,12 +774,12 @@ namespace WikiDesk
         private static string OnResolveWikiLinks(string title, string languageCode)
         {
             //TODO: take the language code into consideration.
-            return WIKI_PROTOCOL_STRING + Title.UrlNormalize(title);
+            return WIKI_PROTOCOL_STRING + Title.UrlCanonicalize(title);
         }
 
         private string OnRetrievePage(string pageName, string lanugageCode)
         {
-            pageName = Title.Normalize(pageName);
+            pageName = Title.Canonicalize(pageName);
             Page page = RetrievePage(pageName);
             return page != null ? page.Text : null;
         }
@@ -865,14 +865,14 @@ namespace WikiDesk
 
             sb.Append("</head>");
             sb.Append("<body class=\"mediawiki ltr ns-0 ns-subject page-");
-            sb.Append(Title.Normalize(title));
+            sb.Append(Title.Canonicalize(title));
             sb.Append(" skin-vector\">");
             sb.Append("<div id=\"mw-page-base\" class=\"noprint\"></div>");
             sb.Append("<div id=\"mw-head-base\" class=\"noprint\"></div>");
             sb.Append("<div id=\"content\">");
 
             sb.Append("<h1 id=\"firstHeading\" class=\"firstHeading\">");
-            sb.Append(Title.Denormalize(title));
+            sb.Append(Title.Decanonicalize(title));
             sb.Append("</h1>");
     		sb.Append("<div id=\"bodyContent\">");
             sb.Append("<div id=\"siteSub\">From Wikipedia, the free encyclopedia</div>");

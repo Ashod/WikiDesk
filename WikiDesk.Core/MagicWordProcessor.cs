@@ -144,7 +144,7 @@ namespace WikiDesk.Core
                 if (int.TryParse(args[0].Value, out key))
                 {
                     output = wikiSite_.GetNamespaceName(key);
-                    output = Title.Denormalize(output);
+                    output = Title.Decanonicalize(output);
                 }
             }
 
@@ -164,7 +164,7 @@ namespace WikiDesk.Core
         protected Result Nse(List<KeyValuePair<string, string>> args, out string output)
         {
             Ns(args, out output);
-            output = Title.Normalize(output);
+            output = Title.Canonicalize(output);
             return Result.Found;
         }
 
@@ -186,7 +186,7 @@ namespace WikiDesk.Core
                 output = nameSpace_;
             }
 
-            output = Title.Denormalize(output);
+            output = Title.Decanonicalize(output);
             return Result.Found;
         }
 
@@ -199,7 +199,7 @@ namespace WikiDesk.Core
         protected Result Namespacee(List<KeyValuePair<string, string>> args, out string output)
         {
             Namespace(args, out output);
-            output = Title.Normalize(output);
+            output = Title.Canonicalize(output);
             return Result.Found;
         }
 
@@ -212,7 +212,7 @@ namespace WikiDesk.Core
         protected Result Talkspace(List<KeyValuePair<string, string>> args, out string output)
         {
             Namespace(args, out output);
-            output = Title.Denormalize(output + " talk");
+            output = Title.Decanonicalize(output + " talk");
             return Result.Found;
         }
 
@@ -225,7 +225,7 @@ namespace WikiDesk.Core
         protected Result Talkspacee(List<KeyValuePair<string, string>> args, out string output)
         {
             Namespace(args, out output);
-            output = Title.Normalize(output + " talk");
+            output = Title.Canonicalize(output + " talk");
             return Result.Found;
         }
 
@@ -264,7 +264,7 @@ namespace WikiDesk.Core
         /// <returns>A Result type.</returns>
         private Result PageName(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = Title.Denormalize(pageTitle_);
+            output = Title.Decanonicalize(pageTitle_);
             return Result.Found;
         }
 
@@ -279,7 +279,7 @@ namespace WikiDesk.Core
         /// <returns>A Result type.</returns>
         private Result PageNamee(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = Title.Normalize(pageTitle_);
+            output = Title.Canonicalize(pageTitle_);
             return Result.Found;
         }
 
@@ -294,8 +294,8 @@ namespace WikiDesk.Core
         /// <returns>A Result type.</returns>
         private Result FullPageName(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = Title.FullPageName(nameSpace_, pageTitle_);
-            output = Title.Denormalize(output);
+            output = Title.FullTitleName(nameSpace_, pageTitle_);
+            output = Title.Decanonicalize(output);
             return Result.Found;
         }
 
@@ -311,7 +311,7 @@ namespace WikiDesk.Core
         private Result FullPageNamee(List<KeyValuePair<string, string>> args, out string output)
         {
             FullPageName(args, out output);
-            output = Title.Normalize(output);
+            output = Title.Canonicalize(output);
             return Result.Found;
         }
 
@@ -331,7 +331,7 @@ namespace WikiDesk.Core
         private Result BasePageName(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
-            output = Title.Denormalize(output);
+            output = Title.Decanonicalize(output);
             return Result.Found;
         }
 
@@ -351,7 +351,7 @@ namespace WikiDesk.Core
         private Result BasePageNamee(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
-            output = Title.Normalize(output);
+            output = Title.Canonicalize(output);
             return Result.Found;
         }
 
@@ -367,7 +367,7 @@ namespace WikiDesk.Core
         private Result SubPageName(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
-            output = Title.Denormalize(output);
+            output = Title.Decanonicalize(output);
             return Result.Found;
         }
 
@@ -383,7 +383,7 @@ namespace WikiDesk.Core
         private Result SubPageNamee(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
-            output = Title.Normalize(output);
+            output = Title.Canonicalize(output);
             return Result.Found;
         }
 
@@ -399,7 +399,7 @@ namespace WikiDesk.Core
         private Result TalkPageName(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
-            output = Title.Denormalize(output);
+            output = Title.Decanonicalize(output);
             return Result.Found;
         }
 
@@ -415,7 +415,7 @@ namespace WikiDesk.Core
         private Result TalkPageNamee(List<KeyValuePair<string, string>> args, out string output)
         {
             output = pageTitle_;
-            output = Title.Normalize(output);
+            output = Title.Canonicalize(output);
             return Result.Found;
         }
 
@@ -430,8 +430,8 @@ namespace WikiDesk.Core
         /// <returns>A Result type.</returns>
         private Result SubjectPageName(List<KeyValuePair<string, string>> args, out string output)
         {
-            output = Title.FullPageName(nameSpace_, pageTitle_);
-            output = Title.Denormalize(output);
+            output = Title.FullTitleName(nameSpace_, pageTitle_);
+            output = Title.Decanonicalize(output);
             return Result.Found;
         }
 
@@ -447,7 +447,7 @@ namespace WikiDesk.Core
         private Result SubjectPageNamee(List<KeyValuePair<string, string>> args, out string output)
         {
             SubjectPageName(args, out output);
-            output = Title.Normalize(output);
+            output = Title.Canonicalize(output);
             return Result.Found;
         }
 
@@ -619,7 +619,7 @@ namespace WikiDesk.Core
                 if (!string.IsNullOrEmpty(arg))
                 {
                     arg = arg.Trim(WhiteSpaceChars);
-                    output = Title.NormalizeAnchor(arg);
+                    output = Title.CanonicalizeAnchor(arg);
                     return Result.Found;
                 }
             }

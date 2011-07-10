@@ -556,14 +556,14 @@ Hayastani Hanrapetutyun |
 
         private static string OnResolveWikiLinks(string title, string languageCode)
         {
-            return Title.UrlNormalize(title);
+            return Title.UrlCanonicalize(title);
         }
 
         private static string OnResolveTemplate(string word, string lanugageCode)
         {
             string title = !word.StartsWith("Template:") ? "Template:" + word : word;
 
-            title = Title.Normalize(title);
+            title = Title.Canonicalize(title);
             string url = string.Concat("http://", config_.WikiSite.Language.Code, config_.WikiSite.ExportUrl, title);
             string xmlText = Download.DownloadPage(url);
             Page page = DumpParser.PageFromXml(xmlText);

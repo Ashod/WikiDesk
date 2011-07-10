@@ -36,56 +36,75 @@
 
 namespace WikiDesk.Core.Test
 {
+    using System;
+
     using NUnit.Framework;
 
     [TestFixture]
     public class WikiTitleTest
     {
         [Test]
-        public void TitleNormalize()
+        public void TitleCanonicalize()
         {
-            Assert.AreEqual("Title", Title.Normalize("title"));
-            Assert.AreEqual("Blah_may", Title.Normalize("blah may"));
-            Assert.AreEqual("Title", Title.Normalize("Title"));
-            Assert.AreEqual("Iron_Curtain", Title.Normalize("iron Curtain"));
+            Assert.AreEqual(string.Empty, Title.Canonicalize(string.Empty));
+            Assert.AreEqual("Title", Title.Canonicalize("title"));
+            Assert.AreEqual("Blah_may", Title.Canonicalize("blah may"));
+            Assert.AreEqual("Title", Title.Canonicalize("Title"));
+            
+            Assert.AreEqual("Iron_Curtain", Title.Canonicalize("iron Curtain"));
+            Assert.AreEqual("Iron_Curtain", Title.Canonicalize(" iron   Curtain  "));
+            
+            Assert.AreEqual("User:Jimbo_Wales", Title.Canonicalize("uSeR:jimbo Wales"));
+            Assert.AreEqual("User:Jimbo_Wales", Title.Canonicalize(" _User_: Jimbo_ __ Wales__"));
         }
 
         [Test]
-        public void TitleDeNormalize()
+        public void InvalidTitle()
         {
-            Assert.AreEqual("Title", Title.Denormalize("Title"));
-            Assert.AreEqual("Blah may", Title.Denormalize("Blah_may"));
-            Assert.AreEqual("Title", Title.Denormalize("Title"));
-            Assert.AreEqual("Iron Curtain", Title.Denormalize("Iron_Curtain"));
+            Assert.Throws<ArgumentNullException>(() => Title.Canonicalize(null));
+            Assert.Throws<ArgumentNullException>(() => Title.Decanonicalize(null));
+        }
+
+        [Test]
+        public void TitleDecanonicalize()
+        {
+            Assert.AreEqual(string.Empty, Title.Decanonicalize(string.Empty));
+            Assert.AreEqual("Title", Title.Decanonicalize("Title"));
+            Assert.AreEqual("Blah may", Title.Decanonicalize("Blah_may"));
+            Assert.AreEqual("Title", Title.Decanonicalize("Title"));
+            Assert.AreEqual("Iron Curtain", Title.Decanonicalize("Iron_Curtain"));
         }
 
         [Test]
         public void ParseFullPageName()
         {
             string nameSpace;
-            Assert.AreEqual("Title", Title.ParseFullPageName("Title", out nameSpace));
+            Assert.AreEqual(string.Empty, Title.ParseFullTitle(null, out nameSpace));
             Assert.AreEqual(string.Empty, nameSpace);
 
-            Assert.AreEqual("Title", Title.ParseFullPageName("Wikipedia:Title", out nameSpace));
+            Assert.AreEqual("Title", Title.ParseFullTitle("Title", out nameSpace));
+            Assert.AreEqual(string.Empty, nameSpace);
+
+            Assert.AreEqual("Title", Title.ParseFullTitle("Wikipedia:Title", out nameSpace));
             Assert.AreEqual("Wikipedia", nameSpace);
 
-            Assert.AreEqual("Main Page", Title.ParseFullPageName("Template:Main Page", out nameSpace));
+            Assert.AreEqual("Main Page", Title.ParseFullTitle("Template:Main Page", out nameSpace));
             Assert.AreEqual("Template", nameSpace);
 
-            Assert.AreEqual("Main Page", Title.ParseFullPageName(" :Main Page", out nameSpace));
+            Assert.AreEqual("Main Page", Title.ParseFullTitle(" :Main Page", out nameSpace));
             Assert.AreEqual(string.Empty, nameSpace);
         }
 
         [Test]
         public void FullPageName()
         {
-            Assert.AreEqual("Wikipedia:Title", Title.FullPageName("Wikipedia", "Title"));
-            Assert.AreEqual("Template:Main_Page", Title.FullPageName("Template", "Main Page"));
-            Assert.AreEqual("Template:Main_Page", Title.FullPageName("Template", "main Page"));
-            Assert.AreEqual("Template:Main_page", Title.FullPageName("Template", "main page"));
-            Assert.AreEqual("Main_Page", Title.FullPageName(null, "Main Page"));
-            Assert.AreEqual("Main_Page", Title.FullPageName(string.Empty, "Main Page"));
-            Assert.AreEqual("Main_Page", Title.FullPageName("  ", "Main Page"));
+            Assert.AreEqual("Wikipedia:Title", Title.FullTitleName("Wikipedia", "Title"));
+            Assert.AreEqual("Template:Main_Page", Title.FullTitleName("Template", "Main Page"));
+            Assert.AreEqual("Template:Main_Page", Title.FullTitleName("Template", "main Page"));
+            Assert.AreEqual("Template:Main_page", Title.FullTitleName("Template", "main page"));
+            Assert.AreEqual("Main_Page", Title.FullTitleName(null, "Main Page"));
+            Assert.AreEqual("Main_Page", Title.FullTitleName(string.Empty, "Main Page"));
+            Assert.AreEqual("Main_Page", Title.FullTitleName("  ", "Main Page"));
         }
     }
 }

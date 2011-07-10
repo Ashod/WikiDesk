@@ -147,17 +147,17 @@ namespace WikiDesk.Core
 
         public string GetViewUrl(string title)
         {
-            return string.Format("http://{0}{1}{2}", language_.Code, BaseFriendlyUrl, Title.Normalize(title));
+            return string.Format("http://{0}{1}{2}", language_.Code, BaseFriendlyUrl, Title.Canonicalize(title));
         }
 
         public string GetFileUrl(string title)
         {
-            return string.Format("http://{0}{1}File:{2}", language_.Code, BaseFriendlyUrl, Title.Normalize(title));
+            return string.Format("http://{0}{1}File:{2}", language_.Code, BaseFriendlyUrl, Title.Canonicalize(title));
         }
 
         public string GetExportUrl(string title)
         {
-            return string.Format("http://{0}{1}{2}", language_.Code, ExportUrl, Title.Normalize(title));
+            return string.Format("http://{0}{1}{2}", language_.Code, ExportUrl, Title.Canonicalize(title));
         }
 
         public string GetEditUrl(string title)
@@ -167,7 +167,7 @@ namespace WikiDesk.Core
 
         public string GetFullUrl(string title)
         {
-            return string.Format("http://{0}{1}{2}", language_.Code, BaseFullUrl, Title.Normalize(title));
+            return string.Format("http://{0}{1}{2}", language_.Code, BaseFullUrl, Title.Canonicalize(title));
         }
 
         public enum Namespace

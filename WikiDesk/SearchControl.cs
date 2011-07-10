@@ -147,7 +147,7 @@ namespace WikiDesk
                 int languageId = db_.GetLanguageByName(cboLanguages_.Text).Id;
                 foreach (string title in db_.SearchPages(domainId, languageId, query))
                 {
-                    string titleDenorm = Title.Denormalize(title);
+                    string titleDenorm = Title.Decanonicalize(title);
                     lstTitles_.Items.Add(titleDenorm);
                 }
             }
