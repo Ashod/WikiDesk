@@ -50,7 +50,9 @@ namespace WikiDesk.Core.Test
             Assert.AreEqual("Title", Title.Canonicalize("title"));
             Assert.AreEqual("Blah_may", Title.Canonicalize("blah may"));
             Assert.AreEqual("Title", Title.Canonicalize("Title"));
-            
+
+            Assert.AreEqual(string.Empty, Title.Canonicalize("  _  ___________ "));
+
             Assert.AreEqual("Iron_Curtain", Title.Canonicalize("iron Curtain"));
             Assert.AreEqual("Iron_Curtain", Title.Canonicalize(" iron   Curtain  "));
             

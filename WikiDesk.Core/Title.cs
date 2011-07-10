@@ -108,16 +108,13 @@ namespace WikiDesk.Core
                 throw new ArgumentNullException("title");
             }
 
-            // Spaces and underscores are superfluous if at either end.
-            title = title.Trim(new[] { ' ', '_' });
+            // Spaces and underscores are interchangeable.
+            title = StringUtils.CollapseReplace(title, ' ', '_');
+            title = StringUtils.CollapseReplace(title, '_', '_');
             if (title.Length == 0)
             {
                 return string.Empty;
             }
-
-            // Spaces and underscores are interchangeable.
-            title = StringUtils.CollapseReplace(title, ' ', '_');
-            title = StringUtils.CollapseReplace(title, '_', '_');
 
             string ns;
             title = ParseFullTitle(title, out ns);
@@ -126,16 +123,18 @@ namespace WikiDesk.Core
             title = title.Trim(new[] { ' ', '_' });
 
             // Always make the first character upper for proper comparison.
-            title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
-            title = title.Normalize();
-
-            if (ns.Length == 0)
+            if (title.Length > 0)
             {
-                return title;
+                title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
+                title = title.Normalize();
             }
 
             // Spaces and underscores are superfluous if at either end.
             ns = ns.Trim(new[] { ' ', '_' });
+            if (ns.Length == 0)
+            {
+                return title;
+            }
 
             // Namespaces are case insensitive. We capitalize it for readability.
             ns = ns.Substring(0, 1).ToUpperInvariant() + ns.Substring(1).ToLowerInvariant();

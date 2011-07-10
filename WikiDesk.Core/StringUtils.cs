@@ -755,6 +755,11 @@ namespace WikiDesk.Core
         /// <returns>The resulting text.</returns>
         public static string CollapseReplace(string text, char bad, char good)
         {
+            if (string.IsNullOrEmpty(text))
+            {
+                return string.Empty;
+            }
+
             StringBuilder sb = new StringBuilder(text.Length);
             int index = 0;
             while (index < text.Length)
