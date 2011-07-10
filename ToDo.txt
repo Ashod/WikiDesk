@@ -7,10 +7,9 @@
 * Media Cache. (Partially done.)
 * Editable settings.
 * Load from web backups. (Partially done.)
-* Page view progresss.
+* Page load progress.
+* Page load cancellation.
 * Splash Screen.
-* Link to source page at the buttom of each generated page.
-* Add copyright at the bottom.
 * Language message must cascade based on default lang.
 * Compressed Database.
 
@@ -19,8 +18,6 @@ Wiki2Html:
 * Tables. (Partially done.)
 * References.
 * TOC.
-* Unordered Lists.
-* Ordered Lists.
 * Variables and Templates. (Partially done.)
 * Parser Functions. (Partially done.)
 * Audio/Video.
@@ -39,3 +36,7 @@ Done:
 * Include WebKit and misc data files under SVN.
 * Auto-copy required files to Bin upon build.
 * Import from the web.
+* Add copyright at the bottom.
+* Link to source page at the buttom of each generated page.
+* Unordered Lists.
+* Ordered Lists.
