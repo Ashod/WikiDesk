@@ -22,7 +22,8 @@ namespace WikiDesk.Core
 
             StringBuilder sb = new StringBuilder(512);
             int curDepth = ConvertListCode(line, sb, sr, 0);
-            for (int i = 0; i < curDepth - 1; ++i)
+            sb.Append(nodeTagClose);
+            while (--curDepth > 0)
             {
                 sb.AppendLine().Append(listTagClose);
                 sb.AppendLine().Append(nodeTagClose);
@@ -39,25 +40,21 @@ namespace WikiDesk.Core
             if (depth <= curDepth)
             {
                 sb.Append(nodeTagClose);
+                while (curDepth > depth)
+                {
+                    sb.AppendLine().Append(listTagClose);
+                    sb.AppendLine().Append(nodeTagClose);
+                    --curDepth;
+                }
             }
             else
             {
                 sb.AppendLine().Append(listTagOpen);
-                ++curDepth;
-            }
-
-            while (curDepth > depth)
-            {
-                sb.AppendLine().Append(listTagClose);
-                sb.AppendLine().Append(nodeTagClose);
-                --curDepth;
-            }
-
-            while (curDepth < depth)
-            {
-                sb.AppendLine().Append(nodeTagOpen);
-                sb.AppendLine().Append(listTagOpen);
-                ++curDepth;
+                while (++curDepth < depth)
+                {
+                    sb.AppendLine().Append(nodeTagOpen);
+                    sb.AppendLine().Append(listTagOpen);
+                }
             }
 
             // Current Node.
@@ -67,11 +64,9 @@ namespace WikiDesk.Core
             // Get next line.
             if (sr.Peek() != marker || (line = sr.ReadLine()) == null)
             {
-                sb.Append(nodeTagClose);
                 return curDepth;
             }
 
-            Debug.Assert(curDepth == depth);
             return ConvertListCode(line, sb, sr, curDepth);
         }
 
