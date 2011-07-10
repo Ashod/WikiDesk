@@ -119,7 +119,7 @@ namespace WikiDesk.Core
             else
             {
                 sb.AppendLine().Append(nodeTagOpen);
-                sb.Append(line.TrimStart(marker).Trim());
+                sb.Append(line.Substring(depth).Trim());
             }
 
             // Get next line.
