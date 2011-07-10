@@ -471,7 +471,7 @@ namespace WikiDesk.Core.Test
         }
 
         [Test]
-        public void OrderedListsComplex()
+        public void OrderedListsComplex1()
         {
             TestConvert(
                     "# Numbered lists are:\n" +
@@ -481,6 +481,30 @@ namespace WikiDesk.Core.Test
                     "A new line marks the end of the list.\n" +
                     "# New numbering starts with 1.",
                     "<ol>\r\n<li>Numbered lists are:\r\n<ol>\r\n<li>Very organized</li>\r\n<li>Easy to follow</li>\r\n</ol>\r\n<dl>\r\n<dd>Previous item continues</dd>\r\n</dl>\r\n</li>\r\n</ol>\r\n<p>A new line marks the end of the list.</p>\r\n<ol>\r\n<li>New numbering starts with 1.</li>\r\n</ol>");
+        }
+
+        [Test]
+        public void OrderedListsComplex2()
+        {
+            TestConvert(
+                    "# Numbered lists are:\r\n## Very organized\r\n### Easy to follow\r\n#: Previous item continues\r\n#: A new line marks the end o\r\n## kik\r\n",
+                    "<ol>\r\n<li>Numbered lists are:\r\n<ol>\r\n<li>Very organized\r\n<ol>\r\n<li>Easy to follow</li>\r\n</ol>\r\n</li>\r\n</ol>\r\n<dl>\r\n<dd>Previous item continues</dd>\r\n<dd>A new line marks the end o</dd>\r\n</dl>\r\n<ol>\r\n<li>kik</li>\r\n</ol>\r\n</li>\r\n</ol>");
+        }
+
+        [Test]
+        public void OrderedListsComplex3()
+        {
+            TestConvert(
+                    "# Numbered lists are:\r\n## Very organized\r\n### Easy to follow\r\n##: Continues\r\n### Third\r\n## Second\r\n#: First Cont\r\n## kik\r\n",
+                    "<ol>\r\n<li>Numbered lists are:\r\n<ol>\r\n<li>Very organized\r\n<ol>\r\n<li>Easy to follow</li>\r\n</ol>\r\n<dl>\r\n<dd>Continues</dd>\r\n</dl>\r\n<ol>\r\n<li>Third</li>\r\n</ol>\r\n</li>\r\n<li>Second</li>\r\n</ol>\r\n<dl>\r\n<dd>First Cont</dd>\r\n</dl>\r\n<ol>\r\n<li>kik</li>\r\n</ol>\r\n</li>\r\n</ol>");
+        }
+
+        [Test]
+        public void OrderedListsComplex4()
+        {
+            TestConvert(
+                    "# Numbered lists are:\r\n## Very organized\r\n### Easy to follow\r\n####: Continues\r\n### Third\r\n## Second\r\n#: First Cont\r\n## kik\r\n",
+                    "<ol>\r\n<li>Numbered lists are:\r\n<ol>\r\n<li>Very organized\r\n<ol>\r\n<li>Easy to follow\r\n<ol>\r\n<li>\r\n<dl>\r\n<dd>Continues</dd>\r\n</dl>\r\n</li>\r\n</ol>\r\n</li>\r\n<li>Third</li>\r\n</ol>\r\n</li>\r\n<li>Second</li>\r\n</ol>\r\n<dl>\r\n<dd>First Cont</dd>\r\n</dl>\r\n<ol>\r\n<li>kik</li>\r\n</ol>\r\n</li>\r\n</ol>");
         }
 
         #endregion // Ordered Lists
@@ -541,13 +565,6 @@ namespace WikiDesk.Core.Test
         }
 
         [Test]
-        public void ParserFunctionSimple()
-        {
-            TestConvert("{{lc:KIKOS}}",
-                "<p>kikos</p>");
-        }
-
-        [Test]
         public void Link()
         {
             TestConvert(
@@ -569,6 +586,13 @@ namespace WikiDesk.Core.Test
             TestConvert(
                     "#REDIRECT: [[Brazil]]",
                     "Redirected to <span class=\"redirectText\"><a href=\"http://en.wikipedia.org/wiki/Brazil\" title=\"Brazil\">Brazil</a></span>");
+        }
+
+        [Test]
+        public void ParserFunctionSimple()
+        {
+            TestConvert("{{lc:KIKOS}}",
+                "<p>kikos</p>");
         }
 
         [Test]
