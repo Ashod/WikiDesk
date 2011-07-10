@@ -65,33 +65,25 @@ namespace WikiDesk.Core
             }
 
             int newDepth = StringUtils.CountRepetition(line, 0);
-            if (newDepth == depth)
+            Debug.Assert(newDepth > 0, "newDepth must be > 0.");
+            if (newDepth > 0 && newDepth <= depth)
             {
                 sb.Append(nodeTagClose);
                 return ConvertListCode(line, sb, sr, depth);
             }
 
-            if (newDepth > depth)
+            // Sublist.
+            Debug.Assert(newDepth > depth, "newDepth must be > depth.");
+            sb.AppendLine().Append(listTagOpen);
+            curDepth = ConvertListCode(line, sb, sr, depth + 1) - 1;
+            if (curDepth <= 0)
             {
-                // Sublist.
-                sb.AppendLine().Append(listTagOpen);
-                curDepth = ConvertListCode(line, sb, sr, depth + 1) - 1;
-                if (curDepth <= 0)
-                {
-                    return 0;
-                }
-
-                sb.AppendLine().Append(listTagClose);
-                sb.AppendLine();
+                return 0;
             }
 
+            sb.AppendLine().Append(listTagClose);
+            sb.AppendLine();
             sb.Append(nodeTagClose);
-
-            if (newDepth > 0 && newDepth <= depth)
-            {
-                return ConvertListCode(line, sb, sr, curDepth);
-            }
-
             return curDepth;
         }
 
