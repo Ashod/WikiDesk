@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------------------------
 // <copyright file="WikiList2Html.cs" company="ashodnakashian.com">
-// 
+//
 // This file is part of WikiDesk.
 // Copyright (C) 2010, 2011 Ashod Nakashian
 // https://github.com/Ashod/WikiDesk
@@ -42,9 +42,12 @@ namespace WikiDesk.Core
 
     internal class WikiList2Html
     {
-        public WikiList2Html(char marker, string listTag, string nodeTag)
+        public delegate string ConvertInlineCodes(string wikicode);
+
+        public WikiList2Html(char marker, string listTag, string nodeTag, ConvertInlineCodes convertInlineCodes)
         {
             this.marker = marker;
+            convertInlineCodes_ = convertInlineCodes;
             listTagOpen = string.Format("<{0}>", listTag);
             listTagClose = string.Format("</{0}>", listTag);
             nodeTagOpen = string.Format("<{0}>", nodeTag);
@@ -64,7 +67,7 @@ namespace WikiDesk.Core
                 sb.AppendLine().Append("</dl>");
                 sb.AppendLine();
             }
-            
+
             sb.Append(nodeTagClose);
             while (--curDepth > 0)
             {
@@ -79,7 +82,7 @@ namespace WikiDesk.Core
         private int ConvertListCode(string line, StringBuilder sb, StringReader sr, int curDepth)
         {
             int depth = StringUtils.CountRepetition(line, 0);
-            
+
             bool continuation = false;
             if (line[depth] == ':')
             {
@@ -147,13 +150,25 @@ namespace WikiDesk.Core
                 }
 
                 sb.AppendLine().Append("<dd>");
-                sb.Append(line.Substring(depth).Trim());
+                line = line.Substring(depth).Trim();
+                if (convertInlineCodes_ != null)
+                {
+                    line = convertInlineCodes_(line);
+                }
+
+                sb.Append(line);
                 sb.Append("</dd>");
             }
             else
             {
                 sb.AppendLine().Append(nodeTagOpen);
-                sb.Append(line.Substring(depth).Trim());
+                line = line.Substring(depth).Trim();
+                if (convertInlineCodes_ != null)
+                {
+                    line = convertInlineCodes_(line);
+                }
+
+                sb.Append(line);
             }
 
             // Get next line.
@@ -168,6 +183,9 @@ namespace WikiDesk.Core
         #region representation
 
         private readonly char marker;
+
+        private readonly ConvertInlineCodes convertInlineCodes_;
+
         private readonly string listTagOpen;
         private readonly string listTagClose;
         private readonly string nodeTagOpen;

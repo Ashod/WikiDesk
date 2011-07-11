@@ -281,6 +281,7 @@ namespace WikiDesk.Core
                             }
 
                             html.Append("\r\n<dd>");
+                            line = ConvertInlineCodes(line.Trim());
                             html.Append(line);
                             html.Append("</dd>");
 
@@ -333,7 +334,7 @@ namespace WikiDesk.Core
                                 wiki.Remove(0, wiki.Length);
                             }
 
-                            WikiList2Html list2Html = new WikiList2Html('*', "ul", "li");
+                            WikiList2Html list2Html = new WikiList2Html('*', "ul", "li", ConvertInlineCodes);
                             html.Append(list2Html.ConvertListCode(line, sr));
                             continue;
 
@@ -345,7 +346,7 @@ namespace WikiDesk.Core
                                 wiki.Remove(0, wiki.Length);
                             }
 
-                            WikiList2Html olist2Html = new WikiList2Html('#', "ol", "li");
+                            WikiList2Html olist2Html = new WikiList2Html('#', "ol", "li", ConvertInlineCodes);
                             html.Append(olist2Html.ConvertListCode(line, sr));
                             continue;
 
@@ -429,7 +430,9 @@ namespace WikiDesk.Core
                 Debug.Assert(line.StartsWith(" "), "Pre text must start with a space.");
 
                 // Trim the first space, which is a wikicode.
-                sb.AppendLine(line.Substring(1));
+                line = line.Substring(1).TrimEnd();
+                line = ConvertInlineCodes(line);
+                sb.AppendLine(line);
 
                 if (sr.Peek() != ' ' || (line = sr.ReadLine()) == null)
                 {

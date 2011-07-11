@@ -227,8 +227,8 @@ namespace WikiDesk.Core.Test
         public void IndentKlongon()
         {
             TestConvert(
-                    @":''This article is about the Klingon ""race"". For the ""language"" see [[Klingon language]].''",
-                    @"<dl>\r\n<dd><i>This article is about the Klingon ""race"". For the ""language"" see <a href=""/wiki/Klingon_language"" style=""cursor: help; "">Klingon language</a>.</i></dd>\r\n</dl>");
+                    ":''This article is about the Klingon \"race\". For the \"language\" see [[Klingon language]].''",
+                    "<dl>\r\n<dd><i>This article is about the Klingon \"race\". For the \"language\" see <a href=\"http://en.wikipedia.org/wiki/Klingon_language\" title=\"Klingon language\">Klingon language</a>.</i></dd>\r\n</dl>");
         }
 
         #endregion // Indent
@@ -418,25 +418,7 @@ namespace WikiDesk.Core.Test
                 "* in a list\n" +
                 "marks the end of the list.\n" +
                 "* Of course you can start again.",
-@"<ul>
-<li><i>Unordered lists</i> are easy to do:
-<ul>
-<li>Start every line with a star.
-<ul>
-<li>More stars indicate a deeper level.</li>
-</ul>
-</li>
-</ul>
-<dl>
-<dd>Previous item continues.</dd>
-</dl>
-<ul>
-<li>A new line</li>
-</ul>
-</li>
-<li>in a list</li>
-</ul>
-<p>marks the end of the list.</p>");
+                "<ul>\r\n<li><i>Unordered lists</i> are easy to do:\r\n<ul>\r\n<li>Start every line with a star.\r\n<ul>\r\n<li>More stars indicate a deeper level.</li>\r\n</ul>\r\n</li>\r\n</ul>\r\n<dl>\r\n<dd>Previous item continues.</dd>\r\n</dl>\r\n<ul>\r\n<li>A new line</li>\r\n</ul>\r\n</li>\r\n<li>in a list</li>\r\n</ul>\r\n<p>marks the end of the list.</p>\r\n<ul>\r\n<li>Of course you can start again.</li>\r\n</ul>");
         }
 
         #endregion // Unordered Lists
@@ -512,11 +494,19 @@ namespace WikiDesk.Core.Test
         #region Pre
 
         [Test]
-        public void PreSingle()
+        public void PreSingle1()
         {
             TestConvert(
                 " h",
                 "<pre>h\r\n</pre>");
+        }
+
+        [Test]
+        public void PreSingle2()
+        {
+            TestConvert(
+                "   an ''this''   is   italic      ",
+                "<pre>  an <i>this</i>   is   italic\r\n</pre>");
         }
 
         [Test]
