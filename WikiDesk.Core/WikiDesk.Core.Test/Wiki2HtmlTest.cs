@@ -97,6 +97,12 @@ namespace WikiDesk.Core.Test
         }
 
         [Test]
+        public void TableTag()
+        {
+            TestConvertFiles("TableTag");
+        }
+
+        [Test]
         [Ignore]
         public void NavBox()
         {

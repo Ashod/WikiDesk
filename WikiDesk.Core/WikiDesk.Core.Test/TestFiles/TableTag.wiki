@@ -1,0 +1,12 @@
+<table style="padding:0.3em; float:right; margin-left:15px; margin-bottom:8px; border:1px solid #A3B1BF; background:#f5faff; text-align:center; font-size:95%; line-height:1.5em;;">
+<th style="background:#cee0f2; padding:0.3em; font-size:1.1em;">Wiki markup</th>{{#if:[[Wikipedia:Cheatsheet|Basic markup]]<br />[[Help:Wiki markup|Text, links, and talk pages]]<br />[[Help:Visual file markup|Visual files]]<br />[[Help:Sound file markup|Sound files]]<br />[[Help:Table|Tables]]<br />[[Help:Template|Template editing]]<br />[[Help:HTML in wikitext|Using HTML]]|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group1}}}</th>}}</tr>
+<tr><td>[[Wikipedia:Cheatsheet|Basic markup]]<br />[[Help:Wiki markup|Text, links, and talk pages]]<br />[[Help:Visual file markup|Visual files]]<br />[[Help:Sound file markup|Sound files]]<br />[[Help:Table|Tables]]<br />[[Help:Template|Template editing]]<br />[[Help:HTML in wikitext|Using HTML]]</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group2}}}</th>}}</tr>
+<tr><td>{{{list2}}}</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group3}}}</th>}}</tr>
+<tr><td>{{{list3}}}</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group4}}}</th>}}</tr>
+<tr><td>{{{list4}}}</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group5}}}</th>}}</tr>
+<tr><td>{{{list5}}}</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group6}}}</th>}}</tr>
+<tr><td>{{{list6}}}</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group7}}}</th>}}</tr>
+<tr><td>{{{list7}}}</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group8}}}</th>}}</tr>
+<tr><td>{{{list8}}}</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group9}}}</th>}}</tr>
+<tr><td>{{{list9}}}</td></tr>}}{{#if:|<tr>{{#if:|<th style="padding:0.1em; font-size:0.9em; background-color:#cee0f2;">{{{group10}}}</th>}}</tr>
+<tr><td>{{{list10}}}</td></tr>}}</table>
