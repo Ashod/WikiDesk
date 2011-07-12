@@ -43,6 +43,8 @@ namespace WikiDesk.Core
     using System.Text;
     using System.Text.RegularExpressions;
 
+    using TidyManaged;
+
     using Tracy;
 
     public class Wiki2Html
@@ -192,8 +194,32 @@ namespace WikiDesk.Core
             nameSpace_ = nameSpace;
             pageTitle_ = pageTitle;
 
-            wikicode = ConvertSimple(wikicode);
-            return wikicode.Trim(new[] { '\r', '\n' });
+            string html = ConvertSimple(wikicode);
+
+            html = Fixup(html);
+
+            if (config_.Tidy)
+            {
+                using (Document doc = Document.FromString(html))
+                {
+                    // TODO: We must process ref and nowiki before getting here.
+                    doc.NewPreTags = "poem,ref,nowiki";
+                    doc.ShowWarnings = false;
+                    doc.Quiet = true;
+                    doc.ForceOutput = true;
+                    doc.OutputBodyOnly = AutoBool.Yes;
+                    doc.PreserveEntities = true;
+                    doc.AddVerticalSpace = false;
+                    doc.WrapAt = 0;
+                    doc.WrapSections = false;
+                    doc.WrapAttributeValues = false;
+                    doc.CleanAndRepair();
+                    html = doc.Save();
+                }
+            }
+
+            // Trim extra new-lines.
+            return html.Trim(new[] { '\r', '\n' });
         }
 
         #endregion // operations
@@ -1491,6 +1517,17 @@ namespace WikiDesk.Core
 
             // Link to the online version.
             return config_.WikiSite.GetViewUrl(title);
+        }
+
+        /// <summary>
+        /// Fixup incorrect or missing tags.
+        /// </summary>
+        /// <param name="html">The html to process.</param>
+        /// <returns>The processed html.</returns>
+        private string Fixup(string html)
+        {
+            // Add tbody after table, if missing.
+            return html;
         }
 
         #endregion // implementation

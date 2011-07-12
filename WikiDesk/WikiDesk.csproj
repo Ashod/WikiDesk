@@ -46,6 +46,10 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="TidyManaged, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\3rdParty\TidyHtml\TidyManaged.dll</HintPath>
+    </Reference>
     <Reference Include="Tracy, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\3rdParty\Tracy\Tracy.dll</HintPath>
@@ -193,7 +197,8 @@
 xcopy /E /Y "$(SolutionDir)3rdParty\WebKit.Net\webkit" "$(TargetDir)"
 mkdir "$(TargetDir)Skins"
 xcopy /E /Y "$(ProjectDir)Resources\Skins" "$(TargetDir)Skins"
-copy "$(SolutionDir)3rdParty\sqlite3\sqlite3.dll" "$(TargetDir)"</PostBuildEvent>
+copy "$(SolutionDir)3rdParty\sqlite3\sqlite3.dll" "$(TargetDir)"
+copy "$(SolutionDir)3rdParty\TidyHtml\libtidy.dll" "$(TargetDir)"</PostBuildEvent>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>

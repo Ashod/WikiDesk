@@ -48,6 +48,8 @@ namespace WikiDesk
 
     using ICSharpCode.SharpZipLib.BZip2;
 
+    using TidyManaged;
+
     using Tracy;
 
     using WebKit;
@@ -885,6 +887,23 @@ namespace WikiDesk
             sb.Append("</body></html>");
 
             return sb.ToString();
+
+            using (Document doc = Document.FromString(sb.ToString()))
+            {
+                // TODO: We must process ref and nowiki before getting here.
+                doc.NewPreTags = "poem,ref,nowiki";
+                doc.ShowWarnings = false;
+                doc.Quiet = true;
+                doc.ForceOutput = true;
+                doc.OutputBodyOnly = AutoBool.No;
+                doc.PreserveEntities = true;
+                doc.AddVerticalSpace = false;
+                doc.WrapAt = 0;
+                doc.WrapSections = false;
+                doc.WrapAttributeValues = false;
+                doc.CleanAndRepair();
+                return doc.Save();
+            }
         }
 
         private string GetHtmlFooter(string title, DateTime lastUpdateDateUtc, Stopwatch sw)

@@ -48,6 +48,8 @@ namespace WikiDesk.Core
             get { return wikiSite_; }
         }
 
+        public bool Tidy = false;
+
         public bool AutoRedirect = false;
 
         /// <summary>

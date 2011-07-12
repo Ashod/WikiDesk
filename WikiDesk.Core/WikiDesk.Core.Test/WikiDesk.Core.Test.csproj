@@ -63,6 +63,9 @@
     <Content Include="TestFiles\Cite.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestFiles\TableTag.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\TaxoBoxCore.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -90,6 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TestFiles\Cite.wiki">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\TableTag.wiki">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestFiles\TaxoBoxCore.wiki">
@@ -125,4 +131,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)3rdParty\TidyHtml\libtidy.dll" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
