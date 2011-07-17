@@ -1,16 +1,18 @@
-* I18n.
-* Multi-language Wiki support.
-* Navigation bar is broken.
+* Language message must cascade based on default lang.
+* Navigation bar.
 * Navigation History.
-* Skins. (Partially done.)
 * Favs.
-* Media Cache. (Partially done.)
 * Editable settings.
-* Load from web backups. (Partially done.)
 * Page load progress.
 * Page load cancellation.
+* GUI font selection.
+* Editting support.
 * Splash Screen.
-* Language message must cascade based on default lang.
+* I18n.
+* Multi-language Wiki support.
+* Skins. (Partially done.)
+* Media Cache. (Partially done.)
+* Load from web backups. (Partially done.)
 * Compressed Database.
 
 Wiki2Html:
