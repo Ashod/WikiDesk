@@ -505,7 +505,7 @@ Hayastani Hanrapetutyun |
         public void TemplateThankYou()
         {
             TestConvert("{{ThankYou}}",
-                "<p><a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\"><img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/48px-Face-smile.svg.png\" width=\"18\"></a> <b>Thank you</b></p>");
+                "<p><a href=\"http://en.wikipedia.org/wiki/File:Face-smile.svg\" class=\"image\"><img alt=\"Face-smile.svg\" src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Face-smile.svg/512px-Face-smile.svg.png\" width=\"18\"></a> <b>Thank you</b></p>");
         }
 
         [Test]
