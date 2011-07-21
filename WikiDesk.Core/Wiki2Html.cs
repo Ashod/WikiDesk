@@ -286,17 +286,17 @@ namespace WikiDesk.Core
 
                             // Indent.
                         case ':':
-                            if (wiki.Length > 0)
-                            {
-                                html.Append(ConvertComplex(wiki.ToString()));
-                                wiki.Remove(0, wiki.Length);
-                            }
-
                             int indent = StringUtils.CountRepetition(line, 0);
                             line = line.Substring(indent).TrimEnd();
                             if (line.Length == 0)
                             {
-                                continue;
+                                break;
+                            }
+
+                            if (wiki.Length > 0)
+                            {
+                                html.Append(ConvertComplex(wiki.ToString()));
+                                wiki.Remove(0, wiki.Length);
                             }
 
                             --indent;
@@ -321,19 +321,20 @@ namespace WikiDesk.Core
 
                             // Hr.
                         case '-':
+                            int dashes = StringUtils.CountRepetition(line, 0);
+                            if (dashes < 4)
+                            {
+                                break;
+                            }
+
                             if (wiki.Length > 0)
                             {
                                 html.Append(ConvertComplex(wiki.ToString()));
                                 wiki.Remove(0, wiki.Length);
                             }
 
-                            int dashes = StringUtils.CountRepetition(line, 0);
-                            if (dashes >= 4)
-                            {
-                                html.Append("<hr>");
-                                line = line.Substring(dashes).TrimEnd();
-                            }
-
+                            html.Append("<hr>");
+                            line = line.Substring(dashes).TrimEnd();
                             if (line.Length > 0)
                             {
                                 html.Append(ConvertComplex(line));
@@ -352,7 +353,7 @@ namespace WikiDesk.Core
                             html.Append(ConvertPreCode(line, sr));
                             continue;
 
-                        // Unordered List.
+                            // Unordered List.
                         case '*':
                             if (wiki.Length > 0)
                             {
