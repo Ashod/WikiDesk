@@ -41,17 +41,6 @@ namespace WikiDesk.Data
 
     using SQLite;
 
-    /// <summary>
-    /// The interface of all our DB record.
-    /// Contains the primary key Id, necessary for quick updating.
-    /// </summary>
-    public interface IRecord
-    {
-        [PrimaryKey]
-        [AutoIncrement]
-        int Id { get; set; }
-    }
-
     public partial class Database : SQLiteConnection
     {
         public Database(string path)
