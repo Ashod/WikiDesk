@@ -3,11 +3,13 @@
 * Navigation History.
 * Favs.
 * Editable settings.
+* Show links.
 * Page load progress.
 * Page load cancellation.
 * GUI font selection.
 * Editting support.
 * Splash Screen.
+* About.
 * I18n.
 * Multi-language Wiki support.
 * Skins. (Partially done.)
@@ -17,11 +19,15 @@
 
 Wiki2Html:
 
+* Entended links.
 * Tables. (Partially done.)
 * References.
 * TOC.
+* Extensions.
 * Variables and Templates. (Partially done.)
 * Parser Functions. (Partially done.)
+* Parallel parsing.
+* Parallel image download.
 * Audio/Video.
 * Annotated images.
 * Magnifying glass on images.
