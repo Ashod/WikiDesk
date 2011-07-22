@@ -1434,9 +1434,9 @@ namespace WikiDesk.Core
             return sb.ToString();
         }
 
-        private void SplitNoWiki(string wikicode)
+        private void StripNoWiki(string wikicode)
         {
-
+            int indexOf = wikicode.IndexOf("nowiki", StringComparison.InvariantCultureIgnoreCase);
             Match match = NoWikiRegex.Match(wikicode);
             while (match.Success)
             {
