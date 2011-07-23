@@ -61,8 +61,10 @@ namespace WikiDesk
 
     public partial class MainForm : Form
     {
-        public MainForm()
+        public MainForm(SplashForm splashForm)
         {
+            splashForm.Show();
+            splashForm.Message = "Initializing WikiDesk...";
             InitializeComponent();
 
             logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
@@ -108,6 +110,7 @@ namespace WikiDesk
 
             fileCache_ = new FileCache(settings_.FileCacheFolder);
 
+            splashForm.Message = "Opening default database..." + Environment.NewLine + settings_.DefaultDatabaseFilename;
             OpenDatabase(settings_.DefaultDatabaseFilename);
 
             // Language.
@@ -136,6 +139,7 @@ namespace WikiDesk
 
             ShowAllLanguages();
 
+            splashForm.Message = "Initializing index...";
             searchControl_ = new SearchControl(db_, entriesMap_, BrowseWikiArticle);
             searchControl_.HideOnClose = true;
 
@@ -152,10 +156,13 @@ namespace WikiDesk
             dockContent_.DockState = DockState.Document;
             dockContent_.Controls.Add(browser_);
             dockContent_.Show(dockPanel_);
+
+            splashForm.Dispose();
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
+            //splashForm.Message = "Loading database...";
             LoadDatabase(db_);
         }
 
