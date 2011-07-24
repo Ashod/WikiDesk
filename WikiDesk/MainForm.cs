@@ -63,8 +63,8 @@ namespace WikiDesk
     {
         public MainForm(SplashForm splashForm)
         {
-            splashForm.Show();
             splashForm.Message = "Initializing WikiDesk...";
+            splashForm.Show();
             InitializeComponent();
 
             logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
@@ -146,6 +146,7 @@ namespace WikiDesk
             indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
             indexControl_.HideOnClose = true;
 
+            splashForm.Message = "Loading layout...";
             dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(settings_.Layout)))
             {
@@ -412,10 +413,7 @@ namespace WikiDesk
                 loadDatabaseForm.Operation = db.DatabasePath;
                 loadDatabaseForm.Show(this);
 
-                var x = new EventHandler(delegate
-                    {
-                        LoadDatabaseEntries(loadDatabaseForm, db, entriesMap_);
-                    });
+                var x = new EventHandler((sender, args) => LoadDatabaseEntries(loadDatabaseForm, db, entriesMap_));
 
                 IAsyncResult asyncResult = x.BeginInvoke(null, null, null, null);
                 do
@@ -440,11 +438,6 @@ namespace WikiDesk
                 if (indexControl_ != null)
                 {
                     indexControl_.UpdateListItems();
-                }
-
-                if (loadDatabaseForm != null)
-                {
-                    loadDatabaseForm.Message = "Updating search...";
                 }
 
                 if (searchControl_ != null)
@@ -473,11 +466,11 @@ namespace WikiDesk
             loadDatabaseForm.Operation = db.DatabasePath;
             loadDatabaseForm.Message = string.Format("{0} / {1}", entryCount, total);
 
-            loadDatabaseForm.OnUpdate += new Action<IProgress, EventArgs>((sender, e) =>
-            {
-                sender.Current = (int)(entryCount / 1024);
-                sender.Message = string.Format("{0} / {1}", entryCount, total);
-            });
+            loadDatabaseForm.OnUpdate += (sender, e) =>
+                {
+                    sender.Current = (int)(entryCount / 1024);
+                    sender.Message = string.Format("{0} / {1}", entryCount, total);
+                };
 
             entriesMap.Clear();
             foreach (Domain domain in db.GetDomains())
