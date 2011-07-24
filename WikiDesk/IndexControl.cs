@@ -48,7 +48,7 @@ namespace WikiDesk
         public delegate void OnTitleNavigate(string domainName, string languageName, string title);
 
         public IndexControl(Dictionary<string,
-                            Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
+                                Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
                             OnTitleNavigate onTitleNavigate)
         {
             InitializeComponent();

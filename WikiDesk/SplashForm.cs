@@ -35,26 +35,67 @@
 
 namespace WikiDesk
 {
+    using System;
     using System.Windows.Forms;
 
-    public partial class SplashForm : Form
+    internal partial class SplashForm
+        : Form,
+          IProgress
     {
         public SplashForm()
         {
             InitializeComponent();
+
+            timer_.Interval = 60;
+            timer_.Tick += OnTimer;
+            timer_.Start();
         }
 
-        public string Message
+        public event Action<IProgress, EventArgs> OnUpdate;
+
+        /// <summary>
+        /// Gets or sets the main operation being performed.
+        /// </summary>
+        public string Operation
         {
-            get { return txtMessage_.Text; }
+            get { return operation_; }
             set
             {
-                txtMessage_.Text = value;
+                operation_ = value;
+                UpdateMessage();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a message describing a current activity or note.
+        /// </summary>
+        public string Message
+        {
+            get { return message_; }
+            set
+            {
+                message_ = value;
+                UpdateMessage();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the total 100% progress points.
+        /// </summary>
+        public int Total
+        {
+            get { return pbProgress_.Maximum; }
+            set
+            {
+                pbProgress_.Maximum = value;
                 Application.DoEvents();
             }
         }
 
-        public int Progress
+        /// <summary>
+        /// Gets or sets the current progress points.
+        /// </summary>
+        public int Current
         {
             get { return pbProgress_.Value; }
             set
@@ -63,5 +104,47 @@ namespace WikiDesk
                 Application.DoEvents();
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the operation is cancelled.
+        /// </summary>
+        public bool Cancel { get; set; }
+
+        #region implementation
+
+        void UpdateMessage()
+        {
+            txtMessage_.Text = Operation + Environment.NewLine + Message;
+            Application.DoEvents();
+        }
+
+        private void OnTimer(object sender, EventArgs e)
+        {
+            InvokeOnUpdate(e);
+        }
+
+        private void InvokeOnUpdate(EventArgs e)
+        {
+            Action<IProgress, EventArgs> handler = OnUpdate;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion // implementation
+
+        #region representation
+
+        /// <summary>The current operation.</summary>
+        private string operation_;
+
+        /// <summary>The current message.</summary>
+        private string message_;
+
+        /// <summary>The update timer.</summary>
+        private readonly Timer timer_ = new Timer();
+
+        #endregion // representation
     }
 }

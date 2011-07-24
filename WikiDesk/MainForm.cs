@@ -59,12 +59,14 @@ namespace WikiDesk
     using WikiDesk.Core;
     using WikiDesk.Data;
 
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         public MainForm(SplashForm splashForm)
         {
-            splashForm.Message = "Initializing WikiDesk...";
+            splashForm_ = splashForm;
+            splashForm.Operation = "Initializing WikiDesk...";
             splashForm.Show();
+
             InitializeComponent();
 
             logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
@@ -110,7 +112,8 @@ namespace WikiDesk
 
             fileCache_ = new FileCache(settings_.FileCacheFolder);
 
-            splashForm.Message = "Opening default database..." + Environment.NewLine + settings_.DefaultDatabaseFilename;
+            splashForm.Operation = "Opening default database...";
+            splashForm.Message = settings_.DefaultDatabaseFilename;
             OpenDatabase(settings_.DefaultDatabaseFilename);
 
             // Language.
@@ -139,14 +142,14 @@ namespace WikiDesk
 
             ShowAllLanguages();
 
-            splashForm.Message = "Initializing index...";
+            splashForm.Operation = "Initializing index...";
             searchControl_ = new SearchControl(db_, entriesMap_, BrowseWikiArticle);
             searchControl_.HideOnClose = true;
 
             indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
             indexControl_.HideOnClose = true;
 
-            splashForm.Message = "Loading layout...";
+            splashForm.Operation = "Loading layout...";
             dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(settings_.Layout)))
             {
@@ -157,14 +160,20 @@ namespace WikiDesk
             dockContent_.DockState = DockState.Document;
             dockContent_.Controls.Add(browser_);
             dockContent_.Show(dockPanel_);
-
-            splashForm.Dispose();
         }
 
-        private void MainForm_Shown(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            //splashForm.Message = "Loading database...";
-            LoadDatabase(db_);
+            try
+            {
+                splashForm_.Operation = "Loading default database...";
+                LoadDatabase(db_, splashForm_);
+            }
+            finally
+            {
+                splashForm_.Dispose();
+                splashForm_ = null;
+            }
         }
 
         private void ShowAllLanguages()
@@ -403,17 +412,30 @@ namespace WikiDesk
             db_ = new Database(dbPath);
         }
 
-        private void LoadDatabase(Database db)
+        private void LoadDatabaseWithProgress(Database db)
         {
             Enabled = false;
-            LoadDatabaseForm loadDatabaseForm = null;
             try
             {
-                loadDatabaseForm = new LoadDatabaseForm();
-                loadDatabaseForm.Operation = db.DatabasePath;
-                loadDatabaseForm.Show(this);
+                using (LoadDatabaseForm loadDatabaseForm = new LoadDatabaseForm())
+                {
+                    loadDatabaseForm.Operation = db.DatabasePath;
+                    loadDatabaseForm.Show(this);
 
-                var x = new EventHandler((sender, args) => LoadDatabaseEntries(loadDatabaseForm, db, entriesMap_));
+                    LoadDatabase(db, loadDatabaseForm);
+                }
+            }
+            finally
+            {
+                Enabled = true;
+            }
+        }
+
+        private void LoadDatabase(Database db, IProgress progress)
+        {
+            try
+            {
+                var x = new EventHandler((sender, args) => LoadDatabaseEntries(progress, db, entriesMap_));
 
                 IAsyncResult asyncResult = x.BeginInvoke(null, null, null, null);
                 do
@@ -430,10 +452,7 @@ namespace WikiDesk
                 //TODO: How should auto-complete work? Should we add a domain selector?
                 // cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
 
-                if (loadDatabaseForm != null)
-                {
-                    loadDatabaseForm.Message = "Updating indexes...";
-                }
+                progress.Message = "Updating indexes...";
 
                 if (indexControl_ != null)
                 {
@@ -444,29 +463,22 @@ namespace WikiDesk
                 {
                     searchControl_.UpdateListItems();
                 }
-
-                if (loadDatabaseForm != null)
-                {
-                    loadDatabaseForm.Dispose();
-                }
-
-                Enabled = true;
             }
         }
 
         private static void LoadDatabaseEntries(
-                        LoadDatabaseForm loadDatabaseForm,
+                        IProgress progress,
                         Database db,
                         Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap)
         {
             long total = db.CountPages(0, 0);
-            loadDatabaseForm.Total = (int)total / 1024;
+            progress.Total = (int)total / 1024;
             long entryCount = 0;
-            loadDatabaseForm.Current = (int)entryCount / 1024;
-            loadDatabaseForm.Operation = db.DatabasePath;
-            loadDatabaseForm.Message = string.Format("{0} / {1}", entryCount, total);
+            progress.Current = (int)entryCount / 1024;
+            progress.Operation = db.DatabasePath;
+            progress.Message = string.Format("{0} / {1}", entryCount, total);
 
-            loadDatabaseForm.OnUpdate += (sender, e) =>
+            progress.OnUpdate += (sender, e) =>
                 {
                     sender.Current = (int)(entryCount / 1024);
                     sender.Message = string.Format("{0} / {1}", entryCount, total);
@@ -475,7 +487,7 @@ namespace WikiDesk
             entriesMap.Clear();
             foreach (Domain domain in db.GetDomains())
             {
-                if (loadDatabaseForm.Cancel)
+                if (progress.Cancel)
                 {
                     break;
                 }
@@ -484,7 +496,7 @@ namespace WikiDesk
 
                 foreach (Language language in db.GetLanguages())
                 {
-                    if (loadDatabaseForm.Cancel)
+                    if (progress.Cancel)
                     {
                         break;
                     }
@@ -501,7 +513,7 @@ namespace WikiDesk
 
                             ++entryCount;
                         }
-                        while (pageTitles.MoveNext() && !loadDatabaseForm.Cancel);
+                        while (pageTitles.MoveNext() && !progress.Cancel);
 
                         langTitlesMap.Add(language.Name, titles);
                     }
@@ -522,7 +534,7 @@ namespace WikiDesk
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 OpenDatabase(openFileDialog.FileName);
-                LoadDatabase(db_);
+                LoadDatabaseWithProgress(db_);
             }
         }
 
@@ -1103,7 +1115,7 @@ namespace WikiDesk
                     progForm.txtInfo.Text = "Reloading database...";
                     Application.DoEvents();
 
-                    LoadDatabase(db_);
+                    LoadDatabaseWithProgress(db_);
                     Enabled = true;
                 }
             }
@@ -1272,6 +1284,8 @@ namespace WikiDesk
 
         private readonly IndexControl indexControl_;
         private readonly SearchControl searchControl_;
+
+        private SplashForm splashForm_;
 
         /// <summary>
         /// All entries mapped as: Domain : Language : Title.
