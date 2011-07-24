@@ -241,6 +241,12 @@ namespace WikiDesk.Data
         /// <returns>The number of pages found.</returns>
         public long CountPages(long domainId, long languageId)
         {
+            if (domainId == 0 && languageId == 0)
+            {
+                return (from s in Table<Page>()
+                        select s).Count();
+            }
+
             return (from s in Table<Page>()
                     where (domainId <= 0 || s.Domain == domainId) &&
                           (languageId <= 0 || s.Language == languageId)
