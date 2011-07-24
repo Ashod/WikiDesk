@@ -34,20 +34,19 @@
 // </summary>
 // -----------------------------------------------------------------------------------------
 
-using System.Windows.Forms;
-
 namespace WikiDesk
 {
     using System;
+    using System.Windows.Forms;
 
     public partial class LoadDatabaseForm : Form
     {
         public LoadDatabaseForm(
                 string databasePath,
-                SharedReference<long> entries,
+                SharedReference<long> entryCount,
                 long totalEntires)
         {
-            entries_ = entries;
+            entryCount_ = entryCount;
             totalEntires_ = totalEntires;
 
             InitializeComponent();
@@ -69,8 +68,8 @@ namespace WikiDesk
 
         private void OnTimer(object sender, EventArgs e)
         {
-            lblEntriesLoadedValue_.Text = string.Format("{0} / {1}", (long)entries_, totalEntires_);
-            prgProgress_.Value = (int)(entries_ / 1024);
+            lblEntriesLoadedValue_.Text = string.Format("{0} / {1}", (long)entryCount_, totalEntires_);
+            prgProgress_.Value = (int)(entryCount_ / 1024);
         }
 
         private void btnCancel__Click(object sender, EventArgs e)
@@ -82,7 +81,7 @@ namespace WikiDesk
 
         #region representation
 
-        private readonly SharedReference<long> entries_;
+        private readonly SharedReference<long> entryCount_;
         private readonly long totalEntires_;
         private readonly Timer timer_ = new Timer();
 
