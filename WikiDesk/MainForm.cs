@@ -406,6 +406,23 @@ namespace WikiDesk
             }
         }
 
+        #region database
+
+        private void OpenClick(object sender, EventArgs e)
+        {
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.ReadOnlyChecked = true;
+            openFileDialog.ShowReadOnly = false;
+            openFileDialog.Multiselect = false;
+            openFileDialog.DefaultExt = "db";
+            openFileDialog.Filter = "Sqlite database files (*.db)|*.db|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                OpenDatabase(openFileDialog.FileName);
+                LoadDatabaseWithProgress(db_);
+            }
+        }
+
         private void OpenDatabase(string dbPath)
         {
             entriesMap_.Clear();
@@ -522,21 +539,8 @@ namespace WikiDesk
                 entriesMap.Add(domain.Name, langTitlesMap);
             }
         }
-
-        private void OpenClick(object sender, EventArgs e)
-        {
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.ReadOnlyChecked = true;
-            openFileDialog.ShowReadOnly = false;
-            openFileDialog.Multiselect = false;
-            openFileDialog.DefaultExt = "db";
-            openFileDialog.Filter = "Sqlite database files (*.db)|*.db|All files (*.*)|*.*";
-            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                OpenDatabase(openFileDialog.FileName);
-                LoadDatabaseWithProgress(db_);
-            }
-        }
+        
+        #endregion // database
 
         private void Titles_SelectedIndexChanged(object sender, EventArgs e)
         {
