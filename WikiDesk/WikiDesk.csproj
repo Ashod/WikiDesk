@@ -80,6 +80,7 @@
     <Compile Include="ImportForm.Designer.cs">
       <DependentUpon>ImportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IProgress.cs" />
     <Compile Include="LoadDatabaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
