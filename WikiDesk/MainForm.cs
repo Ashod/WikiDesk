@@ -471,16 +471,8 @@ namespace WikiDesk
                 // cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
 
                 progress.Message = "Updating indexes...";
-
-                if (indexControl_ != null)
-                {
-                    indexControl_.UpdateListItems();
-                }
-
-                if (searchControl_ != null)
-                {
-                    searchControl_.UpdateListItems();
-                }
+                indexControl_.UpdateListItems();
+                searchControl_.UpdateListItems();
             }
         }
 
@@ -540,7 +532,7 @@ namespace WikiDesk
                 entriesMap.Add(domain.Name, langTitlesMap);
             }
         }
-        
+
         #endregion // database
 
         private void Titles_SelectedIndexChanged(object sender, EventArgs e)
@@ -1231,17 +1223,39 @@ namespace WikiDesk
             }
         }
 
-        private void viewToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        private void viewMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            indexMenuItem_.Checked = indexControl_ != null &&
-                                     indexControl_.VisibleState != DockState.Unknown &&
+            indexMenuItem_.Checked = indexControl_.VisibleState != DockState.Unknown &&
                                      indexControl_.VisibleState != DockState.Hidden &&
                                      !indexControl_.IsHidden;
+
+            searchMenuItem_.Checked = searchControl_.VisibleState != DockState.Unknown &&
+                                     searchControl_.VisibleState != DockState.Hidden &&
+                                     !searchControl_.IsHidden;
         }
 
         private void indexMenuItem__Click(object sender, EventArgs e)
         {
-            indexControl_.IsHidden = !indexMenuItem_.Checked;
+            indexControl_.IsHidden = !indexControl_.IsHidden;
+            if (!indexControl_.IsHidden)
+            {
+                // Due to a refresh bug, we float the control, then dock it.
+                DockState visibleState = indexControl_.VisibleState;
+                indexControl_.VisibleState = DockState.Float;
+                indexControl_.VisibleState = visibleState;
+            }
+        }
+
+        private void searchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            searchControl_.IsHidden = !searchControl_.IsHidden;
+            if (!searchControl_.IsHidden)
+            {
+                // Due to a refresh bug, we float the control, then dock it.
+                DockState visibleState = indexControl_.VisibleState;
+                searchControl_.VisibleState = DockState.Float;
+                searchControl_.VisibleState = visibleState;
+            }
         }
 
         private void ExitClick(object sender, EventArgs e)
