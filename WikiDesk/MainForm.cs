@@ -408,15 +408,20 @@ namespace WikiDesk
             LoadDatabaseForm loadDatabaseForm = null;
             try
             {
-                SharedReference<long> entriesCount = new SharedReference<long>();
-                loadDatabaseForm = new LoadDatabaseForm(db.DatabasePath, entriesCount, db.CountPages(0, 0));
+                loadDatabaseForm = new LoadDatabaseForm();
+                loadDatabaseForm.Operation = db.DatabasePath;
                 loadDatabaseForm.Show(this);
-                var x = new EventHandler(delegate { LoadDatabaseEntries(loadDatabaseForm, db, entriesMap_, entriesCount); });
+
+                var x = new EventHandler(delegate
+                    {
+                        LoadDatabaseEntries(loadDatabaseForm, db, entriesMap_);
+                    });
+
                 IAsyncResult asyncResult = x.BeginInvoke(null, null, null, null);
                 do
                 {
-                    Application.DoEvents();
                     Thread.Sleep(30);
+                    Application.DoEvents();
                 }
                 while (!asyncResult.IsCompleted);
 
@@ -424,33 +429,56 @@ namespace WikiDesk
             }
             finally
             {
-                Enabled = true;
+                //TODO: How should auto-complete work? Should we add a domain selector?
+                // cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
+
+                if (loadDatabaseForm != null)
+                {
+                    loadDatabaseForm.Message = "Updating indexes...";
+                }
+
+                if (indexControl_ != null)
+                {
+                    indexControl_.UpdateListItems();
+                }
+
+                if (loadDatabaseForm != null)
+                {
+                    loadDatabaseForm.Message = "Updating search...";
+                }
+
+                if (searchControl_ != null)
+                {
+                    searchControl_.UpdateListItems();
+                }
+
                 if (loadDatabaseForm != null)
                 {
                     loadDatabaseForm.Dispose();
                 }
-            }
 
-            //TODO: How should auto-complete work? Should we add a domain selector?
-            // cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
-
-            if (indexControl_ != null)
-            {
-                indexControl_.UpdateListItems();
-            }
-
-            if (searchControl_ != null)
-            {
-                searchControl_.UpdateListItems();
+                Enabled = true;
             }
         }
 
         private static void LoadDatabaseEntries(
                         LoadDatabaseForm loadDatabaseForm,
                         Database db,
-                        Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
-                        SharedReference<long> entriesCount)
+                        Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap)
         {
+            long total = db.CountPages(0, 0);
+            loadDatabaseForm.Total = (int)total / 1024;
+            long entryCount = 0;
+            loadDatabaseForm.Current = (int)entryCount / 1024;
+            loadDatabaseForm.Operation = db.DatabasePath;
+            loadDatabaseForm.Message = string.Format("{0} / {1}", entryCount, total);
+
+            loadDatabaseForm.OnUpdate += new Action<IProgress, EventArgs>((sender, e) =>
+            {
+                sender.Current = (int)(entryCount / 1024);
+                sender.Message = string.Format("{0} / {1}", entryCount, total);
+            });
+
             entriesMap.Clear();
             foreach (Domain domain in db.GetDomains())
             {
@@ -478,7 +506,7 @@ namespace WikiDesk
                             string title = Title.Decanonicalize(pageTitles.Current);
                             titles.Add(title, title);
 
-                            entriesCount.Reference++;
+                            ++entryCount;
                         }
                         while (pageTitles.MoveNext() && !loadDatabaseForm.Cancel);
 

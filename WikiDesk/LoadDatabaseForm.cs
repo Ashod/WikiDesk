@@ -39,64 +39,100 @@ namespace WikiDesk
     using System;
     using System.Windows.Forms;
 
-    public partial class LoadDatabaseForm : Form
+    internal partial class LoadDatabaseForm
+        : Form,
+          IProgress
     {
-        public LoadDatabaseForm(
-                string databasePath,
-                SharedReference<long> entryCount,
-                long totalEntires)
+        public LoadDatabaseForm()
         {
-            entryCount_ = entryCount;
-            totalEntires_ = totalEntires;
-
             InitializeComponent();
-
-            prgProgress_.Maximum = (int)(totalEntires / 1024);
-            lblDatabasePathValue_.Text = databasePath;
 
             timer_.Interval = 60;
             timer_.Tick += OnTimer;
             timer_.Start();
         }
 
-        public bool Cancel
+        #region IProgress
+
+        /// <summary>
+        /// An event that may be called from the progress reporter to passively
+        /// update the report.
+        /// </summary>
+        public event Action<IProgress, EventArgs> OnUpdate;
+
+        /// <summary>
+        /// Gets or sets the main operation being performed.
+        /// </summary>
+        public string Operation
         {
-            get { return cancel_; }
+            get { return lblDatabasePathValue_.Text; }
+            set { lblDatabasePathValue_.Text = value; }
         }
+
+        /// <summary>
+        /// Gets or sets a message describing a current activity or note.
+        /// </summary>
+        public string Message
+        {
+            get { return lblEntriesLoadedValue_.Text; }
+            set { lblEntriesLoadedValue_.Text = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the total 100% progress points.
+        /// </summary>
+        public int Total
+        {
+            get { return prgProgress_.Maximum; }
+            set { prgProgress_.Maximum = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the current progress points.
+        /// </summary>
+        public int Current
+        {
+            get { return prgProgress_.Value; }
+            set { prgProgress_.Value = Math.Min(value, Total); }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the operation is cancelled.
+        /// </summary>
+        public bool Cancel { get; set; }
+
+        #endregion // IProgress
 
         #region implementation
 
         private void OnTimer(object sender, EventArgs e)
         {
-            lblEntriesLoadedValue_.Text = string.Format("{0} / {1}", (long)entryCount_, totalEntires_);
-            prgProgress_.Value = (int)(entryCount_ / 1024);
+            InvokeOnUpdate(e);
         }
 
         private void btnCancel__Click(object sender, EventArgs e)
         {
-            cancel_ = true;
+            Cancel = true;
+        }
+
+        private void InvokeOnUpdate(EventArgs e)
+        {
+            Action<IProgress, EventArgs> handler = OnUpdate;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
 
         #endregion // implementation
 
         #region representation
 
-        private readonly SharedReference<long> entryCount_;
-        private readonly long totalEntires_;
+        /// <summary>
+        /// Update timer.
+        /// </summary>
         private readonly Timer timer_ = new Timer();
 
-        private bool cancel_;
-
         #endregion // representation
-    }
-
-    public sealed class SharedReference<T>
-    {
-        public T Reference { get; set; }
-
-        public static implicit operator T(SharedReference<T> rhs)
-        {
-            return rhs.Reference;
-        }
     }
 }
