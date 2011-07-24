@@ -151,9 +151,19 @@ namespace WikiDesk
 
             splashForm.Operation = "Loading layout...";
             dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(settings_.Layout)))
+            if (!string.IsNullOrEmpty(settings_.Layout))
             {
-                dockPanel_.LoadFromXml(ms, GetDockContentPersistString);
+                using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(settings_.Layout)))
+                {
+                    dockPanel_.LoadFromXml(ms, GetDockContentPersistString);
+                }
+            }
+            else
+            {
+                indexControl_.DockPanel = dockPanel_;
+                indexControl_.VisibleState = DockState.Float;
+                searchControl_.DockPanel = dockPanel_;
+                searchControl_.VisibleState = DockState.Float;
             }
 
             dockContent_.DockPanel = dockPanel_;
@@ -168,6 +178,7 @@ namespace WikiDesk
             {
                 splashForm_.Operation = "Loading default database...";
                 LoadDatabase(db_, splashForm_);
+                ApplyFont(settings_.FontName, settings_.FontSize);
             }
             finally
             {
@@ -1221,6 +1232,37 @@ namespace WikiDesk
             {
                 frmOptions.ShowDialog(this);
             }
+        }
+
+        private void fontMenuItem__Click(object sender, EventArgs e)
+        {
+            using (FontDialog fontDialog = new FontDialog())
+            {
+                fontDialog.ShowApply = false;
+                fontDialog.ShowColor = false;
+                fontDialog.ShowEffects = false;
+                fontDialog.ShowDialog(this);
+                ApplyFont(fontDialog.Font.FontFamily.Name, fontDialog.Font.Size);
+            }
+        }
+
+        private void ApplyFont(string fontName, float fontSize)
+        {
+            if (string.IsNullOrEmpty(fontName) || fontSize < 2)
+            {
+                // Get the default.
+                fontName = SystemFonts.MessageBoxFont.FontFamily.Name;
+                fontSize = SystemFonts.MessageBoxFont.Size;
+            }
+
+            Font font = new Font(fontName, fontSize);
+            cboNavigate.Font = font;
+            cboLanguage.Font = font;
+            indexControl_.Font = font;
+            searchControl_.Font = font;
+
+            settings_.FontName = fontName;
+            settings_.FontSize = fontSize;
         }
 
         private void viewMenuItem_DropDownOpening(object sender, EventArgs e)
