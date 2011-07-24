@@ -440,6 +440,7 @@ namespace WikiDesk
                     loadDatabaseForm.Show(this);
 
                     LoadDatabase(db, loadDatabaseForm);
+                    Enabled = true;
                 }
             }
             finally

@@ -56,39 +56,22 @@ namespace WikiDesk
         /// <summary>
         /// Gets or sets the main operation being performed.
         /// </summary>
-        public string Operation
-        {
-            get { return operation_; }
-            set
-            {
-                operation_ = value;
-                UpdateMessage();
-            }
-        }
+        public string Operation { get; set; }
 
         /// <summary>
         /// Gets or sets a message describing a current activity or note.
         /// </summary>
-        public string Message
-        {
-            get { return message_; }
-            set
-            {
-                message_ = value;
-                UpdateMessage();
-            }
-        }
+        public string Message { get; set; }
 
         /// <summary>
         /// Gets or sets the total 100% progress points.
         /// </summary>
         public int Total
         {
-            get { return pbProgress_.Maximum; }
+            get { return total_; }
             set
             {
-                pbProgress_.Maximum = value;
-                Application.DoEvents();
+                pbProgress_.Invoke(new Action(delegate { pbProgress_.Maximum = total_ = value; }));
             }
         }
 
@@ -97,12 +80,8 @@ namespace WikiDesk
         /// </summary>
         public int Current
         {
-            get { return pbProgress_.Value; }
-            set
-            {
-                pbProgress_.Value = value;
-                Application.DoEvents();
-            }
+            get { return current_; }
+            set { current_ = value; }
         }
 
         /// <summary>
@@ -114,12 +93,14 @@ namespace WikiDesk
 
         void UpdateMessage()
         {
+            pbProgress_.Value = current_;
             txtMessage_.Text = Operation + Environment.NewLine + Message;
             Application.DoEvents();
         }
 
         private void OnTimer(object sender, EventArgs e)
         {
+            UpdateMessage();
             InvokeOnUpdate(e);
         }
 
@@ -136,11 +117,11 @@ namespace WikiDesk
 
         #region representation
 
-        /// <summary>The current operation.</summary>
-        private string operation_;
+        /// <summary>The total progress value.</summary>
+        private int total_;
 
-        /// <summary>The current message.</summary>
-        private string message_;
+        /// <summary>The current progress value.</summary>
+        private int current_;
 
         /// <summary>The update timer.</summary>
         private readonly Timer timer_ = new Timer();
