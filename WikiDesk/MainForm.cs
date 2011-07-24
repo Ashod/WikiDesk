@@ -144,10 +144,7 @@ namespace WikiDesk
 
             splashForm.Operation = "Initializing index...";
             searchControl_ = new SearchControl(db_, entriesMap_, BrowseWikiArticle);
-            searchControl_.HideOnClose = true;
-
             indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
-            indexControl_.HideOnClose = true;
 
             splashForm.Operation = "Loading layout...";
             dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
