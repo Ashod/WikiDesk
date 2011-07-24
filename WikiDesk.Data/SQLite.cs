@@ -273,7 +273,7 @@ namespace SQLite
 			}
 
 			foreach (var p in toBeAdded) {
-				var addCol = "alter table \"" + map.TableName + "\" add column " + Orm.SqlDecl (p);
+				var addCol = "alter table \"" + map.TableName + "\" add column " + Orm.SqlDecl(p);
 				Execute (addCol);
 			}
 		}
@@ -419,7 +419,7 @@ namespace SQLite
 		public T Get<T> (object pk) where T : new()
 		{
 			var map = GetMapping (typeof(T));
-			string query = string.Format ("select * from \"{0}\" where \"{1}\" = ?", map.TableName, map.PK.Name);
+			string query = string.Format("select * from \"{0}\" where \"{1}\" = ?", map.TableName, map.PK.Name);
 			return Query<T> (query, pk).First ();
 		}
 
@@ -614,7 +614,7 @@ namespace SQLite
 				select c.GetValue (obj);
 			var ps = new List<object> (vals);
 			ps.Add (pk.GetValue (obj));
-			var q = string.Format ("update \"{0}\" set {1} where {2} = ? ", map.TableName, string.Join (",", (from c in cols
+			var q = string.Format("update \"{0}\" set {1} where {2} = ? ", map.TableName, string.Join (",", (from c in cols
 				select "\"" + c.Name + "\" = ? ").ToArray ()), pk.Name);
 			return Execute (q, ps.ToArray ());
 		}
@@ -639,9 +639,9 @@ namespace SQLite
 			return Execute (q, pk.GetValue (obj));
 		}
 
-		public void Dispose ()
+		public void Dispose()
 		{
-			Close ();
+			Close();
 		}
 
 		public void Close ()
@@ -856,7 +856,7 @@ namespace SQLite
 
 		public static string SqlDecl(TableMapping.Column p)
 		{
-			string decl = "\"" + p.Name + "\" " + SqlType (p) + " ";
+			string decl = "\"" + p.Name + "\" " + SqlType(p) + " ";
 
 			if (p.IsPK) {
 				decl += "primary key ";
@@ -936,7 +936,12 @@ namespace SQLite
 
 		public static int MaxStringLength(PropertyInfo p)
 		{
-		    var attrs = p.GetCustomAttributes(typeof(MaxLengthAttribute), true);
+		    if (p == null)
+		    {
+		        throw new ArgumentNullException("p");
+		    }
+
+            var attrs = p.GetCustomAttributes(typeof(MaxLengthAttribute), true);
 		    return attrs.Length > 0 ? ((MaxLengthAttribute)attrs[0]).Value : DefaultMaxStringLength;
 		}
 	}

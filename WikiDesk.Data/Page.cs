@@ -114,6 +114,11 @@ namespace WikiDesk.Data
         /// </returns>
         public int CompareTo(Page other)
         {
+            if (other == null)
+            {
+                throw new ArgumentNullException("other");
+            }
+
             int val = Domain.CompareTo(other.Domain);
             if (val != 0)
             {
