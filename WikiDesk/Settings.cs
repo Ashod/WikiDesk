@@ -34,10 +34,9 @@
 // </summary>
 // -----------------------------------------------------------------------------------------
 
-using System;
-
 namespace WikiDesk
 {
+    using System;
     using System.IO;
     using System.Xml.Serialization;
 
@@ -87,6 +86,9 @@ namespace WikiDesk
         /// WikiDesk layout settings.
         /// </summary>
         public string Layout;
+
+        public string FontName;
+        public float FontSize;
 
         #endregion // General
 

@@ -59,10 +59,14 @@ namespace WikiDesk
     using WikiDesk.Core;
     using WikiDesk.Data;
 
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
-        public MainForm()
+        public MainForm(SplashForm splashForm)
         {
+            splashForm_ = splashForm;
+            splashForm.Operation = "Initializing WikiDesk...";
+            splashForm.Show();
+
             InitializeComponent();
 
             logger_ = LogManager.CreateLoger(typeof(Wiki2Html).FullName);
@@ -108,6 +112,8 @@ namespace WikiDesk
 
             fileCache_ = new FileCache(settings_.FileCacheFolder);
 
+            splashForm.Operation = "Opening default database...";
+            splashForm.Message = settings_.DefaultDatabaseFilename;
             OpenDatabase(settings_.DefaultDatabaseFilename);
 
             // Language.
@@ -136,16 +142,25 @@ namespace WikiDesk
 
             ShowAllLanguages();
 
+            splashForm.Operation = "Initializing index...";
             searchControl_ = new SearchControl(db_, entriesMap_, BrowseWikiArticle);
-            searchControl_.HideOnClose = true;
-
             indexControl_ = new IndexControl(entriesMap_, BrowseWikiArticle);
-            indexControl_.HideOnClose = true;
 
+            splashForm.Operation = "Loading layout...";
             dockPanel_.DocumentStyle = DocumentStyle.DockingSdi;
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(settings_.Layout)))
+            if (!string.IsNullOrEmpty(settings_.Layout))
             {
-                dockPanel_.LoadFromXml(ms, GetDockContentPersistString);
+                using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(settings_.Layout)))
+                {
+                    dockPanel_.LoadFromXml(ms, GetDockContentPersistString);
+                }
+            }
+            else
+            {
+                indexControl_.DockPanel = dockPanel_;
+                indexControl_.VisibleState = DockState.Float;
+                searchControl_.DockPanel = dockPanel_;
+                searchControl_.VisibleState = DockState.Float;
             }
 
             dockContent_.DockPanel = dockPanel_;
@@ -154,9 +169,19 @@ namespace WikiDesk
             dockContent_.Show(dockPanel_);
         }
 
-        private void MainForm_Shown(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            LoadDatabase(db_);
+            try
+            {
+                splashForm_.Operation = "Loading default database...";
+                LoadDatabase(db_, splashForm_);
+                ApplyFont(settings_.FontName, settings_.FontSize);
+            }
+            finally
+            {
+                splashForm_.Dispose();
+                splashForm_ = null;
+            }
         }
 
         private void ShowAllLanguages()
@@ -389,27 +414,60 @@ namespace WikiDesk
             }
         }
 
+        #region database
+
+        private void OpenClick(object sender, EventArgs e)
+        {
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.ReadOnlyChecked = true;
+            openFileDialog.ShowReadOnly = false;
+            openFileDialog.Multiselect = false;
+            openFileDialog.DefaultExt = "db";
+            openFileDialog.Filter = "Sqlite database files (*.db)|*.db|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+            {
+                OpenDatabase(openFileDialog.FileName);
+                LoadDatabaseWithProgress(db_);
+            }
+        }
+
         private void OpenDatabase(string dbPath)
         {
             entriesMap_.Clear();
             db_ = new Database(dbPath);
         }
 
-        private void LoadDatabase(Database db)
+        private void LoadDatabaseWithProgress(Database db)
         {
             Enabled = false;
-            LoadDatabaseForm loadDatabaseForm = null;
             try
             {
-                SharedReference<long> entriesCount = new SharedReference<long>();
-                loadDatabaseForm = new LoadDatabaseForm(db.DatabasePath, entriesCount, db.CountPages(0, 0));
-                loadDatabaseForm.Show(this);
-                var x = new EventHandler(delegate { LoadDatabaseEntries(loadDatabaseForm, db, entriesMap_, entriesCount); });
+                using (LoadDatabaseForm loadDatabaseForm = new LoadDatabaseForm())
+                {
+                    loadDatabaseForm.Operation = db.DatabasePath;
+                    loadDatabaseForm.Show(this);
+
+                    LoadDatabase(db, loadDatabaseForm);
+                    Enabled = true;
+                }
+            }
+            finally
+            {
+                Enabled = true;
+            }
+        }
+
+        private void LoadDatabase(Database db, IProgress progress)
+        {
+            try
+            {
+                var x = new EventHandler((sender, args) => LoadDatabaseEntries(progress, db, entriesMap_));
+
                 IAsyncResult asyncResult = x.BeginInvoke(null, null, null, null);
                 do
                 {
-                    Application.DoEvents();
                     Thread.Sleep(30);
+                    Application.DoEvents();
                 }
                 while (!asyncResult.IsCompleted);
 
@@ -417,37 +475,37 @@ namespace WikiDesk
             }
             finally
             {
-                Enabled = true;
-                if (loadDatabaseForm != null)
-                {
-                    loadDatabaseForm.Dispose();
-                }
-            }
+                //TODO: How should auto-complete work? Should we add a domain selector?
+                // cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
 
-            //TODO: How should auto-complete work? Should we add a domain selector?
-            // cboNavigate.AutoCompleteCustomSource = titlesMap_.AutoCompleteStringCollection;
-
-            if (indexControl_ != null)
-            {
+                progress.Message = "Updating indexes...";
                 indexControl_.UpdateListItems();
-            }
-
-            if (searchControl_ != null)
-            {
                 searchControl_.UpdateListItems();
             }
         }
 
         private static void LoadDatabaseEntries(
-                        LoadDatabaseForm loadDatabaseForm,
+                        IProgress progress,
                         Database db,
-                        Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap,
-                        SharedReference<long> entriesCount)
+                        Dictionary<string, Dictionary<string, PrefixMatchContainer<string>>> entriesMap)
         {
+            long total = db.CountPages(0, 0);
+            progress.Total = (int)total / 1024;
+            long entryCount = 0;
+            progress.Current = (int)entryCount / 1024;
+            progress.Operation = db.DatabasePath;
+            progress.Message = string.Format("{0} / {1}", entryCount, total);
+
+            progress.OnUpdate += (sender, e) =>
+                {
+                    sender.Current = (int)(entryCount / 1024);
+                    sender.Message = string.Format("{0} / {1}", entryCount, total);
+                };
+
             entriesMap.Clear();
             foreach (Domain domain in db.GetDomains())
             {
-                if (loadDatabaseForm.Cancel)
+                if (progress.Cancel)
                 {
                     break;
                 }
@@ -456,7 +514,7 @@ namespace WikiDesk
 
                 foreach (Language language in db.GetLanguages())
                 {
-                    if (loadDatabaseForm.Cancel)
+                    if (progress.Cancel)
                     {
                         break;
                     }
@@ -471,9 +529,9 @@ namespace WikiDesk
                             string title = Title.Decanonicalize(pageTitles.Current);
                             titles.Add(title, title);
 
-                            entriesCount.Reference++;
+                            ++entryCount;
                         }
-                        while (pageTitles.MoveNext() && !loadDatabaseForm.Cancel);
+                        while (pageTitles.MoveNext() && !progress.Cancel);
 
                         langTitlesMap.Add(language.Name, titles);
                     }
@@ -483,20 +541,7 @@ namespace WikiDesk
             }
         }
 
-        private void OpenClick(object sender, EventArgs e)
-        {
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.ReadOnlyChecked = true;
-            openFileDialog.ShowReadOnly = false;
-            openFileDialog.Multiselect = false;
-            openFileDialog.DefaultExt = "db";
-            openFileDialog.Filter = "Sqlite database files (*.db)|*.db|All files (*.*)|*.*";
-            if (openFileDialog.ShowDialog(this) == DialogResult.OK)
-            {
-                OpenDatabase(openFileDialog.FileName);
-                LoadDatabase(db_);
-            }
-        }
+        #endregion // database
 
         private void Titles_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1075,7 +1120,7 @@ namespace WikiDesk
                     progForm.txtInfo.Text = "Reloading database...";
                     Application.DoEvents();
 
-                    LoadDatabase(db_);
+                    LoadDatabaseWithProgress(db_);
                     Enabled = true;
                 }
             }
@@ -1186,17 +1231,70 @@ namespace WikiDesk
             }
         }
 
-        private void viewToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        private void fontMenuItem__Click(object sender, EventArgs e)
         {
-            indexMenuItem_.Checked = indexControl_ != null &&
-                                     indexControl_.VisibleState != DockState.Unknown &&
+            using (FontDialog fontDialog = new FontDialog())
+            {
+                fontDialog.ShowApply = false;
+                fontDialog.ShowColor = false;
+                fontDialog.ShowEffects = false;
+                fontDialog.ShowDialog(this);
+                ApplyFont(fontDialog.Font.FontFamily.Name, fontDialog.Font.Size);
+            }
+        }
+
+        private void ApplyFont(string fontName, float fontSize)
+        {
+            if (string.IsNullOrEmpty(fontName) || fontSize < 2)
+            {
+                // Get the default.
+                fontName = SystemFonts.MessageBoxFont.FontFamily.Name;
+                fontSize = SystemFonts.MessageBoxFont.Size;
+            }
+
+            Font font = new Font(fontName, fontSize);
+            cboNavigate.Font = font;
+            cboLanguage.Font = font;
+            indexControl_.Font = font;
+            searchControl_.Font = font;
+
+            settings_.FontName = fontName;
+            settings_.FontSize = fontSize;
+        }
+
+        private void viewMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            indexMenuItem_.Checked = indexControl_.VisibleState != DockState.Unknown &&
                                      indexControl_.VisibleState != DockState.Hidden &&
                                      !indexControl_.IsHidden;
+
+            searchMenuItem_.Checked = searchControl_.VisibleState != DockState.Unknown &&
+                                     searchControl_.VisibleState != DockState.Hidden &&
+                                     !searchControl_.IsHidden;
         }
 
         private void indexMenuItem__Click(object sender, EventArgs e)
         {
-            indexControl_.IsHidden = !indexMenuItem_.Checked;
+            indexControl_.IsHidden = !indexControl_.IsHidden;
+            if (!indexControl_.IsHidden)
+            {
+                // Due to a refresh bug, we float the control, then dock it.
+                DockState visibleState = indexControl_.VisibleState;
+                indexControl_.VisibleState = DockState.Float;
+                indexControl_.VisibleState = visibleState;
+            }
+        }
+
+        private void searchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            searchControl_.IsHidden = !searchControl_.IsHidden;
+            if (!searchControl_.IsHidden)
+            {
+                // Due to a refresh bug, we float the control, then dock it.
+                DockState visibleState = indexControl_.VisibleState;
+                searchControl_.VisibleState = DockState.Float;
+                searchControl_.VisibleState = visibleState;
+            }
         }
 
         private void ExitClick(object sender, EventArgs e)
@@ -1244,6 +1342,8 @@ namespace WikiDesk
 
         private readonly IndexControl indexControl_;
         private readonly SearchControl searchControl_;
+
+        private SplashForm splashForm_;
 
         /// <summary>
         /// All entries mapped as: Domain : Language : Title.

@@ -56,7 +56,7 @@
             // btnCancel_
             //
             this.btnCancel_.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel_.Location = new System.Drawing.Point(350, 72);
+            this.btnCancel_.Location = new System.Drawing.Point(359, 72);
             this.btnCancel_.Name = "btnCancel_";
             this.btnCancel_.Size = new System.Drawing.Size(75, 23);
             this.btnCancel_.TabIndex = 5;
@@ -78,9 +78,9 @@
             this.lblEntriesLoadedValue_.AutoSize = true;
             this.lblEntriesLoadedValue_.Location = new System.Drawing.Point(100, 48);
             this.lblEntriesLoadedValue_.Name = "lblEntriesLoadedValue_";
-            this.lblEntriesLoadedValue_.Size = new System.Drawing.Size(13, 13);
+            this.lblEntriesLoadedValue_.Size = new System.Drawing.Size(30, 13);
             this.lblEntriesLoadedValue_.TabIndex = 3;
-            this.lblEntriesLoadedValue_.Text = "0";
+            this.lblEntriesLoadedValue_.Text = "0 / ?";
             //
             // lblEntriesLoadedName_
             //
@@ -95,7 +95,7 @@
             //
             this.prgProgress_.Location = new System.Drawing.Point(17, 72);
             this.prgProgress_.Name = "prgProgress_";
-            this.prgProgress_.Size = new System.Drawing.Size(321, 23);
+            this.prgProgress_.Size = new System.Drawing.Size(331, 23);
             this.prgProgress_.TabIndex = 1;
             //
             // lblDatabasePathName_

@@ -58,7 +58,9 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indexMenuItem_ = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchMenuItem_ = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fontMenuItem_ = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.donateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -156,11 +158,12 @@
             // viewToolStripMenuItem
             //
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.indexMenuItem_});
+            this.indexMenuItem_,
+            this.searchMenuItem_});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.viewToolStripMenuItem.Text = "&View";
-            this.viewToolStripMenuItem.DropDownOpening += new System.EventHandler(this.viewToolStripMenuItem_DropDownOpening);
+            this.viewToolStripMenuItem.DropDownOpening += new System.EventHandler(this.viewMenuItem_DropDownOpening);
             //
             // indexMenuItem_
             //
@@ -171,12 +174,28 @@
             this.indexMenuItem_.Text = "&Index";
             this.indexMenuItem_.Click += new System.EventHandler(this.indexMenuItem__Click);
             //
+            // searchMenuItem_
+            //
+            this.searchMenuItem_.Name = "searchMenuItem_";
+            this.searchMenuItem_.Size = new System.Drawing.Size(147, 22);
+            this.searchMenuItem_.Text = "&Search";
+            this.searchMenuItem_.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
+            //
             // optionsToolStripMenuItem
             //
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fontMenuItem_});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.optionsToolStripMenuItem.Text = "&Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+            //
+            // fontMenuItem_
+            //
+            this.fontMenuItem_.Name = "fontMenuItem_";
+            this.fontMenuItem_.Size = new System.Drawing.Size(152, 22);
+            this.fontMenuItem_.Text = "&Font";
+            this.fontMenuItem_.Click += new System.EventHandler(this.fontMenuItem__Click);
             //
             // helpToolStripMenuItem
             //
@@ -281,8 +300,8 @@
             this.cboNavigate.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.cboNavigate.Size = new System.Drawing.Size(300, 25);
             this.cboNavigate.Sorted = true;
-            this.cboNavigate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Navigation_KeyDown);
             this.cboNavigate.DropDownClosed += new System.EventHandler(this.Titles_SelectedIndexChanged);
+            this.cboNavigate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Navigation_KeyDown);
             //
             // btnGo
             //
@@ -320,10 +339,10 @@
             this.dockPanel_.ActiveAutoHideContent = null;
             this.dockPanel_.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dockPanel_.DockBackColor = System.Drawing.SystemColors.Control;
-            this.dockPanel_.DockBottomPortion = 150;
-            this.dockPanel_.DockLeftPortion = 200;
-            this.dockPanel_.DockRightPortion = 200;
-            this.dockPanel_.DockTopPortion = 150;
+            this.dockPanel_.DockBottomPortion = 150D;
+            this.dockPanel_.DockLeftPortion = 200D;
+            this.dockPanel_.DockRightPortion = 200D;
+            this.dockPanel_.DockTopPortion = 150D;
             this.dockPanel_.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World, ((byte)(0)));
             this.dockPanel_.Location = new System.Drawing.Point(0, 49);
             this.dockPanel_.Name = "dockPanel_";
@@ -405,8 +424,8 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "Form1";
-            this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip.ResumeLayout(false);
@@ -449,6 +468,8 @@
         private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchMenuItem_;
+        private System.Windows.Forms.ToolStripMenuItem fontMenuItem_;
     }
 }
 
