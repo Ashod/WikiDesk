@@ -120,4 +120,9 @@
   <metadata name="openFileDialog_.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="rdWebDump_.Text" xml:space="preserve">
+    <value>Web Dump: (e.g. http://download.wikimedia.org/enwiki/20110405/enwiki-20110405-pages-articles.xml.bz2)
+Visit http://dumps.wikimedia.org/backup-index.html for a list of available dumps.
+In the designated wiki page, find the pages-articles.xml.bz2 link, copy the link URL here:</value>
+  </data>
 </root>

@@ -100,6 +100,12 @@ namespace WikiDesk
             return (int)Math.Log(size, 2) + 1;
         }
 
+        private void btnCancel__Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
         #endregion // implementation
 
         private Settings settings_;

@@ -1223,7 +1223,7 @@ namespace WikiDesk
             }
         }
 
-        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (OptionsForm frmOptions = new OptionsForm(settings_))
             {
@@ -1376,6 +1376,6 @@ namespace WikiDesk
 
         private const string WIKI_PROTOCOL_STRING = "wiki://";
 
-        #endregion // constants
+        #endregion // constants 
     }
 }
