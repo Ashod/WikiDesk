@@ -15,11 +15,14 @@ WikiDesk:
 . About.
 . I18n.
 . Multi-language Wiki support.
-. Skins. (Partially done.)
-. Media Cache. (Partially done.)
+. Printing.
+. PDF Export.
+- Skins. (Partially done.)
+. Icons.
+- Media Cache. (Partially done.)
+- Linking. Missing interwiki and complex links.
 . Load from web backups. (Partially done.)
 . Compressed Database.
-- Linking. Missing interwiki and complex links.
 + Update from the web.
 + CSS.
 + Index.
