@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------------------------
+﻿using System;
+// -----------------------------------------------------------------------------------------
 // <copyright file="WikiMessages.cs" company="ashodnakashian.com">
 //
 // This file is part of WikiDesk.
@@ -54,6 +55,11 @@ namespace WikiDesk.Core
         /// <returns>The message, if found, otherwise null.</returns>
         public string FindMessage(string name)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+
             string message;
 
             if (messagesMap_.TryGetValue(name, out message))
@@ -73,6 +79,11 @@ namespace WikiDesk.Core
         /// <param name="message">The message text.</param>
         public void Register(string name, string message)
         {
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+
             messagesMap_[name] = message;
         }
 

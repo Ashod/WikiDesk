@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------------------------
+﻿using System;
+// -----------------------------------------------------------------------------------------
 // <copyright file="StringUtils.cs" company="ashodnakashian.com">
 //
 // This file is part of WikiDesk.
@@ -245,6 +246,11 @@ namespace WikiDesk.Core
                                 int repeat,
                                 bool symmetric)
         {
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
             // Find start of a wrapped block.
             int indexOfOpen = text.IndexOf(marker, startOffset);
             while (indexOfOpen >= 0)
@@ -302,6 +308,17 @@ namespace WikiDesk.Core
         /// <returns>The position of the first open marker if found, otherwise -1.</returns>
         public static int FindWrappedBlock(string text, int startOffset, out int end, char open, char close, int repeat)
         {
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
+            if (startOffset < 0 || text.Length <= startOffset)
+            {
+                end = -1;
+                return -1;
+            }
+
             // Find start of a wrapped block.
             int indexOfOpen = text.IndexOf(open, startOffset);
 
@@ -406,6 +423,30 @@ namespace WikiDesk.Core
                                 ref int startOffset,
                                 out int endOffset)
         {
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
+            if (startMarker == null)
+            {
+                throw new ArgumentNullException("startMarker");
+            }
+
+            if (endMarker == null)
+            {
+                throw new ArgumentNullException("endMarker");
+            }
+
+            if (text.Length < startMarker.Length ||
+                text.Length < startMarker.Length + endMarker.Length)
+            {
+                // text must be at least as long as the markers.
+                startOffset = -1;
+                endOffset = -1;
+                return null;
+            }
+
             startOffset = text.IndexOf(startMarker, startOffset);
             if (startOffset < 0)
             {
@@ -704,6 +745,16 @@ namespace WikiDesk.Core
         /// <returns>The number of occurrences. A minimum of 1 is always returned.</returns>
         public static int CountRepetition(string text, int pos)
         {
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
+            if (pos >= text.Length || pos < 0)
+            {
+                throw new ArgumentOutOfRangeException("pos", pos, "Expected: pos < text.Length");
+            }
+
             int count = 1;
             char ch = text[pos];
             while (++pos < text.Length)
@@ -729,6 +780,16 @@ namespace WikiDesk.Core
         /// <returns>The number of occurrences. A minimum of 1 is always returned.</returns>
         public static int CountReverseRepetition(string text, int pos)
         {
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
+            if (pos >= text.Length || pos < 0)
+            {
+                throw new ArgumentOutOfRangeException("pos", pos, "Expected: pos < text.Length");
+            }
+
             int count = 1;
             char ch = text[pos];
             while (--pos >= 0)

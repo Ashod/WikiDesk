@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------------------------
+﻿using System;
+// -----------------------------------------------------------------------------------------
 // <copyright file="MagicParser.cs" company="ashodnakashian.com">
 //
 // This file is part of WikiDesk.
@@ -36,6 +37,7 @@
 
 namespace WikiDesk.Core
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Text;
@@ -47,41 +49,56 @@ namespace WikiDesk.Core
         /// <summary>
         /// Returns a magic block or null if non is found.
         /// </summary>
-        /// <param name="value">A string to search within.</param>
+        /// <param name="text">A string to search within.</param>
         /// <param name="end">The end position of the block, if any. -1 if not found.</param>
         /// <returns>A magic block, without braces, otherwise null.</returns>
-        public static int FindMagicBlock(string value, out int end)
+        public static int FindMagicBlock(string text, out int end)
         {
-            return FindMagicBlock(value, 0, out end);
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+            
+            return FindMagicBlock(text, 0, out end);
         }
 
         /// <summary>
         /// Returns a magic block or null if non is found.
         /// </summary>
-        /// <param name="value">A string to search within.</param>
+        /// <param name="text">A string to search within.</param>
         /// <param name="startOffset">The offset at which to start the search.</param>
         /// <param name="end">The end position of the block, if any. -1 if not found.</param>
         /// <returns>A magic block, without braces, otherwise null.</returns>
-        public static int FindMagicBlock(string value, int startOffset, out int end)
+        public static int FindMagicBlock(string text, int startOffset, out int end)
         {
-            return StringUtils.FindWrappedBlock(value, startOffset, out end, '{', '}', 2);
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
+            return StringUtils.FindWrappedBlock(text, startOffset, out end, '{', '}', 2);
         }
 
         /// <summary>
         /// Returns a magic block or null if non is found.
         /// </summary>
-        /// <param name="value">A string to search within.</param>
+        /// <param name="text">A string to search within.</param>
         /// <returns>A magic block, without braces, otherwise null.</returns>
-        public static string FindMagicBlock(string value)
+        public static string FindMagicBlock(string text)
         {
+            if (text == null)
+            {
+                throw new ArgumentNullException("text");
+            }
+
             int end;
-            int indexOfOpen = FindMagicBlock(value, out end);
+            int indexOfOpen = FindMagicBlock(text, out end);
 
             if (indexOfOpen >= 0 && end > indexOfOpen)
             {
                 // Strip the braces.
                 indexOfOpen += 2;
-                return value.Substring(indexOfOpen, end - indexOfOpen - 2 + 1);
+                return text.Substring(indexOfOpen, end - indexOfOpen - 2 + 1);
             }
 
             return null;
@@ -243,6 +260,11 @@ namespace WikiDesk.Core
                 mapArgs = new Dictionary<string, string>(args.Count);
                 foreach (KeyValuePair<string, string> pair in args)
                 {
+                    if (pair.Key == null || pair.Value == null)
+                    {
+                        continue;
+                    }
+
                     if (pair.Key.Length == 0)
                     {
                         mapArgs[unnamedArgId.ToString()] = pair.Value;
