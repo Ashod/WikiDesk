@@ -119,6 +119,12 @@
     <Compile Include="IndexControl.Designer.cs">
       <DependentUpon>IndexControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="WikiDomainsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WikiDomainsForm.Designer.cs">
+      <DependentUpon>WikiDomainsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="WikiLanguages.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -162,6 +168,9 @@
     </Compile>
     <EmbeddedResource Include="SplashForm.resx">
       <DependentUpon>SplashForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WikiDomainsForm.resx">
+      <DependentUpon>WikiDomainsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

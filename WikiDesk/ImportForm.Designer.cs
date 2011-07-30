@@ -62,10 +62,9 @@
             this.gbImportOptions_.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numResumePosKbytes_)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // btnImport_
-            // 
-            this.btnImport_.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            //            this.btnImport_.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnImport_.Location = new System.Drawing.Point(377, 455);
             this.btnImport_.Name = "btnImport_";
             this.btnImport_.Size = new System.Drawing.Size(75, 23);
@@ -73,9 +72,9 @@
             this.btnImport_.Text = "Import";
             this.btnImport_.UseVisualStyleBackColor = true;
             this.btnImport_.Click += new System.EventHandler(this.btnImport__Click);
-            // 
+            //
             // btnCancel_
-            // 
+            //
             this.btnCancel_.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel_.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel_.Location = new System.Drawing.Point(497, 455);
@@ -85,14 +84,14 @@
             this.btnCancel_.Text = "Cancel";
             this.btnCancel_.UseVisualStyleBackColor = true;
             this.btnCancel_.Click += new System.EventHandler(this.btnCancel__Click);
-            // 
+            //
             // openFileDialog_
-            // 
+            //
             this.openFileDialog_.ReadOnlyChecked = true;
             this.openFileDialog_.ShowReadOnly = true;
-            // 
+            //
             // chkIndexOnly_
-            // 
+            //
             this.chkIndexOnly_.AutoSize = true;
             this.chkIndexOnly_.Location = new System.Drawing.Point(9, 49);
             this.chkIndexOnly_.Name = "chkIndexOnly_";
@@ -100,9 +99,9 @@
             this.chkIndexOnly_.TabIndex = 10;
             this.chkIndexOnly_.Text = "Index only, don\'t import contents.";
             this.chkIndexOnly_.UseVisualStyleBackColor = true;
-            // 
+            //
             // btnBrowse_
-            // 
+            //
             this.btnBrowse_.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBrowse_.Location = new System.Drawing.Point(528, 39);
             this.btnBrowse_.Name = "btnBrowse_";
@@ -111,19 +110,19 @@
             this.btnBrowse_.Text = "...";
             this.btnBrowse_.UseVisualStyleBackColor = true;
             this.btnBrowse_.Click += new System.EventHandler(this.btnBrowse__Click);
-            // 
+            //
             // txtFileDumpPath_
-            // 
-            this.txtFileDumpPath_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.txtFileDumpPath_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFileDumpPath_.Enabled = false;
             this.txtFileDumpPath_.Location = new System.Drawing.Point(19, 41);
             this.txtFileDumpPath_.Name = "txtFileDumpPath_";
             this.txtFileDumpPath_.Size = new System.Drawing.Size(503, 20);
             this.txtFileDumpPath_.TabIndex = 2;
-            // 
+            //
             // rdFileDump_
-            // 
+            //
             this.rdFileDump_.AutoSize = true;
             this.rdFileDump_.Checked = true;
             this.rdFileDump_.Location = new System.Drawing.Point(9, 19);
@@ -134,9 +133,9 @@
             this.rdFileDump_.Text = "File Dump: (e.g. C:\\Downloads\\enwiki-20110405-pages-articles.xml.bz2)";
             this.rdFileDump_.UseVisualStyleBackColor = true;
             this.rdFileDump_.CheckedChanged += new System.EventHandler(this.rdFileDump_CheckedChanged);
-            // 
+            //
             // rdWebDump_
-            // 
+            //
             this.rdWebDump_.AutoSize = true;
             this.rdWebDump_.Location = new System.Drawing.Point(9, 67);
             this.rdWebDump_.Name = "rdWebDump_";
@@ -145,10 +144,10 @@
             this.rdWebDump_.Text = resources.GetString("rdWebDump_.Text");
             this.rdWebDump_.UseVisualStyleBackColor = true;
             this.rdWebDump_.CheckedChanged += new System.EventHandler(this.rdWebDump_CheckedChanged);
-            // 
+            //
             // txtWebDumpUrl_
-            // 
-            this.txtWebDumpUrl_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.txtWebDumpUrl_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtWebDumpUrl_.Enabled = false;
             this.txtWebDumpUrl_.Location = new System.Drawing.Point(31, 128);
@@ -157,10 +156,10 @@
             this.txtWebDumpUrl_.TabIndex = 6;
             this.txtWebDumpUrl_.Text = "http://download.wikimedia.org/";
             this.txtWebDumpUrl_.TextChanged += new System.EventHandler(this.txtWebDumpUrl__TextChanged);
-            // 
+            //
             // gbSourceType_
-            // 
-            this.gbSourceType_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.gbSourceType_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbSourceType_.Controls.Add(this.label6);
             this.gbSourceType_.Controls.Add(this.rdWebDump_);
@@ -178,37 +177,37 @@
             this.gbSourceType_.TabIndex = 11;
             this.gbSourceType_.TabStop = false;
             this.gbSourceType_.Text = "Source";
-            // 
+            //
             // label6
-            // 
+            //
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(-45, -103);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 9;
             this.label6.Text = "Dump Date:";
-            // 
+            //
             // label5
-            // 
+            //
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(-45, -147);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(58, 13);
             this.label5.TabIndex = 8;
             this.label5.Text = "Language:";
-            // 
+            //
             // label4
-            // 
+            //
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(-45, -191);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 13);
             this.label4.TabIndex = 7;
             this.label4.Text = "Domain:";
-            // 
+            //
             // comboBox3
-            // 
-            this.comboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.comboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.FormattingEnabled = true;
@@ -217,10 +216,10 @@
             this.comboBox3.Size = new System.Drawing.Size(901, 21);
             this.comboBox3.TabIndex = 0;
             this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.cboDomains__SelectedIndexChanged);
-            // 
+            //
             // comboBox4
-            // 
-            this.comboBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.comboBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox4.FormattingEnabled = true;
@@ -229,20 +228,20 @@
             this.comboBox4.Size = new System.Drawing.Size(901, 21);
             this.comboBox4.TabIndex = 1;
             this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.cboLanguages__SelectedIndexChanged);
-            // 
+            //
             // dateTimePicker2
-            // 
-            this.dateTimePicker2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.dateTimePicker2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dateTimePicker2.Location = new System.Drawing.Point(-42, -87);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(901, 20);
             this.dateTimePicker2.TabIndex = 5;
             this.dateTimePicker2.ValueChanged += new System.EventHandler(this.dateTimePicker__ValueChanged);
-            // 
+            //
             // gbDumpInfo_
-            // 
-            this.gbDumpInfo_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.gbDumpInfo_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbDumpInfo_.Controls.Add(this.lblDumpDate_);
             this.gbDumpInfo_.Controls.Add(this.lblLanguage_);
@@ -256,46 +255,46 @@
             this.gbDumpInfo_.TabIndex = 12;
             this.gbDumpInfo_.TabStop = false;
             this.gbDumpInfo_.Text = "Dump Info";
-            // 
+            //
             // lblDumpDate_
-            // 
+            //
             this.lblDumpDate_.AutoSize = true;
             this.lblDumpDate_.Location = new System.Drawing.Point(6, 109);
             this.lblDumpDate_.Name = "lblDumpDate_";
             this.lblDumpDate_.Size = new System.Drawing.Size(179, 13);
             this.lblDumpDate_.TabIndex = 21;
             this.lblDumpDate_.Text = "Dump Date: (used for auto-updating)";
-            // 
+            //
             // lblLanguage_
-            // 
+            //
             this.lblLanguage_.AutoSize = true;
             this.lblLanguage_.Location = new System.Drawing.Point(6, 65);
             this.lblLanguage_.Name = "lblLanguage_";
             this.lblLanguage_.Size = new System.Drawing.Size(58, 13);
             this.lblLanguage_.TabIndex = 19;
             this.lblLanguage_.Text = "Language:";
-            // 
+            //
             // lblDomain_
-            // 
+            //
             this.lblDomain_.AutoSize = true;
             this.lblDomain_.Location = new System.Drawing.Point(6, 21);
             this.lblDomain_.Name = "lblDomain_";
             this.lblDomain_.Size = new System.Drawing.Size(46, 13);
             this.lblDomain_.TabIndex = 17;
             this.lblDomain_.Text = "Domain:";
-            // 
+            //
             // dateTimePicker_
-            // 
-            this.dateTimePicker_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.dateTimePicker_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dateTimePicker_.Location = new System.Drawing.Point(9, 125);
             this.dateTimePicker_.Name = "dateTimePicker_";
             this.dateTimePicker_.Size = new System.Drawing.Size(535, 20);
             this.dateTimePicker_.TabIndex = 14;
-            // 
+            //
             // cboLanguages_
-            // 
-            this.cboLanguages_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.cboLanguages_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cboLanguages_.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboLanguages_.FormattingEnabled = true;
@@ -303,10 +302,10 @@
             this.cboLanguages_.Name = "cboLanguages_";
             this.cboLanguages_.Size = new System.Drawing.Size(535, 21);
             this.cboLanguages_.TabIndex = 13;
-            // 
+            //
             // cboDomains_
-            // 
-            this.cboDomains_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.cboDomains_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cboDomains_.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboDomains_.FormattingEnabled = true;
@@ -314,10 +313,10 @@
             this.cboDomains_.Name = "cboDomains_";
             this.cboDomains_.Size = new System.Drawing.Size(535, 21);
             this.cboDomains_.TabIndex = 11;
-            // 
+            //
             // gbImportOptions_
-            // 
-            this.gbImportOptions_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            //
+            this.gbImportOptions_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gbImportOptions_.Controls.Add(this.checkBox1);
             this.gbImportOptions_.Controls.Add(this.numResumePosKbytes_);
@@ -330,9 +329,9 @@
             this.gbImportOptions_.TabIndex = 13;
             this.gbImportOptions_.TabStop = false;
             this.gbImportOptions_.Text = "Import Options";
-            // 
+            //
             // checkBox1
-            // 
+            //
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -343,9 +342,9 @@
             this.checkBox1.TabIndex = 13;
             this.checkBox1.Text = "Import latest revision (ignoring revision hisotry)";
             this.checkBox1.UseVisualStyleBackColor = true;
-            // 
+            //
             // numResumePosKbytes_
-            // 
+            //
             this.numResumePosKbytes_.Location = new System.Drawing.Point(105, 23);
             this.numResumePosKbytes_.Maximum = new decimal(new int[] {
             512000000,
@@ -356,27 +355,27 @@
             this.numResumePosKbytes_.Size = new System.Drawing.Size(120, 20);
             this.numResumePosKbytes_.TabIndex = 12;
             this.numResumePosKbytes_.ThousandsSeparator = true;
-            // 
+            //
             // label8
-            // 
+            //
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(231, 25);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(40, 13);
             this.label8.TabIndex = 11;
             this.label8.Text = "KBytes";
-            // 
+            //
             // label7
-            // 
+            //
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 25);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(93, 13);
             this.label7.TabIndex = 11;
             this.label7.Text = "Resume at offset: ";
-            // 
+            //
             // ImportForm
-            // 
+            //
             this.AcceptButton = this.btnImport_;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -402,7 +401,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numResumePosKbytes_)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

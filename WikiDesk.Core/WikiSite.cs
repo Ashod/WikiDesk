@@ -118,7 +118,7 @@ namespace WikiDesk.Core
 
         public string BaseFriendlyUrl
         {
-            get { return string.Format(".{0}{1}", domain_.Domain, domain_.FiendlyPath); }
+            get { return string.Format(".{0}{1}", domain_.Domain, domain_.FriendlyPath); }
         }
 
         public string ExportUrl

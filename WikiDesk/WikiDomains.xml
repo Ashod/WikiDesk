@@ -5,13 +5,13 @@
       <Name>Wikipedia</Name>
       <Domain>wikipedia.org</Domain>
       <FullPath>/w/index.php?title=</FullPath>
-      <FiendlyPath>/wiki/</FiendlyPath>
+      <FriendlyPath>/wiki/</FriendlyPath>
     </WikiDomain>
     <WikiDomain>
       <Name>Wiktionary</Name>
       <Domain>wiktionary.org</Domain>
       <FullPath>/w/index.php?title=</FullPath>
-      <FiendlyPath>/wiki/</FiendlyPath>
+      <FriendlyPath>/wiki/</FriendlyPath>
     </WikiDomain>
   </Domains>
 </WikiDomains>

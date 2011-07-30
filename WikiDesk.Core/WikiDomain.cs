@@ -56,7 +56,7 @@ namespace WikiDesk.Core
         {
             Name = name;
             Domain = domain;
-            FiendlyPath = "/wiki/";
+            FriendlyPath = "/wiki/";
             FullPath = "/w/index.php?title=";
         }
 
@@ -85,7 +85,7 @@ namespace WikiDesk.Core
         /// User-friendly path to the pages. Can't take arguments. Not used for editing.
         /// <example>/wiki/</example>
         /// </summary>
-        public string FiendlyPath;
+        public string FriendlyPath;
 
         #region Implementation of IComparer<WikiDomain>
 
@@ -132,7 +132,7 @@ namespace WikiDesk.Core
                 return val;
             }
 
-            val = FiendlyPath.CompareTo(other.FiendlyPath);
+            val = FriendlyPath.CompareTo(other.FriendlyPath);
             if (val != 0)
             {
                 return val;

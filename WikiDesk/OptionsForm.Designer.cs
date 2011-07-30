@@ -72,6 +72,7 @@
             this.btnSave_ = new System.Windows.Forms.Button();
             this.btnCancel_ = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.chkAutoRedirect_ = new System.Windows.Forms.CheckBox();
             this.tabs_.SuspendLayout();
             this.tpGen_.SuspendLayout();
             this.gbGeneralSettings_.SuspendLayout();
@@ -111,6 +112,7 @@
             this.gbGeneralSettings_.Controls.Add(this.btnBrowseDefaultDatabase_);
             this.gbGeneralSettings_.Controls.Add(this.label19);
             this.gbGeneralSettings_.Controls.Add(this.txtDefaultDatabase_);
+            this.gbGeneralSettings_.Controls.Add(this.chkAutoRedirect_);
             this.gbGeneralSettings_.Controls.Add(this.chkTrackBrowseHistory_);
             this.gbGeneralSettings_.Controls.Add(this.label15);
             this.gbGeneralSettings_.Controls.Add(this.numAutoUpdateOld_);
@@ -532,6 +534,16 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog_";
             // 
+            // chkAutoRedirect_
+            // 
+            this.chkAutoRedirect_.AutoSize = true;
+            this.chkAutoRedirect_.Location = new System.Drawing.Point(9, 133);
+            this.chkAutoRedirect_.Name = "chkAutoRedirect_";
+            this.chkAutoRedirect_.Size = new System.Drawing.Size(91, 17);
+            this.chkAutoRedirect_.TabIndex = 21;
+            this.chkAutoRedirect_.Text = "Auto Redirect";
+            this.chkAutoRedirect_.UseVisualStyleBackColor = true;
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -608,5 +620,6 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox chkAutoRetrieveMissing_;
         private System.Windows.Forms.Button btnClearCacheNow_;
+        private System.Windows.Forms.CheckBox chkAutoRedirect_;
     }
 }

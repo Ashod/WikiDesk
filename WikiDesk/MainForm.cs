@@ -1243,6 +1243,27 @@ namespace WikiDesk
             }
         }
 
+        private void wikiDomainToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (WikiDomainsForm form = new WikiDomainsForm())
+            {
+                form.Domains.Domains.Clear();
+                foreach (WikiDomain wikiDomain in domains_.Domains)
+                {
+                    form.Domains.Domains.Add(wikiDomain);
+                }
+
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    domains_.Domains.Clear();
+                    foreach (WikiDomain wikiDomain in form.Domains.Domains)
+                    {
+                        domains_.Domains.Add(wikiDomain);
+                    }
+                }
+            }
+        }
+
         private void ApplyFont(string fontName, float fontSize)
         {
             if (string.IsNullOrEmpty(fontName) || fontSize < 2)
@@ -1376,6 +1397,6 @@ namespace WikiDesk
 
         private const string WIKI_PROTOCOL_STRING = "wiki://";
 
-        #endregion // constants 
+        #endregion // constants
     }
 }
