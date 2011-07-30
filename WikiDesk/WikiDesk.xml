@@ -120,7 +120,7 @@
 	h1.firstHeading { border-bottom: solid 1px red; }
   </CustomCss>
   <DefaultDatabaseFilename>Z:\wikidesk.db</DefaultDatabaseFilename>
-  <InstallationFolder>C:\prj\WikiDesk\WikiDesk\bin\Debug</InstallationFolder>
+  <InstallationFolder></InstallationFolder>
   <DomainsFilename>WikiDomains.xml</DomainsFilename>
   <CurrentDomainName>Wikipedia</CurrentDomainName>
   <DefaultDomainName>wikipedia</DefaultDomainName>

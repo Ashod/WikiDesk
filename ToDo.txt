@@ -17,11 +17,13 @@ WikiDesk:
 . Multi-language Wiki support.
 . Printing.
 . PDF Export.
+. Multipart importing.
+. Improve Sqlite performance. http://stackoverflow.com/questions/788568/sqlite3-disabling-primary-key-index-while-inserting
 - Skins. (Partially done.)
 . Icons.
 - Media Cache. (Partially done.)
 - Linking. Missing interwiki and complex links.
-. Load from web backups. (Partially done.)
+- Load from web backups. (Partially done.)
 . Compressed Database.
 + Update from the web.
 + CSS.
