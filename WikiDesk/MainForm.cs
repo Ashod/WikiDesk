@@ -251,7 +251,6 @@ namespace WikiDesk
             foreach (WikiDomain wikiDomain in domains.Domains)
             {
                 Domain domain = new Domain { Name = wikiDomain.Name };
-
                 db_.UpdateInsert(domain, db_.GetDomain(domain.Name));
             }
         }
@@ -466,7 +465,7 @@ namespace WikiDesk
                 IAsyncResult asyncResult = x.BeginInvoke(null, null, null, null);
                 do
                 {
-                    Thread.Sleep(30);
+                    Thread.Sleep(100);
                     Application.DoEvents();
                 }
                 while (!asyncResult.IsCompleted);
@@ -1093,7 +1092,7 @@ namespace WikiDesk
 
                     using (sourceStream)
                     {
-                        bool bz2 = dumpFilename.ToUpperInvariant().EndsWith("BZ2");
+                        bool bz2 = dumpFilename.EndsWith("BZ2", StringComparison.InvariantCultureIgnoreCase);
                         using (Stream inputStream = bz2 ? new BZip2InputStream(sourceStream) : sourceStream)
                         {
                             Domain domain = db_.GetDomain(frmImport_.DomainName);
@@ -1172,12 +1171,12 @@ namespace WikiDesk
                     }
 
                     progForm.txtInfo.Text = string.Format(
-                            "Importing Wiki dump {0}...{1}Imported {2} entries. ({3} / {4} MBytes.){1}Rate: {5} entries / sec.",
+                            "Importing Wiki dump {0}...{1}Imported {2} entries. ({3} / {4} KBytes.){1}Rate: {5} entries / sec.",
                             sourceName,
                             Environment.NewLine,
                             entries,
-                            progForm.prgProgress.Value,
-                            progForm.prgProgress.Maximum,
+                            inputStream.Position / 1024,
+                            inputStream.Length / 1024,
                             (int)entryRate);
 
                     double pcnt = 100.0 * progForm.prgProgress.Value / progForm.prgProgress.Maximum;
@@ -1191,8 +1190,7 @@ namespace WikiDesk
 
                         double entryRateElapsedSecs = (DateTime.UtcNow - lastRefreshTime).TotalSeconds;
                         int newEntries = entries - lastEntryCount;
-                        if (entryRate == 0 ||
-                            (entryRateElapsedSecs >= 5 && newEntries > 0))
+                        if (entryRateElapsedSecs >= 5 && newEntries > 10)
                         {
                             double newEntryRate = newEntries / entryRateElapsedSecs;
                             entryRate = (entryRate + 3 * newEntryRate) / 4;
@@ -1260,6 +1258,8 @@ namespace WikiDesk
                     {
                         domains_.Domains.Add(wikiDomain);
                     }
+
+                    StoreWikiDomains(domains_);
                 }
             }
         }

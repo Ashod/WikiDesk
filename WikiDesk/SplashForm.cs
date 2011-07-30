@@ -46,7 +46,7 @@ namespace WikiDesk
         {
             InitializeComponent();
 
-            timer_.Interval = 60;
+            timer_.Interval = 80;
             timer_.Tick += OnTimer;
             timer_.Start();
         }
