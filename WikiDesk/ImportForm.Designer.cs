@@ -39,11 +39,6 @@
             this.rdWebDump_ = new System.Windows.Forms.RadioButton();
             this.txtWebDumpUrl_ = new System.Windows.Forms.TextBox();
             this.gbSourceType_ = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.gbDumpInfo_ = new System.Windows.Forms.GroupBox();
             this.lblDumpDate_ = new System.Windows.Forms.Label();
@@ -53,10 +48,10 @@
             this.cboLanguages_ = new System.Windows.Forms.ComboBox();
             this.cboDomains_ = new System.Windows.Forms.ComboBox();
             this.gbImportOptions_ = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkImportLatestRevision_ = new System.Windows.Forms.CheckBox();
             this.numResumePosKbytes_ = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lblKbytes_ = new System.Windows.Forms.Label();
+            this.lblResumeOffset_ = new System.Windows.Forms.Label();
             this.gbSourceType_.SuspendLayout();
             this.gbDumpInfo_.SuspendLayout();
             this.gbImportOptions_.SuspendLayout();
@@ -64,7 +59,7 @@
             this.SuspendLayout();
             //
             // btnImport_
-            //            this.btnImport_.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            //
             this.btnImport_.Location = new System.Drawing.Point(377, 455);
             this.btnImport_.Name = "btnImport_";
             this.btnImport_.Size = new System.Drawing.Size(75, 23);
@@ -77,7 +72,7 @@
             //
             this.btnCancel_.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel_.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel_.Location = new System.Drawing.Point(497, 455);
+            this.btnCancel_.Location = new System.Drawing.Point(522, 455);
             this.btnCancel_.Name = "btnCancel_";
             this.btnCancel_.Size = new System.Drawing.Size(75, 23);
             this.btnCancel_.TabIndex = 4;
@@ -103,7 +98,7 @@
             // btnBrowse_
             //
             this.btnBrowse_.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBrowse_.Location = new System.Drawing.Point(528, 39);
+            this.btnBrowse_.Location = new System.Drawing.Point(553, 39);
             this.btnBrowse_.Name = "btnBrowse_";
             this.btnBrowse_.Size = new System.Drawing.Size(25, 23);
             this.btnBrowse_.TabIndex = 3;
@@ -118,7 +113,7 @@
             this.txtFileDumpPath_.Enabled = false;
             this.txtFileDumpPath_.Location = new System.Drawing.Point(19, 41);
             this.txtFileDumpPath_.Name = "txtFileDumpPath_";
-            this.txtFileDumpPath_.Size = new System.Drawing.Size(503, 20);
+            this.txtFileDumpPath_.Size = new System.Drawing.Size(528, 20);
             this.txtFileDumpPath_.TabIndex = 2;
             //
             // rdFileDump_
@@ -152,7 +147,7 @@
             this.txtWebDumpUrl_.Enabled = false;
             this.txtWebDumpUrl_.Location = new System.Drawing.Point(31, 128);
             this.txtWebDumpUrl_.Name = "txtWebDumpUrl_";
-            this.txtWebDumpUrl_.Size = new System.Drawing.Size(534, 20);
+            this.txtWebDumpUrl_.Size = new System.Drawing.Size(559, 20);
             this.txtWebDumpUrl_.TabIndex = 6;
             this.txtWebDumpUrl_.Text = "http://download.wikimedia.org/";
             this.txtWebDumpUrl_.TextChanged += new System.EventHandler(this.txtWebDumpUrl__TextChanged);
@@ -161,73 +156,17 @@
             //
             this.gbSourceType_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbSourceType_.Controls.Add(this.label6);
             this.gbSourceType_.Controls.Add(this.rdWebDump_);
             this.gbSourceType_.Controls.Add(this.rdFileDump_);
-            this.gbSourceType_.Controls.Add(this.label5);
             this.gbSourceType_.Controls.Add(this.txtFileDumpPath_);
             this.gbSourceType_.Controls.Add(this.btnBrowse_);
-            this.gbSourceType_.Controls.Add(this.label4);
-            this.gbSourceType_.Controls.Add(this.comboBox3);
-            this.gbSourceType_.Controls.Add(this.comboBox4);
             this.gbSourceType_.Controls.Add(this.dateTimePicker2);
             this.gbSourceType_.Location = new System.Drawing.Point(12, 12);
             this.gbSourceType_.Name = "gbSourceType_";
-            this.gbSourceType_.Size = new System.Drawing.Size(560, 148);
+            this.gbSourceType_.Size = new System.Drawing.Size(585, 148);
             this.gbSourceType_.TabIndex = 11;
             this.gbSourceType_.TabStop = false;
             this.gbSourceType_.Text = "Source";
-            //
-            // label6
-            //
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(-45, -103);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(64, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "Dump Date:";
-            //
-            // label5
-            //
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(-45, -147);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(58, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Language:";
-            //
-            // label4
-            //
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(-45, -191);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(46, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Domain:";
-            //
-            // comboBox3
-            //
-            this.comboBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(-42, -175);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(901, 21);
-            this.comboBox3.TabIndex = 0;
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.cboDomains__SelectedIndexChanged);
-            //
-            // comboBox4
-            //
-            this.comboBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(-42, -131);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(901, 21);
-            this.comboBox4.TabIndex = 1;
-            this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.cboLanguages__SelectedIndexChanged);
             //
             // dateTimePicker2
             //
@@ -235,7 +174,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dateTimePicker2.Location = new System.Drawing.Point(-42, -87);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(901, 20);
+            this.dateTimePicker2.Size = new System.Drawing.Size(926, 20);
             this.dateTimePicker2.TabIndex = 5;
             this.dateTimePicker2.ValueChanged += new System.EventHandler(this.dateTimePicker__ValueChanged);
             //
@@ -251,7 +190,7 @@
             this.gbDumpInfo_.Controls.Add(this.cboDomains_);
             this.gbDumpInfo_.Location = new System.Drawing.Point(12, 166);
             this.gbDumpInfo_.Name = "gbDumpInfo_";
-            this.gbDumpInfo_.Size = new System.Drawing.Size(560, 161);
+            this.gbDumpInfo_.Size = new System.Drawing.Size(585, 161);
             this.gbDumpInfo_.TabIndex = 12;
             this.gbDumpInfo_.TabStop = false;
             this.gbDumpInfo_.Text = "Dump Info";
@@ -289,8 +228,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dateTimePicker_.Location = new System.Drawing.Point(9, 125);
             this.dateTimePicker_.Name = "dateTimePicker_";
-            this.dateTimePicker_.Size = new System.Drawing.Size(535, 20);
+            this.dateTimePicker_.Size = new System.Drawing.Size(560, 20);
             this.dateTimePicker_.TabIndex = 14;
+            this.dateTimePicker_.ValueChanged += new System.EventHandler(this.dateTimePicker__ValueChanged);
             //
             // cboLanguages_
             //
@@ -300,8 +240,9 @@
             this.cboLanguages_.FormattingEnabled = true;
             this.cboLanguages_.Location = new System.Drawing.Point(9, 81);
             this.cboLanguages_.Name = "cboLanguages_";
-            this.cboLanguages_.Size = new System.Drawing.Size(535, 21);
+            this.cboLanguages_.Size = new System.Drawing.Size(560, 21);
             this.cboLanguages_.TabIndex = 13;
+            this.cboLanguages_.SelectedIndexChanged += new System.EventHandler(this.cboLanguages__SelectedIndexChanged);
             //
             // cboDomains_
             //
@@ -311,37 +252,38 @@
             this.cboDomains_.FormattingEnabled = true;
             this.cboDomains_.Location = new System.Drawing.Point(9, 37);
             this.cboDomains_.Name = "cboDomains_";
-            this.cboDomains_.Size = new System.Drawing.Size(535, 21);
+            this.cboDomains_.Size = new System.Drawing.Size(560, 21);
             this.cboDomains_.TabIndex = 11;
+            this.cboDomains_.SelectedIndexChanged += new System.EventHandler(this.cboDomains__SelectedIndexChanged);
             //
             // gbImportOptions_
             //
             this.gbImportOptions_.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gbImportOptions_.Controls.Add(this.checkBox1);
+            this.gbImportOptions_.Controls.Add(this.chkImportLatestRevision_);
             this.gbImportOptions_.Controls.Add(this.numResumePosKbytes_);
-            this.gbImportOptions_.Controls.Add(this.label8);
-            this.gbImportOptions_.Controls.Add(this.label7);
+            this.gbImportOptions_.Controls.Add(this.lblKbytes_);
+            this.gbImportOptions_.Controls.Add(this.lblResumeOffset_);
             this.gbImportOptions_.Controls.Add(this.chkIndexOnly_);
             this.gbImportOptions_.Location = new System.Drawing.Point(12, 337);
             this.gbImportOptions_.Name = "gbImportOptions_";
-            this.gbImportOptions_.Size = new System.Drawing.Size(560, 105);
+            this.gbImportOptions_.Size = new System.Drawing.Size(585, 105);
             this.gbImportOptions_.TabIndex = 13;
             this.gbImportOptions_.TabStop = false;
             this.gbImportOptions_.Text = "Import Options";
             //
-            // checkBox1
+            // chkImportLatestRevision_
             //
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(9, 74);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(240, 17);
-            this.checkBox1.TabIndex = 13;
-            this.checkBox1.Text = "Import latest revision (ignoring revision hisotry)";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkImportLatestRevision_.AutoSize = true;
+            this.chkImportLatestRevision_.Checked = true;
+            this.chkImportLatestRevision_.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkImportLatestRevision_.Enabled = false;
+            this.chkImportLatestRevision_.Location = new System.Drawing.Point(9, 74);
+            this.chkImportLatestRevision_.Name = "chkImportLatestRevision_";
+            this.chkImportLatestRevision_.Size = new System.Drawing.Size(240, 17);
+            this.chkImportLatestRevision_.TabIndex = 13;
+            this.chkImportLatestRevision_.Text = "Import latest revision (ignoring revision hisotry)";
+            this.chkImportLatestRevision_.UseVisualStyleBackColor = true;
             //
             // numResumePosKbytes_
             //
@@ -356,23 +298,23 @@
             this.numResumePosKbytes_.TabIndex = 12;
             this.numResumePosKbytes_.ThousandsSeparator = true;
             //
-            // label8
+            // lblKbytes_
             //
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(231, 25);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(40, 13);
-            this.label8.TabIndex = 11;
-            this.label8.Text = "KBytes";
+            this.lblKbytes_.AutoSize = true;
+            this.lblKbytes_.Location = new System.Drawing.Point(231, 25);
+            this.lblKbytes_.Name = "lblKbytes_";
+            this.lblKbytes_.Size = new System.Drawing.Size(40, 13);
+            this.lblKbytes_.TabIndex = 11;
+            this.lblKbytes_.Text = "KBytes";
             //
-            // label7
+            // lblResumeOffset_
             //
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 25);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(93, 13);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Resume at offset: ";
+            this.lblResumeOffset_.AutoSize = true;
+            this.lblResumeOffset_.Location = new System.Drawing.Point(6, 25);
+            this.lblResumeOffset_.Name = "lblResumeOffset_";
+            this.lblResumeOffset_.Size = new System.Drawing.Size(93, 13);
+            this.lblResumeOffset_.TabIndex = 11;
+            this.lblResumeOffset_.Text = "Resume at offset: ";
             //
             // ImportForm
             //
@@ -380,7 +322,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel_;
-            this.ClientSize = new System.Drawing.Size(584, 490);
+            this.ClientSize = new System.Drawing.Size(609, 490);
             this.Controls.Add(this.txtWebDumpUrl_);
             this.Controls.Add(this.gbImportOptions_);
             this.Controls.Add(this.gbDumpInfo_);
@@ -415,11 +357,6 @@
         private System.Windows.Forms.RadioButton rdWebDump_;
         private System.Windows.Forms.TextBox txtWebDumpUrl_;
         private System.Windows.Forms.GroupBox gbSourceType_;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.GroupBox gbDumpInfo_;
         private System.Windows.Forms.Label lblDumpDate_;
@@ -430,8 +367,8 @@
         private System.Windows.Forms.ComboBox cboDomains_;
         private System.Windows.Forms.GroupBox gbImportOptions_;
         private System.Windows.Forms.NumericUpDown numResumePosKbytes_;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label lblKbytes_;
+        private System.Windows.Forms.Label lblResumeOffset_;
+        private System.Windows.Forms.CheckBox chkImportLatestRevision_;
     }
 }
