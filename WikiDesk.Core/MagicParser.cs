@@ -1,5 +1,4 @@
-﻿using System;
-// -----------------------------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------------------------
 // <copyright file="MagicParser.cs" company="ashodnakashian.com">
 //
 // This file is part of WikiDesk.
@@ -42,6 +41,8 @@ namespace WikiDesk.Core
     using System.Diagnostics;
     using System.Text;
 
+    using Tracy;
+
     public static class MagicParser
     {
         #region operations
@@ -58,7 +59,7 @@ namespace WikiDesk.Core
             {
                 throw new ArgumentNullException("text");
             }
-            
+
             return FindMagicBlock(text, 0, out end);
         }
 
@@ -113,8 +114,9 @@ namespace WikiDesk.Core
         /// </example>
         /// <param name="code">The code to parse.</param>
         /// <param name="args">The parameters, if any.</param>
+        /// <param name="logger">An optional logger. May be null.</param>
         /// <returns>The command name.</returns>
-        public static string GetMagicWordAndParams(string code, out List<KeyValuePair<string, string>> args)
+        public static string GetMagicWordAndParams(string code, out List<KeyValuePair<string, string>> args, ILogger logger)
         {
             if (string.IsNullOrEmpty(code))
             {
@@ -143,6 +145,7 @@ namespace WikiDesk.Core
                 parameters.Add(code.Substring(0, index).Trim(WhiteSpaceChars));
             }
 
+            // New-Line is considered a parameter, so don't trim.
             code = code.Substring(index + 1).Trim(WhiteSpaceChars);
 
             int curParamStart = 0;
@@ -193,20 +196,51 @@ namespace WikiDesk.Core
                 if (indexOfAssignment >= 0 && parameter[indexOfAssignment] == '=')
                 {
                     name = parameter.Substring(0, indexOfAssignment);
+                    name = name.Trim(WhiteSpaceChars);
                     value = parameter.Substring(indexOfAssignment + 1);
                 }
                 else
                 {
-                    name = string.Empty;
+                    name = null;
                     value = parameter;
                 }
 
-                name = name.Trim(WhiteSpaceChars);
                 value = value.Trim(WhiteSpaceChars);
                 args.Add(new KeyValuePair<string, string>(name, value));
             }
 
+            if (logger != null)
+            {
+                LogEntry logEntry = logger.CreateEntry(
+                    Levels.Debug, "Parsed Magic:{0}{1}", Environment.NewLine, command);
+
+                foreach (KeyValuePair<string, string> pair in args)
+                {
+                    if (!string.IsNullOrEmpty(pair.Key))
+                    {
+                        logEntry.Properties[pair.Key] = pair.Value;
+                    }
+                }
+
+                logger.Log(logEntry);
+            }
+
             return command;
+        }
+
+        /// <summary>
+        /// Gets the magic-word/variable/function-name/template-name and all params.
+        /// </summary>
+        /// <example>
+        /// "#if:{{{lang|}}}|{{{{{lang}}}}}&nbsp;" should return
+        /// "#if", {{{lang|}}}, {{{{{lang}}}}}&nbsp;
+        /// </example>
+        /// <param name="code">The code to parse.</param>
+        /// <param name="args">The parameters, if any.</param>
+        /// <returns>The command name.</returns>
+        public static string GetMagicWordAndParams(string code, out List<KeyValuePair<string, string>> args)
+        {
+            return GetMagicWordAndParams(code, out args, null);
         }
 
         /// <summary>
@@ -260,19 +294,19 @@ namespace WikiDesk.Core
                 mapArgs = new Dictionary<string, string>(args.Count);
                 foreach (KeyValuePair<string, string> pair in args)
                 {
-                    if (pair.Key == null || pair.Value == null)
+                    if (pair.Key == null && pair.Value == null)
                     {
                         continue;
                     }
 
-                    if (pair.Key.Length == 0)
+                    if (pair.Key == null || pair.Key.Length == 0)
                     {
-                        mapArgs[unnamedArgId.ToString()] = pair.Value;
+                        mapArgs[unnamedArgId.ToString()] = pair.Value ?? string.Empty;
                         ++unnamedArgId;
                     }
                     else
                     {
-                        mapArgs[pair.Key] = pair.Value;
+                        mapArgs[pair.Key] = pair.Value ?? string.Empty;
                     }
                 }
             }

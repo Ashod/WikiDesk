@@ -98,9 +98,9 @@ namespace WikiDesk.Core.Test
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("Weather", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("Maine", args[0].Value);
-            Assert.AreEqual(string.Empty, args[1].Key);
+            Assert.IsNull(args[1].Key);
             Assert.AreEqual("cold", args[1].Value);
         }
 
@@ -112,7 +112,7 @@ namespace WikiDesk.Core.Test
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("Further", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("[[Cats]], [[Dogs]], and [[Fish]]", args[0].Value);
         }
 
@@ -124,9 +124,9 @@ namespace WikiDesk.Core.Test
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("#if:", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("{{{lang|}}}", args[0].Value);
-            Assert.AreEqual(string.Empty, args[1].Key);
+            Assert.IsNull(args[1].Key);
             Assert.AreEqual("{{{{{lang}}}}}&nbsp;", args[1].Value);
         }
 
@@ -138,9 +138,9 @@ namespace WikiDesk.Core.Test
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("#if:", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("{{{lang|}}}", args[0].Value);
-            Assert.AreEqual(string.Empty, args[1].Key);
+            Assert.IsNull(args[1].Key);
             Assert.AreEqual("{{{{{lang}}}}}[[Canton of Zürich|Canton Zürich]]", args[1].Value);
         }
 
@@ -152,11 +152,11 @@ namespace WikiDesk.Core.Test
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("#if:", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("{{{lang|}}}", args[0].Value);
-            Assert.AreEqual(string.Empty, args[1].Key);
+            Assert.IsNull(args[1].Key);
             Assert.AreEqual("{{{{{lang}}}}}[[Canton of Zürich|Canton Zürich]]", args[1].Value);
-            Assert.AreEqual(string.Empty, args[2].Key);
+            Assert.IsNull(args[2].Key);
             Assert.AreEqual("{{name|}}[[link|link]]{{{name|}}}", args[2].Value);
         }
 
@@ -186,7 +186,7 @@ namespace WikiDesk.Core.Test
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("Further", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("[[Article 1]], [[Article 2]], and [[Article Something#3|Article 3]]", args[0].Value);
         }
 
@@ -198,7 +198,7 @@ namespace WikiDesk.Core.Test
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("fullurl:", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("{{FULLPAGENAME}}", args[0].Value);
             Assert.AreEqual("action", args[1].Key);
             Assert.AreEqual("edit", args[1].Value);
@@ -212,7 +212,7 @@ namespace WikiDesk.Core.Test
             List<KeyValuePair<string, string>> args;
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
             Assert.AreEqual("#switch:", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("{{{2}}}", args[0].Value);
             Assert.AreEqual("1", args[1].Key);
             Assert.AreEqual("C41E3A", args[1].Value);
@@ -233,13 +233,13 @@ namespace WikiDesk.Core.Test
             string command = MagicParser.GetMagicWordAndParams(RAW, out args);
 
             Assert.AreEqual("#switch:", command);
-            Assert.AreEqual(string.Empty, args[0].Key);
+            Assert.IsNull(args[0].Key);
             Assert.AreEqual("baz", args[0].Value);
             Assert.AreEqual("foo", args[1].Key);
             Assert.AreEqual("Foo", args[1].Value);
             Assert.AreEqual("baz", args[2].Key);
             Assert.AreEqual("Baz", args[2].Value);
-            Assert.AreEqual(string.Empty, args[3].Key);
+            Assert.IsNull(args[3].Key);
             Assert.AreEqual("Bar", args[3].Value);
         }
 
@@ -519,7 +519,7 @@ Hayastani Hanrapetutyun |
         public void TemplateCitationError()
         {
             TestConvert("{{Citation error|no <code>&#124;title&#61;</code> specified|Cite web}}",
-                "<p><span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"Template%3aCite_web\" title=\"Template:Cite web\">Cite web</a>}}</span></p>");
+                "<span class=\"error\">Error: no <code>&#124;title&#61;</code> specified&#32;when using {{<a href=\"Template%3aCite_web\" title=\"Template:Cite web\">Cite web</a>}}</span>");
         }
 
         [Test]
@@ -550,7 +550,7 @@ Hayastani Hanrapetutyun |
         {
             TestConvert(
                     "{{Correct title|Correct title}}",
-                    @"<span class=""plainlinks selfreference"">The correct title of this article is <b>Correct title</b>. It appears incorrectly here because of <a href=""/wiki/Wikipedia:Naming_conventions_(technical_restrictions)"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span>");
+                    @"<div class=""dablink""><span class=""plainlinks selfreference"">The correct title of this article is <b>Correct title</b>. It appears incorrectly here because of <a href=""Wikipedia%3aNaming_conventions_(technical_restrictions)"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span></div>");
         }
 
         [Test]
@@ -558,7 +558,7 @@ Hayastani Hanrapetutyun |
         {
             TestConvert(
                     "{{Correct title|C# (programming language)|reason=#}}",
-                    @"<span class=""plainlinks selfreference"">The correct title of this article is <b>C# (programming language)</b>. The substitution or omission of the <a href=""/wiki/Number_sign"" title=""Number sign"">#</a> sign is because of <a href=""/wiki/Wikipedia:Naming_conventions_(technical_restrictions)#Forbidden_characters"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span>");
+                    @"<div class=""dablink""><span class=""plainlinks selfreference"">The correct title of this article is <b>C# (programming language)</b>. The substitution or omission of the <a href=""Number_sign"" title=""Number sign"">#</a> sign is because of <a href=""Wikipedia%3aNaming_conventions_(technical_restrictions)%23Forbidden_characters"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span></div>");
         }
         #region implementation
 
