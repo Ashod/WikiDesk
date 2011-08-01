@@ -164,6 +164,10 @@ namespace WikiDesk.Core
                 return string.Empty;
             }
 
+            // Remove the anchor, if any.
+            string anchor;
+            title = StringUtils.BreakAt(title, '#', out anchor);
+
             // Spaces and underscores are interchangeable.
             title = title.Replace('_', ' ');
 

@@ -893,7 +893,7 @@ namespace WikiDesk.Core
                 // Internal Link. [[page_name | link_text]]
                 // class=\"mw-redirect\"
                 string url = ResolveLink(code, config_.WikiSite.Language.Code);
-                return string.Concat("<a href=\"", url, "\" title=\"", code, "\">", param ?? code, "</a>");
+                return string.Concat("<a href=\"", url, "\" title=\"", Title.Decanonicalize(code), "\">", param ?? code, "</a>");
             }
             else
             {
