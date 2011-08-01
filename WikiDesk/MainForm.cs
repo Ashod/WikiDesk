@@ -209,7 +209,7 @@ namespace WikiDesk
             }
         }
 
-        private void ShowArticleLanguages(string title, Dictionary<string, string> articleLanguageNames)
+        private void ShowArticleLanguages(string title, SortedDictionary<string, string> articleLanguageNames)
         {
             cboLanguage.BeginUpdate();
             try
@@ -286,7 +286,14 @@ namespace WikiDesk
                 title = title.Replace('/', '\\');
                 title = Title.DecodeEncodedNonAsciiCharacters(title);
 
-                BrowseWikiArticle(title);
+                try
+                {
+                    BrowseWikiArticle(title);
+                }
+                catch (Exception ex)
+                {
+                    browser_.DocumentText = "<h1>ERROR<h1><pre>" + ex + "</pre>";
+                }
 
                 // Handled, don't navigate.
                 return false;
