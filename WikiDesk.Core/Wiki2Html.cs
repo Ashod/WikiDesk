@@ -1112,6 +1112,16 @@ namespace WikiDesk.Core
                 return wikicode;
             }
 
+            return ProcessMagicWords(wikicode, startIndex, endIndex);
+        }
+
+        private string ProcessMagicWords(string wikicode, int startIndex, int endIndex)
+        {
+            if (startIndex < 0)
+            {
+                return wikicode;
+            }
+
             logger_.Log(Levels.Debug, "Processing Magic:{0}{1}", Environment.NewLine, wikicode);
 
             int lastIndex = 0;
@@ -1163,30 +1173,43 @@ namespace WikiDesk.Core
         {
             logger_.Log(Levels.Debug, "Magic:{0}{1}", Environment.NewLine, magic);
 
+            // Recurse...
+            string newMagic = ProcessMagicWords(magic);
+            if (magic != newMagic)
+            {
+                logger_.Log(Levels.Debug, "Magic processed:{0}{1}{0}{0}{2}", Environment.NewLine, magic, newMagic);
+                magic = newMagic;
+            }
+
             VariableProcessor.Result result = VariableProcessor.Result.Unknown;
 
             List<KeyValuePair<string, string>> args;
-            string command = MagicParser.GetMagicWordAndParams(magic, out args);
+            string command = MagicParser.GetMagicWordAndParams(magic, out args, logger_);
             if (string.IsNullOrEmpty(command))
             {
-                logger_.Log(Levels.Debug, "Failed to find command and params in the magic: " + magic);
+                logger_.Log(Levels.Debug, "Failed to find command and params in the magic:{0}{1}", Environment.NewLine, magic);
                 output = string.Empty;
                 return result;
             }
 
-            LogEntry logEntry = logger_.CreateEntry(Levels.Debug, "Magic Variable:{0}[{1}]", Environment.NewLine, command);
-            if (args != null)
+            if (args != null && args.Count > 0)
             {
-                foreach (KeyValuePair<string, string> pair in args)
+                logger_.Log(Levels.Debug, "Processing the arguments...");
+                for (int index = 0; index < args.Count; ++index)
                 {
-                    if (!string.IsNullOrEmpty(pair.Key))
+                    string value = args[index].Value;
+                    int endIndex;
+                    int startIndex = MagicParser.FindMagicBlock(value, out endIndex);
+                    if (startIndex >= 0)
                     {
-                        logEntry.Properties[pair.Key] = pair.Value;
+                        logger_.Log(Levels.Debug, "Processing arg:{0}{1}", Environment.NewLine, value);
+                        value = ProcessMagicWords(value);
+                        args[index] = new KeyValuePair<string, string>(args[index].Key, value);
                     }
                 }
-            }
 
-            logger_.Log(logEntry);
+                logger_.Log(Levels.Debug, "Resuming magic variable: {0}", command);
+            }
 
             // If it's an explicit template, process now.
             if (command.TrimEnd(':') == config_.WikiSite.GetNamespaceName(WikiSite.Namespace.Tempalate))
