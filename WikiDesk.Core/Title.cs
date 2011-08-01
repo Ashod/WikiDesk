@@ -44,6 +44,7 @@ namespace WikiDesk.Core
 
     /// <summary>
     /// Title canonicalization and related utilities.
+    /// http://en.wikipedia.org/wiki/Wikipedia:Page_name
     /// </summary>
     public static class Title
     {

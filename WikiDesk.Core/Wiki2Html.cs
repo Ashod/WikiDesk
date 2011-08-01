@@ -1357,11 +1357,12 @@ namespace WikiDesk.Core
                     }
                     else
                     if (line.StartsWith("<h") ||
-                        line.StartsWith("<t") ||
-                        line.StartsWith("<p") ||
-                        line.StartsWith("<d") ||
-                        line.StartsWith("<u") ||
-                        line.StartsWith("<l") ||
+                        line.StartsWith("<t") ||    // table, th
+                        line.StartsWith("<p") ||    // p
+                        line.StartsWith("<d") ||    // dd
+                        line.StartsWith("<u") ||    // ul
+                        line.StartsWith("<l") ||    // li
+                        line.StartsWith("<s") ||    // span
                         line.StartsWith("</") ||
                         line.StartsWith("<c"))
                     {
