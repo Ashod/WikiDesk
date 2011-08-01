@@ -1476,7 +1476,7 @@ namespace WikiDesk.Core
         /// </summary>
         /// <param name="wikiText">The wiki-text to parse and strip.</param>
         /// <returns>A dictionary of language-code and the title of the article.</returns>
-        public static Dictionary<string, string> ExtractLanguages(ref string wikiText)
+        public static SortedDictionary<string, string> ExtractLanguages(ref string wikiText)
         {
             List<string> lines = new List<string>(1024);
             using (StringReader sr = new StringReader(wikiText))
@@ -1493,7 +1493,7 @@ namespace WikiDesk.Core
                 }
             }
 
-            Dictionary<string, string> languages = new Dictionary<string, string>(32);
+            SortedDictionary<string, string> languages = new SortedDictionary<string, string>();
 
             int lastLineIndx = lines.Count - 1;
             for (int i = lines.Count - 1; i >= 0; --i)
