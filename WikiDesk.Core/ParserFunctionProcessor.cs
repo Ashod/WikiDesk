@@ -387,7 +387,7 @@ namespace WikiDesk.Core
                 output = def;
             }
             else
-            if (args[args.Count - 1].Key.Length == 0)
+            if (string.IsNullOrEmpty(args[args.Count - 1].Key))
             {
                 // The last one is the default, if no key.
                 output = args[args.Count - 1].Value;
