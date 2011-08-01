@@ -545,6 +545,23 @@ Hayastani Hanrapetutyun |
                     @"<div class=""dablink"">This article is about the Male sex.&#32;&#32;For the city, see <a href=""Mal%c3%a9"" title=""Malé"">Malé</a>.&#32;&#32;For other uses, see <a href=""TestPage_(disambiguation)"" title=""TestPage (disambiguation)"">TestPage (disambiguation)</a>.</div>");
         }
 
+        [Test]
+        public void CorrectTitle()
+        {
+            TestConvert(
+                    "{{Correct title|Correct title}}",
+                    @"<span class=""plainlinks selfreference"">The correct title of this article is <b>Correct title</b>. It appears incorrectly here because of <a href=""/wiki/Wikipedia:Naming_conventions_(technical_restrictions)"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span>");
+        }
+
+        [Test]
+        public void CorrectTitleSharp()
+        {
+            TestConvert(
+                    "{{Correct title|C# (programming language)|reason=#}}",
+                    @"<span class=""plainlinks selfreference"">The correct title of this article is <b>C# (programming language)</b>. The substitution or omission of the <a href=""/wiki/Number_sign"" title=""Number sign"">#</a> sign is because of <a href=""/wiki/Wikipedia:Naming_conventions_(technical_restrictions)#Forbidden_characters"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span>");
+        }
+        #region implementation
+
         internal static void TestConvert(string wikicode, string expected)
         {
             Wiki2Html converter = new Wiki2Html(config_, OnResolveWikiLinks, OnResolveTemplate, null);
@@ -570,11 +587,12 @@ Hayastani Hanrapetutyun |
             return page != null ? page.Text : string.Empty;
         }
 
+        #endregion // implementation
+
         #region representation
 
         private static readonly Configuration config_;
 
         #endregion // representation
-
     }
 }

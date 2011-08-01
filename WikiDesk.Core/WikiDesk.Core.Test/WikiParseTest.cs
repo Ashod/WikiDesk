@@ -612,6 +612,25 @@ namespace WikiDesk.Core.Test
                     "<p>article</p>");
         }
 
+
+        [Test]
+        public void FullUrlE()
+        {
+            TestConvert(
+                    "{{fullurl:Special:Allpages|namespace=12&from={{PAGENAMEE}}}}",
+                    "<p>http://en.wikipedia.org/w/index.php?title=Special:Allpages&namespace=12&from=TestPage</p>");
+        }
+        
+        [Test]
+        public void FullUrl()
+        {
+            TestConvert(
+                    "{{fullurl:Special:Allpages/{{PAGENAME}}|namespace=12}}",
+                    "<p>http://en.wikipedia.org/w/index.php?title=Special:Allpages/TestPage&namespace=12</p>");
+        }
+
+        #region implementation
+
         internal static void TestConvert(string wikicode, string expected)
         {
             Wiki2Html converter = new Wiki2Html(config_);
@@ -620,6 +639,8 @@ namespace WikiDesk.Core.Test
             string html = converter.Convert(ref nameSpace, ref title, wikicode);
             Assert.AreEqual(expected, html);
         }
+
+        #endregion // implementation
 
         #region representation
 

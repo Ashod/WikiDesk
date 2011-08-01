@@ -38,6 +38,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="WikiFrWiktionaryTest.cs" />
     <Compile Include="Wiki2HtmlTest.cs" />
     <Compile Include="StringUtilsTest.cs" />
     <Compile Include="WikiTreeTest.cs" />
