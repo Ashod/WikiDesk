@@ -485,6 +485,30 @@ Hayastani Hanrapetutyun |
             Assert.AreEqual("start--end", value);
         }
 
+        [Test]
+        public void ProcessTemplateParamsNestedBraces()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("langue", "en")
+                };
+
+            string value = MagicParser.ProcessTemplateParams("Correct title|{{{{{{langue|}}}|reason=oui}}}", args);
+            Assert.AreEqual("Correct title|reason=oui", value);
+        }
+
+        [Test]
+        public void ProcessTemplateParamsNestedCyclic()
+        {
+            List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("langue", "langue")
+                };
+
+            string value = MagicParser.ProcessTemplateParams("Correct title|{{{{{{langue|langue}}}|langue}}}", args);
+            Assert.AreEqual("Correct title|langue", value);
+        }
+
         #endregion // ProcessTemplateParams
 
         [Test]
@@ -554,12 +578,29 @@ Hayastani Hanrapetutyun |
         }
 
         [Test]
+        public void CorrectTitleNoArg()
+        {
+            TestConvert(
+                    "{{Correct title}}",
+                    @"<div class=""dablink""><span class=""plainlinks selfreference"">The correct title of this article is <b>{{{1}}}</b>. It appears incorrectly here because of <a href=""Wikipedia%3aNaming_conventions_(technical_restrictions)"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span></div>");
+        }
+
+        [Test]
+        public void CorrectTitleNested()
+        {
+            TestConvert(
+                    "{{Correct title|{{{{{{langue|}}}|reason=oui}}}}}",
+                    @"<div class=""dablink""><span class=""plainlinks selfreference"">The correct title of this article is <b>reason=oui</b>. It appears incorrectly here because of <a href=""Wikipedia%3aNaming_conventions_(technical_restrictions)"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span></div>");
+        }
+
+        [Test]
         public void CorrectTitleSharp()
         {
             TestConvert(
                     "{{Correct title|C# (programming language)|reason=#}}",
                     @"<div class=""dablink""><span class=""plainlinks selfreference"">The correct title of this article is <b>C# (programming language)</b>. The substitution or omission of the <a href=""Number_sign"" title=""Number sign"">#</a> sign is because of <a href=""Wikipedia%3aNaming_conventions_(technical_restrictions)%23Forbidden_characters"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span></div>");
         }
+
         #region implementation
 
         internal static void TestConvert(string wikicode, string expected)

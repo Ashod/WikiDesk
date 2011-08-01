@@ -279,6 +279,36 @@ namespace WikiDesk.Core.Test
             Assert.AreEqual(16, end);
         }
 
+        [Test]
+        public void FindWrappedBlockNested()
+        {
+            const string RAW = "blik {{{{{lang}}} blah}} <!----> bzz";
+
+            int end;
+            Assert.AreEqual(7, StringUtils.FindWrappedBlock(RAW, 0, out end, '{', '}', 3));
+            Assert.AreEqual(16, end);
+        }
+
+        [Test]
+        public void FindWrappedBlockNested2()
+        {
+            const string RAW = "blik {{{{{blah {{lang}}}}} blah}} <!----> bzz";
+
+            int end;
+            Assert.AreEqual(7, StringUtils.FindWrappedBlock(RAW, 0, out end, '{', '}', 3));
+            Assert.AreEqual(16, end);
+        }
+
+        [Test]
+        public void FindWrappedBlockNestedBad()
+        {
+            const string RAW = "blik {{{{{lang}}}}} <!----> bzz";
+
+            int end;
+            Assert.AreEqual(-1, StringUtils.FindWrappedBlock(RAW, 0, out end, '{', '}', 3));
+            Assert.AreEqual(-1, end);
+        }
+
         #endregion // FindWrappedBlock
 
         #region ExtractBlock
@@ -354,6 +384,19 @@ namespace WikiDesk.Core.Test
             Assert.AreEqual(54, endOffset);
         }
 
+        [Test]
+        public void ExtractBlockNestedChar3()
+        {
+            const string RAW = "something [[[File:somefile.jpg|caption of [[wikilink]]]] something [link]";
+
+            int startOffset = 0;
+            int endOffset;
+            Assert.AreEqual(
+                    "[[File:somefile.jpg|caption of [[wikilink]]",
+                    StringUtils.ExtractBlock(RAW, "[[", "]]", ref startOffset, out endOffset));
+            Assert.AreEqual(10, startOffset);
+            Assert.AreEqual(54, endOffset);
+        }
 
         [Test]
         [Ignore]
