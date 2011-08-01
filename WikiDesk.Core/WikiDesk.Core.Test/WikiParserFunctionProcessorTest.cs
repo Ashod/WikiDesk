@@ -270,6 +270,49 @@ namespace WikiDesk.Core.Test
                 "{{#switch:x|y=z|def}}");
         }
 
+        [Test]
+        public void SwitchFallthrough1()
+        {
+            TestFunction(
+                @"#switch:NONE
+|NONE|hatnote|hat=winner
+|inline|=empty
+|#default=def",
+                @"winner");
+        }
+
+        [Test]
+        public void SwitchFallthrough2()
+        {
+            TestFunction(
+                @"#switch:NONE
+|NONE|hatnote|hat=<div class=""dablink""><span class=""plainlinks selfreference"">The correct title of this article is <b>Correct title</b>. It appears incorrectly here because of <a href=""/wiki/Wikipedia:Naming_conventions_(technical_restrictions)"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span></div>
+|inline|=<span class=""plainlinks selfreference"">The correct title of this article is <b>Correct title</b>. It appears incorrectly here because of [[Wikipedia:Naming conventions (technical restrictions)|technical restrictions]].</span>
+|#default=<strong class=""error"">Second parameter must be <code>hatnone</code>, <code>hat</code>, or <code>inline</code></strong>",
+                @"<div class=""dablink""><span class=""plainlinks selfreference"">The correct title of this article is <b>Correct title</b>. It appears incorrectly here because of <a href=""/wiki/Wikipedia:Naming_conventions_(technical_restrictions)"" title=""Wikipedia:Naming conventions (technical restrictions)"">technical restrictions</a>.</span></div>");
+        }
+
+        [Test]
+        public void SwitchFallthroughNone()
+        {
+            TestFunction(
+                @"#switch:NONE
+|NONE|hatnote|hat
+|inline",
+                @"inline");
+        }
+
+        [Test]
+        public void SwitchFallthroughDefault()
+        {
+            TestFunction(
+                @"#switch:NONE
+|NONE|hatnote|hat
+|inline|
+#default=def",
+                @"def");
+        }
+
         #endregion // #switch
 
         #region #ifeq

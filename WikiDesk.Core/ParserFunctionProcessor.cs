@@ -340,20 +340,43 @@ namespace WikiDesk.Core
                 return Result.Found;
             }
 
+            // Typically each argument is a [key=value] pairs.
+            // However, where fall-through is used, we get [=key] pairs.
             string def = string.Empty;
             string key = args[0].Value.Trim();
             key = ProcessMagicWord(key);
 
             for (int i = 1; i < args.Count; ++i)
             {
-                if (!string.IsNullOrEmpty(key) && key == args[i].Key)
+                // Check if we have a normal [key=value] entry.
+                if (key == args[i].Key)
                 {
                     output = args[i].Value;
                     return Result.Found;
                 }
 
+                // If not, check for fall-through using the value as the key.
+                if (string.IsNullOrEmpty(args[i].Key) && key == args[i].Value)
+                {
+                    // Fall-through until we find a [key=value] pair.
+                    for (int x = i + 1; x < args.Count; ++x)
+                    {
+                        if (!string.IsNullOrEmpty(args[x].Key))
+                        {
+                            output = args[x].Value;
+                            return Result.Found;
+                        }
+                    }
+
+                    // No entries with [key=value] to fall-through on.
+                    // Just use the last value.
+                    output = args[args.Count - 1].Value;
+                    return Result.Found;
+                }
+
                 if (args[i].Key == "#default")
                 {
+                    // Store the default in case we fall-back to it.
                     def = args[i].Value;
                 }
             }
