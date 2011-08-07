@@ -37,6 +37,7 @@
 namespace WikiDesk.Core
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Text;
@@ -78,7 +79,7 @@ namespace WikiDesk.Core
         /// <param name="dumpDate">The date when the dump was created.</param>
         /// <param name="indexOnly">If True, article text is not added, just the meta data.</param>
         /// <param name="cancel">When set, this function terminates.</param>
-        /// <param name="pages">Cumulates the number of pages updated/inserted into the DB.</param>
+        /// <param name="pageCount">Cumulates the number of pageCount updated/inserted into the DB.</param>
         public static string ImportFromXml(
                                 Stream stream,
                                 Database db,
@@ -87,46 +88,73 @@ namespace WikiDesk.Core
                                 int domainId,
                                 int languageId,
                                 ref bool cancel,
-                                ref int pages)
+                                ref int pageCount)
         {
+            // If we have at least one page in the current domain/language,
+            // then we must update existing pages, otherwise we insert.
+            bool updating = db.CountPages(domainId, languageId) > 0;
+
             string title = string.Empty;
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;
 
                 const int BATCH_SIZE = 25000;
+                IList<Page> pages = new List<Page>(BATCH_SIZE + 1);
                 db.BeginTransaction();
                 try
                 {
                     while (!cancel)
                     {
-                        Page page = ParsePageTag(reader);
+                        Page page = ParsePageTag(reader, indexOnly);
                         if (page == null)
                         {
                             break;
                         }
 
+                        title = page.Title;
                         page.Domain = domainId;
                         page.Language = languageId;
                         page.LastUpdateDateUtc = dumpDate;
-                        if (indexOnly)
+
+                        if (updating)
                         {
-                            page.Text = null;
+                            Page selectPage = db.SelectPage(domainId, languageId, page.Title);
+                            if (selectPage != null)
+                            {
+                                db.Delete(selectPage);
+                            }
+                            else
+                            {
+                                selectPage = db.SelectPage(domainId, languageId, page.Title);
+                            }
                         }
 
-                        title = page.Title;
-                        db.UpdateInsert(page, db.SelectPage(page.Domain, page.Language, page.Title));
-                        ++pages;
-                        if (pages % BATCH_SIZE == 0)
+                        pages.Add(page);
+                        if (++pageCount % BATCH_SIZE == 0)
                         {
+                            db.InsertAll(pages);
+                            pages.Clear();
                             db.Commit();
                             db.BeginTransaction();
                         }
                     }
-                }
-                finally
-                {
+
+                    if (pages.Count > 0)
+                    {
+                        db.InsertAll(pages);
+                    }
+
                     db.Commit();
+                }
+                catch(Exception ex)
+                {
+                    if (db.IsInTransaction)
+                    {
+                        db.Rollback();
+                    }
+
+                    throw;
                 }
             }
 
@@ -154,23 +182,28 @@ namespace WikiDesk.Core
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;
-                return ParsePageTag(reader);
+                return ParsePageTag(reader, false);
             }
         }
 
-        private static Page ParsePageTag(XmlReader reader)
+        /// <summary>
+        /// Parses a single page from and XML.
+        /// </summary>
+        /// <param name="reader">The XML reader to read from.</param>
+        /// <param name="metaOnly">If true, only meta data is collected and no text.</param>
+        /// <returns>A Page instance.</returns>
+        private static Page ParsePageTag(XmlReader reader, bool metaOnly)
         {
-            do
+            // Prime to the next Page tag.
+            if (!reader.ReadToFollowing(TAG_PAGE))
             {
-                if (!reader.ReadToFollowing(TAG_PAGE))
-                {
-                    return null;
-                }
+                return null;
             }
-            while (!reader.IsStartElement());
+
+            Debug.Assert(reader.Name == TAG_PAGE, "Expected Page tag.");
+            Debug.Assert(reader.IsStartElement(), "Expected start of Page tag.");
 
             Page page = new Page();
-
             while (reader.Read() && reader.Name != TAG_PAGE)
             {
                 // Align on a start element.
@@ -186,21 +219,32 @@ namespace WikiDesk.Core
                         continue;
 
                     case "title":
-                        page.Title = Title.Canonicalize(reader.ReadString());
+                        // Don't canonicalize as some projects allow
+                        // first lower-case and other case-sensitive entries.
+                        page.Title = reader.ReadString();
                         break;
 
                     case TAG_REVISION:
-                        page.Text = ParseRevisionTag(reader);
+                        if (!metaOnly)
+                        {
+                            page.Text = ParseRevisionTag(reader);
+                        }
+                        else
+                        {
+                            // Skip the revision tag.
+                            reader.Skip();
+                        }
+
                         break;
                 }
             }
 
-            return !string.IsNullOrEmpty(page.Title) && page.Text != null ? page : null;
+            return page;
         }
 
         private static string ParseRevisionTag(XmlReader reader)
         {
-            Debug.Assert(reader.Name == TAG_REVISION);
+            Debug.Assert(reader.Name == TAG_REVISION, "Expected Revision tag.");
 
             string text = string.Empty;
             while (reader.Read() && reader.Name != TAG_REVISION)
@@ -223,13 +267,7 @@ namespace WikiDesk.Core
 
                     case TAG_CONTRIBUTOR:
                         // Skip contributor info.
-                        while (reader.Read() && reader.Name != TAG_CONTRIBUTOR)
-                        {
-                            if (!reader.IsStartElement())
-                            {
-                                continue;
-                            }
-                        }
+                        reader.Skip();
                         break;
 
                     case "text":

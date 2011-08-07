@@ -52,6 +52,7 @@ namespace WikiDesk.Data
     public class Page : IRecord, IComparer<Page>, IComparable<Page>, IEquatable<Page>
     {
         /// <summary>
+        /// Gets or sets the page's unique ID.
         /// Used for updates as the SQLite.net library doesn't support
         /// multi-column PK for updates.
         /// </summary>
@@ -60,24 +61,30 @@ namespace WikiDesk.Data
         public int Id { get; set; }
 
         /// <summary>
-        /// Reference into Domain table.
+        /// Gets or sets the Domain ID. Reference into Domain table.
         /// </summary>
         public int Domain { get; set; }
 
         /// <summary>
-        /// Reference into Language table.
+        /// Gets or sets the Lanuage ID. Reference into Language table.
         /// </summary>
         public int Language { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Page title.
+        /// </summary>
         [MaxLength(256)]
         public string Title { get; set; }
 
         /// <summary>
-        /// The date/time when the text was last updated from the web.
+        /// Gets or sets the date/time when the text was last updated from the web.
         /// If imported from a dump, this is the dump date/time.
         /// </summary>
         public DateTime LastUpdateDateUtc { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Page content.
+        /// </summary>
         [MaxLength(0)]
         public string Text { get; set; }
 
