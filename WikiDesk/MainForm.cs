@@ -1132,7 +1132,6 @@ namespace WikiDesk
             }
         }
 
-        delegate void exec();
         private void ImportProgress(
                         ProgressForm progForm,
                         string sourceName,
@@ -1147,7 +1146,7 @@ namespace WikiDesk
 
             bool cancel = false;
             int entries = 0;
-            exec d =
+            Action action =
                 () =>
                 DumpParser.ImportFromXml(
                     inputStream,
@@ -1159,7 +1158,7 @@ namespace WikiDesk
                     ref cancel,
                     ref entries);
 
-            IAsyncResult asyncResult = d.BeginInvoke(null, null);
+            IAsyncResult asyncResult = action.BeginInvoke(null, null);
 
             try
             {
@@ -1224,7 +1223,7 @@ namespace WikiDesk
                 Application.DoEvents();
 
                 cancel = true;
-                d.EndInvoke(asyncResult);
+                action.EndInvoke(asyncResult);
             }
         }
 

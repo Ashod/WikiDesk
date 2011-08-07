@@ -94,25 +94,39 @@ namespace WikiDesk.Core
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;
 
-                while (!cancel)
+                const int BATCH_SIZE = 25000;
+                db.BeginTransaction();
+                try
                 {
-                    Page page = ParsePageTag(reader);
-                    if (page == null)
+                    while (!cancel)
                     {
-                        break;
-                    }
+                        Page page = ParsePageTag(reader);
+                        if (page == null)
+                        {
+                            break;
+                        }
 
-                    page.Domain = domainId;
-                    page.Language = languageId;
-                    page.LastUpdateDateUtc = dumpDate;
-                    if (indexOnly)
-                    {
-                        page.Text = null;
-                    }
+                        page.Domain = domainId;
+                        page.Language = languageId;
+                        page.LastUpdateDateUtc = dumpDate;
+                        if (indexOnly)
+                        {
+                            page.Text = null;
+                        }
 
-                    title = page.Title;
-                    db.UpdateInsert(page, db.SelectPage(page.Domain, page.Language, page.Title));
-                    ++pages;
+                        title = page.Title;
+                        db.UpdateInsert(page, db.SelectPage(page.Domain, page.Language, page.Title));
+                        ++pages;
+                        if (pages % BATCH_SIZE == 0)
+                        {
+                            db.Commit();
+                            db.BeginTransaction();
+                        }
+                    }
+                }
+                finally
+                {
+                    db.Commit();
                 }
             }
 
