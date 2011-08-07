@@ -299,7 +299,7 @@ namespace SQLite
                 var cmd = new SQLiteCommand (this);
                 cmd.CommandText = cmdText;
                 foreach (var o in ps) {
-                    cmd.Bind (o);
+                    cmd.Bind(o);
                 }
                 return cmd;
             }
@@ -324,7 +324,7 @@ namespace SQLite
         /// </returns>
         public int Execute(string query, params object[] args)
         {
-            var cmd = CreateCommand (query, args);
+            var cmd = CreateCommand(query, args);
 
             if (TimeExecution) {
                 if (_sw == null) {
@@ -627,7 +627,7 @@ namespace SQLite
         /// <returns>
         /// The number of rows added to the table.
         /// </returns>
-        public int Insert (object obj)
+        public int Insert(object obj)
         {
             if (obj == null) {
                 return 0;
@@ -697,7 +697,7 @@ namespace SQLite
         /// <returns>
         /// The number of rows updated.
         /// </returns>
-        public int Update (object obj)
+        public int Update(object obj)
         {
             if (obj == null) {
                 return 0;
@@ -705,7 +705,7 @@ namespace SQLite
             return Update (obj, obj.GetType ());
         }
 
-        public int Update (object obj, Type objType)
+        public int Update(object obj, Type objType)
         {
             if (obj == null || objType == null) {
                 return 0;
@@ -761,7 +761,7 @@ namespace SQLite
             Close();
         }
 
-        public void Close ()
+        public void Close()
         {
             if (_open && Handle != IntPtr.Zero) {
                 SQLite3.Close (Handle);
@@ -1083,10 +1083,10 @@ namespace SQLite
                 Console.WriteLine ("Executing: " + this);
             }
 
-            var r = SQLite3.Result.OK;
-            var stmt = Prepare ();
-            r = SQLite3.Step (stmt);
-            Finalize (stmt);
+            var stmt = Prepare();
+            SQLite3.Result r = SQLite3.Step(stmt);
+            Finalize(stmt);
+
             if (r == SQLite3.Result.Done || r == SQLite3.Result.Row) {
                 int rowsAffected = SQLite3.Changes (_conn.Handle);
                 return rowsAffected;
@@ -1228,7 +1228,7 @@ namespace SQLite
 
         public void Bind (string name, object val)
         {
-            _bindings.Add (new Binding {
+            _bindings.Add(new Binding {
                 Name = name,
                 Value = val
             });
@@ -1236,7 +1236,7 @@ namespace SQLite
 
         public void Bind (object val)
         {
-            Bind (null, val);
+            Bind(null, val);
         }
 
         public override string ToString ()

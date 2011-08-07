@@ -245,6 +245,15 @@ namespace WikiDesk.Data
                     select s).FirstOrDefault();
         }
 
+        public int DeletePage(long domainId, long languageId, string title)
+        {
+            return Execute(
+                    "DELETE FROM page WHERE Domain=? AND Language=? AND Title='?'",
+                    domainId,
+                    languageId,
+                    title);
+        }
+
         /// <summary>
         /// Count the number of pages by domain and/or language, both optional.
         /// </summary>

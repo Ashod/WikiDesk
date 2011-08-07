@@ -99,7 +99,7 @@ namespace WikiDesk.Core
             {
                 reader.WhitespaceHandling = WhitespaceHandling.None;
 
-                const int BATCH_SIZE = 25000;
+                const int BATCH_SIZE = 10000;
                 IList<Page> pages = new List<Page>(BATCH_SIZE + 1);
                 db.BeginTransaction();
                 try
@@ -119,15 +119,7 @@ namespace WikiDesk.Core
 
                         if (updating)
                         {
-                            Page selectPage = db.SelectPage(domainId, languageId, page.Title);
-                            if (selectPage != null)
-                            {
-                                db.Delete(selectPage);
-                            }
-                            else
-                            {
-                                selectPage = db.SelectPage(domainId, languageId, page.Title);
-                            }
+                            db.DeletePage(domainId, languageId, page.Title);
                         }
 
                         pages.Add(page);
@@ -149,11 +141,7 @@ namespace WikiDesk.Core
                 }
                 catch(Exception ex)
                 {
-                    if (db.IsInTransaction)
-                    {
-                        db.Rollback();
-                    }
-
+                    db.Rollback();
                     throw;
                 }
             }
