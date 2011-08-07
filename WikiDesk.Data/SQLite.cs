@@ -474,7 +474,7 @@ namespace SQLite
         /// <summary>
         /// Begins a new transaction. Call <see cref="Commit"/> to end the transaction.
         /// </summary>
-        public void BeginTransaction ()
+        public void BeginTransaction()
         {
             if (!IsInTransaction) {
                 Execute ("begin transaction");
@@ -485,7 +485,7 @@ namespace SQLite
         /// <summary>
         /// Rolls back the transaction that was begun by <see cref="BeginTransaction"/>.
         /// </summary>
-        public void Rollback ()
+        public void Rollback()
         {
             if (IsInTransaction) {
                 Execute ("rollback");
@@ -496,7 +496,7 @@ namespace SQLite
         /// <summary>
         /// Commits the transaction that was begun by <see cref="BeginTransaction"/>.
         /// </summary>
-        public void Commit ()
+        public void Commit()
         {
             if (IsInTransaction) {
                 Execute ("commit");
@@ -513,17 +513,17 @@ namespace SQLite
         /// of operations on the connection but should never call <see cref="BeginTransaction"/>,
         /// <see cref="Rollback"/>, or <see cref="Commit"/>.
         /// </param>
-        public void RunInTransaction (Action action)
+        public void RunInTransaction(Action action)
         {
             if (IsInTransaction) {
                 throw new InvalidOperationException ("The connection must not already be in a transaction when RunInTransaction is called");
             }
             try {
-                BeginTransaction ();
-                action ();
-                Commit ();
+                BeginTransaction();
+                action();
+                Commit();
             } catch (Exception) {
-                Rollback ();
+                Rollback();
                 throw;
             }
         }
@@ -537,15 +537,84 @@ namespace SQLite
         /// <returns>
         /// The number of rows added to the table.
         /// </returns>
-        public int InsertAll (System.Collections.IEnumerable objects)
+        public int InsertAll(System.Collections.IEnumerable objects)
         {
-            BeginTransaction ();
+            BeginTransaction();
             var c = 0;
-            foreach (var r in objects) {
-                c += Insert (r);
+            foreach(var r in objects) {
+                c += Insert(r);
             }
-            Commit ();
+            Commit();
             return c;
+        }
+
+        /// <summary>
+        /// Inserts all specified objects of type T
+        /// in a transaction, if one doesn't exists.
+        /// Commits the transaction only if it creates it.
+        /// </summary>
+        /// <param name="items">
+        /// An <see cref="IEnumerable"/> of the objects to insert.
+        /// </param>
+        /// <typeparam name="T">The type of the objects to insert.</typeparam>
+        /// <returns>
+        /// The number of rows added to the table.
+        /// </returns>
+        public int InsertAll<T>(IEnumerable<T> items) where T : class
+        {
+            Type objType = typeof(T);
+            var map = GetMapping(objType);
+            var cols = map.InsertColumns;
+            var vals = new object[cols.Length];
+            var insertCmd = map.GetInsertCommand(this, string.Empty);
+
+            bool ownTransaction = false;
+            if (!IsInTransaction)
+            {
+                BeginTransaction();
+                ownTransaction = true;
+            }
+
+            try
+            {
+                int c = 0;
+                foreach (T item in items)
+                {
+                    if (item == null)
+                    {
+                        continue;
+                    }
+
+                    for (var i = 0; i < vals.Length; i++)
+                    {
+                        vals[i] = cols[i].GetValue(item);
+                    }
+
+                    c += insertCmd.ExecuteNonQuery(vals);
+
+                    if (map.HasAutoIncPK)
+                    {
+                        var id = SQLite3.LastInsertRowid(Handle);
+                        map.SetAutoIncPK(item, id);
+                    }
+                }
+
+                if (ownTransaction)
+                {
+                    Commit();
+                }
+
+                return c;
+            }
+            catch (Exception)
+            {
+                if (ownTransaction)
+                {
+                    Rollback();
+                }
+
+                throw;
+            }
         }
 
         /// <summary>
@@ -563,20 +632,20 @@ namespace SQLite
             if (obj == null) {
                 return 0;
             }
-            return Insert (obj, "", obj.GetType ());
+            return Insert(obj, string.Empty, obj.GetType());
         }
 
-        public int Insert (object obj, Type objType)
+        public int Insert(object obj, Type objType)
         {
-            return Insert (obj, "", objType);
+            return Insert(obj, string.Empty, objType);
         }
 
-        public int Insert (object obj, string extra)
+        public int Insert(object obj, string extra)
         {
             if (obj == null) {
                 return 0;
             }
-            return Insert (obj, extra, obj.GetType ());
+            return Insert(obj, extra, obj.GetType());
         }
 
         /// <summary>
@@ -592,13 +661,13 @@ namespace SQLite
         /// <returns>
         /// The number of rows added to the table.
         /// </returns>
-        public int Insert (object obj, string extra, Type objType)
+        public int Insert(object obj, string extra, Type objType)
         {
             if (obj == null || objType == null) {
                 return 0;
             }
 
-            var map = GetMapping (objType);
+            var map = GetMapping(objType);
 
             var cols = map.InsertColumns;
             var vals = new object[cols.Length];
@@ -606,11 +675,11 @@ namespace SQLite
                 vals [i] = cols [i].GetValue (obj);
             }
 
-            var insertCmd = map.GetInsertCommand (this, extra);
-            var count = insertCmd.ExecuteNonQuery (vals);
+            var insertCmd = map.GetInsertCommand(this, extra);
+            var count = insertCmd.ExecuteNonQuery(vals);
 
             if (map.HasAutoIncPK) {
-                var id = SQLite3.LastInsertRowid (Handle);
+                var id = SQLite3.LastInsertRowid(Handle);
                 map.SetAutoIncPK (obj, id);
             }
 
@@ -659,7 +728,7 @@ namespace SQLite
             ps.Add (pk.GetValue (obj));
             var q = string.Format("update \"{0}\" set {1} where {2} = ? ", map.TableName, string.Join (",", (from c in cols
                 select "\"" + c.Name + "\" = ? ").ToArray ()), pk.Name);
-            return Execute (q, ps.ToArray ());
+            return Execute(q, ps.ToArray());
         }
 
         /// <summary>
@@ -671,15 +740,20 @@ namespace SQLite
         /// <returns>
         /// The number of rows deleted.
         /// </returns>
-        public int Delete<T> (T obj)
+        public int Delete<T>(T obj) where T : class
         {
-            var map = GetMapping (obj.GetType ());
+            if (obj == null)
+            {
+                return 0;
+            }
+
+            var map = GetMapping(obj.GetType());
             var pk = map.PK;
             if (pk == null) {
                 throw new NotSupportedException ("Cannot delete " + map.TableName + ": it has no PK");
             }
-            var q = string.Format ("delete from \"{0}\" where \"{1}\" = ?", map.TableName, pk.Name);
-            return Execute (q, pk.GetValue (obj));
+            var q = string.Format("delete from \"{0}\" where \"{1}\" = ?", map.TableName, pk.Name);
+            return Execute(q, pk.GetValue(obj));
         }
 
         public void Dispose()
@@ -1708,7 +1782,7 @@ namespace SQLite
             IOError = 10,       /* Some kind of disk I/O error occurred */
             Corrupt = 11,       /* The database disk image is malformed */
             NotFound = 12,      /* Unknown opcode in sqlite3_file_control() */
-           
+
             FULL = 13,          /* Insertion failed because database is full */
             CANTOPEN = 14,      /* Unable to open the database file */
             PROTOCOL = 15,      /* Database lock protocol error */
