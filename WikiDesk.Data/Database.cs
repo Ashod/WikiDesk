@@ -44,8 +44,20 @@ namespace WikiDesk.Data
     public partial class Database : SQLiteConnection
     {
         public Database(string path)
+            : this(path, new DatabaseConfig())
+        {
+        }
+
+        public Database(string path, DatabaseConfig config)
             : base(path)
         {
+            config_ = config;
+
+            Execute(string.Format("PRAGMA cache_size = {0};", config_.CacheSizePages));
+            Execute(string.Format("PRAGMA case_sensitive_like = {0};", config_.CaseSensitiveLike));
+            Execute(string.Format("PRAGMA locking_mode = {0};", config_.LockMode.ToString().ToUpperInvariant()));
+            Execute(string.Format("PRAGMA case_sensitive_like = {0};", config_.SyncMode.ToString().ToUpperInvariant()));
+
             CreateTable<Page>();
             CreateTable<Language>();
             CreateTable<Domain>();
@@ -74,5 +86,14 @@ namespace WikiDesk.Data
             Insert(newRecord);
             return true;
         }
+
+        #region representation
+
+        /// <summary>
+        /// The database configuration.
+        /// </summary>
+        private readonly DatabaseConfig config_;
+
+        #endregion // representation
     }
 }

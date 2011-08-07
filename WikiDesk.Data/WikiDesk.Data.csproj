@@ -38,6 +38,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DatabaseConfig.cs" />
     <Compile Include="IRecord.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Domain.cs" />
