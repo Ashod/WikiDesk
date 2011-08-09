@@ -4,22 +4,6 @@
         <name>WebKitBrowser</name>
     </assembly>
     <members>
-        <member name="T:WebKit.Properties.Resources">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:WebKit.Properties.Resources.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:WebKit.Properties.Resources.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
         <member name="T:WebKit.WebKitBrowser">
             <summary>
             WebKit Browser Control.
@@ -69,7 +53,7 @@
         </member>
         <member name="M:WebKit.WebKitBrowser.Stop">
             <summary>
-            Stops loading the current web page and any resources associated 
+            Stops loading the current web page and any resources associated
             with it.
             </summary>
         </member>
@@ -127,51 +111,6 @@
             <summary>
             Required method for Designer support - do not modify 
             the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#Invoke(System.Delegate)">
-            <summary>
-            WebKit Browser Control.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#get_Height">
-            <summary>
-            WebKit Browser Control.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#get_Width">
-            <summary>
-            WebKit Browser Control.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#add_Load(System.EventHandler)">
-            <summary>
-            WebKit Browser Control.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#remove_Load(System.EventHandler)">
-            <summary>
-            WebKit Browser Control.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#add_Resize(System.EventHandler)">
-            <summary>
-            WebKit Browser Control.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#remove_Resize(System.EventHandler)">
-            <summary>
-            WebKit Browser Control.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#add_GotFocus(System.EventHandler)">
-            <summary>
-            WebKit Browser Control.
-            </summary>
-        </member>
-        <member name="M:WebKit.WebKitBrowser.WebKit#IWebKitBrowserHost#remove_GotFocus(System.EventHandler)">
-            <summary>
-            WebKit Browser Control.
             </summary>
         </member>
         <member name="E:WebKit.WebKitBrowser.DocumentTitleChanged">
@@ -244,6 +183,16 @@
             Occurs when JavaScript requests a prompt panel to be displayed via the prompt() function.
             </summary>
         </member>
+        <member name="P:WebKit.WebKitBrowser.UserName">
+            <summary>
+            The HTTP Basic Authentication UserName
+            </summary>
+        </member>
+        <member name="P:WebKit.WebKitBrowser.Password">
+            <summary>
+            The HTTP Basic Authentication Password
+            </summary>
+        </member>
         <member name="P:WebKit.WebKitBrowser.PageSettings">
             <summary>
             The current print page settings.
@@ -291,7 +240,7 @@
         </member>
         <member name="P:WebKit.WebKitBrowser.AllowNavigation">
             <summary>
-            Gets or sets whether the control can navigate to another page 
+            Gets or sets whether the control can navigate to another page
             once it's initial page has loaded.
             </summary>
         </member>
@@ -348,6 +297,22 @@
         <member name="P:WebKit.WebKitBrowser.ObjectForScripting">
             <summary>
             Gets or sets an object that can be accessed by JavaScript contained within the WebKitBrowser control.
+            </summary>
+        </member>
+        <member name="T:WebKit.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:WebKit.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:WebKit.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
             </summary>
         </member>
     </members>
