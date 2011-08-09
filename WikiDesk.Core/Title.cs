@@ -109,6 +109,24 @@ namespace WikiDesk.Core
                 throw new ArgumentNullException("title");
             }
 
+            return Canonicalize(title, true);
+        }
+
+        /// <summary>
+        /// Converts a title such that the first character is in upper-case
+        /// and all spaces are converted to underscores.
+        /// </summary>
+        /// <param name="title">The title to normalize.</param>
+        /// <param name="capitalize">Whether or not the first character of the title is capitalized.</param>
+        /// <returns>Normalized title.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
+        public static string Canonicalize(string title, bool capitalize)
+        {
+            if (title == null)
+            {
+                throw new ArgumentNullException("title");
+            }
+
             // Spaces and underscores are interchangeable.
             title = StringUtils.CollapseReplace(title, ' ', '_');
             title = StringUtils.CollapseReplace(title, '_', '_');
@@ -121,27 +139,24 @@ namespace WikiDesk.Core
             title = ParseFullTitle(title, out ns);
 
             // Spaces and underscores are superfluous if at either end.
-            title = title.Trim(new[] { ' ', '_' });
+            title = title.Trim(spaceAndUnderscore_);
 
             // Always make the first character upper for proper comparison.
-            if (title.Length > 0)
+            if (capitalize && title.Length > 0)
             {
                 title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
-                title = title.Normalize();
             }
 
             // Spaces and underscores are superfluous if at either end.
-            ns = ns.Trim(new[] { ' ', '_' });
+            ns = ns.Trim(spaceAndUnderscore_);
             if (ns.Length == 0)
             {
-                return title;
+                return title.Normalize();
             }
 
             // Namespaces are case insensitive. We capitalize it for readability.
             ns = ns.Substring(0, 1).ToUpperInvariant() + ns.Substring(1).ToLowerInvariant();
-            ns = ns.Normalize();
-
-            return FullTitleName(ns, title);
+            return (ns + ':' + title).Normalize();
         }
 
         /// <summary>
@@ -152,6 +167,24 @@ namespace WikiDesk.Core
         /// <returns>Decanonicalized title.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="title" /> is <c>null</c>.</exception>
         public static string Decanonicalize(string title)
+        {
+            if (title == null)
+            {
+                throw new ArgumentNullException("title");
+            }
+
+            return Decanonicalize(title, true);
+        }
+
+        /// <summary>
+        /// Converts a title such that the first character is in upper-case
+        /// and all underscores are converted to spaces.
+        /// </summary>
+        /// <param name="title">The title to decanonicalize.</param>
+        /// <param name="capitalize">Whether or not the first character of the title is capitalized.</param>
+        /// <returns>Decanonicalized title.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="title"/> is <c>null</c>.</exception>
+        public static string Decanonicalize(string title, bool capitalize)
         {
             if (title == null)
             {
@@ -171,8 +204,11 @@ namespace WikiDesk.Core
             // Spaces and underscores are interchangeable.
             title = title.Replace('_', ' ');
 
-            // Always make the first character upper for proper comparison.
-            title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
+            if (capitalize)
+            {
+                title = title.Substring(0, 1).ToUpperInvariant() + title.Substring(1);
+            }
+
             return title.Normalize();
         }
 
@@ -299,5 +335,7 @@ namespace WikiDesk.Core
 
             return sb.ToString();
         }
+
+        private static char[] spaceAndUnderscore_ = new[] { ' ', '_' };
     }
 }

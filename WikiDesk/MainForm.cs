@@ -532,7 +532,7 @@ namespace WikiDesk
 
                         do
                         {
-                            string title = Title.Decanonicalize(pageTitles.Current);
+                            string title = Title.Decanonicalize(pageTitles.Current, false);
                             titles.Add(title, title);
 
                             ++entryCount;
@@ -1141,8 +1141,10 @@ namespace WikiDesk
         {
             DateTime startTime = DateTime.UtcNow;
 
-            progForm.prgProgress.Minimum = 0;
-            progForm.prgProgress.Maximum = (int)(inputStream.Length / 1024 / 1024);
+            long position = 0;
+            long length = inputStream.Length;
+            progForm.prgProgress.Maximum = (int)(length / 1024 / 1024);
+            progForm.prgProgress.Value = (int)(position / 1024 / 1024);
 
             bool cancel = false;
             int entries = 0;
@@ -1169,7 +1171,10 @@ namespace WikiDesk
                 {
                     try
                     {
-                        progForm.prgProgress.Value = (int)(inputStream.Position / 1024 / 1024);
+                        position = inputStream.Position;
+                        length = inputStream.Length;
+                        progForm.prgProgress.Maximum = (int)(length / 1024 / 1024);
+                        progForm.prgProgress.Value = (int)(position / 1024 / 1024);
                     }
                     catch (Exception)
                     {
@@ -1181,8 +1186,8 @@ namespace WikiDesk
                             sourceName,
                             Environment.NewLine,
                             entries,
-                            inputStream.Position / 1024,
-                            inputStream.Length / 1024,
+                            position / 1024,
+                            length / 1024,
                             (int)entryRate);
 
                     double pcnt = 100.0 * progForm.prgProgress.Value / progForm.prgProgress.Maximum;

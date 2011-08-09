@@ -207,9 +207,9 @@ namespace WikiDesk.Core
                         continue;
 
                     case "title":
-                        // Don't canonicalize as some projects allow
+                        // Don't change case as some projects allow
                         // first lower-case and other case-sensitive entries.
-                        page.Title = reader.ReadString();
+                        page.Title = Title.Canonicalize(reader.ReadString(), false);
                         break;
 
                     case TAG_REVISION:

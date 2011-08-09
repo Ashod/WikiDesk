@@ -69,7 +69,8 @@ namespace WikiDesk
                             lstTitles_.Text;
 
             cboDomains_.Items.Clear();
-            foreach (KeyValuePair<string, Dictionary<string, PrefixMatchContainer<string>>> domainLangPair in entriesMap_)
+            foreach (KeyValuePair<string, Dictionary<string, PrefixMatchContainer<string>>>
+                        domainLangPair in entriesMap_)
             {
                 if (domainLangPair.Value.Count > 0)
                 {
