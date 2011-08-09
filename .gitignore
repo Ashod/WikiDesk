@@ -1,4 +1,3 @@
-
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
@@ -26,6 +25,7 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
+*[Pp]ex*/
 [Tt]est[Rr]esult*
 WikiDesk.opensdf
 WikiDesk.sdf
