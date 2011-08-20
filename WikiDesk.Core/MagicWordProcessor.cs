@@ -144,7 +144,10 @@ namespace WikiDesk.Core
                 if (int.TryParse(args[0].Value, out key))
                 {
                     output = wikiSite_.GetNamespaceName(key);
-                    output = Title.Decanonicalize(output);
+                    if (!string.IsNullOrEmpty(output))
+                    {
+                        output = Title.Decanonicalize(output);
+                    }
                 }
             }
 
