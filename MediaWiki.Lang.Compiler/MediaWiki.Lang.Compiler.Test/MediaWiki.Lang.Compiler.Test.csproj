@@ -10,12 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MediaWiki.Lang.Compiler.Test</RootNamespace>
     <AssemblyName>MediaWiki.Lang.Compiler.Test</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -60,7 +61,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\3rdParty\NUnit\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="PhpNetCore, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0a8e8c4c76728c71, processorArchitecture=MSIL" />
+    <Reference Include="PhpNetCore, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0a8e8c4c76728c71, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MediaWiki.Lang.Compiler.csproj">
