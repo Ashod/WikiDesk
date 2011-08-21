@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>MediaWiki.Net</Name>
+    <ProjectGuid>{b6b049f2-ee07-4c4a-b20e-9356a710d0aa}</ProjectGuid>
+    <CompilationMode>Standard</CompilationMode>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MediaWiki.Net</RootNamespace>
+    <AssemblyName>MediaWiki.Net</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <TargetKind>dll</TargetKind>
+    <DisabledWarnings />
+    <KeyFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <TargetKind>dll</TargetKind>
+    <DisabledWarnings />
+    <KeyFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <Name>mscorlib</Name>
+      <AssemblyName>mscorlib.dll</AssemblyName>
+    </Reference>
+    <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <Name>System</Name>
+      <AssemblyName>System.dll</AssemblyName>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MediaWiki\index.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MediaWiki\Languages\Language.php">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MediaWiki\Languages\LanguageConverter.php">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MediaWiki" />
+    <Folder Include="MediaWiki\Languages" />
+    <Folder Include="MediaWiki\Languages\Messages" />
+    <Folder Include="MediaWiki\Languages\Classes" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Phalanger\2.1\Phalanger.targets" />
+</Project>
