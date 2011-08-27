@@ -1,21 +1,26 @@
 These are the list of features/tasks to work on.
 Completed items are marked with '+', partially done with '-' and not done with '.'
 
+Webkit:
+. Page load progress.
+. Page load cancellation.
+. Printing.
+
+
 WikiDesk:
+. Jump to a random page.
 . Language message must cascade based on default lang.
 . Navigation bar.
 . Navigation History.
 . Favs.
+. Research bundles.
 . Editable settings.
 . Show links.
-. Page load progress.
-. Page load cancellation.
 . GUI font selection.
 . Editting support.
 . About.
 . I18n.
 . Multi-language Wiki support.
-. Printing.
 . PDF Export.
 . Multipart importing.
 . Improve Sqlite performance. http://stackoverflow.com/questions/788568/sqlite3-disabling-primary-key-index-while-inserting

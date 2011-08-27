@@ -255,7 +255,13 @@ namespace MediaWiki.Lang.Compiler
 
         #region implementation
 
-        private static bool Compile(string outputFolder, string rootPath, string tempPath, int rootPathLength, string rootNamespace, bool debug)
+        private static bool Compile(
+                                string outputFolder,
+                                string rootPath,
+                                string tempPath,
+                                int rootPathLength,
+                                string rootNamespace,
+                                bool debug)
         {
             bool errors = false;
 
