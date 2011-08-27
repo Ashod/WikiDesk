@@ -412,6 +412,25 @@ namespace WikiDesk
 
         #endregion // Browser Controls
 
+        #region Printing
+
+        private void pageSetupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            browser_.ShowPageSetupDialog();
+        }
+
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            browser_.ShowPrintDialog();
+        }
+
+        private void printPreviewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            browser_.ShowPrintPreviewDialog();
+        }
+
+        #endregion // Printing
+
         private void ActivateBrowser()
         {
             if (browser_.CanFocus)

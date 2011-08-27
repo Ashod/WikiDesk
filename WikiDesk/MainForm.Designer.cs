@@ -56,6 +56,10 @@
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.pageSetupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printPreviewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indexMenuItem_ = new System.Windows.Forms.ToolStripMenuItem();
             this.searchMenuItem_ = new System.Windows.Forms.ToolStripMenuItem();
@@ -126,6 +130,10 @@
             this.openDatabaseToolStripMenuItem,
             this.importToolStripMenuItem,
             this.toolStripMenuItem1,
+            this.pageSetupToolStripMenuItem,
+            this.printToolStripMenuItem,
+            this.printPreviewToolStripMenuItem,
+            this.toolStripMenuItem3,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
@@ -156,6 +164,32 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitClick);
+            //
+            // toolStripMenuItem3
+            //
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(172, 6);
+            //
+            // pageSetupToolStripMenuItem
+            //
+            this.pageSetupToolStripMenuItem.Name = "pageSetupToolStripMenuItem";
+            this.pageSetupToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.pageSetupToolStripMenuItem.Text = "Page Setup...";
+            this.pageSetupToolStripMenuItem.Click += new System.EventHandler(this.pageSetupToolStripMenuItem_Click);
+            //
+            // printToolStripMenuItem
+            //
+            this.printToolStripMenuItem.Name = "printToolStripMenuItem";
+            this.printToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.printToolStripMenuItem.Text = "&Print...";
+            this.printToolStripMenuItem.Click += new System.EventHandler(this.printToolStripMenuItem_Click);
+            //
+            // printPreviewToolStripMenuItem
+            //
+            this.printPreviewToolStripMenuItem.Name = "printPreviewToolStripMenuItem";
+            this.printPreviewToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.printPreviewToolStripMenuItem.Text = "Print Preview...";
+            this.printPreviewToolStripMenuItem.Click += new System.EventHandler(this.printPreviewToolStripMenuItem_Click);
             //
             // viewToolStripMenuItem
             //
@@ -315,7 +349,7 @@
             this.cboNavigate.MaxDropDownItems = 16;
             this.cboNavigate.Name = "cboNavigate";
             this.cboNavigate.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.cboNavigate.Size = new System.Drawing.Size(300, 25);
+            this.cboNavigate.Size = new System.Drawing.Size(250, 25);
             this.cboNavigate.Sorted = true;
             this.cboNavigate.DropDownClosed += new System.EventHandler(this.Titles_SelectedIndexChanged);
             this.cboNavigate.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Navigation_KeyDown);
@@ -348,7 +382,7 @@
             this.cboLanguage.IntegralHeight = false;
             this.cboLanguage.MaxDropDownItems = 16;
             this.cboLanguage.Name = "cboLanguage";
-            this.cboLanguage.Size = new System.Drawing.Size(200, 25);
+            this.cboLanguage.Size = new System.Drawing.Size(250, 25);
             this.cboLanguage.SelectedIndexChanged += new System.EventHandler(this.cboLanguage_SelectedIndexChanged);
             //
             // dockPanel_
@@ -415,7 +449,7 @@
             //
             // dockContent_
             //
-            this.dockContent_.ClientSize = new System.Drawing.Size(0, 0);
+            this.dockContent_.ClientSize = new System.Drawing.Size(118, 0);
             this.dockContent_.DockPanel = null;
             this.dockContent_.DockState = WeifenLuo.WinFormsUI.Docking.DockState.Unknown;
             this.dockContent_.FloatPane = null;
@@ -427,7 +461,6 @@
             this.dockContent_.PanelPane = null;
             this.dockContent_.Visible = false;
             this.dockContent_.VisibleState = WeifenLuo.WinFormsUI.Docking.DockState.Unknown;
-            this.dockContent_.WindowState = System.Windows.Forms.FormWindowState.Minimized;
             //
             // MainForm
             //
@@ -460,10 +493,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openDatabaseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStrip stripNavigation;
@@ -483,7 +512,6 @@
         private DockContent dockContent_;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem indexMenuItem_;
-        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem donateToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
@@ -491,6 +519,15 @@
         private System.Windows.Forms.ToolStripMenuItem fontMenuItem_;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem wikiDomainToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openDatabaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem pageSetupToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem printToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem printPreviewToolStripMenuItem;
     }
 }
 
