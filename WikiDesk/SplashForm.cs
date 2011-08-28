@@ -51,6 +51,10 @@ namespace WikiDesk
             timer_.Start();
         }
 
+        /// <summary>
+        /// Called in a timer to give allow subscribers to
+        /// update our properties before we update the controls.
+        /// </summary>
         public event Action<IProgress, EventArgs> OnUpdate;
 
         /// <summary>
@@ -66,23 +70,12 @@ namespace WikiDesk
         /// <summary>
         /// Gets or sets the total 100% progress points.
         /// </summary>
-        public int Total
-        {
-            get { return total_; }
-            set
-            {
-                pbProgress_.Invoke(new Action(delegate { pbProgress_.Maximum = total_ = value; }));
-            }
-        }
+        public int Total { get; set; }
 
         /// <summary>
         /// Gets or sets the current progress points.
         /// </summary>
-        public int Current
-        {
-            get { return current_; }
-            set { current_ = value; }
-        }
+        public int Current { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the operation is cancelled.
@@ -91,17 +84,17 @@ namespace WikiDesk
 
         #region implementation
 
-        void UpdateMessage()
+        private void UpdateControls()
         {
-            pbProgress_.Value = current_;
+            pbProgress_.Maximum = Total;
+            pbProgress_.Value = Current;
             txtMessage_.Text = Operation + Environment.NewLine + Message;
-            Application.DoEvents();
         }
 
         private void OnTimer(object sender, EventArgs e)
         {
-            UpdateMessage();
             InvokeOnUpdate(e);
+            UpdateControls();
         }
 
         private void InvokeOnUpdate(EventArgs e)
@@ -116,12 +109,6 @@ namespace WikiDesk
         #endregion // implementation
 
         #region representation
-
-        /// <summary>The total progress value.</summary>
-        private int total_;
-
-        /// <summary>The current progress value.</summary>
-        private int current_;
 
         /// <summary>The update timer.</summary>
         private readonly Timer timer_ = new Timer();
