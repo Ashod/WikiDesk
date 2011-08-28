@@ -90,10 +90,6 @@ namespace WikiDesk.Core
                                 ref bool cancel,
                                 ref int pageCount)
         {
-            // If we have at least one page in the current domain/language,
-            // then we must update existing pages, otherwise we insert.
-            bool updating = db.CountPages(domainId, languageId) > 0;
-
             string title = string.Empty;
             using (XmlTextReader reader = new XmlTextReader(stream))
             {
@@ -114,22 +110,17 @@ namespace WikiDesk.Core
                     page.Language = languageId;
                     page.LastUpdateDateUtc = dumpDate;
 
-                    if (updating)
-                    {
-                        db.DeletePage(domainId, languageId, page.Title);
-                    }
-
                     pages.Add(page);
                     if (++pageCount % BATCH_SIZE == 0)
                     {
-                        db.InsertAll(pages);
+                        db.UpsertAll(pages);
                         pages.Clear();
                     }
                 }
 
                 if (pages.Count > 0)
                 {
-                    db.InsertAll(pages);
+                    db.UpsertAll(pages);
                 }
             }
 
