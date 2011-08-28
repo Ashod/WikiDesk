@@ -425,7 +425,7 @@ namespace SQLite
         /// <returns>
         /// The number of rows modified in the database as a result of this execution.
         /// </returns>
-        public int ExecuteScalar(string query, params object[] args)
+        public long ExecuteScalar(string query, params object[] args)
         {
             var cmd = CreateCommand(query, args);
 
@@ -439,7 +439,7 @@ namespace SQLite
                 _sw.Start();
             }
 
-            int r = cmd.ExecuteScalar();
+            long r = cmd.ExecuteScalar();
 
             if (TimeExecution)
             {
@@ -1259,7 +1259,7 @@ namespace SQLite
             Finalize(stmt);
 
             if (r == SQLite3.Result.Done || r == SQLite3.Result.Row) {
-                int rowsAffected = SQLite3.Changes (_conn.Handle);
+                int rowsAffected = SQLite3.Changes(_conn.Handle);
                 return rowsAffected;
             } else if (r == SQLite3.Result.Error) {
                 string msg = SQLite3.GetErrmsg (_conn.Handle);
@@ -1269,38 +1269,30 @@ namespace SQLite
             }
         }
 
-        public int ExecuteScalar()
+        public long ExecuteScalar()
         {
             if (_conn.Trace)
             {
-                Console.WriteLine("Executing: " + this);
+                Console.WriteLine("Executing Query: " + this);
             }
 
             var stmt = Prepare();
-            var r = SQLite3.Step(stmt);
-            Finalize(stmt);
-            if (r == SQLite3.Result.Done)
+            SQLite3.Result result = SQLite3.Step(stmt);
+            if (result == SQLite3.Result.Row)
             {
-                int rowsAffected = SQLite3.Changes(_conn.Handle);
-                return rowsAffected;
+                long val = SQLite3.ColumnInt64(stmt, 0);
+                Finalize(stmt);
+                return val;
             }
             else
-            if (r == SQLite3.Result.Row)
-            {
-                //var colType = SQLite3.ColumnType(stmt, 0);
-                long columnInt64 = SQLite3.ColumnInt(stmt, 0);
-                return (int)columnInt64;
-                //return (int)ReadCol(stmt, 0, colType, typeof(int));
-            }
-            else
-            if (r == SQLite3.Result.Error)
+            if (result == SQLite3.Result.Error)
             {
                 string msg = SQLite3.GetErrmsg(_conn.Handle);
-                throw SQLiteException.New(r, msg);
+                throw SQLiteException.New(result, msg);
             }
             else
             {
-                throw SQLiteException.New(r, r.ToString());
+                throw SQLiteException.New(result, result.ToString());
             }
         }
 
@@ -1341,20 +1333,21 @@ namespace SQLite
             Finalize(stmt);
         }
 
-        public List<T> ExecuteQuery<T> () where T : new()
+        public List<T> ExecuteQuery<T>() where T : new()
         {
-            return ExecuteQuery<T> (_conn.GetMapping (typeof(T)));
+            return ExecuteQuery<T>(_conn.GetMapping(typeof(T)));
         }
 
         public List<T> ExecuteQuery<T>(TableMapping map)
         {
-            if (_conn.Trace) {
+            if (_conn.Trace)
+            {
                 Console.WriteLine ("Executing Query: " + this);
             }
 
-            var r = new List<T> ();
+            var r = new List<T>();
 
-            var stmt = Prepare ();
+            var stmt = Prepare();
 
             var cols = new TableMapping.Column[SQLite3.ColumnCount (stmt)];
 
@@ -1379,7 +1372,7 @@ namespace SQLite
             return r;
         }
 
-        public T ExecuteScalar<T> ()
+        public T ExecuteScalar<T>()
         {
             if (_conn.Trace) {
                 Console.WriteLine ("Executing Query: " + this);
@@ -1397,7 +1390,7 @@ namespace SQLite
             return val;
         }
 
-        public void Bind (string name, object val)
+        public void Bind(string name, object val)
         {
             _bindings.Add(new Binding {
                 Name = name,
@@ -1405,12 +1398,12 @@ namespace SQLite
             });
         }
 
-        public void Bind (object val)
+        public void Bind(object val)
         {
             Bind(null, val);
         }
 
-        public override string ToString ()
+        public override string ToString()
         {
             var parts = new string[1 + _bindings.Count];
             parts [0] = CommandText;
@@ -1424,14 +1417,14 @@ namespace SQLite
 
         IntPtr Prepare()
         {
-            var stmt = SQLite3.Prepare2 (_conn.Handle, CommandText);
+            var stmt = SQLite3.Prepare2(_conn.Handle, CommandText);
             BindAll (stmt);
             return stmt;
         }
 
         void Finalize(IntPtr stmt)
         {
-            SQLite3.Finalize (stmt);
+            SQLite3.Finalize(stmt);
         }
 
         void BindAll(IntPtr stmt)
@@ -1451,7 +1444,7 @@ namespace SQLite
 
         internal static IntPtr NegativePointer = new IntPtr (-1);
 
-        internal static void BindParameter (IntPtr stmt, int index, object value)
+        internal static void BindParameter(IntPtr stmt, int index, object value)
         {
             if (value == null) {
                 SQLite3.BindNull (stmt, index);
