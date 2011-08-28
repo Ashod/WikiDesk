@@ -101,48 +101,35 @@ namespace WikiDesk.Core
 
                 const int BATCH_SIZE = 10000;
                 IList<Page> pages = new List<Page>(BATCH_SIZE + 1);
-                db.BeginTransaction();
-                try
+                while (!cancel)
                 {
-                    while (!cancel)
+                    Page page = ParsePageTag(reader, indexOnly);
+                    if (page == null)
                     {
-                        Page page = ParsePageTag(reader, indexOnly);
-                        if (page == null)
-                        {
-                            break;
-                        }
-
-                        title = page.Title;
-                        page.Domain = domainId;
-                        page.Language = languageId;
-                        page.LastUpdateDateUtc = dumpDate;
-
-                        if (updating)
-                        {
-                            db.DeletePage(domainId, languageId, page.Title);
-                        }
-
-                        pages.Add(page);
-                        if (++pageCount % BATCH_SIZE == 0)
-                        {
-                            db.InsertAll(pages);
-                            pages.Clear();
-                            db.Commit();
-                            db.BeginTransaction();
-                        }
+                        break;
                     }
 
-                    if (pages.Count > 0)
+                    title = page.Title;
+                    page.Domain = domainId;
+                    page.Language = languageId;
+                    page.LastUpdateDateUtc = dumpDate;
+
+                    if (updating)
+                    {
+                        db.DeletePage(domainId, languageId, page.Title);
+                    }
+
+                    pages.Add(page);
+                    if (++pageCount % BATCH_SIZE == 0)
                     {
                         db.InsertAll(pages);
+                        pages.Clear();
                     }
-
-                    db.Commit();
                 }
-                catch(Exception ex)
+
+                if (pages.Count > 0)
                 {
-                    db.Rollback();
-                    throw;
+                    db.InsertAll(pages);
                 }
             }
 
