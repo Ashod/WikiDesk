@@ -291,22 +291,27 @@ namespace SQLite
         /// <returns>
         /// A <see cref="SQLiteCommand"/>
         /// </returns>
-        public SQLiteCommand CreateCommand (string cmdText, params object[] ps)
+        public SQLiteCommand CreateCommand(string cmdText, params object[] ps)
         {
-            if (!_open) {
+            if (!_open)
+            {
                 throw SQLiteException.New (SQLite3.Result.Error, "Cannot create commands from unopened database");
-            } else {
-                var cmd = new SQLiteCommand (this);
+            }
+            else
+            {
+                var cmd = new SQLiteCommand(this);
                 cmd.CommandText = cmdText;
-                foreach (var o in ps) {
+                foreach (var o in ps)
+                {
                     cmd.Bind(o);
                 }
+
                 return cmd;
             }
         }
 
         /// <summary>
-        /// Creates a SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        /// Creates an SQLiteCommand given the command text (SQL) with arguments. Place a '?'
         /// in the command text for each of the arguments and then executes that command.
         /// Use this method instead of Query when you don't expect rows back. Such cases include
         /// INSERTs, UPDATEs, and DELETEs.
@@ -343,6 +348,64 @@ namespace SQLite
             }
 
             return r;
+        }
+
+        /// <summary>
+        /// Creates an SQLiteCommand given the command text (SQL) with arguments. Place a '?'
+        /// in the command text for each of the arguments and then executes that command
+        /// for each argument.
+        /// You can set the Trace or TimeExecution properties of the connection
+        /// to profile execution.
+        /// </summary>
+        /// <param name="query">
+        /// The fully escaped SQL.
+        /// </param>
+        /// <param name="argsCollection">
+        /// Arguments to substitute for the occurences of '?' in the query.
+        /// </param>
+        /// <returns>
+        /// The number of rows modified in the database as a result of this execution.
+        /// </returns>
+        public int ExecuteNonQuery(string query, IEnumerable<object[]> argsCollection)
+        {
+            if (!_open)
+            {
+                throw SQLiteException.New(SQLite3.Result.Error, "Cannot create commands from unopened database");
+            }
+
+            if (TimeExecution)
+            {
+                if (_sw == null)
+                {
+                    _sw = new System.Diagnostics.Stopwatch();
+                }
+
+                _sw.Reset();
+                _sw.Start();
+            }
+
+            var cmd = new SQLiteCommand(this);
+            cmd.CommandText = query;
+
+            int rows = 0;
+            foreach (object[] args in argsCollection)
+            {
+                foreach (var o in args)
+                {
+                    cmd.Bind(o);
+                }
+
+                rows += cmd.ExecuteNonQuery();
+            }
+
+            if (TimeExecution)
+            {
+                _sw.Stop();
+                _elapsedMilliseconds += _sw.ElapsedMilliseconds;
+                Console.WriteLine("Finished in {0} ms ({1:0.0} s total)", _sw.ElapsedMilliseconds, _elapsedMilliseconds / 1000.0);
+            }
+
+            return rows;
         }
 
         /// <summary>
@@ -618,6 +681,75 @@ namespace SQLite
         }
 
         /// <summary>
+        /// Upserts (update or insert) all specified objects of type T
+        /// in a transaction, if one doesn't exists.
+        /// Commits the transaction only if it creates it.
+        /// </summary>
+        /// <param name="items">
+        /// An <see cref="IEnumerable"/> of the objects to upsert.
+        /// </param>
+        /// <typeparam name="T">The type of the objects to upsert.</typeparam>
+        /// <returns>
+        /// The number of rows added to the table.
+        /// </returns>
+        public int UpsertAll<T>(IEnumerable<T> items) where T : class
+        {
+            Type objType = typeof(T);
+            var map = GetMapping(objType);
+            var cols = map.InsertColumns;
+            var vals = new object[cols.Length];
+            var upsertCmd = map.GetUpsertCommand(this, string.Empty);
+
+            bool ownTransaction = false;
+            if (!IsInTransaction)
+            {
+                BeginTransaction();
+                ownTransaction = true;
+            }
+
+            try
+            {
+                int c = 0;
+                foreach (T item in items)
+                {
+                    if (item == null)
+                    {
+                        continue;
+                    }
+
+                    for (var i = 0; i < vals.Length; i++)
+                    {
+                        vals[i] = cols[i].GetValue(item);
+                    }
+
+                    c += upsertCmd.ExecuteNonQuery(vals);
+
+                    if (map.HasAutoIncPK)
+                    {
+                        var id = SQLite3.LastInsertRowid(Handle);
+                        map.SetAutoIncPK(item, id);
+                    }
+                }
+
+                if (ownTransaction)
+                {
+                    Commit();
+                }
+
+                return c;
+            }
+            catch (Exception)
+            {
+                if (ownTransaction)
+                {
+                    Rollback();
+                }
+
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Inserts the given object and retrieves its
         /// auto incremented primary key if it has one.
         /// </summary>
@@ -836,8 +968,9 @@ namespace SQLite
         Column _autoPk = null;
         Column[] _insertColumns = null;
         string _insertSql = null;
+        string _upsertSql = null;
 
-        public TableMapping (Type type)
+        public TableMapping(Type type)
         {
             MappedType = type;
             TableName = MappedType.Name;
@@ -864,10 +997,10 @@ namespace SQLite
 
         public bool HasAutoIncPK { get; private set; }
 
-        public void SetAutoIncPK (object obj, long id)
+        public void SetAutoIncPK(object obj, long id)
         {
             if (_autoPk != null) {
-                _autoPk.SetValue (obj, Convert.ChangeType (id, _autoPk.ColumnType));
+                _autoPk.SetValue(obj, Convert.ChangeType(id, _autoPk.ColumnType));
             }
         }
 
@@ -886,29 +1019,67 @@ namespace SQLite
             return exact;
         }
 
-        public string InsertSql (string extra)
+        public string InsertSql(string extra)
         {
-            if (_insertSql == null) {
+            if (_insertSql == null)
+            {
                 var cols = InsertColumns;
-                _insertSql = string.Format ("insert {3} into \"{0}\"({1}) values ({2})", TableName, string.Join (",", (from c in cols
-                    select "\"" + c.Name + "\"").ToArray ()), string.Join (",", (from c in cols
-                    select "?").ToArray ()), extra);
+                _insertSql = string.Format(
+                    "INSERT {0} into \"{1}\" ({2}) values ({3})",
+                    extra,
+                    TableName,
+                    string.Join(",", (from c in cols select "\"" + c.Name + "\"").ToArray()),
+                    string.Join(",", (from c in cols select "?").ToArray()));
             }
+
             return _insertSql;
+        }
+
+        public string UpsertSql(string extra)
+        {
+            if (_upsertSql == null)
+            {
+                var cols = InsertColumns;
+                _upsertSql = string.Format(
+                    "INSERT OR REPLACE {0} into \"{1}\" ({2}) values ({3})",
+                    extra,
+                    TableName,
+                    string.Join(",", (from c in cols select "\"" + c.Name + "\"").ToArray()),
+                    string.Join(",", (from c in cols select "?").ToArray()));
+            }
+
+            return _upsertSql;
         }
 
         PreparedSqlLiteInsertCommand _insertCommand;
         string _insertCommandExtra = null;
+        PreparedSqlLiteInsertCommand _upsertCommand;
+        string _upsertCommandExtra = null;
 
-        public PreparedSqlLiteInsertCommand GetInsertCommand (SQLiteConnection conn, string extra)
+        public PreparedSqlLiteInsertCommand GetInsertCommand(SQLiteConnection conn, string extra)
         {
-            if (_insertCommand == null || _insertCommandExtra != extra) {
-                var insertSql = InsertSql (extra);
-                _insertCommand = new PreparedSqlLiteInsertCommand (conn);
+            if (_insertCommand == null || _insertCommandExtra != extra)
+            {
+                var insertSql = InsertSql(extra);
+                _insertCommand = new PreparedSqlLiteInsertCommand(conn);
                 _insertCommand.CommandText = insertSql;
                 _insertCommandExtra = extra;
             }
+
             return _insertCommand;
+        }
+
+        public PreparedSqlLiteInsertCommand GetUpsertCommand(SQLiteConnection conn, string extra)
+        {
+            if (_upsertCommand == null || _upsertCommandExtra != extra)
+            {
+                var upsertSql = UpsertSql(extra);
+                _upsertCommand = new PreparedSqlLiteInsertCommand(conn);
+                _upsertCommand.CommandText = upsertSql;
+                _upsertCommandExtra = extra;
+            }
+
+            return _upsertCommand;
         }
 
         public abstract class Column
@@ -1379,7 +1550,7 @@ namespace SQLite
             Connection = conn;
         }
 
-        public int ExecuteNonQuery (object[] source)
+        public int ExecuteNonQuery(object[] source)
         {
             if (Connection.Trace) {
                 Console.WriteLine ("Executing: " + CommandText);
@@ -1414,19 +1585,19 @@ namespace SQLite
             }
         }
 
-        protected virtual IntPtr Prepare ()
+        protected virtual IntPtr Prepare()
         {
-            var stmt = SQLite3.Prepare2 (Connection.Handle, CommandText);
+            var stmt = SQLite3.Prepare2(Connection.Handle, CommandText);
             return stmt;
         }
 
-        public void Dispose ()
+        public void Dispose()
         {
-            Dispose (true);
-            GC.SuppressFinalize (this);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        private void Dispose (bool disposing)
+        private void Dispose(bool disposing)
         {
             if (Statement != IntPtr.Zero) {
                 try {
