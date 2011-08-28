@@ -247,11 +247,12 @@ namespace WikiDesk.Data
 
         public int DeletePage(long domainId, long languageId, string title)
         {
-            return Execute(
-                    "DELETE FROM page WHERE Domain=? AND Language=? AND Title='?'",
-                    domainId,
-                    languageId,
-                    title);
+            string query = string.Format(
+                "DELETE FROM Page WHERE Domain={0} AND Language={1} AND Title='{2}'",
+                domainId,
+                languageId,
+                title.Replace("'", "''"));
+            return Execute(query);
         }
 
         /// <summary>
