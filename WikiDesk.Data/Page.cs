@@ -263,7 +263,18 @@ namespace WikiDesk.Data
         /// <returns>The number of pages found.</returns>
         public long CountPages(long domainId, long languageId)
         {
-            return ExecuteScalar("SELECT COUNT(*) FROM Page WHERE Domain=? AND Language=?", domainId, languageId);
+            string query = "SELECT COUNT(*) FROM Page WHERE 1=1";
+            if (domainId != 0)
+            {
+                query += " AND Domain=" + domainId;
+            }
+
+            if (languageId != 0)
+            {
+                query += " AND Language=" + languageId;
+            }
+
+            return ExecuteScalar(query);
         }
 
         public IList<string> SearchPages(long domainId, long languageId, string text)
