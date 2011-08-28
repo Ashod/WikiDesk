@@ -544,21 +544,24 @@ namespace WikiDesk
                         break;
                     }
 
-                    IEnumerator<string> pageTitles = db.SelectPageTitles(domain.Id, language.Id);
-                    if (pageTitles != null && pageTitles.MoveNext())
+                    using (IEnumerator<string> pageTitles = 
+                            db.SelectPageTitles(domain.Id, language.Id).GetEnumerator())
                     {
-                        PrefixMatchContainer<string> titles = new PrefixMatchContainer<string>();
-
-                        do
+                        if (pageTitles != null && pageTitles.MoveNext())
                         {
-                            string title = Title.Decanonicalize(pageTitles.Current, false);
-                            titles.Add(title, title);
+                            PrefixMatchContainer<string> titles = new PrefixMatchContainer<string>();
 
-                            ++entryCount;
+                            do
+                            {
+                                string title = Title.Decanonicalize(pageTitles.Current, false);
+                                titles.Add(title, title);
+
+                                ++entryCount;
+                            }
+                            while (pageTitles.MoveNext() && !progress.Cancel);
+
+                            langTitlesMap.Add(language.Name, titles);
                         }
-                        while (pageTitles.MoveNext() && !progress.Cancel);
-
-                        langTitlesMap.Add(language.Name, titles);
                     }
                 }
 

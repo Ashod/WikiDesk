@@ -228,12 +228,12 @@ namespace WikiDesk.Data
 
     public partial class Database
     {
-        public IEnumerator<string> SelectPageTitles(long domainId, long languageId)
+        public IEnumerable<string> SelectPageTitles(long domainId, long languageId)
         {
             return (from s in Table<Page>()
                     where s.Domain == domainId &&
                           s.Language == languageId
-                    select s.Title).GetEnumerator();
+                    select s.Title);
         }
 
         public Page SelectPage(long domainId, long languageId, string title)
