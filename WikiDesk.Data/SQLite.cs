@@ -20,27 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-using System;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using System.Linq.Expressions;
-
 namespace SQLite
 {
-    public class SQLiteException : System.Exception
+    using System;
+    using System.Runtime.InteropServices;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Linq;
+    using System.Linq.Expressions;
+
+    public class SQLiteException : Exception
     {
         public SQLite3.Result Result { get; private set; }
 
-        protected SQLiteException (SQLite3.Result r,string message) : base(message)
+        protected SQLiteException(SQLite3.Result r,string message) : base(message)
         {
             Result = r;
         }
 
-        public static SQLiteException New (SQLite3.Result r, string message)
+        public static SQLiteException New(SQLite3.Result r, string message)
         {
-            return new SQLiteException (r, message);
+            return new SQLiteException(r, message);
         }
     }
 
@@ -72,6 +72,8 @@ namespace SQLite
         /// </param>
         public SQLiteConnection (string databasePath)
         {
+            SQLite3.Compress(0, 9);
+
             DatabasePath = databasePath;
             IntPtr handle;
             var r = SQLite3.Open(DatabasePath, out handle);
@@ -425,7 +427,7 @@ namespace SQLite
         /// <returns>
         /// The number of rows modified in the database as a result of this execution.
         /// </returns>
-        public long ExecuteScalar(string query, params object[] args)
+        public long? ExecuteScalar(string query, params object[] args)
         {
             var cmd = CreateCommand(query, args);
 
@@ -439,7 +441,7 @@ namespace SQLite
                 _sw.Start();
             }
 
-            long r = cmd.ExecuteScalar();
+            long? r = cmd.ExecuteScalar();
 
             if (TimeExecution)
             {
@@ -1269,7 +1271,12 @@ namespace SQLite
             }
         }
 
-        public long ExecuteScalar()
+        /// <summary>
+        /// Executes a scalar query that returns a single integral value.
+        /// If the query doesn't return any value, null is returned.
+        /// </summary>
+        /// <returns>The result of the query or null when none.</returns>
+        public long? ExecuteScalar()
         {
             if (_conn.Trace)
             {
@@ -1278,21 +1285,23 @@ namespace SQLite
 
             var stmt = Prepare();
             SQLite3.Result result = SQLite3.Step(stmt);
-            if (result == SQLite3.Result.Row)
+            switch (result)
             {
-                long val = SQLite3.ColumnInt64(stmt, 0);
-                Finalize(stmt);
-                return val;
-            }
-            else
-            if (result == SQLite3.Result.Error)
-            {
-                string msg = SQLite3.GetErrmsg(_conn.Handle);
-                throw SQLiteException.New(result, msg);
-            }
-            else
-            {
-                throw SQLiteException.New(result, result.ToString());
+                case SQLite3.Result.Done:
+                    return null;
+
+                case SQLite3.Result.Row:
+                {
+                    long val = SQLite3.ColumnInt64(stmt, 0);
+                    Finalize(stmt);
+                    return val;
+                }
+
+                case SQLite3.Result.Error:
+                    throw SQLiteException.New(result, SQLite3.GetErrmsg(_conn.Handle));
+
+                default:
+                    throw SQLiteException.New(result, result.ToString());
             }
         }
 
@@ -1981,6 +1990,9 @@ namespace SQLite
         [DllImport("sqlite3", EntryPoint = "sqlite3_config")]
         public static extern Result Config(ConfigOption option);
 
+        [DllImport("sqlite3", EntryPoint = "sqlite3_compress")]
+        public static extern Result Compress(int trace, int compressionLevel);
+
         [DllImport("sqlite3", EntryPoint = "sqlite3_busy_timeout")]
         public static extern Result BusyTimeout(IntPtr db, int milliseconds);
 
@@ -2076,6 +2088,7 @@ namespace SQLite
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_column_bytes")]
         public static extern int ColumnBytes(IntPtr stmt, int index);
+
 
         public static string ColumnString(IntPtr stmt, int index)
         {

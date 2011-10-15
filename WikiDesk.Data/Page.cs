@@ -274,7 +274,13 @@ namespace WikiDesk.Data
                 query += " AND Language=" + languageId;
             }
 
-            return ExecuteScalar(query);
+            long? count = ExecuteScalar(query);
+            if (count == null)
+            {
+                throw new ApplicationException("Unexpected result from SQLite. Query: " + query);
+            }
+
+            return (long)count;
         }
 
         public IList<string> SearchPages(long domainId, long languageId, string text)
