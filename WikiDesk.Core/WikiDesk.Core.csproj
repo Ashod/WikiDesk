@@ -61,6 +61,7 @@
     <Compile Include="WikiSite.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="WikiTokenizer.cs" />
     <Compile Include="WikiTree.cs" />
   </ItemGroup>
   <ItemGroup>

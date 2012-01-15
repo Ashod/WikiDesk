@@ -72,7 +72,7 @@ namespace SQLite
         /// </param>
         public SQLiteConnection (string databasePath)
         {
-            SQLite3.Compress(0, 9);
+            //SQLite3.Compress(0, 9, 8 * 64 * 1024);
 
             DatabasePath = databasePath;
             IntPtr handle;
@@ -1991,7 +1991,7 @@ namespace SQLite
         public static extern Result Config(ConfigOption option);
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_compress")]
-        public static extern Result Compress(int trace, int compressionLevel);
+        public static extern Result Compress(int trace, int compressionLevel, int chunkSizeBytes);
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_busy_timeout")]
         public static extern Result BusyTimeout(IntPtr db, int milliseconds);

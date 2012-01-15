@@ -56,7 +56,7 @@ namespace WikiDesk.Data
             ExecuteScalar(string.Format("PRAGMA cache_size = {0};", config_.CacheSizePages));
             ExecuteScalar(string.Format("PRAGMA case_sensitive_like = {0};", config_.CaseSensitiveLike));
             ExecuteScalar(string.Format("PRAGMA locking_mode = {0};", config_.LockMode.ToString().ToUpperInvariant()));
-            ExecuteScalar(string.Format("PRAGMA case_sensitive_like = {0};", config_.SyncMode.ToString().ToUpperInvariant()));
+            //ExecuteScalar(string.Format("PRAGMA case_sensitive_like = {0};", config_.SyncMode.ToString().ToUpperInvariant()));
 
             CreateTable<Page>();
             CreateTable<Language>();
