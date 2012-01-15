@@ -140,5 +140,63 @@ class LanguageConverter {
                 File.Delete(sourceFilename);
             }
         }
+
+        [Test]
+        public void CompileGlobals()
+        {
+            string sourceFilename = Path.GetTempFileName();
+            string assemblyName = Path.GetTempFileName();
+
+            try
+            {
+                System.Collections.Generic.List<string> units = new System.Collections.Generic.List<string>
+                    {
+                        "TestFiles/GlobalArray.php" 
+                    };
+
+                Assert.True(Compiler.Compile(units, assemblyName, true));
+
+                // Introspect.
+                Assembly assembly = Assembly.LoadFrom(assemblyName);
+                Assert.NotNull(assembly);
+
+                var context = ScriptContext.CurrentContext; // Phalanger execution context (note: thread static)
+                //context.Include("TestFiles/GlobalArray.php", false); // run the script from script library
+
+
+                foreach (Type type in assembly.GetTypes())
+                {
+                    Console.WriteLine(type);
+                    foreach (FieldInfo fieldInfo in type.GetFields())
+                    {
+                        Console.WriteLine(fieldInfo);
+                    }
+                }
+
+                Type globalArrayType = assembly.GetType("Test.Space.globalarray");
+                Assert.NotNull(globalArrayType);
+
+                FieldInfo wgLanguageNamesField = globalArrayType.GetField("wgLanguageNames");
+                Assert.NotNull(wgLanguageNamesField);
+
+                // Instantiate.
+                object instance = Activator.CreateInstance(globalArrayType, ScriptContext.CurrentContext, true);
+                Assert.NotNull(instance);
+
+                // Read a predetermined field.
+                object value = wgLanguageNamesField.GetValue(instance);
+                Assert.NotNull(value);
+
+                PhpArray array = (PhpArray)((PhpReference)value).value;
+                Assert.NotNull(array);
+
+                Assert.AreEqual(16, array.Count);
+            }
+            finally
+            {
+                // Delete the temporary source. We can't delete the loaded dll.
+                File.Delete(sourceFilename);
+            }
+        }
     }
 }
