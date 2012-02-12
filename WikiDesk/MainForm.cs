@@ -110,7 +110,15 @@ namespace WikiDesk
             tempFilename_ = Path.GetTempFileName().Replace(".tmp", ".html");
             tempFileUrl_ = "file:///" + tempFilename_.Replace('\\', '/');
 
-            fileCache_ = new FileCache(settings_.FileCacheFolder);
+            try
+            {
+                fileCache_ = new FileCache(settings_.FileCacheFolder);
+            }
+            catch
+            {
+                settings_.FileCacheFolder = Path.Combine(Path.GetTempPath(), Settings.FileCacheFolderName);
+                fileCache_ = new FileCache(settings_.FileCacheFolder);
+            }
 
             splashForm.Operation = "Opening default database...";
             splashForm.Message = settings_.DefaultDatabaseFilename;

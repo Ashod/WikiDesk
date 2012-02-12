@@ -95,7 +95,7 @@ namespace WikiDesk
         #region Cache
 
         public bool EnableCaching;
-        public string FileCacheFolder = "Z:\\wikidesk_cache\\";
+        public string FileCacheFolder = "z:\\wikidesk_cache\\";
         public long FileCacheSizeMB = 128;
         public bool ClearFileCacheOnExit;
 
@@ -117,7 +117,7 @@ namespace WikiDesk
         /// <summary>
         /// The default database filename. Loaded at startup.
         /// </summary>
-        public string DefaultDatabaseFilename = "Z:\\wikidesk.db";
+        public string DefaultDatabaseFilename = "wikidesk.db";
 
         public string InstallationFolder;
 
@@ -158,5 +158,11 @@ namespace WikiDesk
         public string DefaultLanguageCode = "en";
 
         #endregion // language
+
+        #region constants
+
+        public const string FileCacheFolderName = "wikidesk_cache";
+
+        #endregion // constants
     }
 }

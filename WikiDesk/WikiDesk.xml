@@ -60,7 +60,7 @@
   &lt;/FloatWindows&gt;
 &lt;/DockPanel&gt;</Layout>
   <EnableCaching>false</EnableCaching>
-  <FileCacheFolder>Z:\wikidesk_cache\</FileCacheFolder>
+  <FileCacheFolder>C:\Users\Ash\AppData\Local\Temp\wikidesk_cache\</FileCacheFolder>
   <FileCacheSizeMB>128</FileCacheSizeMB>
   <ClearFileCacheOnExit>false</ClearFileCacheOnExit>
   <ThumbnailWidthPixels>220</ThumbnailWidthPixels>
@@ -119,7 +119,7 @@
 	
 	h1.firstHeading { border-bottom: solid 1px red; }
   </CustomCss>
-  <DefaultDatabaseFilename>Z:\wikidesk.db</DefaultDatabaseFilename>
+  <DefaultDatabaseFilename>C:\Users\Ash\AppData\Local\Temp\wikidesk.db</DefaultDatabaseFilename>
   <InstallationFolder></InstallationFolder>
   <DomainsFilename>WikiDomains.xml</DomainsFilename>
   <CurrentDomainName>Wikipedia</CurrentDomainName>
