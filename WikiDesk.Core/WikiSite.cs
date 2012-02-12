@@ -67,27 +67,33 @@ namespace WikiDesk.Core
             string langCode = language_.MimeCode ?? language_.Code;
             string moduleFilePath = Path.Combine(folder, MESSAGES);
             string modulefullPath = Path.Combine(moduleFilePath, MESSAGES + langCode + DLL_EXTENTION);
-            module_ = new Module(modulefullPath);
-
-            // Languages may fall-back on others. The only Exception is the default language.
-            if (string.Compare(language.Code, DEF_LANG_CODE, StringComparison.InvariantCultureIgnoreCase) != 0)
+            try
             {
-                string fallbackLangCode = module_.GetStringField(FIELD_FALLBACK);
-                if (string.IsNullOrEmpty(fallbackLangCode))
+                module_ = new Module(modulefullPath);
+
+                // Languages may fall-back on others. The only Exception is the default language.
+                if (string.Compare(language.Code, DEF_LANG_CODE, StringComparison.InvariantCultureIgnoreCase) != 0)
                 {
-                    fallbackLangCode = DEF_LANG_CODE;
+                    string fallbackLangCode = module_.GetStringField(FIELD_FALLBACK);
+                    if (string.IsNullOrEmpty(fallbackLangCode))
+                    {
+                        fallbackLangCode = DEF_LANG_CODE;
+                    }
+
+                    modulefullPath = Path.Combine(moduleFilePath, MESSAGES + fallbackLangCode + DLL_EXTENTION);
+                    Module fallbackModule = new Module(modulefullPath);
+                    MergeNamespaces(fallbackModule.GetString2StringMapField(FIELD_NAMESPACE_NAMES));
+                    MergeSpecialPageAliases(fallbackModule.GetString2StringsMapField(FIELD_SPECIAL_PAGE_ALIASES));
+                    MergeMagicWords(fallbackModule.GetString2StringsMapField(FIELD_MAGIC_WORDS));
                 }
 
-                modulefullPath = Path.Combine(moduleFilePath, MESSAGES + fallbackLangCode + DLL_EXTENTION);
-                Module fallbackModule = new Module(modulefullPath);
-                MergeNamespaces(fallbackModule.GetString2StringMapField(FIELD_NAMESPACE_NAMES));
-                MergeSpecialPageAliases(fallbackModule.GetString2StringsMapField(FIELD_SPECIAL_PAGE_ALIASES));
-                MergeMagicWords(fallbackModule.GetString2StringsMapField(FIELD_MAGIC_WORDS));
+                MergeNamespaces(module_.GetString2StringMapField(FIELD_NAMESPACE_NAMES));
+                MergeSpecialPageAliases(module_.GetString2StringsMapField(FIELD_SPECIAL_PAGE_ALIASES));
+                MergeMagicWords(module_.GetString2StringsMapField(FIELD_MAGIC_WORDS));
             }
-
-            MergeNamespaces(module_.GetString2StringMapField(FIELD_NAMESPACE_NAMES));
-            MergeSpecialPageAliases(module_.GetString2StringsMapField(FIELD_SPECIAL_PAGE_ALIASES));
-            MergeMagicWords(module_.GetString2StringsMapField(FIELD_MAGIC_WORDS));
+            catch
+            {
+            }
 
             if (!namespaces_.ContainsKey("NS_WIKIPEDIA"))
             {
