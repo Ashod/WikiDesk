@@ -17,7 +17,7 @@
             <param name="keyData">The key to process.</param>
             <returns>Success value.</returns>
         </member>
-        <member name="M:WebKit.WebKitBrowser.#ctor">
+        <member name="M:WebKit.WebKitBrowser.#ctor(WebKit.WebKitBrowserCore)">
             <summary>
             Initializes a new instance of the WebKitBrowser control.
             </summary>
