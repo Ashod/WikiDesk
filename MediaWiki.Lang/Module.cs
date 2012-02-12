@@ -53,7 +53,13 @@ namespace MediaWiki.Lang
             // The class name is the filename in all lower-case.
             string className = Path.GetFileNameWithoutExtension(moduleFilePath).ToLowerInvariant();
 
-            type_ = assembly.GetType("MediaWiki.Lang." + className);
+            string typeName = "MediaWiki.Lang." + className;
+            type_ = assembly.GetType(typeName);
+            if (type_ == null)
+            {
+                string msg = string.Format("Failed to load type [{0}] from class [{1}] in assembly [{2}].", typeName, className, moduleFilePath);
+                throw new TypeLoadException(msg);
+            }
 
             // Instantiate.
             instance_ = Activator.CreateInstance(type_, ScriptContext.CurrentContext, true);
