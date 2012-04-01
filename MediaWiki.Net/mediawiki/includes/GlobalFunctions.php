@@ -1691,7 +1691,9 @@ function wfDebugBacktrace( $limit = 0 ) {
 	}
 
 	if ( $limit && version_compare( PHP_VERSION, '5.4.0', '>=' ) ) {
-		return array_slice( debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit ), 1 );
+        //ASH: Phalanger 3.0 March 2010 r3 doesn't like the params.
+		//return array_slice( debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit ), 1 );
+		return array_slice( debug_backtrace(), 1 );
 	} else {
 		return array_slice( debug_backtrace(), 1 );
 	}
