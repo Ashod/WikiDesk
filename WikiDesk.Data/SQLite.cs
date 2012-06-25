@@ -72,11 +72,11 @@ namespace SQLite
         /// </param>
         public SQLiteConnection (string databasePath)
         {
-            //SQLite3.Compress(0, 9, 8 * 64 * 1024);
+            //SQLite3.Compress(0, 9, -1, -1);
 
             DatabasePath = databasePath;
             IntPtr handle;
-            var r = (SQLite3.Result)SQLite3.Open(DatabasePath, out handle);
+            var r = SQLite3.Open(DatabasePath, out handle);
             Handle = handle;
             if (r != SQLite3.Result.OK) {
                 throw SQLiteException.New (r, "Could not open database file: " + DatabasePath);
@@ -1991,7 +1991,7 @@ namespace SQLite
         public static extern Result Config(ConfigOption option);
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_compress", CallingConvention = CallingConvention.Cdecl)]
-        public static extern Result Compress(Int32 trace, Int32 compressionLevel, Int32 chunkSizeBytes);
+        public static extern Result Compress(Int32 trace, Int32 compressionLevel, Int32 chunkSizeKBytes, Int32 cacheSizeKBytes);
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_busy_timeout", CallingConvention = CallingConvention.Cdecl)]
         public static extern Result BusyTimeout(IntPtr db, Int32 milliseconds);
