@@ -47,9 +47,16 @@ namespace WikiDesk
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm(new SplashForm()));
+        	try
+        	{
+				Application.EnableVisualStyles();
+				Application.SetCompatibleTextRenderingDefault(false);
+				Application.Run(new MainForm(new SplashForm()));
+        	}
+        	catch (Exception ex)
+        	{
+        		MessageBox.Show("Fatal error: " + Environment.NewLine + ex, "WikiDesk", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        	}
         }
     }
 }
