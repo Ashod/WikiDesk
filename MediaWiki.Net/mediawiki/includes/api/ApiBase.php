@@ -1566,6 +1566,6 @@ abstract class ApiBase extends ContextSource {
 	 * @return string
 	 */
 	public static function getBaseVersion() {
-		return __CLASS__ . ': $Id: ApiBase.php 113235 2012-03-07 15:14:48Z reedy $';
+		return __CLASS__ . ': $Id$';
 	}
 }

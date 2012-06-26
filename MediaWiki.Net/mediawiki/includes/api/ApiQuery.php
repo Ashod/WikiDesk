@@ -714,7 +714,7 @@ class ApiQuery extends ApiBase {
 	public function getVersion() {
 		$psModule = new ApiPageSet( $this );
 		$vers = array();
-		$vers[] = __CLASS__ . ': $Id: ApiQuery.php 107665 2011-12-30 22:44:07Z reedy $';
+		$vers[] = __CLASS__ . ': $Id$';
 		$vers[] = $psModule->getVersion();
 		return $vers;
 	}

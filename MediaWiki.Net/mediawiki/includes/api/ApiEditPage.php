@@ -522,6 +522,6 @@ class ApiEditPage extends ApiBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiEditPage.php 108876 2012-01-13 23:14:28Z reedy $';
+		return __CLASS__ . ': $Id$';
 	}
 }

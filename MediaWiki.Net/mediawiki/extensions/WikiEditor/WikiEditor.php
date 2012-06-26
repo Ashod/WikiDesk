@@ -46,6 +46,10 @@ $wgWikiEditorFeatures = array(
 
 );
 
+// If set to true and the ClickTracking extension is installed, track clicks
+// on the toolbar buttons
+$wgWikiEditorToolbarClickTracking = false;
+
 /* Setup */
 
 $wgExtensionCredits['other'][] = array(
@@ -62,6 +66,7 @@ $wgHooks['EditPage::showEditForm:initial'][] = 'WikiEditorHooks::editPageShowEdi
 $wgHooks['GetPreferences'][] = 'WikiEditorHooks::getPreferences';
 $wgHooks['ResourceLoaderGetConfigVars'][] = 'WikiEditorHooks::resourceLoaderGetConfigVars';
 $wgHooks['MakeGlobalVariablesScript'][] = 'WikiEditorHooks::makeGlobalVariablesScript';
+$wgHooks['EditPageBeforeEditToolbar'][] = 'WikiEditorHooks::EditPageBeforeEditToolbar';
 
 $wikiEditorTpl = array(
 	'localBasePath' => dirname( __FILE__ ) . '/modules',
@@ -315,8 +320,10 @@ $wgResourceModules += array(
 			'wikieditor-toolbar-characters-page-persian',
 			'wikieditor-toolbar-characters-page-hebrew',
 			'wikieditor-toolbar-characters-page-bangla',
+			'wikieditor-toolbar-characters-page-tamil',
 			'wikieditor-toolbar-characters-page-telugu',
 			'wikieditor-toolbar-characters-page-sinhala',
+			'wikieditor-toolbar-characters-page-devanagari',
 			'wikieditor-toolbar-characters-page-gujarati',
 			'wikieditor-toolbar-characters-page-thai',
 			'wikieditor-toolbar-characters-page-lao',

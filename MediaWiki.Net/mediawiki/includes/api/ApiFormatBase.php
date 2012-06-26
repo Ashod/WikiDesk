@@ -301,7 +301,7 @@ See <a href='https://www.mediawiki.org/wiki/API'>complete documentation</a>, or
 	}
 
 	public static function getBaseVersion() {
-		return __CLASS__ . ': $Id: ApiFormatBase.php 108853 2012-01-13 21:42:31Z reedy $';
+		return __CLASS__ . ': $Id$';
 	}
 }
 
@@ -374,6 +374,6 @@ class ApiFormatFeedWrapper extends ApiFormatBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiFormatBase.php 108853 2012-01-13 21:42:31Z reedy $';
+		return __CLASS__ . ': $Id$';
 	}
 }

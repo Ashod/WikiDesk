@@ -1,0 +1,1 @@
+phpc /target:dll /root:. /recurse:. /out:..\bin\Release\MediaWiki.Net.dll /lang:PHP5 /static+ /debug- /skip:tests

@@ -20,7 +20,7 @@ class SpecialGadgets extends SpecialPage {
 
 	/**
 	 * Main execution function
-	 * @param $par Parameters passed to the page
+	 * @param $par array Parameters passed to the page
 	 */
 	function execute( $par ) {
 		$parts = explode( '/', $par );
@@ -38,8 +38,6 @@ class SpecialGadgets extends SpecialPage {
 	public function showMainForm() {
 		global $wgOut, $wgUser, $wgLang, $wgContLang;
 
-		$skin = $wgUser->getSkin();
-
 		$this->setHeaders();
 		$wgOut->setPagetitle( wfMsg( "gadgets-title" ) );
 		$wgOut->addWikiMsg( 'gadgets-pagetext' );
@@ -55,19 +53,17 @@ class SpecialGadgets extends SpecialPage {
 		$listOpen = false;
 
 		$msgOpt = array( 'parseinline', 'parsemag' );
-		$editInterfaceAllowed = $wgUser->isAllowed( 'editinterface' );
+		$editInterfaceMessage = $wgUser->isAllowed( 'editinterface' )
+			? 'edit'
+			: 'viewsource';
 
 		foreach ( $gadgets as $section => $entries ) {
 			if ( $section !== false && $section !== '' ) {
 				$t = Title::makeTitleSafe( NS_MEDIAWIKI, "Gadget-section-$section$lang" );
-				if ( $editInterfaceAllowed ) {
-					$lnkTarget = $t
-						? $skin->link( $t, wfMsgHTML( 'edit' ), array(), array( 'action' => 'edit' ) )
-						: htmlspecialchars( $section );
-					$lnk =  "&#160; &#160; [$lnkTarget]";
-				} else {
-					$lnk = '';
-				}
+				$lnkTarget = $t
+					? Linker::link( $t, wfMsgHTML( $editInterfaceMessage ), array(), array( 'action' => 'edit' ) )
+					: htmlspecialchars( $section );
+				$lnk =  "&#160; &#160; [$lnkTarget]";
 
 				$ttext = wfMsgExt( "gadget-section-$section", $msgOpt );
 
@@ -79,6 +75,9 @@ class SpecialGadgets extends SpecialPage {
 				$wgOut->addHTML( Html::rawElement( 'h2', array(), $ttext . $lnk ) . "\n" );
 			}
 
+			/**
+			 * @var $gadget Gadget
+			 */
 			foreach ( $entries as $gadget ) {
 				$t = Title::makeTitleSafe( NS_MEDIAWIKI, "Gadget-{$gadget->getName()}$lang" );
 
@@ -87,11 +86,8 @@ class SpecialGadgets extends SpecialPage {
 				}
 
 				$links = array();
-				if ( $editInterfaceAllowed ) {
-					$links[] = $skin->link( $t, wfMsgHTML( 'edit' ), array(), array( 'action' => 'edit' ) );
-				}
-
-				$links[] = $skin->link( $this->getTitle( "export/{$gadget->getName()}" ), wfMsgHtml( 'gadgets-export' ) );
+				$links[] = Linker::link( $t, wfMsgHTML( $editInterfaceMessage ), array(), array( 'action' => 'edit' ) );
+				$links[] = Linker::link( $this->getTitle( "export/{$gadget->getName()}" ), wfMsgHtml( 'gadgets-export' ) );
 
 				$ttext = wfMsgExt( "gadget-{$gadget->getName()}", $msgOpt );
 
@@ -114,7 +110,7 @@ class SpecialGadgets extends SpecialPage {
 						continue;
 					}
 
-					$lnk[] = $skin->link( $t, htmlspecialchars( $t->getText() ) );
+					$lnk[] = Linker::link( $t, htmlspecialchars( $t->getText() ) );
 				}
 				$wgOut->addHTML( $wgLang->commaList( $lnk ) );
 
@@ -169,6 +165,9 @@ class SpecialGadgets extends SpecialPage {
 			return;
 		}
 
+		/**
+		 * @var $g Gadget
+		 */
 		$g = $gadgets[$gadget];
 		$this->setHeaders();
 		$wgOut->setPagetitle( wfMsg( "gadgets-export-title" ) );

@@ -220,6 +220,6 @@ class ApiProtect extends ApiBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiProtect.php 106567 2011-12-18 16:01:31Z ialex $';
+		return __CLASS__ . ': $Id$';
 	}
 }

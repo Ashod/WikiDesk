@@ -73,6 +73,6 @@ class ApiLogout extends ApiBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiLogout.php 108734 2012-01-12 17:36:06Z maxsem $';
+		return __CLASS__ . ': $Id$';
 	}
 }

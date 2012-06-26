@@ -203,6 +203,6 @@ class ApiFeedContributions extends ApiBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiFeedContributions.php 107328 2011-12-26 16:20:30Z ialex $';
+		return __CLASS__ . ': $Id$';
 	}
 }

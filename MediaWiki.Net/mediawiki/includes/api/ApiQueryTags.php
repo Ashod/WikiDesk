@@ -180,6 +180,6 @@ class ApiQueryTags extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryTags.php 103273 2011-11-16 00:17:26Z johnduhart $';
+		return __CLASS__ . ': $Id$';
 	}
 }

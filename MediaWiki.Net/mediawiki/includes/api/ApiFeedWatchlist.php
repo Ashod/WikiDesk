@@ -234,6 +234,6 @@ class ApiFeedWatchlist extends ApiBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiFeedWatchlist.php 104445 2011-11-28 15:43:11Z reedy $';
+		return __CLASS__ . ': $Id$';
 	}
 }

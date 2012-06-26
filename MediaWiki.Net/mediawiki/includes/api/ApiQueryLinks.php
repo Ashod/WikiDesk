@@ -245,6 +245,6 @@ class ApiQueryLinks extends ApiQueryGeneratorBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryLinks.php 108847 2012-01-13 21:11:27Z siebrand $';
+		return __CLASS__ . ': $Id$';
 	}
 }

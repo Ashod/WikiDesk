@@ -187,6 +187,6 @@ class ApiQueryQueryPage extends ApiQueryGeneratorBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryQueryPage.php 103273 2011-11-16 00:17:26Z johnduhart $';
+		return __CLASS__ . ': $Id$';
 	}
 }

@@ -375,6 +375,6 @@ class ApiQueryAllUsers extends ApiQueryBase {
 	}
 
 	public function getVersion() {
-		return __CLASS__ . ': $Id: ApiQueryAllUsers.php 111675 2012-02-16 20:19:05Z reedy $';
+		return __CLASS__ . ': $Id$';
 	}
 }
