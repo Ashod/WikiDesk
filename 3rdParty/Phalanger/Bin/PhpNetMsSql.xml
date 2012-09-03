@@ -4,147 +4,6 @@
         <name>PhpNetMsSql</name>
     </assembly>
     <members>
-        <member name="T:PHP.Library.Data.PhpSqlDbConnection">
-            <summary>
-            SQL connection resource.
-            </summary>
-        </member>
-        <member name="M:PHP.Library.Data.PhpSqlDbConnection.#ctor(System.String,PHP.Core.ScriptContext)">
-            <summary>
-            Creates a new connection resource.
-            </summary>
-            <param name="connectionString">Connection string.</param>
-            <param name="context">Script context associated with the connection.</param>
-        </member>
-        <member name="M:PHP.Library.Data.PhpSqlDbConnection.ValidConnection(PHP.Core.PhpResource)">
-            <summary>
-            Validates whether the specified handler is instance of PhpDbConnection type.
-            </summary>
-            <param name="handle"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PHP.Library.Data.PhpSqlDbConnection.GetResult(PHP.Library.Data.PhpDbConnection,System.Data.IDataReader,System.Boolean)">
-            <summary>
-            Gets a query result resource.
-            </summary>
-            <param name="connection">Database connection.</param>
-            <param name="reader">Data reader to be used for result resource population.</param>
-            <param name="convertTypes">Whether to convert data types to PHP ones.</param>
-            <returns>Result resource holding all resulting data of the query.</returns>
-        </member>
-        <member name="M:PHP.Library.Data.PhpSqlDbConnection.CreateCommand">
-            <summary>
-            Command factory.
-            </summary>
-            <returns>An empty instance of <see cref="T:System.Data.SqlClient.SqlCommand"/>.</returns>
-        </member>
-        <member name="T:PHP.Library.Data.MsSqlLocalConfig">
-            <summary>
-            Script independent MSSQL configuration.
-            </summary>
-        </member>
-        <member name="F:PHP.Library.Data.MsSqlLocalConfig.Timeout">
-            <summary>
-            Request timeout in seconds. Non-positive value means no timeout.
-            </summary>
-        </member>
-        <member name="F:PHP.Library.Data.MsSqlLocalConfig.ConnectTimeout">
-            <summary>
-            Connect timeout in seconds. Non-positive value means no timeout.
-            </summary>
-        </member>
-        <member name="F:PHP.Library.Data.MsSqlLocalConfig.BatchSize">
-            <summary>
-            Limit on size of a batch. Non-positive value means no limit.
-            </summary>
-        </member>
-        <member name="M:PHP.Library.Data.MsSqlLocalConfig.DeepCopy">
-            <summary>
-            Creates a deep copy of the configuration record.
-            </summary>
-            <returns>The copy.</returns>
-        </member>
-        <member name="M:PHP.Library.Data.MsSqlLocalConfig.Parse(System.String,System.String,System.Xml.XmlNode)">
-            <summary>
-            Loads configuration from XML.
-            </summary>
-        </member>
-        <member name="T:PHP.Library.Data.MsSqlGlobalConfig">
-            <summary>
-            Script dependent MSSQL configuration.
-            </summary>
-        </member>
-        <member name="F:PHP.Library.Data.MsSqlGlobalConfig.MaxConnections">
-            <summary>
-            Maximum number of connections per request. Negative value means no limit.
-            </summary>
-        </member>
-        <member name="F:PHP.Library.Data.MsSqlGlobalConfig.NTAuthentication">
-            <summary>
-            Use NT authentication when connecting to the server.
-            </summary>
-        </member>
-        <member name="M:PHP.Library.Data.MsSqlGlobalConfig.Parse(System.String,System.String,System.Xml.XmlNode)">
-            <summary>
-            Loads configuration from XML.
-            </summary>
-            <param name="name"></param>
-            <param name="value"></param>
-            <param name="node"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PHP.Library.Data.MsSqlGlobalConfig.DeepCopy">
-            <summary>
-            Creates a deep copy of the configuration record.
-            </summary>
-            <returns>The copy.</returns>
-        </member>
-        <member name="T:PHP.Library.Data.MsSqlConfiguration">
-            <summary>
-            MSSQL extension configuration.
-            </summary>
-        </member>
-        <member name="M:PHP.Library.Data.MsSqlConfiguration.GetSetRestore(PHP.Core.LocalConfiguration,System.String,System.Object,PHP.Library.IniAction)">
-            <summary>
-            Gets, sets, or restores a value of a legacy configuration option.
-            </summary>
-        </member>
-        <member name="M:PHP.Library.Data.MsSqlConfiguration.LegacyOptionsToXml(System.Xml.XmlTextWriter,System.Collections.Hashtable,System.Boolean)">
-            <summary>
-            Writes MySql legacy options and their values to XML text stream.
-            Skips options whose values are the same as default values of Phalanger.
-            </summary>
-            <param name="writer">XML writer.</param>
-            <param name="options">A hashtable containing PHP names and option values. Consumed options are removed from the table.</param>
-            <param name="writePhpNames">Whether to add "phpName" attribute to option nodes.</param>
-        </member>
-        <member name="M:PHP.Library.Data.MsSqlConfiguration.RegisterLegacyOptions">
-            <summary>
-            Registers legacy ini-options.
-            </summary>
-        </member>
-        <member name="M:PHP.Library.Data.MsSqlConfiguration.GetLocal(PHP.Core.ScriptContext)">
-            <summary>
-            Gets local configuration associated with a specified script context.
-            </summary>
-            <param name="context">Scritp context.</param>
-            <returns>Local library configuration.</returns>
-        </member>
-        <member name="P:PHP.Library.Data.MsSqlConfiguration.Local">
-            <summary>
-            Gets the library configuration associated with the current script context.
-            </summary>
-        </member>
-        <member name="P:PHP.Library.Data.MsSqlConfiguration.DefaultLocal">
-            <summary>
-            Gets the default library configuration.
-            </summary>
-        </member>
-        <member name="P:PHP.Library.Data.MsSqlConfiguration.Global">
-            <summary>
-            Gets the global library configuration.
-            </summary>
-        </member>
         <member name="T:PHP.Library.Data.MsSql">
             <summary>
             Implements PHP functions provided by MSSQL extension.
@@ -670,60 +529,111 @@
             Types of variables bound to stored procedure parameters.
             </summary>
         </member>
-        <member name="T:PHP.Library.Data.PhpSqlDbProcedure">
+        <member name="T:PHP.Library.Data.MsSqlLocalConfig">
             <summary>
-            Represets a stored procedure statement.
+            Script independent MSSQL configuration.
             </summary>
         </member>
-        <member name="M:PHP.Library.Data.PhpSqlDbProcedure.#ctor(PHP.Library.Data.PhpDbConnection,System.String)">
+        <member name="F:PHP.Library.Data.MsSqlLocalConfig.Timeout">
             <summary>
-            Creates a stored procedure statement.
-            </summary>
-            <param name="connection">Database connection.</param>
-            <param name="procedureName">Procedure name.</param>
-            <exception cref="T:System.ArgumentNullException">Argument is a <B>null</B> reference.</exception>
-        </member>
-        <member name="M:PHP.Library.Data.PhpSqlDbProcedure.Execute(System.Boolean,System.Boolean@)">
-            <summary>
-            Executes the procedure.
-            </summary>
-            <param name="skipResults">Whether to load the results.</param>
-            <param name="success">Whether the execution succeeded.</param>
-            <returns>Results or a <B>null</B> reference if results are not loaded or an error occured.</returns>
-        </member>
-        <member name="P:PHP.Library.Data.PhpSqlDbProcedure.ProcedureName">
-            <summary>
-            Procedure name.
+            Request timeout in seconds. Non-positive value means no timeout.
             </summary>
         </member>
-        <member name="T:PHP.Library.Data.MsSqlLibraryDescriptor">
+        <member name="F:PHP.Library.Data.MsSqlLocalConfig.ConnectTimeout">
             <summary>
-            Describes the class library assembly content and configuration.
+            Connect timeout in seconds. Non-positive value means no timeout.
             </summary>
         </member>
-        <member name="M:PHP.Library.Data.MsSqlLibraryDescriptor.Loaded(PHP.Core.PhpLibraryAttribute,PHP.Core.LibraryConfigStore)">
+        <member name="F:PHP.Library.Data.MsSqlLocalConfig.BatchSize">
             <summary>
-            Called by the Core after the library is loaded.
+            Limit on size of a batch. Non-positive value means no limit.
             </summary>
         </member>
-        <member name="M:PHP.Library.Data.MsSqlLibraryDescriptor.ParseConfig(PHP.Core.ConfigContextBase,PHP.Core.PhpConfigurationContext,System.Xml.XmlNode)">
+        <member name="M:PHP.Library.Data.MsSqlLocalConfig.DeepCopy">
             <summary>
-            Parses a configuration section belonging to the MSSQL library. 
+            Creates a deep copy of the configuration record.
             </summary>
-            <param name="result">A configuration context.</param>
-            <param name="context">The context of the configuration created by Phalanger Core.</param>
-            <param name="section">A XML node containing the configuration or its part.</param>
-            <returns>Updated configuration context.</returns>
+            <returns>The copy.</returns>
         </member>
-        <member name="M:PHP.Library.Data.MsSqlLibraryDescriptor.CreateConfigContext">
+        <member name="M:PHP.Library.Data.MsSqlLocalConfig.Parse(System.String,System.String,System.Xml.XmlNode)">
             <summary>
-            Creates empty library configuration context.
+            Loads configuration from XML.
             </summary>
-            <returns>An initialized configuration context. Should not be a <B>null</B> reference.</returns>
         </member>
-        <member name="P:PHP.Library.Data.MsSqlLibraryDescriptor.Singleton">
+        <member name="T:PHP.Library.Data.MsSqlGlobalConfig">
             <summary>
-            Stores one and only instance of the class that is created when the assembly is loaded.
+            Script dependent MSSQL configuration.
+            </summary>
+        </member>
+        <member name="F:PHP.Library.Data.MsSqlGlobalConfig.MaxConnections">
+            <summary>
+            Maximum number of connections per request. Negative value means no limit.
+            </summary>
+        </member>
+        <member name="F:PHP.Library.Data.MsSqlGlobalConfig.NTAuthentication">
+            <summary>
+            Use NT authentication when connecting to the server.
+            </summary>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlGlobalConfig.Parse(System.String,System.String,System.Xml.XmlNode)">
+            <summary>
+            Loads configuration from XML.
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <param name="node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlGlobalConfig.DeepCopy">
+            <summary>
+            Creates a deep copy of the configuration record.
+            </summary>
+            <returns>The copy.</returns>
+        </member>
+        <member name="T:PHP.Library.Data.MsSqlConfiguration">
+            <summary>
+            MSSQL extension configuration.
+            </summary>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlConfiguration.GetSetRestore(PHP.Core.LocalConfiguration,System.String,System.Object,PHP.Library.IniAction)">
+            <summary>
+            Gets, sets, or restores a value of a legacy configuration option.
+            </summary>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlConfiguration.LegacyOptionsToXml(System.Xml.XmlTextWriter,System.Collections.Hashtable,System.Boolean)">
+            <summary>
+            Writes MySql legacy options and their values to XML text stream.
+            Skips options whose values are the same as default values of Phalanger.
+            </summary>
+            <param name="writer">XML writer.</param>
+            <param name="options">A hashtable containing PHP names and option values. Consumed options are removed from the table.</param>
+            <param name="writePhpNames">Whether to add "phpName" attribute to option nodes.</param>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlConfiguration.RegisterLegacyOptions">
+            <summary>
+            Registers legacy ini-options.
+            </summary>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlConfiguration.GetLocal(PHP.Core.ScriptContext)">
+            <summary>
+            Gets local configuration associated with a specified script context.
+            </summary>
+            <param name="context">Scritp context.</param>
+            <returns>Local library configuration.</returns>
+        </member>
+        <member name="P:PHP.Library.Data.MsSqlConfiguration.Local">
+            <summary>
+            Gets the library configuration associated with the current script context.
+            </summary>
+        </member>
+        <member name="P:PHP.Library.Data.MsSqlConfiguration.DefaultLocal">
+            <summary>
+            Gets the default library configuration.
+            </summary>
+        </member>
+        <member name="P:PHP.Library.Data.MsSqlConfiguration.Global">
+            <summary>
+            Gets the global library configuration.
             </summary>
         </member>
         <member name="T:PHP.Library.Data.PhpSqlDbResult">
@@ -781,6 +691,96 @@
         <member name="P:PHP.Library.Data.PhpSqlDbResult.BatchSize">
             <summary>
             Limit on size of a batch. Non-positive values means no limit.
+            </summary>
+        </member>
+        <member name="T:PHP.Library.Data.PhpSqlDbConnection">
+            <summary>
+            SQL connection resource.
+            </summary>
+        </member>
+        <member name="M:PHP.Library.Data.PhpSqlDbConnection.#ctor(System.String,PHP.Core.ScriptContext)">
+            <summary>
+            Creates a new connection resource.
+            </summary>
+            <param name="connectionString">Connection string.</param>
+            <param name="context">Script context associated with the connection.</param>
+        </member>
+        <member name="M:PHP.Library.Data.PhpSqlDbConnection.ValidConnection(PHP.Core.PhpResource)">
+            <summary>
+            Validates whether the specified handler is instance of PhpDbConnection type.
+            </summary>
+            <param name="handle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PHP.Library.Data.PhpSqlDbConnection.GetResult(PHP.Library.Data.PhpDbConnection,System.Data.IDataReader,System.Boolean)">
+            <summary>
+            Gets a query result resource.
+            </summary>
+            <param name="connection">Database connection.</param>
+            <param name="reader">Data reader to be used for result resource population.</param>
+            <param name="convertTypes">Whether to convert data types to PHP ones.</param>
+            <returns>Result resource holding all resulting data of the query.</returns>
+        </member>
+        <member name="M:PHP.Library.Data.PhpSqlDbConnection.CreateCommand">
+            <summary>
+            Command factory.
+            </summary>
+            <returns>An empty instance of <see cref="T:System.Data.SqlClient.SqlCommand"/>.</returns>
+        </member>
+        <member name="T:PHP.Library.Data.PhpSqlDbProcedure">
+            <summary>
+            Represets a stored procedure statement.
+            </summary>
+        </member>
+        <member name="M:PHP.Library.Data.PhpSqlDbProcedure.#ctor(PHP.Library.Data.PhpDbConnection,System.String)">
+            <summary>
+            Creates a stored procedure statement.
+            </summary>
+            <param name="connection">Database connection.</param>
+            <param name="procedureName">Procedure name.</param>
+            <exception cref="T:System.ArgumentNullException">Argument is a <B>null</B> reference.</exception>
+        </member>
+        <member name="M:PHP.Library.Data.PhpSqlDbProcedure.Execute(System.Boolean,System.Boolean@)">
+            <summary>
+            Executes the procedure.
+            </summary>
+            <param name="skipResults">Whether to load the results.</param>
+            <param name="success">Whether the execution succeeded.</param>
+            <returns>Results or a <B>null</B> reference if results are not loaded or an error occured.</returns>
+        </member>
+        <member name="P:PHP.Library.Data.PhpSqlDbProcedure.ProcedureName">
+            <summary>
+            Procedure name.
+            </summary>
+        </member>
+        <member name="T:PHP.Library.Data.MsSqlLibraryDescriptor">
+            <summary>
+            Describes the class library assembly content and configuration.
+            </summary>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlLibraryDescriptor.Loaded(PHP.Core.PhpLibraryAttribute,PHP.Core.LibraryConfigStore)">
+            <summary>
+            Called by the Core after the library is loaded.
+            </summary>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlLibraryDescriptor.ParseConfig(PHP.Core.ConfigContextBase,PHP.Core.PhpConfigurationContext,System.Xml.XmlNode)">
+            <summary>
+            Parses a configuration section belonging to the MSSQL library. 
+            </summary>
+            <param name="result">A configuration context.</param>
+            <param name="context">The context of the configuration created by Phalanger Core.</param>
+            <param name="section">A XML node containing the configuration or its part.</param>
+            <returns>Updated configuration context.</returns>
+        </member>
+        <member name="M:PHP.Library.Data.MsSqlLibraryDescriptor.CreateConfigContext">
+            <summary>
+            Creates empty library configuration context.
+            </summary>
+            <returns>An initialized configuration context. Should not be a <B>null</B> reference.</returns>
+        </member>
+        <member name="P:PHP.Library.Data.MsSqlLibraryDescriptor.Singleton">
+            <summary>
+            Stores one and only instance of the class that is created when the assembly is loaded.
             </summary>
         </member>
     </members>
