@@ -416,7 +416,7 @@ if( is_null( $wgLocalTZoffset ) ) {
 if ( $wgCommandLineMode ) {
 	$wgRequest = new FauxRequest( array() );
 
-	wfDebug( "\n\nStart command line script $self\n" );
+	wfDebug( "\n\nStart command line script\n" );
 } else {
 	# Can't stub this one, it sets up $_GET and $_REQUEST in its constructor
 	$wgRequest = new WebRequest;

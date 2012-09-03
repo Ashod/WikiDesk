@@ -1692,7 +1692,9 @@ function wfDebugBacktrace( $limit = 0 ) {
 	}
 
 	if ( $limit && version_compare( PHP_VERSION, '5.4.0', '>=' ) ) {
-		return array_slice( debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit ), 1 );
+        //ASH: Phalanger 3.0 Phalanger 3.0 2012-06-13 doesn't like the params.
+		//return array_slice( debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT, $limit ), 1 );
+		return array_slice( debug_backtrace(), 1 );
 	} else {
 		return array_slice( debug_backtrace(), 1 );
 	}
@@ -2370,9 +2372,9 @@ function wfTimestamp( $outputtype = TS_UNIX, $ts = 0 ) {
 				(int)$da[1], (int)$da[2], (int)$da[3],
 				(int)$da[4], (int)$da[5], (int)$da[6]);
 
-			$d = date_create( $ds, new DateTimeZone( 'GMT' ) );
+			$d = date_create( $ds, new DateTimeZone( 'GMT' ) );		//ASH: Was 'GMT' which isn't supported by Phalanger 3.0 2012-06-13.
 		} elseif ( $strtime ) {
-			$d = date_create( $strtime, new DateTimeZone( 'GMT' ) );
+			$d = date_create( $strtime, new DateTimeZone( 'GMT' ) );		//ASH: Was 'GMT' which isn't supported by Phalanger 3.0 2012-06-13.
 		} else {
 			return false;
 		}

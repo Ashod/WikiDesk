@@ -100,7 +100,9 @@ class ForkController {
 			if ( function_exists( 'pcntl_signal_dispatch' ) ) {
 				pcntl_signal_dispatch();
 			} else {
-				declare (ticks=1) { $status = $status; }
+                //ASH: Phalanger 3.0 2012-06-13 doesn't support declare.
+				//declare (ticks=1) { $status = $status; }
+				$status = $status;
 			}
 			// Respond to TERM signal
 			if ( $this->termReceived ) {
